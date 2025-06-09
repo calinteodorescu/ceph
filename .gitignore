@@ -106,3 +106,6 @@ src/pybind/rgw/rgw.egg-info/
 /.vs
 /out/build/x64-Debug/CMakeFiles/3.29.5-msvc4
 /out/build/x64-Debug
+/CMakeLists.txt
+/out/build/Mingw64-Debug/CMakeFiles
+/out/build/Mingw64-Debug
