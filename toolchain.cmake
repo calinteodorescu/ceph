@@ -1,0 +1,8 @@
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_C_COMPILER C:/Tools/msys64/mingw64/bin/gcc.exe)
+set(CMAKE_CXX_COMPILER C:/Tools/msys64/mingw64/bin/g++.exe)
+set(CMAKE_MAKE_PROGRAM C:/Tools/msys64/mingw64/bin/make.exe)
+set(CMAKE_FIND_ROOT_PATH C:/Tools/msys64/mingw64)
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
