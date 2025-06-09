@@ -42,11 +42,16 @@
                     "name": "CMAKE_CXX_COMPILER",
                     "value": "C:/Tools/msys64/mingw64/bin/g++.exe",
                     "type": "STRING"
+                },
+                {
+                    "name": "CMAKE_MAKE_PROGRAM",
+                    "value": "C:/Tools/msys64/mingw64/bin/cmake.exe",
+                    "type": "STRING"
                 }
             ],
             "intelliSenseMode": "linux-gcc-x64",
             "cmakeExecutable": "C:/Tools/msys64/mingw64/bin/cmake.exe",
-            "cmakeCommandArgs": " -G \"MinGW Makefiles\""
+            "cmakeCommandArgs": "-G \"MinGW Makefiles\""
         }
     ]
 }
