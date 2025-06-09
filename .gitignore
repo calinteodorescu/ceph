@@ -97,3 +97,12 @@ src/pybind/rbd/rbd.egg-info/
 src/pybind/rgw/build/
 src/pybind/rgw/rgw.c
 src/pybind/rgw/rgw.egg-info/
+*.vsidx
+*.db
+*.db-shm
+*.db-wal
+*.opendb
+*.wsuo
+/.vs
+/out/build/x64-Debug/CMakeFiles/3.29.5-msvc4
+/out/build/x64-Debug
