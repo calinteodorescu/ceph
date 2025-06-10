@@ -30,6 +30,8 @@ set(WITH_SNAPPY                 OFF)
 set(WITH_LIBCEPHSQLITE          OFF)
 set(WITH_LTTNG                  OFF)
 set(WITH_LZMA                   OFF)
+set(WITH_THRIFT                 OFF)
+set(WITH_JAEGER                 OFF)
 
 # Set top-level directories for outputs
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -38,6 +40,9 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 # Custom directory for intermediate files (if needed)
 set(CMAKE_OBJECT_PATH              "${CMAKE_BINARY_DIR}/obj")
 # Note: Object files are still managed under CMakeFiles unless explicitly overridden
+
+set(LIBLZMA_LIBRARY                "/d/Git/xz/Release/liblzma.dll")
+set(LIBLZMA_INCLUDE_DIR            "/mingw64/include")
 
 # Define a target (e.g., executable)
 #add_executable(ceph_calin main.c)
