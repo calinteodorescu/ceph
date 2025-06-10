@@ -30,6 +30,7 @@ set(WITH_JAEGER                 OFF)
 set(WITH_RADOSGW_LUA_PACKAGES   OFF)
 set(WITH_RADOSGW                OFF)
 set(WITH_CEPHFS                 OFF)
+set(WITH_LZ4                    OFF)
 
 # Set top-level directories for outputs
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
