@@ -495,7 +495,7 @@ if(NOT WIN32)
   find_package(CURL 7.32 REQUIRED)
 endif()
 
-find_package(OpenSSL REQUIRED)
+# find_package(OpenSSL REQUIRED)
 set(CRYPTO_LIBS OpenSSL::Crypto)
 
 option(WITH_DPDK "Enable DPDK messaging" OFF)

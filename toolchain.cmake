@@ -1,6 +1,8 @@
 set(CMAKE_SYSTEM_NAME Windows)
 
 set(CMAKE_INSTALL_PREFIX D:/Git/ceph/.build/cmake/.run)
+set(OPENSSL_ROOT_DIR     C:/Tools/OpenSSL-Win64)
+
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
@@ -39,3 +41,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 # Custom directory for intermediate files (if needed)
 set(CMAKE_OBJECT_PATH              "${CMAKE_BINARY_DIR}/obj")
 # Note: Object files are still managed under CMakeFiles unless explicitly overridden
+
+set(OPENSSL_CRYPTO_LIBRARY "$(OPENSSL_ROOT_DIR)/lib/VC/x64/MT/libcrypto.lib")
+set(OPENSSL_SSL_LIBRARY    "$(OPENSSL_ROOT_DIR)/lib/VC/x64/MT/libssl.lib")
+set(OPENSSL_INCLUDE_DIR    "$(OPENSSL_ROOT_DIR)/include")
