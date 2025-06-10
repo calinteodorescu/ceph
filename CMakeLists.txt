@@ -421,7 +421,7 @@ if(LINUX)
   endif()
 endif()
 
-# find_package(snappy REQUIRED)
+find_package(snappy REQUIRED)
 
 option(WITH_BROTLI "Brotli compression support" OFF)
 if(WITH_BROTLI)
@@ -495,7 +495,7 @@ if(NOT WIN32)
   find_package(CURL 7.32 REQUIRED)
 endif()
 
-# find_package(OpenSSL REQUIRED)
+find_package(OpenSSL REQUIRED)
 set(CRYPTO_LIBS OpenSSL::Crypto)
 
 option(WITH_DPDK "Enable DPDK messaging" OFF)
@@ -767,8 +767,8 @@ if(WITH_RADOSGW AND WITH_RADOSGW_LUA_PACKAGES)
 endif()
 
 if(WITH_LIBCEPHFS OR WITH_FUSE)
-  find_package(ICU REQUIRED COMPONENTS uc i18n)
-  list(APPEND BOOST_COMPONENTS locale)
+  # find_package(ICU REQUIRED COMPONENTS uc i18n)
+  # list(APPEND BOOST_COMPONENTS locale)
 endif()
 
 set(Boost_USE_MULTITHREADED ON)
