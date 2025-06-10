@@ -112,3 +112,5 @@ src/pybind/rgw/rgw.egg-info/
 /CMakeCache.txt
 /cmake-build
 /CMakeFiles
+/src/.vs
+/src/out/build/x64-Debug
