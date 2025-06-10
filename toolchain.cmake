@@ -29,6 +29,7 @@ set(WITH_BLUESTORE              OFF)
 set(WITH_SNAPPY                 OFF)
 set(WITH_LIBCEPHSQLITE          OFF)
 set(WITH_LTTNG                  OFF)
+set(WITH_LZMA                   OFF)
 
 # Set top-level directories for outputs
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
