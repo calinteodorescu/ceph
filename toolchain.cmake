@@ -12,6 +12,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 set(WITH_SYSTEM_BOOST           ON)
 
+set(WITH_SYSTEM_ROCKSDB         OFF)
+set(WITH_EMBEDDED_ROCKSDB       OFF)
+ 
+set(WITH_KRBD                   OFF)
 set(WITH_RBD                    OFF)
 set(WITH_RADOSGW                OFF)
 set(WITH_MANPAGE                OFF)
@@ -20,20 +24,19 @@ set(WITH_MGR_DASHBOARD_FRONTEND OFF)
 set(WITH_RDMA                   OFF)
 set(WITH_SYSTEM_BACKTRACE       OFF)
 set(WITH_OPENLDAP               OFF)
+set(WITH_FUSE                   OFF)
+set(WITH_BLUESTORE              OFF)
+set(WITH_SNAPPY                 OFF)
+set(WITH_LIBCEPHSQLITE          OFF)
+set(WITH_LTTNG                  OFF)
 
 # Set top-level directories for outputs
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+# Custom directory for intermediate files (if needed)
+set(CMAKE_OBJECT_PATH              "${CMAKE_BINARY_DIR}/obj")
+# Note: Object files are still managed under CMakeFiles unless explicitly overridden
 
 # Define a target (e.g., executable)
 #add_executable(ceph_calin main.c)
-
-# Optionally, set target-specific output directories
-#set_target_properties(my_target PROPERTIES
-#    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-#)
-
-# Custom directory for intermediate files (if needed)
-set(CMAKE_OBJECT_PATH "${CMAKE_BINARY_DIR}/obj")
-# Note: Object files are still managed under CMakeFiles unless explicitly overridden

@@ -421,7 +421,7 @@ if(LINUX)
   endif()
 endif()
 
-find_package(snappy REQUIRED)
+# find_package(snappy REQUIRED)
 
 option(WITH_BROTLI "Brotli compression support" OFF)
 if(WITH_BROTLI)
