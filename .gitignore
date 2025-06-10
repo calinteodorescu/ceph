@@ -114,3 +114,4 @@ src/pybind/rgw/rgw.egg-info/
 /CMakeFiles
 /src/.vs
 /src/out/build/x64-Debug
+/.build/cmake
