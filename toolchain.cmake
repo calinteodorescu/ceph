@@ -45,3 +45,6 @@ set(CMAKE_OBJECT_PATH              "${CMAKE_BINARY_DIR}/obj")
 set(OPENSSL_CRYPTO_LIBRARY "$(OPENSSL_ROOT_DIR)/lib/VC/x64/MT/libcrypto.lib")
 set(OPENSSL_SSL_LIBRARY    "$(OPENSSL_ROOT_DIR)/lib/VC/x64/MT/libssl.lib")
 set(OPENSSL_INCLUDE_DIR    "$(OPENSSL_ROOT_DIR)/include")
+
+set(ZLIB_LIBRARY           "C:/Tools/zlib-nuget/zlib-msvc14-x64.1.2.11.7795/build/native/lib_release")
+set(ZLIB_INCLUDE_DIR       "C:/Tools/zlib-nuget/zlib-msvc14-x64.1.2.11.7795/build/native/include")
