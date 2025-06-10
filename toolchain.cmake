@@ -5,7 +5,16 @@ set(CMAKE_SYSTEM_NAME Windows)
 #set(CMAKE_MAKE_PROGRAM C:/Tools/msys64/mingw64/bin/cmake.exe)
 #set(CMAKE_FIND_ROOT_PATH C:/Tools/msys64/mingw64)
 
-set(CMAKE_INSTALL_PREFIX D:/Git/ceph/.build/cmake/.run)
+
+# Set top-level directories for outputs
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+# Custom directory for intermediate files
+set(CMAKE_OBJECT_PATH              "${CMAKE_BINARY_DIR}/obj")
+# Note: Object files are still managed under CMakeFiles unless explicitly overridden
+set(CMAKE_INSTALL_PREFIX           "${CMAKE_BINARY_DIR}/.run")
+
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
@@ -17,19 +26,5 @@ set(WITH_MANPAGE OFF)
 set(WITH_BABELTRACE OFF)
 set(WITH_MGR_DASHBOARD_FRONTEND OFF)
 
-# Set top-level directories for outputs
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-
 # Define a target (e.g., executable)
 #add_executable(ceph_calin main.c)
-
-# Optionally, set target-specific output directories
-#set_target_properties(my_target PROPERTIES
-#    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-#)
-
-# Custom directory for intermediate files (if needed)
-set(CMAKE_OBJECT_PATH "${CMAKE_BINARY_DIR}/obj")
-# Note: Object files are still managed under CMakeFiles unless explicitly overridden
