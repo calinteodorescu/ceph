@@ -14,6 +14,15 @@
 # EXTERNAL cache entries
 ########################
 
+//Header providing backtrace(3) facility
+Backtrace_HEADER:STRING=execinfo.h
+
+//Path to a file.
+Backtrace_INCLUDE_DIR:PATH=Backtrace_INCLUDE_DIR-NOTFOUND
+
+//Install location for man pages (relative to prefix).
+CEPH_MAN_DIR:STRING=share/man
+
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/Tools/Microsoft/Visual Studio/2022.Enterprise.LTSC.17.8/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/lib.exe
 
@@ -98,8 +107,56 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 //Value Computed by CMake.
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=D:/Git/ceph/.build/cmake/CMakeFiles/pkgRedirects
 
+//User executables (bin)
+CMAKE_INSTALL_BINDIR:PATH=bin
+
+//Read-only architecture-independent data (DATAROOTDIR)
+CMAKE_INSTALL_DATADIR:PATH=
+
+//Read-only architecture-independent data root (share)
+CMAKE_INSTALL_DATAROOTDIR:PATH=share
+
+//Documentation root (DATAROOTDIR/doc/PROJECT_NAME)
+CMAKE_INSTALL_DOCDIR:PATH=
+
+//C header files (include)
+CMAKE_INSTALL_INCLUDEDIR:PATH=include
+
+//Info documentation (DATAROOTDIR/info)
+CMAKE_INSTALL_INFODIR:PATH=
+
+//Object code libraries (lib)
+CMAKE_INSTALL_LIBDIR:PATH=lib
+
+//Program executables (libexec)
+CMAKE_INSTALL_LIBEXECDIR:PATH=libexec
+
+//Locale-dependent data (DATAROOTDIR/locale)
+CMAKE_INSTALL_LOCALEDIR:PATH=
+
+//Modifiable single-machine data (var)
+CMAKE_INSTALL_LOCALSTATEDIR:PATH=var
+
+//Man documentation (DATAROOTDIR/man)
+CMAKE_INSTALL_MANDIR:PATH=
+
+//C header files for non-gcc (/usr/include)
+CMAKE_INSTALL_OLDINCLUDEDIR:PATH=/usr/include
+
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/ceph
+
+//Run-time variable data (LOCALSTATEDIR/run)
+CMAKE_INSTALL_RUNSTATEDIR:PATH=
+
+//System admin executables (sbin)
+CMAKE_INSTALL_SBINDIR:PATH=sbin
+
+//Modifiable architecture-independent data (com)
+CMAKE_INSTALL_SHAREDSTATEDIR:PATH=com
+
+//Read-only single-machine data (etc)
+CMAKE_INSTALL_SYSCONFDIR:PATH=etc
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/Tools/Microsoft/Visual Studio/2022.Enterprise.LTSC.17.8/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/link.exe
@@ -191,10 +248,10 @@ CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 
 //If set, runtime paths are not added when installing shared libraries,
 // but are added when building.
-CMAKE_SKIP_INSTALL_RPATH:BOOL=NO
+CMAKE_SKIP_INSTALL_RPATH:BOOL=OFF
 
 //If set, runtime paths are not added when using shared libraries.
-CMAKE_SKIP_RPATH:BOOL=NO
+CMAKE_SKIP_RPATH:BOOL=OFF
 
 //Flags used by the linker during the creation of static libraries
 // during all build types.
@@ -220,22 +277,142 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
-CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
+
+//build shared libraries
+ENABLE_SHARED:BOOL=ON
+
+//Path to a file.
+FUSE_INCLUDE_DIR:PATH=FUSE_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+FUSE_LIBRARIES:FILEPATH=FUSE_LIBRARIES-NOTFOUND
+
+//Path to a library.
+LBER_LIBRARY:FILEPATH=LBER_LIBRARY-NOTFOUND
+
+//Path to a library.
+LDAP_LIBRARY:FILEPATH=LDAP_LIBRARY-NOTFOUND
+
+//Path to a library.
+LIBXFS:FILEPATH=LIBXFS-NOTFOUND
+
+//Path to a file.
+OpenLDAP_INCLUDE_DIR:PATH=OpenLDAP_INCLUDE_DIR-NOTFOUND
+
+//Arguments to supply to pkg-config
+PKG_CONFIG_ARGN:STRING=
+
+//pkg-config executable
+PKG_CONFIG_EXECUTABLE:FILEPATH=PKG_CONFIG_EXECUTABLE-NOTFOUND
 
 //Path to a program.
 SPHINX_BUILD:FILEPATH=SPHINX_BUILD-NOTFOUND
 
+//Path to a file.
+SQLite3_INCLUDE_DIR:PATH=SQLite3_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+SQLite3_LIBRARY:FILEPATH=SQLite3_LIBRARY-NOTFOUND
+
+//Path to a file.
+VERBS_INCLUDE_DIR:PATH=VERBS_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+VERBS_LIBRARIES:FILEPATH=VERBS_LIBRARIES-NOTFOUND
+
 //Targeted Windows version.
 WIN32_WINNT:STRING=0x0A00
+
+//libbluefs library
+WITH_BLUEFS:BOOL=OFF
+
+//Bluestore OSD backend
+WITH_BLUESTORE:BOOL=OFF
 
 //Build with ccache.
 WITH_CCACHE:BOOL=OFF
 
+//Dokan is here
+WITH_DOKAN:BOOL=OFF
+
+//Fuse is here
+WITH_FUSE:BOOL=OFF
+
+//GSSAPI/KRB5 is here
+WITH_GSSAPI:BOOL=OFF
+
+//Enable Linux krbd support of 'rbd' utility
+WITH_KRBD:BOOL=ON
+
+//Key value store is here
+WITH_KVS:BOOL=OFF
+
+//libcephfs client library
+WITH_LIBCEPHFS:BOOL=ON
+
+//libcephsqlite client library
+WITH_LIBCEPHSQLITE:BOOL=OFF
+
 //Build man pages.
-WITH_MANPAGE:BOOL=ON
+WITH_MANPAGE:BOOL=OFF
+
+//OPENLDAP is here
+WITH_OPENLDAP:BOOL=OFF
+
+//Build with OpenSSL Engine Support
+WITH_OPENSSL_ENGINE:BOOL=OFF
+
+//Enable QAT with out-of-tree driver
+WITH_QATDRV:BOOL=OFF
+
+//Enable QAT with qatlib
+WITH_QATLIB:BOOL=ON
+
+//Enable QATzip
+WITH_QATZIP:BOOL=ON
+
+//Enable RADOS Block Device related targets
+WITH_RBD:BOOL=ON
+
+//Enable librbd QCOW v1 migration format support
+WITH_RBD_MIGRATION_FORMAT_QCOW_V1:BOOL=ON
+
+//Enable build for rbd-mirror daemon executable
+WITH_RBD_MIRROR:BOOL=OFF
+
+//Enable librbd persistent write back cache
+WITH_RBD_RWL:BOOL=OFF
+
+//Enable librbd persistent write back cache for SSDs
+WITH_RBD_SSD_CACHE:BOOL=OFF
+
+//Enable ubbd support for rbd device utility
+WITH_RBD_UBBD:BOOL=OFF
+
+//Enable RDMA in async messenger
+WITH_RDMA:BOOL=OFF
 
 //Build with sccache.
 WITH_SCCACHE:BOOL=OFF
+
+//Enable SPDK
+WITH_SPDK:BOOL=OFF
+
+//Link against libstdc++ statically
+WITH_STATIC_LIBSTDCXX:BOOL=OFF
+
+//Use system packages for qatlib
+WITH_SYSTEM_QATLIB:BOOL=OFF
+
+//Use system packages for QATzip
+WITH_SYSTEM_QATZIP:BOOL=OFF
+
+//XFS is here
+WITH_XFS:BOOL=ON
+
+//Path to a file.
+XFS_INCLUDE_DIR:PATH=XFS_INCLUDE_DIR-NOTFOUND
 
 //Value Computed by CMake
 ceph_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake
@@ -251,6 +428,16 @@ ceph_SOURCE_DIR:STATIC=D:/Git/ceph
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Backtrace_HEADER
+Backtrace_HEADER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Backtrace_INCLUDE_DIR
+Backtrace_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//Have function fallocate
+CEPH_HAVE_FALLOCATE:INTERNAL=
+//Have symbol F_SETPIPE_SZ
+CEPH_HAVE_SETPIPE_SZ:INTERNAL=
+//Have function splice
+CEPH_HAVE_SPLICE:INTERNAL=
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ASM_COMPILER
@@ -329,6 +516,38 @@ CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=D:/Git/ceph
+//ADVANCED property for variable: CMAKE_INSTALL_BINDIR
+CMAKE_INSTALL_BINDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_DATADIR
+CMAKE_INSTALL_DATADIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_DATAROOTDIR
+CMAKE_INSTALL_DATAROOTDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_DOCDIR
+CMAKE_INSTALL_DOCDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_INCLUDEDIR
+CMAKE_INSTALL_INCLUDEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_INFODIR
+CMAKE_INSTALL_INFODIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LIBDIR
+CMAKE_INSTALL_LIBDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LIBEXECDIR
+CMAKE_INSTALL_LIBEXECDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LOCALEDIR
+CMAKE_INSTALL_LOCALEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LOCALSTATEDIR
+CMAKE_INSTALL_LOCALSTATEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_MANDIR
+CMAKE_INSTALL_MANDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_OLDINCLUDEDIR
+CMAKE_INSTALL_OLDINCLUDEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_RUNSTATEDIR
+CMAKE_INSTALL_RUNSTATEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_SBINDIR
+CMAKE_INSTALL_SBINDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_SHAREDSTATEDIR
+CMAKE_INSTALL_SHAREDSTATEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_SYSCONFDIR
+CMAKE_INSTALL_SYSCONFDIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER
 CMAKE_LINKER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS
@@ -390,4 +609,204 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Test COMPILER_IGNORES_DEPRECATED_DECL_IN_SYSTEM_HEADERS
+COMPILER_IGNORES_DEPRECATED_DECL_IN_SYSTEM_HEADERS:INTERNAL=
+//Details about finding QAT
+FIND_PACKAGE_MESSAGE_DETAILS_QAT:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatlib/install/lib/libqat.a][D:/Git/ceph/.build/cmake/src/qatlib/install/lib/libusdm.a][D:/Git/ceph/.build/cmake/src/qatlib/install/include][v()]
+//Details about finding QATzip
+FIND_PACKAGE_MESSAGE_DETAILS_QATzip:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatzip/install/lib/libqatzip.a][D:/Git/ceph/.build/cmake/src/qatzip/install/include][v()]
+//Have function accept4
+HAVE_ACCEPT4:INTERNAL=
+//Have includes arpa/nameser_compat.h
+HAVE_ARPA_NAMESER_COMPAT_H:INTERNAL=
+//Test HAVE_ASM_SYMVER
+HAVE_ASM_SYMVER:INTERNAL=
+//Test HAVE_ATTR_SYMVER
+HAVE_ATTR_SYMVER:INTERNAL=
+//Test HAVE_CXX11_ATOMIC
+HAVE_CXX11_ATOMIC:INTERNAL=1
+//Have function eventfd
+HAVE_EVENTFD:INTERNAL=
+//Have includes execinfo.h
+HAVE_EXECINFO_H:INTERNAL=
+//Have function fdatasync
+HAVE_FDATASYNC:INTERNAL=
+//Have symbol __func__
+HAVE_FUNC:INTERNAL=1
+//Have symbol getentropy
+HAVE_GETENTROPY:INTERNAL=
+//Have function getgrouplist
+HAVE_GETGROUPLIST:INTERNAL=
+//Have function getprogname
+HAVE_GETPROGNAME:INTERNAL=
+//Have function gettid
+HAVE_GETTID:INTERNAL=
+//Result of TRY_COMPILE
+HAVE_IN_ADDR_T:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE_LINK_EXCLUDE_LIBS:INTERNAL=TRUE
+//Result of TRY_COMPILE
+HAVE_LINK_VERSION_SCRIPT:INTERNAL=TRUE
+//Have includes linux/types.h
+HAVE_LINUX_TYPES_H:INTERNAL=
+//Have includes linux/version.h
+HAVE_LINUX_VERSION_H:INTERNAL=
+//Have function memset_s
+HAVE_MEMSET_S:INTERNAL=
+//Have function name_to_handle_at
+HAVE_NAME_TO_HANDLE_AT:INTERNAL=
+//Have includes openssl/engine.h
+HAVE_OPENSSL_ENGINE_H:INTERNAL=
+//Have function pipe2
+HAVE_PIPE2:INTERNAL=
+//Have function posix_fadvise
+HAVE_POSIX_FADVISE:INTERNAL=
+//Have function posix_fallocate
+HAVE_POSIX_FALLOCATE:INTERNAL=
+//Have symbol _POSIX_TIMERS
+HAVE_POSIX_TIMERS:INTERNAL=
+//Have symbol __PRETTY_FUNCTION__
+HAVE_PRETTY_FUNC:INTERNAL=
+//Have function pthread_getname_np
+HAVE_PTHREAD_GETNAME_NP:INTERNAL=
+//Have function pthread_get_name_np
+HAVE_PTHREAD_GET_NAME_NP:INTERNAL=
+//Have function pthread_rwlockattr_setkind_np
+HAVE_PTHREAD_RWLOCKATTR_SETKIND_NP:INTERNAL=
+//Have function pthread_setname_np
+HAVE_PTHREAD_SETNAME_NP:INTERNAL=
+//Have function pthread_set_name_np
+HAVE_PTHREAD_SET_NAME_NP:INTERNAL=
+//Have function pthread_spin_init
+HAVE_PTHREAD_SPINLOCK:INTERNAL=
+//Have function pwritev
+HAVE_PWRITEV:INTERNAL=
+//Have symbol res_nquery
+HAVE_RES_NQUERY:INTERNAL=
+//Have function sigdescr_np
+HAVE_SIGDESCR_NP:INTERNAL=
+//Test HAVE_STAT_ST_MTIMESPEC_TV_NSEC
+HAVE_STAT_ST_MTIMESPEC_TV_NSEC:INTERNAL=
+//Test HAVE_STAT_ST_MTIM_TV_NSEC
+HAVE_STAT_ST_MTIM_TV_NSEC:INTERNAL=
+//Have include stddef.h
+HAVE_STDDEF_H:INTERNAL=1
+//Have include stdint.h
+HAVE_STDINT_H:INTERNAL=1
+//Have function sync_file_range
+HAVE_SYNC_FILE_RANGE:INTERNAL=
+//Have includes sys/mount.h
+HAVE_SYS_MOUNT_H:INTERNAL=
+//Have includes sys/param.h
+HAVE_SYS_PARAM_H:INTERNAL=
+//Have includes sys/prctl.h
+HAVE_SYS_PRCTL_H:INTERNAL=
+//Have function syncfs
+HAVE_SYS_SYNCFS:INTERNAL=
+//Have include sys/types.h
+HAVE_SYS_TYPES_H:INTERNAL=1
+//Have includes sys/vfs.h
+HAVE_SYS_VFS_H:INTERNAL=
+//Have function strerror_r
+HAVE_Strerror_R:INTERNAL=
+//Test HAVE_UNALIGNED_ACCESS
+HAVE_UNALIGNED_ACCESS:INTERNAL=1
+//Result of TRY_COMPILE
+HAVE_UNALIGNED_ACCESS_COMPILED:INTERNAL=TRUE
+//Result of try_run()
+HAVE_UNALIGNED_ACCESS_EXITCODE:INTERNAL=0
+//Have includes valgrind/helgrind.h
+HAVE_VALGRIND_HELGRIND_H:INTERNAL=
+//Result of TRY_COMPILE
+HAVE___S16:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___S32:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___S64:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___S8:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___U16:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___U32:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___U64:INTERNAL=FALSE
+//Result of TRY_COMPILE
+HAVE___U8:INTERNAL=FALSE
+//CHECK_TYPE_SIZE: in_addr_t unknown
+IN_ADDR_T:INTERNAL=
+PC_QAT_CFLAGS:INTERNAL=
+PC_QAT_CFLAGS_I:INTERNAL=
+PC_QAT_CFLAGS_OTHER:INTERNAL=
+PC_QAT_FOUND:INTERNAL=
+PC_QAT_INCLUDEDIR:INTERNAL=
+PC_QAT_LIBDIR:INTERNAL=
+PC_QAT_LIBS:INTERNAL=
+PC_QAT_LIBS_L:INTERNAL=
+PC_QAT_LIBS_OTHER:INTERNAL=
+PC_QAT_LIBS_PATHS:INTERNAL=
+PC_QAT_MODULE_NAME:INTERNAL=
+PC_QAT_PREFIX:INTERNAL=
+PC_QAT_STATIC_CFLAGS:INTERNAL=
+PC_QAT_STATIC_CFLAGS_I:INTERNAL=
+PC_QAT_STATIC_CFLAGS_OTHER:INTERNAL=
+PC_QAT_STATIC_LIBDIR:INTERNAL=
+PC_QAT_STATIC_LIBS:INTERNAL=
+PC_QAT_STATIC_LIBS_L:INTERNAL=
+PC_QAT_STATIC_LIBS_OTHER:INTERNAL=
+PC_QAT_STATIC_LIBS_PATHS:INTERNAL=
+PC_QAT_VERSION:INTERNAL=
+PC_QATzip_CFLAGS:INTERNAL=
+PC_QATzip_CFLAGS_I:INTERNAL=
+PC_QATzip_CFLAGS_OTHER:INTERNAL=
+PC_QATzip_FOUND:INTERNAL=
+PC_QATzip_INCLUDEDIR:INTERNAL=
+PC_QATzip_LIBDIR:INTERNAL=
+PC_QATzip_LIBS:INTERNAL=
+PC_QATzip_LIBS_L:INTERNAL=
+PC_QATzip_LIBS_OTHER:INTERNAL=
+PC_QATzip_LIBS_PATHS:INTERNAL=
+PC_QATzip_MODULE_NAME:INTERNAL=
+PC_QATzip_PREFIX:INTERNAL=
+PC_QATzip_STATIC_CFLAGS:INTERNAL=
+PC_QATzip_STATIC_CFLAGS_I:INTERNAL=
+PC_QATzip_STATIC_CFLAGS_OTHER:INTERNAL=
+PC_QATzip_STATIC_LIBDIR:INTERNAL=
+PC_QATzip_STATIC_LIBS:INTERNAL=
+PC_QATzip_STATIC_LIBS_L:INTERNAL=
+PC_QATzip_STATIC_LIBS_OTHER:INTERNAL=
+PC_QATzip_STATIC_LIBS_PATHS:INTERNAL=
+PC_QATzip_VERSION:INTERNAL=
+//ADVANCED property for variable: PKG_CONFIG_ARGN
+PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
+PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
+//Test STRERROR_R_CHAR_P
+STRERROR_R_CHAR_P:INTERNAL=
+//Enable PMDK libraries
+WITH_BLUESTORE_PMEM:INTERNAL=OFF
+//ADVANCED property for variable: XFS_INCLUDE_DIR
+XFS_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//Have symbol backtrace
+_Backtrace_SYM_FOUND:INTERNAL=
+//CMAKE_INSTALL_PREFIX during last run
+_GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/ceph
+//CHECK_TYPE_SIZE: __s16 unknown
+__S16:INTERNAL=
+//CHECK_TYPE_SIZE: __s32 unknown
+__S32:INTERNAL=
+//CHECK_TYPE_SIZE: __s64 unknown
+__S64:INTERNAL=
+//CHECK_TYPE_SIZE: __s8 unknown
+__S8:INTERNAL=
+//CHECK_TYPE_SIZE: __u16 unknown
+__U16:INTERNAL=
+//CHECK_TYPE_SIZE: __u32 unknown
+__U32:INTERNAL=
+//CHECK_TYPE_SIZE: __u64 unknown
+__U64:INTERNAL=
+//CHECK_TYPE_SIZE: __u8 unknown
+__U8:INTERNAL=
+__pkg_config_checked_PC_QAT:INTERNAL=1
+__pkg_config_checked_PC_QATzip:INTERNAL=1
 
