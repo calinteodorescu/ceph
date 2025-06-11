@@ -579,10 +579,10 @@ LZ4_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/inc
 LZ4_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib
 
 //Path to a file.
-OATH_INCLUDE_DIR:PATH=OATH_INCLUDE_DIR-NOTFOUND
+OATH_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/cpprestsdk_x64-windows/include
 
 //Path to a library.
-OATH_LIBRARY:FILEPATH=OATH_LIBRARY-NOTFOUND
+OATH_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/cpprest_2_10.lib
 
 //Path to a file.
 OPENSSL_APPLINK_SOURCE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include/openssl/applink.c
@@ -1130,6 +1130,8 @@ EXPAT_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib;debug;D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include][v2.7.1()]
 //Details about finding LZ4
 FIND_PACKAGE_MESSAGE_DETAILS_LZ4:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include][v1.10.0(1.7)]
+//Details about finding OATH
+FIND_PACKAGE_MESSAGE_DETAILS_OATH:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/cpprest_2_10.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/cpprestsdk_x64-windows/include][v()]
 //Details about finding OpenSSL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/lib/libcrypto.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include][c ][v3.5.0()]
 //Details about finding PkgConfig
@@ -1282,6 +1284,10 @@ LIB_EAY_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 LZ4_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: LZ4_LIBRARY
 LZ4_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OATH_INCLUDE_DIR
+OATH_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OATH_LIBRARY
+OATH_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENSSL_INCLUDE_DIR
 OPENSSL_INCLUDE_DIR-ADVANCED:INTERNAL=1
 PC_EXPAT_CFLAGS:INTERNAL=
