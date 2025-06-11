@@ -26,6 +26,179 @@ Backtrace_HEADER:STRING=execinfo.h
 //Path to a file.
 Backtrace_INCLUDE_DIR:PATH=Backtrace_INCLUDE_DIR-NOTFOUND
 
+//Read docs/configuration.md for details
+CATCH_CONFIG_ANDROID_LOGWRITE:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_BAZEL_SUPPORT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_COLOUR_WIN32:BOOL=OFF
+
+//Read docs/configuration.md for details. Must form a valid integer
+// literal.
+CATCH_CONFIG_CONSOLE_WIDTH:STRING=80
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_COUNTER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_CPP11_TO_STRING:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_CPP17_BYTE:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_CPP17_OPTIONAL:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_CPP17_STRING_VIEW:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_CPP17_VARIANT:BOOL=OFF
+
+//Read docs/configuration.md for details. The name of the reporter
+// should be without quotes.
+CATCH_CONFIG_DEFAULT_REPORTER:STRING=console
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_DISABLE:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_DISABLE_EXCEPTIONS:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_DISABLE_STRINGIFICATION:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_EXPERIMENTAL_REDIRECT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_FAST_COMPILE:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_GETENV:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_GLOBAL_NEXTAFTER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NOSTDOUT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_ANDROID_LOGWRITE:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_BAZEL_SUPPORT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_COLOUR_WIN32:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_COUNTER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_CPP11_TO_STRING:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_CPP17_BYTE:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_CPP17_OPTIONAL:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_CPP17_STRING_VIEW:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_CPP17_VARIANT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_GETENV:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_GLOBAL_NEXTAFTER:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_POSIX_SIGNALS:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_USE_ASYNC:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_USE_BUILTIN_CONSTANT_P:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_WCHAR:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_NO_WINDOWS_SEH:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_POSIX_SIGNALS:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_PREFIX_ALL:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_PREFIX_MESSAGES:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_USE_ASYNC:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_USE_BUILTIN_CONSTANT_P:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_WCHAR:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_WINDOWS_CRTDBG:BOOL=OFF
+
+//Read docs/configuration.md for details
+CATCH_CONFIG_WINDOWS_SEH:BOOL=OFF
+
+//Build tests, enable warnings, enable Werror, etc
+CATCH_DEVELOPMENT_BUILD:BOOL=OFF
+
+//Add compiler flags for improving build reproducibility
+CATCH_ENABLE_REPRODUCIBLE_BUILD:BOOL=ON
+
+//Install documentation alongside library
+CATCH_INSTALL_DOCS:BOOL=ON
+
+//Install extras (CMake scripts, debugger helpers) alongside library
+CATCH_INSTALL_EXTRAS:BOOL=ON
+
 //Install location for man pages (relative to prefix).
 CEPH_MAN_DIR:STRING=share/man
 
@@ -285,14 +458,80 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
 
+//Don't create a package lock file in the binary path
+CPM_DONT_CREATE_PACKAGE_LOCK:BOOL=OFF
+
+//Don't update the module path to allow using find_package
+CPM_DONT_UPDATE_MODULE_PATH:BOOL=OFF
+
+//Always download dependencies from source
+CPM_DOWNLOAD_ALL:BOOL=OFF
+
+//Add all packages added through CPM.cmake to the package lock
+CPM_INCLUDE_ALL_IN_PACKAGE_LOCK:BOOL=OFF
+
+//Only use `find_package` to get dependencies
+CPM_LOCAL_PACKAGES_ONLY:BOOL=OFF
+
+//Directory to download CPM dependencies
+CPM_SOURCE_CACHE:PATH=OFF
+
+//Always try to use `find_package` to get dependencies
+CPM_USE_LOCAL_PACKAGES:BOOL=OFF
+
+//Use additional directory of package name in cache on the most
+// nested level.
+CPM_USE_NAMED_CACHE_DIRECTORIES:BOOL=OFF
+
+//Value Computed by CMake
+Catch2_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/_deps/catch2-build
+
+//Value Computed by CMake
+Catch2_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+Catch2_SOURCE_DIR:STATIC=D:/Git/ceph/.build/cmake/_deps/catch2-src
+
 //build shared libraries
 ENABLE_SHARED:BOOL=ON
+
+//Path to a file.
+EXPAT_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include
+
+//Path to a library.
+EXPAT_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib
+
+//Path to a library.
+EXPAT_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib
+
+//Directory under which to collect all populated content
+FETCHCONTENT_BASE_DIR:PATH=D:/Git/ceph/.build/cmake/_deps
+
+//Disables all attempts to download or update content and assumes
+// source dirs already exist
+FETCHCONTENT_FULLY_DISCONNECTED:BOOL=OFF
+
+//Enables QUIET option for all content population
+FETCHCONTENT_QUIET:BOOL=ON
+
+//When not empty, overrides where to find pre-populated content
+// for Catch2
+FETCHCONTENT_SOURCE_DIR_CATCH2:PATH=
+
+//Enables UPDATE_DISCONNECTED behavior for all content population
+FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of Catch2
+FETCHCONTENT_UPDATES_DISCONNECTED_CATCH2:BOOL=OFF
 
 //Path to a file.
 FUSE_INCLUDE_DIR:PATH=FUSE_INCLUDE_DIR-NOTFOUND
 
 //Path to a library.
 FUSE_LIBRARIES:FILEPATH=FUSE_LIBRARIES-NOTFOUND
+
+//Git command line client
+GIT_EXECUTABLE:FILEPATH=C:/Tools/Git/cmd/git.exe
 
 //Path to a file.
 GPERFTOOLS_INCLUDE_DIR:PATH=GPERFTOOLS_INCLUDE_DIR-NOTFOUND
@@ -340,7 +579,18 @@ LZ4_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/inc
 LZ4_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib
 
 //Path to a file.
-OPENSSL_INCLUDE_DIR:PATH=C:/Tools/OpenSSL-Win64/include
+OATH_INCLUDE_DIR:PATH=OATH_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+OATH_LIBRARY:FILEPATH=OATH_LIBRARY-NOTFOUND
+
+//Path to a file.
+OPENSSL_APPLINK_SOURCE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include/openssl/applink.c
+
+OPENSSL_CRYPTO_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/lib/libcrypto.lib
+
+//Path to a file.
+OPENSSL_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include
 
 //Path to a file.
 OpenLDAP_INCLUDE_DIR:PATH=OpenLDAP_INCLUDE_DIR-NOTFOUND
@@ -390,14 +640,23 @@ VERBS_LIBRARIES:FILEPATH=VERBS_LIBRARIES-NOTFOUND
 //Targeted Windows version.
 WIN32_WINNT:STRING=0x0A00
 
+//Use blkin to emit LTTng tracepoints for Zipkin
+WITH_BLKIN:BOOL=OFF
+
 //libbluefs library
 WITH_BLUEFS:BOOL=OFF
 
 //Bluestore OSD backend
 WITH_BLUESTORE:BOOL=OFF
 
+//Build with Google Breakpad crash reporter
+WITH_BREAKPAD:BOOL=OFF
+
 //Brotli compression support
 WITH_BROTLI:BOOL=OFF
+
+//Enable Catch2 unit tests
+WITH_CATCH2:BOOL=ON
 
 //Build with ccache.
 WITH_CCACHE:BOOL=OFF
@@ -408,11 +667,17 @@ WITH_CEPH_DEBUG_MUTEX:BOOL=ON
 //Dokan is here
 WITH_DOKAN:BOOL=OFF
 
+//Enable DPDK messaging
+WITH_DPDK:BOOL=OFF
+
 //Fuse is here
 WITH_FUSE:BOOL=OFF
 
 //GSSAPI/KRB5 is here
 WITH_GSSAPI:BOOL=OFF
+
+//Enable jaegertracing and it's dependent libraries
+WITH_JAEGER:BOOL=ON
 
 //Enable Linux krbd support of 'rbd' utility
 WITH_KRBD:BOOL=ON
@@ -447,6 +712,45 @@ WITH_QATLIB:BOOL=ON
 //Enable QATzip
 WITH_QATZIP:BOOL=ON
 
+//RADOS Gateway is enabled
+WITH_RADOSGW:BOOL=ON
+
+//RADOS Gateway's pubsub support for AMQP push endpoint
+WITH_RADOSGW_AMQP_ENDPOINT:BOOL=ON
+
+//Build arrow flight when not using system-provided arrow
+WITH_RADOSGW_ARROW_FLIGHT:BOOL=OFF
+
+//Enable backtraces in rgw logs
+WITH_RADOSGW_BACKTRACE_LOGGING:BOOL=OFF
+
+//RADOS Gateway's Beast frontend uses OpenSSL
+WITH_RADOSGW_BEAST_OPENSSL:BOOL=ON
+
+//D4N wrapper for RADOS Gateway
+WITH_RADOSGW_D4N:BOOL=ON
+
+//DAOS backend for RADOS Gateway
+WITH_RADOSGW_DAOS:BOOL=OFF
+
+//DBStore backend for RADOS Gateway
+WITH_RADOSGW_DBSTORE:BOOL=ON
+
+//RADOS Gateway's pubsub support for Kafka push endpoint
+WITH_RADOSGW_KAFKA_ENDPOINT:BOOL=ON
+
+//RADOS Gateway's support for dynamically adding lua packagess
+WITH_RADOSGW_LUA_PACKAGES:BOOL=ON
+
+//CORTX-Motr backend for RADOS Gateway
+WITH_RADOSGW_MOTR:BOOL=OFF
+
+//POSIX backend for RADOS Gateway
+WITH_RADOSGW_POSIX:BOOL=ON
+
+//Support for s3 select on parquet objects
+WITH_RADOSGW_SELECT_PARQUET:BOOL=ON
+
 //Enable RADOS Block Device related targets
 WITH_RBD:BOOL=ON
 
@@ -477,11 +781,20 @@ WITH_SPDK:BOOL=OFF
 //Link against libstdc++ statically
 WITH_STATIC_LIBSTDCXX:BOOL=OFF
 
+//Use system-provided arrow
+WITH_SYSTEM_ARROW:BOOL=OFF
+
+//Enable Catch2 unit tests (require system packages)
+WITH_SYSTEM_CATCH2:BOOL=OFF
+
 //Use system packages for qatlib
 WITH_SYSTEM_QATLIB:BOOL=OFF
 
 //Use system packages for QATzip
 WITH_SYSTEM_QATZIP:BOOL=OFF
+
+//Use system-provided utf8proc
+WITH_SYSTEM_UTF8PROC:BOOL=OFF
 
 //XFS is here
 WITH_XFS:BOOL=ON
@@ -507,6 +820,112 @@ ceph_SOURCE_DIR:STATIC=D:/Git/ceph
 Backtrace_HEADER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: Backtrace_INCLUDE_DIR
 Backtrace_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_ANDROID_LOGWRITE
+CATCH_CONFIG_ANDROID_LOGWRITE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_BAZEL_SUPPORT
+CATCH_CONFIG_BAZEL_SUPPORT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_COLOUR_WIN32
+CATCH_CONFIG_COLOUR_WIN32-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CONSOLE_WIDTH
+CATCH_CONFIG_CONSOLE_WIDTH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_COUNTER
+CATCH_CONFIG_COUNTER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CPP11_TO_STRING
+CATCH_CONFIG_CPP11_TO_STRING-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CPP17_BYTE
+CATCH_CONFIG_CPP17_BYTE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CPP17_OPTIONAL
+CATCH_CONFIG_CPP17_OPTIONAL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CPP17_STRING_VIEW
+CATCH_CONFIG_CPP17_STRING_VIEW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS
+CATCH_CONFIG_CPP17_UNCAUGHT_EXCEPTIONS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_CPP17_VARIANT
+CATCH_CONFIG_CPP17_VARIANT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_DEFAULT_REPORTER
+CATCH_CONFIG_DEFAULT_REPORTER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_DISABLE
+CATCH_CONFIG_DISABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_DISABLE_EXCEPTIONS
+CATCH_CONFIG_DISABLE_EXCEPTIONS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER
+CATCH_CONFIG_DISABLE_EXCEPTIONS_CUSTOM_HANDLER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_DISABLE_STRINGIFICATION
+CATCH_CONFIG_DISABLE_STRINGIFICATION-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS
+CATCH_CONFIG_ENABLE_ALL_STRINGMAKERS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER
+CATCH_CONFIG_ENABLE_OPTIONAL_STRINGMAKER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER
+CATCH_CONFIG_ENABLE_PAIR_STRINGMAKER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER
+CATCH_CONFIG_ENABLE_TUPLE_STRINGMAKER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER
+CATCH_CONFIG_ENABLE_VARIANT_STRINGMAKER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_EXPERIMENTAL_REDIRECT
+CATCH_CONFIG_EXPERIMENTAL_REDIRECT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
+CATCH_CONFIG_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_FAST_COMPILE
+CATCH_CONFIG_FAST_COMPILE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_GETENV
+CATCH_CONFIG_GETENV-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_GLOBAL_NEXTAFTER
+CATCH_CONFIG_GLOBAL_NEXTAFTER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NOSTDOUT
+CATCH_CONFIG_NOSTDOUT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_ANDROID_LOGWRITE
+CATCH_CONFIG_NO_ANDROID_LOGWRITE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_BAZEL_SUPPORT
+CATCH_CONFIG_NO_BAZEL_SUPPORT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_COLOUR_WIN32
+CATCH_CONFIG_NO_COLOUR_WIN32-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_COUNTER
+CATCH_CONFIG_NO_COUNTER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_CPP11_TO_STRING
+CATCH_CONFIG_NO_CPP11_TO_STRING-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_CPP17_BYTE
+CATCH_CONFIG_NO_CPP17_BYTE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_CPP17_OPTIONAL
+CATCH_CONFIG_NO_CPP17_OPTIONAL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_CPP17_STRING_VIEW
+CATCH_CONFIG_NO_CPP17_STRING_VIEW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS
+CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_CPP17_VARIANT
+CATCH_CONFIG_NO_CPP17_VARIANT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT
+CATCH_CONFIG_NO_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_GETENV
+CATCH_CONFIG_NO_GETENV-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_GLOBAL_NEXTAFTER
+CATCH_CONFIG_NO_GLOBAL_NEXTAFTER-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_POSIX_SIGNALS
+CATCH_CONFIG_NO_POSIX_SIGNALS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_USE_ASYNC
+CATCH_CONFIG_NO_USE_ASYNC-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_USE_BUILTIN_CONSTANT_P
+CATCH_CONFIG_NO_USE_BUILTIN_CONSTANT_P-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_WCHAR
+CATCH_CONFIG_NO_WCHAR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_NO_WINDOWS_SEH
+CATCH_CONFIG_NO_WINDOWS_SEH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_POSIX_SIGNALS
+CATCH_CONFIG_POSIX_SIGNALS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_PREFIX_ALL
+CATCH_CONFIG_PREFIX_ALL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_PREFIX_MESSAGES
+CATCH_CONFIG_PREFIX_MESSAGES-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_USE_ASYNC
+CATCH_CONFIG_USE_ASYNC-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_USE_BUILTIN_CONSTANT_P
+CATCH_CONFIG_USE_BUILTIN_CONSTANT_P-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_WCHAR
+CATCH_CONFIG_WCHAR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_WINDOWS_CRTDBG
+CATCH_CONFIG_WINDOWS_CRTDBG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CATCH_CONFIG_WINDOWS_SEH
+CATCH_CONFIG_WINDOWS_SEH-ADVANCED:INTERNAL=1
 //Have function fallocate
 CEPH_HAVE_FALLOCATE:INTERNAL=
 //Have symbol F_SETPIPE_SZ
@@ -638,7 +1057,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
@@ -686,8 +1105,33 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Test COMPILER_IGNORES_DEPRECATED_DECL_IN_SYSTEM_HEADERS
 COMPILER_IGNORES_DEPRECATED_DECL_IN_SYSTEM_HEADERS:INTERNAL=
+CPM_DIRECTORY:INTERNAL=D:/Git/ceph/cmake/modules
+//Don't download or configure dependencies (for testing)
+CPM_DRY_RUN:INTERNAL=OFF
+CPM_FILE:INTERNAL=D:/Git/ceph/cmake/modules/CPM.cmake
+CPM_INDENT:INTERNAL=CPM:
+CPM_PACKAGES:INTERNAL=Catch2
+CPM_PACKAGE_Catch2_BINARY_DIR:INTERNAL=D:/Git/ceph/.build/cmake/_deps/catch2-build
+CPM_PACKAGE_Catch2_SOURCE_DIR:INTERNAL=D:/Git/ceph/.build/cmake/_deps/catch2-src
+CPM_PACKAGE_Catch2_VERSION:INTERNAL=3.8.1
+CPM_PACKAGE_LOCK_FILE:INTERNAL=D:/Git/ceph/.build/cmake/cpm-package-lock.cmake
+CPM_VERSION:INTERNAL=0.40.8
+//Project GUID
+Catch2WithMain_GUID_CMAKE:INTERNAL=8bd3552a-2cfb-4a59-ab15-2031b97ada1e
+//Project GUID
+Catch2_GUID_CMAKE:INTERNAL=8d538cbe-01bf-4a2e-a98a-6c368fdf13d7
+//ADVANCED property for variable: EXPAT_INCLUDE_DIR
+EXPAT_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: EXPAT_LIBRARY_DEBUG
+EXPAT_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: EXPAT_LIBRARY_RELEASE
+EXPAT_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//Details about finding EXPAT
+FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib;debug;D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include][v2.7.1()]
 //Details about finding LZ4
 FIND_PACKAGE_MESSAGE_DETAILS_LZ4:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include][v1.10.0(1.7)]
+//Details about finding OpenSSL
+FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/lib/libcrypto.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include][c ][v3.5.0()]
 //Details about finding PkgConfig
 FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[C:/Tools/Microsoft/Visual Studio/2022.Enterprise/VC/vcpkg/vcpkg.exe][vvcpkg package management program version 2024-09-30-ab8988503c7cffabfd440b243a383c0a352a023dSee LICENSE.txt for license information.()]
 //Details about finding QAT
@@ -696,6 +1140,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_QAT:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatlib/i
 FIND_PACKAGE_MESSAGE_DETAILS_QATzip:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatzip/install/lib/libqatzip.a][D:/Git/ceph/.build/cmake/src/qatzip/install/include][v()]
 //Details about finding snappy
 FIND_PACKAGE_MESSAGE_DETAILS_snappy:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/snappy_x64-windows/lib/snappy.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/snappy_x64-windows/include][v()]
+//ADVANCED property for variable: GIT_EXECUTABLE
+GIT_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GPERFTOOLS_INCLUDE_DIR
 GPERFTOOLS_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GPERFTOOLS_PROFILER_LIBRARY
@@ -836,6 +1282,33 @@ LIB_EAY_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 LZ4_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: LZ4_LIBRARY
 LZ4_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: OPENSSL_INCLUDE_DIR
+OPENSSL_INCLUDE_DIR-ADVANCED:INTERNAL=1
+PC_EXPAT_CFLAGS:INTERNAL=
+PC_EXPAT_CFLAGS_I:INTERNAL=
+PC_EXPAT_CFLAGS_OTHER:INTERNAL=
+PC_EXPAT_FOUND:INTERNAL=
+PC_EXPAT_INCLUDEDIR:INTERNAL=
+PC_EXPAT_LIBDIR:INTERNAL=
+PC_EXPAT_LIBS:INTERNAL=
+PC_EXPAT_LIBS_L:INTERNAL=
+PC_EXPAT_LIBS_OTHER:INTERNAL=
+PC_EXPAT_LIBS_PATHS:INTERNAL=
+PC_EXPAT_MODULE_NAME:INTERNAL=
+PC_EXPAT_PREFIX:INTERNAL=
+PC_EXPAT_STATIC_CFLAGS:INTERNAL=
+PC_EXPAT_STATIC_CFLAGS_I:INTERNAL=
+PC_EXPAT_STATIC_CFLAGS_OTHER:INTERNAL=
+PC_EXPAT_STATIC_LIBDIR:INTERNAL=
+PC_EXPAT_STATIC_LIBS:INTERNAL=
+PC_EXPAT_STATIC_LIBS_L:INTERNAL=
+PC_EXPAT_STATIC_LIBS_OTHER:INTERNAL=
+PC_EXPAT_STATIC_LIBS_PATHS:INTERNAL=
+PC_EXPAT_VERSION:INTERNAL=
+PC_EXPAT_expat_INCLUDEDIR:INTERNAL=
+PC_EXPAT_expat_LIBDIR:INTERNAL=
+PC_EXPAT_expat_PREFIX:INTERNAL=
+PC_EXPAT_expat_VERSION:INTERNAL=
 PC_QAT_CFLAGS:INTERNAL=
 PC_QAT_CFLAGS_I:INTERNAL=
 PC_QAT_CFLAGS_OTHER:INTERNAL=
@@ -953,6 +1426,7 @@ __U32:INTERNAL=
 __U64:INTERNAL=
 //CHECK_TYPE_SIZE: __u8 unknown
 __U8:INTERNAL=
+__pkg_config_checked_PC_EXPAT:INTERNAL=1
 __pkg_config_checked_PC_QAT:INTERNAL=1
 __pkg_config_checked_PC_QATzip:INTERNAL=1
 __pkg_config_checked_PC_snappy:INTERNAL=1
