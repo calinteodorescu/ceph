@@ -20,6 +20,15 @@
 // use the one in libc.
 ALLOCATOR:STRING=
 
+//Path to a program.
+BABELTRACE_EXECUTABLE:FILEPATH=BABELTRACE_EXECUTABLE-NOTFOUND
+
+//Path to a file.
+BABELTRACE_INCLUDE_DIR:PATH=BABELTRACE_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+BABELTRACE_LIBRARY:FILEPATH=BABELTRACE_LIBRARY-NOTFOUND
+
 //Header providing backtrace(3) facility
 Backtrace_HEADER:STRING=execinfo.h
 
@@ -573,6 +582,12 @@ LIB_EAY_LIBRARY_RELEASE:FILEPATH=LIB_EAY_LIBRARY_RELEASE-NOTFOUND
 LIB_EAY_RELEASE:FILEPATH=LIB_EAY_RELEASE-NOTFOUND
 
 //Path to a file.
+LTTNGUST_INCLUDE_DIRS:PATH=LTTNGUST_INCLUDE_DIRS-NOTFOUND
+
+//Path to a library.
+LTTNGUST_LIBRARIES:FILEPATH=LTTNGUST_LIBRARIES-NOTFOUND
+
+//Path to a file.
 LZ4_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include
 
 //Path to a library.
@@ -591,6 +606,8 @@ OPENSSL_CRYPTO_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_
 
 //Path to a file.
 OPENSSL_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include
+
+OPENSSL_SSL_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libssl.lib
 
 //Path to a file.
 OpenLDAP_INCLUDE_DIR:PATH=OpenLDAP_INCLUDE_DIR-NOTFOUND
@@ -640,6 +657,9 @@ VERBS_LIBRARIES:FILEPATH=VERBS_LIBRARIES-NOTFOUND
 //Targeted Windows version.
 WIN32_WINNT:STRING=0x0A00
 
+//Babeltrace libraries are enabled
+WITH_BABELTRACE:BOOL=OFF
+
 //Use blkin to emit LTTng tracepoints for Zipkin
 WITH_BLKIN:BOOL=OFF
 
@@ -660,6 +680,9 @@ WITH_CATCH2:BOOL=ON
 
 //Build with ccache.
 WITH_CCACHE:BOOL=OFF
+
+//CephFS is enabled
+WITH_CEPHFS:BOOL=ON
 
 //Use debug ceph::mutex with lockdep
 WITH_CEPH_DEBUG_MUTEX:BOOL=ON
@@ -691,6 +714,9 @@ WITH_LIBCEPHFS:BOOL=ON
 //libcephsqlite client library
 WITH_LIBCEPHSQLITE:BOOL=OFF
 
+//LTTng tracing is enabled
+WITH_LTTNG:BOOL=OFF
+
 //LZ4 compression support
 WITH_LZ4:BOOL=ON
 
@@ -703,6 +729,9 @@ WITH_OPENLDAP:BOOL=OFF
 //Build with OpenSSL Engine Support
 WITH_OPENSSL_ENGINE:BOOL=OFF
 
+//OFF
+WITH_OSD_INSTRUMENT_FUNCTIONS:BOOL=OFF
+
 //Enable QAT with out-of-tree driver
 WITH_QATDRV:BOOL=OFF
 
@@ -713,7 +742,7 @@ WITH_QATLIB:BOOL=ON
 WITH_QATZIP:BOOL=ON
 
 //RADOS Gateway is enabled
-WITH_RADOSGW:BOOL=ON
+WITH_RADOSGW:BOOL=OFF
 
 //RADOS Gateway's pubsub support for AMQP push endpoint
 WITH_RADOSGW_AMQP_ENDPOINT:BOOL=ON
@@ -772,6 +801,9 @@ WITH_RBD_UBBD:BOOL=OFF
 //Enable RDMA in async messenger
 WITH_RDMA:BOOL=OFF
 
+//strsignal is reentrant
+WITH_REENTRANT_STRSIGNAL:BOOL=OFF
+
 //Build with sccache.
 WITH_SCCACHE:BOOL=OFF
 
@@ -796,11 +828,23 @@ WITH_SYSTEM_QATZIP:BOOL=OFF
 //Use system-provided utf8proc
 WITH_SYSTEM_UTF8PROC:BOOL=OFF
 
+//res_query is thread safe
+WITH_THREAD_SAFE_RES_QUERY:BOOL=OFF
+
 //XFS is here
 WITH_XFS:BOOL=ON
 
 //Path to a file.
 XFS_INCLUDE_DIR:PATH=XFS_INCLUDE_DIR-NOTFOUND
+
+//Path to a file.
+ZLIB_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/include
+
+//Path to a library.
+ZLIB_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/debug/lib/zlibd.lib
+
+//Path to a library.
+ZLIB_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/lib/zlib.lib
 
 //Value Computed by CMake
 ceph_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake
@@ -1140,6 +1184,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[C:/Tools/Microsoft/Visual Studi
 FIND_PACKAGE_MESSAGE_DETAILS_QAT:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatlib/install/lib/libqat.a][D:/Git/ceph/.build/cmake/src/qatlib/install/lib/libusdm.a][D:/Git/ceph/.build/cmake/src/qatlib/install/include][v()]
 //Details about finding QATzip
 FIND_PACKAGE_MESSAGE_DETAILS_QATzip:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatzip/install/lib/libqatzip.a][D:/Git/ceph/.build/cmake/src/qatzip/install/include][v()]
+//Details about finding ZLIB
+FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/lib/zlib.lib;debug;D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/debug/lib/zlibd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/include][c ][v1.3.1()]
 //Details about finding snappy
 FIND_PACKAGE_MESSAGE_DETAILS_snappy:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/snappy_x64-windows/lib/snappy.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/snappy_x64-windows/include][v()]
 //ADVANCED property for variable: GIT_EXECUTABLE
@@ -1412,6 +1458,12 @@ STRERROR_R_CHAR_P:INTERNAL=
 WITH_BLUESTORE_PMEM:INTERNAL=OFF
 //ADVANCED property for variable: XFS_INCLUDE_DIR
 XFS_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_INCLUDE_DIR
+ZLIB_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_LIBRARY_DEBUG
+ZLIB_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ZLIB_LIBRARY_RELEASE
+ZLIB_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //Have symbol backtrace
 _Backtrace_SYM_FOUND:INTERNAL=
 //CMAKE_INSTALL_PREFIX during last run
