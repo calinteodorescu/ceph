@@ -29,6 +29,24 @@ BABELTRACE_INCLUDE_DIR:PATH=BABELTRACE_INCLUDE_DIR-NOTFOUND
 //Path to a library.
 BABELTRACE_LIBRARY:FILEPATH=BABELTRACE_LIBRARY-NOTFOUND
 
+//the compiler flags to enable AVX2
+BLAKE3_CFLAGS_AVX2:STRING=/arch:AVX2
+
+//the compiler flags to enable AVX512
+BLAKE3_CFLAGS_AVX512:STRING=/arch:AVX512
+
+//the compiler flags to enable SSE2
+BLAKE3_CFLAGS_SSE2:STRING=/arch:SSE2
+
+//the compiler flags to enable SSE4.1
+BLAKE3_CFLAGS_SSE4.1:STRING=/arch:AVX
+
+//max jobs for Boost build
+BOOST_J:STRING=12
+
+//Builds the googlemock subproject
+BUILD_GMOCK:BOOL=ON
+
 //Header providing backtrace(3) facility
 Backtrace_HEADER:STRING=execinfo.h
 
@@ -211,6 +229,13 @@ CATCH_INSTALL_EXTRAS:BOOL=ON
 //Install location for man pages (relative to prefix).
 CEPH_MAN_DIR:STRING=share/man
 
+//Location for systemd service environmental variable settings
+// files
+CEPH_SYSTEMD_ENV_DIR:PATH=/etc/sysconfig
+
+//Maximum time before a CTest gets killed
+CEPH_TEST_TIMEOUT:STRING=7200
+
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/Tools/Microsoft/Visual Studio/2022.Enterprise.LTSC.17.8/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/lib.exe
 
@@ -231,6 +256,24 @@ CMAKE_ASM_FLAGS_RELEASE:STRING=
 
 //Flags used by the ASM compiler during RELWITHDEBINFO builds.
 CMAKE_ASM_FLAGS_RELWITHDEBINFO:STRING=
+
+//ASM_MASM compiler
+CMAKE_ASM_MASM_COMPILER:FILEPATH=C:/Tools/Microsoft/Visual Studio/2022.Enterprise.LTSC.17.8/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/ml64.exe
+
+//Flags used by the ASM_MASM compiler during all build types.
+CMAKE_ASM_MASM_FLAGS:STRING=
+
+//Flags used by the ASM_MASM compiler during DEBUG builds.
+CMAKE_ASM_MASM_FLAGS_DEBUG:STRING=
+
+//Flags used by the ASM_MASM compiler during MINSIZEREL builds.
+CMAKE_ASM_MASM_FLAGS_MINSIZEREL:STRING=
+
+//Flags used by the ASM_MASM compiler during RELEASE builds.
+CMAKE_ASM_MASM_FLAGS_RELEASE:STRING=
+
+//Flags used by the ASM_MASM compiler during RELWITHDEBINFO builds.
+CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO:STRING=
 
 //BUILD_TYPE is Debug, other options are: RelWithDebInfo, Release,
 // and MinSizeRel.
@@ -492,6 +535,24 @@ CPM_USE_LOCAL_PACKAGES:BOOL=OFF
 // nested level.
 CPM_USE_NAMED_CACHE_DIRECTORIES:BOOL=OFF
 
+//Path to a program.
+CTAGS_EXECUTABLE:FILEPATH=CTAGS_EXECUTABLE-NOTFOUND
+
+//Exclude files/directories when running ctag.
+CTAG_EXCLUDES:BOOL=OFF
+
+//Path to a library.
+CURSES_CURSES_LIBRARY:FILEPATH=CURSES_CURSES_LIBRARY-NOTFOUND
+
+//Path to a library.
+CURSES_FORM_LIBRARY:FILEPATH=CURSES_FORM_LIBRARY-NOTFOUND
+
+//Path to a file.
+CURSES_INCLUDE_PATH:PATH=CURSES_INCLUDE_PATH-NOTFOUND
+
+//Path to a library.
+CURSES_NCURSES_LIBRARY:FILEPATH=CURSES_NCURSES_LIBRARY-NOTFOUND
+
 //Value Computed by CMake
 Catch2_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/_deps/catch2-build
 
@@ -500,6 +561,32 @@ Catch2_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 Catch2_SOURCE_DIR:STATIC=D:/Git/ceph/.build/cmake/_deps/catch2-src
+
+//List of comma separated ceph-dashboard frontend languages to
+// build.   Use value `ALL` to build all languages
+DASHBOARD_FRONTEND_LANGS:STRING=ALL
+
+//C_Gather debugging is enabled
+DEBUG_GATHER:BOOL=ON
+
+//Used if the C/C++ compiler supports the -fdiagnostics-color option.
+// May have one of three values -- 'auto' (default), 'always',
+// or 'never'. If set to 'always' and the compiler supports the
+// option, 'make [...] | less -R' will make visible diagnostics
+// colorization of compiler output.
+DIAGNOSTICS_COLOR:STRING=auto
+
+//Dot tool for use with Doxygen
+DOXYGEN_DOT_EXECUTABLE:FILEPATH=DOXYGEN_DOT_EXECUTABLE-NOTFOUND
+
+//Doxygen documentation generation tool (https://www.doxygen.nl)
+DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
+
+//Coverage is enabled
+ENABLE_COVERAGE:BOOL=OFF
+
+//build Ceph with git version string
+ENABLE_GIT_VERSION:BOOL=ON
 
 //build shared libraries
 ENABLE_SHARED:BOOL=ON
@@ -533,6 +620,53 @@ FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
 //Enables UPDATE_DISCONNECTED behavior just for population of Catch2
 FETCHCONTENT_UPDATES_DISCONNECTED_CATCH2:BOOL=OFF
 
+//Value Computed by CMake
+FMT_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/src/fmt
+
+//Generate the cuda-test target.
+FMT_CUDA_TEST:BOOL=OFF
+
+//Debug library postfix.
+FMT_DEBUG_POSTFIX:STRING=d
+
+//Generate the doc target.
+FMT_DOC:BOOL=OFF
+
+//Generate the fuzz target.
+FMT_FUZZ:BOOL=OFF
+
+//Installation directory for include files, a relative path that
+// will be joined with C:/Program Files (x86)/ceph or an absolute
+// path.
+FMT_INC_DIR:STRING=include
+
+//Value Computed by CMake
+FMT_IS_TOP_LEVEL:STATIC=OFF
+
+//Build a module instead of a traditional library.
+FMT_MODULE:BOOL=OFF
+
+//Include OS-specific APIs.
+FMT_OS:BOOL=ON
+
+//Enable extra warnings and expensive tests.
+FMT_PEDANTIC:BOOL=OFF
+
+//Value Computed by CMake
+FMT_SOURCE_DIR:STATIC=D:/Git/ceph/src/fmt
+
+//Expose headers with marking them as system.
+FMT_SYSTEM_HEADERS:BOOL=OFF
+
+//Generate the test target.
+FMT_TEST:BOOL=OFF
+
+//Enable Unicode support.
+FMT_UNICODE:BOOL=ON
+
+//Halt the compilation with an error on compiler warnings.
+FMT_WERROR:BOOL=OFF
+
 //Path to a file.
 FUSE_INCLUDE_DIR:PATH=FUSE_INCLUDE_DIR-NOTFOUND
 
@@ -553,6 +687,14 @@ GPERFTOOLS_TCMALLOC_LIBRARY:FILEPATH=GPERFTOOLS_TCMALLOC_LIBRARY-NOTFOUND
 
 //Path to a library.
 GPERFTOOLS_TCMALLOC_MINIMAL_LIBRARY:FILEPATH=GPERFTOOLS_TCMALLOC_MINIMAL_LIBRARY-NOTFOUND
+
+//Use Abseil and RE2. Requires Abseil and RE2 to be separately
+// added to the build.
+GTEST_HAS_ABSL:BOOL=OFF
+
+//Enable installation of googletest. (Projects embedding googletest
+// may want to turn this OFF.)
+INSTALL_GTEST:BOOL=OFF
 
 //Path to a file.
 JEMALLOC_INCLUDE_DIR:PATH=JEMALLOC_INCLUDE_DIR-NOTFOUND
@@ -588,6 +730,12 @@ LTTNGUST_INCLUDE_DIRS:PATH=LTTNGUST_INCLUDE_DIRS-NOTFOUND
 LTTNGUST_LIBRARIES:FILEPATH=LTTNGUST_LIBRARIES-NOTFOUND
 
 //Path to a file.
+LUA_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lua_x64-windows/include
+
+//Path to a library.
+LUA_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lua_x64-windows/lib/lua.lib
+
+//Path to a file.
 LZ4_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include
 
 //Path to a library.
@@ -611,6 +759,9 @@ OPENSSL_SSL_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libssl
 
 //Path to a file.
 OpenLDAP_INCLUDE_DIR:PATH=OpenLDAP_INCLUDE_DIR-NOTFOUND
+
+//PG Ref debugging is enabled
+PG_DEBUG_REFS:BOOL=OFF
 
 //Arguments to supply to pkg-config
 PKG_CONFIG_ARGN:STRING=
@@ -645,6 +796,12 @@ SSL_EAY_LIBRARY_RELEASE:FILEPATH=SSL_EAY_LIBRARY_RELEASE-NOTFOUND
 //Path to a library.
 SSL_EAY_RELEASE:FILEPATH=SSL_EAY_RELEASE-NOTFOUND
 
+//Location for systemd system unit files
+SYSTEMD_SYSTEM_UNIT_DIR:PATH=lib/systemd/system
+
+//The directory containing a CMake configuration file for TBB.
+TBB_DIR:PATH=C:/Tools/Intel.one.API/tbb/2021.8.0/lib/cmake/tbb
+
 //Path to a file.
 Tcmalloc_INCLUDE_DIR:PATH=Tcmalloc_INCLUDE_DIR-NOTFOUND
 
@@ -656,6 +813,12 @@ VERBS_LIBRARIES:FILEPATH=VERBS_LIBRARIES-NOTFOUND
 
 //Targeted Windows version.
 WIN32_WINNT:STRING=0x0A00
+
+//build with ASAN
+WITH_ASAN:BOOL=OFF
+
+//explicitly enable ASAN leak detection
+WITH_ASAN_LEAK:BOOL=OFF
 
 //Babeltrace libraries are enabled
 WITH_BABELTRACE:BOOL=OFF
@@ -669,6 +832,9 @@ WITH_BLUEFS:BOOL=OFF
 //Bluestore OSD backend
 WITH_BLUESTORE:BOOL=OFF
 
+//Boost support for valgrind
+WITH_BOOST_VALGRIND:BOOL=OFF
+
 //Build with Google Breakpad crash reporter
 WITH_BREAKPAD:BOOL=OFF
 
@@ -681,11 +847,30 @@ WITH_CATCH2:BOOL=ON
 //Build with ccache.
 WITH_CCACHE:BOOL=OFF
 
+//Flag to determine if cephadm should be built
+WITH_CEPHADM:BOOL=ON
+
 //CephFS is enabled
 WITH_CEPHFS:BOOL=ON
 
+//build libcephfs Java bindings
+WITH_CEPHFS_JAVA:BOOL=OFF
+
+//install cephfs-shell
+WITH_CEPHFS_SHELL:BOOL=OFF
+
+//install cephfs-top utility
+WITH_CEPHFS_TOP:BOOL=ON
+
 //Use debug ceph::mutex with lockdep
 WITH_CEPH_DEBUG_MUTEX:BOOL=ON
+
+//Build seastar components
+WITH_CRIMSON:BOOL=OFF
+
+//enable the build of dmclock-tests and dmclock-data-struct tests
+// binaries
+WITH_DMCLOCK_TESTS:BOOL=OFF
 
 //Dokan is here
 WITH_DOKAN:BOOL=OFF
@@ -693,11 +878,23 @@ WITH_DOKAN:BOOL=OFF
 //Enable DPDK messaging
 WITH_DPDK:BOOL=OFF
 
+//build with fio plugin enabled
+WITH_FIO:BOOL=OFF
+
+//use header-only version of fmt library
+WITH_FMT_HEADER_ONLY:BOOL=OFF
+
 //Fuse is here
 WITH_FUSE:BOOL=OFF
 
+//install grafana dashboards
+WITH_GRAFANA:BOOL=OFF
+
 //GSSAPI/KRB5 is here
 WITH_GSSAPI:BOOL=OFF
+
+//Enable running gtest based tests in parallel
+WITH_GTEST_PARALLEL:BOOL=OFF
 
 //Enable jaegertracing and it's dependent libraries
 WITH_JAEGER:BOOL=ON
@@ -714,6 +911,9 @@ WITH_LIBCEPHFS:BOOL=ON
 //libcephsqlite client library
 WITH_LIBCEPHSQLITE:BOOL=OFF
 
+//build with libradosstriper support
+WITH_LIBRADOSSTRIPER:BOOL=ON
+
 //LTTng tracing is enabled
 WITH_LTTNG:BOOL=OFF
 
@@ -723,6 +923,15 @@ WITH_LZ4:BOOL=ON
 //Build man pages.
 WITH_MANPAGE:BOOL=OFF
 
+//Build the mgr/dashboard frontend using `npm`
+WITH_MGR_DASHBOARD_FRONTEND:BOOL=ON
+
+//build nvmeof gateway monitor client
+WITH_NVMEOF_GATEWAY_MONITOR_CLIENT:BOOL=OFF
+
+//build OCF-compliant cluster resource agent
+WITH_OCF:BOOL=OFF
+
 //OPENLDAP is here
 WITH_OPENLDAP:BOOL=OFF
 
@@ -731,6 +940,9 @@ WITH_OPENSSL_ENGINE:BOOL=OFF
 
 //OFF
 WITH_OSD_INSTRUMENT_FUNCTIONS:BOOL=OFF
+
+//build extra profiler binaries
+WITH_PROFILER:BOOL=OFF
 
 //Enable QAT with out-of-tree driver
 WITH_QATDRV:BOOL=OFF
@@ -807,17 +1019,35 @@ WITH_REENTRANT_STRSIGNAL:BOOL=OFF
 //Build with sccache.
 WITH_SCCACHE:BOOL=OFF
 
+//build SELinux policy
+WITH_SELINUX:BOOL=OFF
+
 //Enable SPDK
 WITH_SPDK:BOOL=OFF
 
 //Link against libstdc++ statically
 WITH_STATIC_LIBSTDCXX:BOOL=OFF
 
+//build with systemd support
+WITH_SYSTEMD:BOOL=ON
+
 //Use system-provided arrow
 WITH_SYSTEM_ARROW:BOOL=OFF
 
+//require and build with system Boost
+WITH_SYSTEM_BOOST:BOOL=OFF
+
 //Enable Catch2 unit tests (require system packages)
 WITH_SYSTEM_CATCH2:BOOL=OFF
+
+//build against system fmt
+WITH_SYSTEM_FMT:BOOL=OFF
+
+//require and build with system gtest and gmock
+WITH_SYSTEM_GTEST:BOOL=OFF
+
+//Assume that dashboard build tools already installed through packages
+WITH_SYSTEM_NPM:BOOL=OFF
 
 //Use system packages for qatlib
 WITH_SYSTEM_QATLIB:BOOL=OFF
@@ -825,11 +1055,26 @@ WITH_SYSTEM_QATLIB:BOOL=OFF
 //Use system packages for QATzip
 WITH_SYSTEM_QATZIP:BOOL=OFF
 
+//require and build with system rocksdb
+WITH_SYSTEM_ROCKSDB:BOOL=OFF
+
 //Use system-provided utf8proc
 WITH_SYSTEM_UTF8PROC:BOOL=OFF
 
+//use prebuilt libzstd in system
+WITH_SYSTEM_ZSTD:BOOL=OFF
+
+//enable the build of ceph-test package scripts/binaries
+WITH_TESTS:BOOL=ON
+
 //res_query is thread safe
 WITH_THREAD_SAFE_RES_QUERY:BOOL=OFF
+
+//build with TSAN
+WITH_TSAN:BOOL=OFF
+
+//build with UBSAN
+WITH_UBSAN:BOOL=OFF
 
 //XFS is here
 WITH_XFS:BOOL=ON
@@ -854,6 +1099,79 @@ ceph_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 ceph_SOURCE_DIR:STATIC=D:/Git/ceph
+
+//Value Computed by CMake
+dmclock_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/src/dmclock
+
+//Value Computed by CMake
+dmclock_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+dmclock_SOURCE_DIR:STATIC=D:/Git/ceph/src/dmclock
+
+//Generate test targets
+dmclock_TEST:BOOL=OFF
+
+//Value Computed by CMake
+gmock_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/src/googletest/googlemock
+
+//Value Computed by CMake
+gmock_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+gmock_SOURCE_DIR:STATIC=D:/Git/ceph/src/googletest/googlemock
+
+//Build all of Google Mock's own tests.
+gmock_build_tests:BOOL=OFF
+
+//Value Computed by CMake
+googletest-distribution_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/src/googletest
+
+//Value Computed by CMake
+googletest-distribution_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+googletest-distribution_SOURCE_DIR:STATIC=D:/Git/ceph/src/googletest
+
+//Value Computed by CMake
+gtest_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/src/googletest/googletest
+
+//Value Computed by CMake
+gtest_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+gtest_SOURCE_DIR:STATIC=D:/Git/ceph/src/googletest/googletest
+
+//Build gtest's sample programs.
+gtest_build_samples:BOOL=OFF
+
+//Build all of gtest's own tests.
+gtest_build_tests:BOOL=OFF
+
+//Disable uses of pthreads in gtest.
+gtest_disable_pthreads:BOOL=OFF
+
+//Use shared (DLL) run-time lib even when Google Test is built
+// as static lib.
+gtest_force_shared_crt:BOOL=OFF
+
+//Build gtest with internal symbols hidden in shared libraries.
+gtest_hide_internal_symbols:BOOL=OFF
+
+//Value Computed by CMake
+libblake3_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/src/BLAKE3/c
+
+//Value Computed by CMake
+libblake3_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+libblake3_SOURCE_DIR:STATIC=D:/Git/ceph/src/BLAKE3/c
+
+//Path to a file.
+thrift_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/include
+
+//Path to a library.
+thrift_LIBRARIES:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/lib/thriftmd.lib
 
 
 ########################
@@ -991,6 +1309,19 @@ CMAKE_ASM_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_ASM_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ASM_FLAGS_RELWITHDEBINFO
 CMAKE_ASM_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_MASM_COMPILER
+CMAKE_ASM_MASM_COMPILER-ADVANCED:INTERNAL=1
+CMAKE_ASM_MASM_COMPILER_WORKS:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_MASM_FLAGS
+CMAKE_ASM_MASM_FLAGS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_MASM_FLAGS_DEBUG
+CMAKE_ASM_MASM_FLAGS_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_MASM_FLAGS_MINSIZEREL
+CMAKE_ASM_MASM_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_MASM_FLAGS_RELEASE
+CMAKE_ASM_MASM_FLAGS_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO
+CMAKE_ASM_MASM_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=d:/Git/ceph/.build/cmake
 //Major version of cmake used to create the current loaded cache
@@ -1051,6 +1382,12 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Tools/Microsoft/Visual Studio/2022.Enterpri
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Test CMAKE_HAVE_LIBC_PTHREAD
+CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=
+//Have library pthreads
+CMAKE_HAVE_PTHREADS_CREATE:INTERNAL=
+//Have library pthread
+CMAKE_HAVE_PTHREAD_CREATE:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=D:/Git/ceph
@@ -1101,7 +1438,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=86
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
@@ -1149,6 +1486,12 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Test COMPILER_IGNORES_DEPRECATED_DECL_IN_SYSTEM_HEADERS
 COMPILER_IGNORES_DEPRECATED_DECL_IN_SYSTEM_HEADERS:INTERNAL=
+//Test COMPILER_SUPPORTS_DIAGNOSTICS_COLOR
+COMPILER_SUPPORTS_DIAGNOSTICS_COLOR:INTERNAL=
+//Test COMPILER_SUPPORTS_PESSIMIZING_MOVE
+COMPILER_SUPPORTS_PESSIMIZING_MOVE:INTERNAL=
+//Test COMPILER_SUPPORTS_REDUNDANT_MOVE
+COMPILER_SUPPORTS_REDUNDANT_MOVE:INTERNAL=
 CPM_DIRECTORY:INTERNAL=D:/Git/ceph/cmake/modules
 //Don't download or configure dependencies (for testing)
 CPM_DRY_RUN:INTERNAL=OFF
@@ -1160,34 +1503,60 @@ CPM_PACKAGE_Catch2_SOURCE_DIR:INTERNAL=D:/Git/ceph/.build/cmake/_deps/catch2-src
 CPM_PACKAGE_Catch2_VERSION:INTERNAL=3.8.1
 CPM_PACKAGE_LOCK_FILE:INTERNAL=D:/Git/ceph/.build/cmake/cpm-package-lock.cmake
 CPM_VERSION:INTERNAL=0.40.8
+//ADVANCED property for variable: CURSES_CURSES_LIBRARY
+CURSES_CURSES_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURSES_FORM_LIBRARY
+CURSES_FORM_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURSES_INCLUDE_PATH
+CURSES_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURSES_NCURSES_LIBRARY
+CURSES_NCURSES_LIBRARY-ADVANCED:INTERNAL=1
 //Project GUID
 Catch2WithMain_GUID_CMAKE:INTERNAL=8bd3552a-2cfb-4a59-ab15-2031b97ada1e
 //Project GUID
 Catch2_GUID_CMAKE:INTERNAL=8d538cbe-01bf-4a2e-a98a-6c368fdf13d7
+//ADVANCED property for variable: DOXYGEN_DOT_EXECUTABLE
+DOXYGEN_DOT_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: DOXYGEN_EXECUTABLE
+DOXYGEN_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: EXPAT_INCLUDE_DIR
 EXPAT_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: EXPAT_LIBRARY_DEBUG
 EXPAT_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: EXPAT_LIBRARY_RELEASE
 EXPAT_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//Details about finding Boost
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[D:/Git/ceph/.build/cmake/boost/include][D:/Git/ceph/.build/cmake/boost/lib/boost_atomic.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_chrono.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_thread.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_system.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_date_time.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_regex.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_random.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_program_options.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_iostreams.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_context.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_coroutine.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_url.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_container.lib][v()]
 //Details about finding EXPAT
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib;debug;D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include][v2.7.1()]
+//Details about finding Git
+FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[C:/Tools/Git/cmd/git.exe][v2.48.1.windows.1()]
 //Details about finding LZ4
 FIND_PACKAGE_MESSAGE_DETAILS_LZ4:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include][v1.10.0(1.7)]
+//Details about finding Lua
+FIND_PACKAGE_MESSAGE_DETAILS_Lua:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lua_x64-windows/lib/lua.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lua_x64-windows/include][v5.4.8(5.3)]
 //Details about finding OATH
 FIND_PACKAGE_MESSAGE_DETAILS_OATH:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/cpprest_2_10.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/cpprestsdk_x64-windows/include][v()]
 //Details about finding OpenSSL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/lib/libcrypto.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include][c ][v3.5.0()]
 //Details about finding PkgConfig
 FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[C:/Tools/Microsoft/Visual Studio/2022.Enterprise/VC/vcpkg/vcpkg.exe][vvcpkg package management program version 2024-09-30-ab8988503c7cffabfd440b243a383c0a352a023dSee LICENSE.txt for license information.()]
+//Details about finding Python3
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[C:/Tools/Python/03.10/python.exe][cfound components: Interpreter ][v3.10.6(3.6.0)]
 //Details about finding QAT
 FIND_PACKAGE_MESSAGE_DETAILS_QAT:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatlib/install/lib/libqat.a][D:/Git/ceph/.build/cmake/src/qatlib/install/lib/libusdm.a][D:/Git/ceph/.build/cmake/src/qatlib/install/include][v()]
 //Details about finding QATzip
 FIND_PACKAGE_MESSAGE_DETAILS_QATzip:INTERNAL=[D:/Git/ceph/.build/cmake/src/qatzip/install/lib/libqatzip.a][D:/Git/ceph/.build/cmake/src/qatzip/install/include][v()]
+//Details about finding StdFilesystem
+FIND_PACKAGE_MESSAGE_DETAILS_StdFilesystem:INTERNAL=[included by standard library][v()]
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding ZLIB
 FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/lib/zlib.lib;debug;D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/debug/lib/zlibd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/include][c ][v1.3.1()]
 //Details about finding snappy
 FIND_PACKAGE_MESSAGE_DETAILS_snappy:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/snappy_x64-windows/lib/snappy.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/snappy_x64-windows/include][v()]
+//Details about finding thrift
+FIND_PACKAGE_MESSAGE_DETAILS_thrift:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/lib/thriftmd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/include][v(0.13.0)]
 //ADVANCED property for variable: GIT_EXECUTABLE
 GIT_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GPERFTOOLS_INCLUDE_DIR
@@ -1198,6 +1567,16 @@ GPERFTOOLS_PROFILER_LIBRARY-ADVANCED:INTERNAL=1
 GPERFTOOLS_TCMALLOC_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GPERFTOOLS_TCMALLOC_MINIMAL_LIBRARY
 GPERFTOOLS_TCMALLOC_MINIMAL_LIBRARY-ADVANCED:INTERNAL=1
+//Test HAS_GLIBCXX_ASSERTIONS
+HAS_GLIBCXX_ASSERTIONS:INTERNAL=1
+//Test HAS_VTA
+HAS_VTA:INTERNAL=
+//Test HAS_WARNING_DEPRECATED_COPY
+HAS_WARNING_DEPRECATED_COPY:INTERNAL=
+//Test HAS_WARNING_PESSIMIZING_MOVE
+HAS_WARNING_PESSIMIZING_MOVE:INTERNAL=
+//Test HAS_WARNING_STRINGOP_TRUNCATION
+HAS_WARNING_STRINGOP_TRUNCATION:INTERNAL=
 //Have function accept4
 HAVE_ACCEPT4:INTERNAL=
 //Have includes arpa/nameser_compat.h
@@ -1224,6 +1603,20 @@ HAVE_GETGROUPLIST:INTERNAL=
 HAVE_GETPROGNAME:INTERNAL=
 //Have function gettid
 HAVE_GETTID:INTERNAL=
+//Test HAVE_INTEL_PCLMUL
+HAVE_INTEL_PCLMUL:INTERNAL=
+//Test HAVE_INTEL_SSE
+HAVE_INTEL_SSE:INTERNAL=
+//Test HAVE_INTEL_SSE2
+HAVE_INTEL_SSE2:INTERNAL=
+//Test HAVE_INTEL_SSE3
+HAVE_INTEL_SSE3:INTERNAL=
+//Test HAVE_INTEL_SSE4_1
+HAVE_INTEL_SSE4_1:INTERNAL=
+//Test HAVE_INTEL_SSE4_2
+HAVE_INTEL_SSE4_2:INTERNAL=
+//Test HAVE_INTEL_SSSE3
+HAVE_INTEL_SSSE3:INTERNAL=
 //Result of TRY_COMPILE
 HAVE_IN_ADDR_T:INTERNAL=FALSE
 //Result of TRY_COMPILE
@@ -1276,6 +1669,10 @@ HAVE_STAT_ST_MTIM_TV_NSEC:INTERNAL=
 HAVE_STDDEF_H:INTERNAL=1
 //Have include stdint.h
 HAVE_STDINT_H:INTERNAL=1
+//Test HAVE_STDLIB_MAP_SPLICING
+HAVE_STDLIB_MAP_SPLICING:INTERNAL=1
+//Result of TRY_COMPILE
+HAVE_SUSECONDS_T:INTERNAL=FALSE
 //Have function sync_file_range
 HAVE_SYNC_FILE_RANGE:INTERNAL=
 //Have includes sys/mount.h
@@ -1326,10 +1723,39 @@ JEMALLOC_LIBRARIES-ADVANCED:INTERNAL=1
 LIB_EAY_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: LIB_EAY_LIBRARY_RELEASE
 LIB_EAY_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: LUA_INCLUDE_DIR
+LUA_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: LUA_LIBRARY
+LUA_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: LZ4_INCLUDE_DIR
 LZ4_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: LZ4_LIBRARY
 LZ4_LIBRARY-ADVANCED:INTERNAL=1
+NCURSES_CFLAGS:INTERNAL=
+NCURSES_CFLAGS_I:INTERNAL=
+NCURSES_CFLAGS_OTHER:INTERNAL=
+NCURSES_FOUND:INTERNAL=
+NCURSES_INCLUDEDIR:INTERNAL=
+NCURSES_LIBDIR:INTERNAL=
+NCURSES_LIBS:INTERNAL=
+NCURSES_LIBS_L:INTERNAL=
+NCURSES_LIBS_OTHER:INTERNAL=
+NCURSES_LIBS_PATHS:INTERNAL=
+NCURSES_MODULE_NAME:INTERNAL=
+NCURSES_PREFIX:INTERNAL=
+NCURSES_STATIC_CFLAGS:INTERNAL=
+NCURSES_STATIC_CFLAGS_I:INTERNAL=
+NCURSES_STATIC_CFLAGS_OTHER:INTERNAL=
+NCURSES_STATIC_LIBDIR:INTERNAL=
+NCURSES_STATIC_LIBS:INTERNAL=
+NCURSES_STATIC_LIBS_L:INTERNAL=
+NCURSES_STATIC_LIBS_OTHER:INTERNAL=
+NCURSES_STATIC_LIBS_PATHS:INTERNAL=
+NCURSES_VERSION:INTERNAL=
+NCURSES_ncurses_INCLUDEDIR:INTERNAL=
+NCURSES_ncurses_LIBDIR:INTERNAL=
+NCURSES_ncurses_PREFIX:INTERNAL=
+NCURSES_ncurses_VERSION:INTERNAL=
 //ADVANCED property for variable: OATH_INCLUDE_DIR
 OATH_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OATH_LIBRARY
@@ -1454,6 +1880,8 @@ SSL_EAY_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 SSL_EAY_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //Test STRERROR_R_CHAR_P
 STRERROR_R_CHAR_P:INTERNAL=
+//CHECK_TYPE_SIZE: suseconds_t unknown
+SUSECONDS_T:INTERNAL=
 //Enable PMDK libraries
 WITH_BLUESTORE_PMEM:INTERNAL=OFF
 //ADVANCED property for variable: XFS_INCLUDE_DIR
@@ -1468,6 +1896,16 @@ ZLIB_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 _Backtrace_SYM_FOUND:INTERNAL=
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Program Files (x86)/ceph
+//Compiler reason failure
+_Python3_Compiler_REASON_FAILURE:INTERNAL=
+//Development reason failure
+_Python3_Development_REASON_FAILURE:INTERNAL=
+_Python3_EXECUTABLE:INTERNAL=C:/Tools/Python/03.10/python.exe
+//Python3 Properties
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;10;6;64;32;;cp310-win_amd64;;C:\Tools\Python\03.10\Lib;C:\Tools\Python\03.10\Lib;C:\Tools\Python\03.10\Lib\site-packages;C:\Tools\Python\03.10\Lib\site-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=c48438465ce991fcf74a0ee2c33323c3
+//NumPy reason failure
+_Python3_NumPy_REASON_FAILURE:INTERNAL=
 //CHECK_TYPE_SIZE: __s16 unknown
 __S16:INTERNAL=
 //CHECK_TYPE_SIZE: __s32 unknown
@@ -1484,8 +1922,29 @@ __U32:INTERNAL=
 __U64:INTERNAL=
 //CHECK_TYPE_SIZE: __u8 unknown
 __U8:INTERNAL=
+__pkg_config_checked_NCURSES:INTERNAL=1
 __pkg_config_checked_PC_EXPAT:INTERNAL=1
 __pkg_config_checked_PC_QAT:INTERNAL=1
 __pkg_config_checked_PC_QATzip:INTERNAL=1
 __pkg_config_checked_PC_snappy:INTERNAL=1
+//Result of TRY_COMPILE
+_std_filesystem_compiles:INTERNAL=TRUE
+cmake_package_name:INTERNAL=GTest
+//ADVANCED property for variable: gmock_build_tests
+gmock_build_tests-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_build_samples
+gtest_build_samples-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_build_tests
+gtest_build_tests-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_disable_pthreads
+gtest_disable_pthreads-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_force_shared_crt
+gtest_force_shared_crt-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: gtest_hide_internal_symbols
+gtest_hide_internal_symbols-ADVANCED:INTERNAL=1
+prefix_result:INTERNAL=
+//ADVANCED property for variable: thrift_INCLUDE_DIR
+thrift_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: thrift_LIBRARIES
+thrift_LIBRARIES-ADVANCED:INTERNAL=1
 
