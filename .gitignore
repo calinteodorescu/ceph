@@ -115,3 +115,4 @@ src/pybind/rgw/rgw.egg-info/
 /src/.vs
 /src/out/build/x64-Debug
 /.build/cmake
+/vcpkg_installed
