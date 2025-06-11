@@ -101,6 +101,8 @@ Boost_LIBRARY_DIR_DEBUG:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-atomi
 //Boost library directory RELEASE
 Boost_LIBRARY_DIR_RELEASE:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-atomic_x64-windows/lib
 
+Boost_LOCALE_LIBRARY_RELEASE:STRING=D:/Git/boost/stage/lib/boost_locale-vc143-mt-x64-1_88.dll
+
 //Boost program_options library (debug)
 Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-program-options_x64-windows/debug/lib/boost_program_options-vc143-mt-gd-x64-1_88.lib
 
@@ -590,6 +592,9 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE:STRING=
 // during RELWITHDEBINFO builds.
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
+//No help, variable specified on the command line.
+CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=D:\Git\ceph\toolchain.cmake
+
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
@@ -777,6 +782,77 @@ GPERFTOOLS_TCMALLOC_MINIMAL_LIBRARY:FILEPATH=GPERFTOOLS_TCMALLOC_MINIMAL_LIBRARY
 //Use Abseil and RE2. Requires Abseil and RE2 to be separately
 // added to the build.
 GTEST_HAS_ABSL:BOOL=OFF
+
+//ICU derb executable
+ICU_DERB_EXECUTABLE:FILEPATH=ICU_DERB_EXECUTABLE-NOTFOUND
+
+//ICU genbrk executable
+ICU_GENBRK_EXECUTABLE:FILEPATH=ICU_GENBRK_EXECUTABLE-NOTFOUND
+
+//ICU genccode executable
+ICU_GENCCODE_EXECUTABLE:FILEPATH=ICU_GENCCODE_EXECUTABLE-NOTFOUND
+
+//ICU gencfu executable
+ICU_GENCFU_EXECUTABLE:FILEPATH=ICU_GENCFU_EXECUTABLE-NOTFOUND
+
+//ICU gencmn executable
+ICU_GENCMN_EXECUTABLE:FILEPATH=ICU_GENCMN_EXECUTABLE-NOTFOUND
+
+//ICU gencnval executable
+ICU_GENCNVAL_EXECUTABLE:FILEPATH=ICU_GENCNVAL_EXECUTABLE-NOTFOUND
+
+//ICU gendict executable
+ICU_GENDICT_EXECUTABLE:FILEPATH=ICU_GENDICT_EXECUTABLE-NOTFOUND
+
+//ICU gennorm2 executable
+ICU_GENNORM2_EXECUTABLE:FILEPATH=ICU_GENNORM2_EXECUTABLE-NOTFOUND
+
+//ICU genrb executable
+ICU_GENRB_EXECUTABLE:FILEPATH=ICU_GENRB_EXECUTABLE-NOTFOUND
+
+//ICU gensprep executable
+ICU_GENSPREP_EXECUTABLE:FILEPATH=ICU_GENSPREP_EXECUTABLE-NOTFOUND
+
+//ICU i18n library (debug)
+ICU_I18N_LIBRARY_DEBUG:FILEPATH=ICU_I18N_LIBRARY_DEBUG-NOTFOUND
+
+//ICU i18n library (release)
+ICU_I18N_LIBRARY_RELEASE:FILEPATH=C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuin.Lib
+
+//ICU icu-config executable
+ICU_ICU-CONFIG_EXECUTABLE:FILEPATH=ICU_ICU-CONFIG_EXECUTABLE-NOTFOUND
+
+//ICU icuinfo executable
+ICU_ICUINFO_EXECUTABLE:FILEPATH=ICU_ICUINFO_EXECUTABLE-NOTFOUND
+
+//ICU icupkg executable
+ICU_ICUPKG_EXECUTABLE:FILEPATH=ICU_ICUPKG_EXECUTABLE-NOTFOUND
+
+//ICU include directory
+ICU_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/blds/icu/src/c-74_2-src-2c60f3f6bd.clean/source/common/unicode
+
+ICU_LIBRARY:PATH=C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64
+
+//ICU makeconv executable
+ICU_MAKECONV_EXECUTABLE:FILEPATH=ICU_MAKECONV_EXECUTABLE-NOTFOUND
+
+//ICU Makefile.inc data file
+ICU_MAKEFILE_INC:FILEPATH=ICU_MAKEFILE_INC-NOTFOUND
+
+//ICU pkgdata executable
+ICU_PKGDATA_EXECUTABLE:FILEPATH=ICU_PKGDATA_EXECUTABLE-NOTFOUND
+
+//ICU pkgdata.inc data file
+ICU_PKGDATA_INC:FILEPATH=ICU_PKGDATA_INC-NOTFOUND
+
+//ICU uconv executable
+ICU_UCONV_EXECUTABLE:FILEPATH=ICU_UCONV_EXECUTABLE-NOTFOUND
+
+//ICU uc library (debug)
+ICU_UC_LIBRARY_DEBUG:FILEPATH=ICU_UC_LIBRARY_DEBUG-NOTFOUND
+
+//ICU uc library (release)
+ICU_UC_LIBRARY_RELEASE:FILEPATH=C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuuc.lib
 
 //Enable installation of googletest. (Projects embedding googletest
 // may want to turn this OFF.)
@@ -979,6 +1055,8 @@ WITH_GSSAPI:BOOL=OFF
 //Enable running gtest based tests in parallel
 WITH_GTEST_PARALLEL:BOOL=OFF
 
+WITH_ICU:BOOL=OFF
+
 //Enable jaegertracing and it's dependent libraries
 WITH_JAEGER:BOOL=ON
 
@@ -1177,6 +1255,9 @@ ZLIB_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-w
 //The directory containing a CMake configuration file for boost_atomic.
 boost_atomic_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_atomic-1.88.0
 
+//The directory containing a CMake configuration file for boost_charconv.
+boost_charconv_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_charconv-1.88.0
+
 //The directory containing a CMake configuration file for boost_chrono.
 boost_chrono_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_chrono-1.88.0
 
@@ -1197,6 +1278,9 @@ boost_headers_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_headers-1.88.0
 
 //The directory containing a CMake configuration file for boost_iostreams.
 boost_iostreams_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_iostreams-1.88.0
+
+//The directory containing a CMake configuration file for boost_locale.
+boost_locale_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_locale-1.88.0
 
 //The directory containing a CMake configuration file for boost_program_options.
 boost_program_options_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_program_options-1.88.0
@@ -1713,7 +1797,7 @@ EXPAT_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: EXPAT_LIBRARY_RELEASE
 EXPAT_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[D:/Git/boost/stage/lib/cmake/Boost-1.88.0/BoostConfig.cmake][cfound components: atomic chrono thread system regex random program_options date_time iostreams context coroutine url ][v1.88.0(1.87)]
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[D:/Git/boost/stage/lib/cmake/Boost-1.88.0/BoostConfig.cmake][cfound components: atomic chrono thread system regex random program_options date_time iostreams context coroutine url locale ][v1.88.0(1.87)]
 //Details about finding Curses
 FIND_PACKAGE_MESSAGE_DETAILS_Curses:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/include][v()]
 //Details about finding Doxygen
@@ -1722,6 +1806,8 @@ FIND_PACKAGE_MESSAGE_DETAILS_Doxygen:INTERNAL=[C:/Tools/NuGet.Packages/packages/
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib;debug;D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include][v2.7.1()]
 //Details about finding Git
 FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[C:/Tools/Git/cmd/git.exe][v2.48.1.windows.1()]
+//Details about finding ICU
+FIND_PACKAGE_MESSAGE_DETAILS_ICU:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/blds/icu/src/c-74_2-src-2c60f3f6bd.clean/source/common/unicode][C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64;C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuuc.lib;C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuin.Lib][ON][v()]
 //Details about finding LZ4
 FIND_PACKAGE_MESSAGE_DETAILS_LZ4:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include][v1.10.0(1.7)]
 //Details about finding Lua
@@ -1904,6 +1990,52 @@ HAVE___U32:INTERNAL=FALSE
 HAVE___U64:INTERNAL=FALSE
 //Result of TRY_COMPILE
 HAVE___U8:INTERNAL=FALSE
+//ADVANCED property for variable: ICU_DERB_EXECUTABLE
+ICU_DERB_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENBRK_EXECUTABLE
+ICU_GENBRK_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENCCODE_EXECUTABLE
+ICU_GENCCODE_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENCFU_EXECUTABLE
+ICU_GENCFU_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENCMN_EXECUTABLE
+ICU_GENCMN_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENCNVAL_EXECUTABLE
+ICU_GENCNVAL_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENDICT_EXECUTABLE
+ICU_GENDICT_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENNORM2_EXECUTABLE
+ICU_GENNORM2_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENRB_EXECUTABLE
+ICU_GENRB_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_GENSPREP_EXECUTABLE
+ICU_GENSPREP_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_I18N_LIBRARY_DEBUG
+ICU_I18N_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_I18N_LIBRARY_RELEASE
+ICU_I18N_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_ICU-CONFIG_EXECUTABLE
+ICU_ICU-CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_ICUINFO_EXECUTABLE
+ICU_ICUINFO_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_ICUPKG_EXECUTABLE
+ICU_ICUPKG_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_INCLUDE_DIR
+ICU_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_MAKECONV_EXECUTABLE
+ICU_MAKECONV_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_MAKEFILE_INC
+ICU_MAKEFILE_INC-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_PKGDATA_EXECUTABLE
+ICU_PKGDATA_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_PKGDATA_INC
+ICU_PKGDATA_INC-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_UCONV_EXECUTABLE
+ICU_UCONV_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_UC_LIBRARY_DEBUG
+ICU_UC_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ICU_UC_LIBRARY_RELEASE
+ICU_UC_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //CHECK_TYPE_SIZE: in_addr_t unknown
 IN_ADDR_T:INTERNAL=
 //ADVANCED property for variable: JEMALLOC_INCLUDE_DIR
@@ -2140,6 +2272,8 @@ __pkg_config_checked_PC_snappy:INTERNAL=1
 _std_filesystem_compiles:INTERNAL=TRUE
 //ADVANCED property for variable: boost_atomic_DIR
 boost_atomic_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_charconv_DIR
+boost_charconv_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: boost_chrono_DIR
 boost_chrono_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: boost_context_DIR
@@ -2154,6 +2288,8 @@ boost_exception_DIR-ADVANCED:INTERNAL=1
 boost_headers_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: boost_iostreams_DIR
 boost_iostreams_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_locale_DIR
+boost_locale_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: boost_program_options_DIR
 boost_program_options_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: boost_random_DIR
