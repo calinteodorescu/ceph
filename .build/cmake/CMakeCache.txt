@@ -137,6 +137,8 @@ Boost_URL_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-u
 //Boost url library (release)
 Boost_URL_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-url_x64-windows/lib/boost_url-vc143-mt-x64-1_88.lib
 
+Boost_USE_STATIC_LIBS:BOOL=ON
+
 //Read docs/configuration.md for details
 CATCH_CONFIG_ANDROID_LOGWRITE:BOOL=OFF
 
@@ -981,7 +983,7 @@ WITH_GTEST_PARALLEL:BOOL=OFF
 WITH_JAEGER:BOOL=ON
 
 //Enable Linux krbd support of 'rbd' utility
-WITH_KRBD:BOOL=ON
+WITH_KRBD:BOOL=OFF
 
 //Key value store is here
 WITH_KVS:BOOL=OFF
@@ -1175,8 +1177,44 @@ ZLIB_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-w
 //The directory containing a CMake configuration file for boost_atomic.
 boost_atomic_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_atomic-1.88.0
 
+//The directory containing a CMake configuration file for boost_chrono.
+boost_chrono_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_chrono-1.88.0
+
+//The directory containing a CMake configuration file for boost_context.
+boost_context_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_context-1.88.0
+
+//The directory containing a CMake configuration file for boost_coroutine.
+boost_coroutine_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_coroutine-1.88.0
+
+//The directory containing a CMake configuration file for boost_date_time.
+boost_date_time_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_date_time-1.88.0
+
+//The directory containing a CMake configuration file for boost_exception.
+boost_exception_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_exception-1.88.0
+
 //The directory containing a CMake configuration file for boost_headers.
 boost_headers_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_headers-1.88.0
+
+//The directory containing a CMake configuration file for boost_iostreams.
+boost_iostreams_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_iostreams-1.88.0
+
+//The directory containing a CMake configuration file for boost_program_options.
+boost_program_options_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_program_options-1.88.0
+
+//The directory containing a CMake configuration file for boost_random.
+boost_random_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_random-1.88.0
+
+//The directory containing a CMake configuration file for boost_regex.
+boost_regex_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_regex-1.88.0
+
+//The directory containing a CMake configuration file for boost_system.
+boost_system_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_system-1.88.0
+
+//The directory containing a CMake configuration file for boost_thread.
+boost_thread_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_thread-1.88.0
+
+//The directory containing a CMake configuration file for boost_url.
+boost_url_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_url-1.88.0
 
 //Value Computed by CMake
 ceph_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake
@@ -1581,7 +1619,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=85
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
@@ -1675,7 +1713,7 @@ EXPAT_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: EXPAT_LIBRARY_RELEASE
 EXPAT_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //Details about finding Boost
-FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[D:/Git/boost][cfound components: atomic chrono thread system regex random program_options date_time iostreams context coroutine url ][v1.88.0(1.87)]
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[D:/Git/boost/stage/lib/cmake/Boost-1.88.0/BoostConfig.cmake][cfound components: atomic chrono thread system regex random program_options date_time iostreams context coroutine url ][v1.88.0(1.87)]
 //Details about finding Curses
 FIND_PACKAGE_MESSAGE_DETAILS_Curses:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/include][v()]
 //Details about finding Doxygen
@@ -2102,8 +2140,32 @@ __pkg_config_checked_PC_snappy:INTERNAL=1
 _std_filesystem_compiles:INTERNAL=TRUE
 //ADVANCED property for variable: boost_atomic_DIR
 boost_atomic_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_chrono_DIR
+boost_chrono_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_context_DIR
+boost_context_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_coroutine_DIR
+boost_coroutine_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_date_time_DIR
+boost_date_time_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_exception_DIR
+boost_exception_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: boost_headers_DIR
 boost_headers_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_iostreams_DIR
+boost_iostreams_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_program_options_DIR
+boost_program_options_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_random_DIR
+boost_random_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_regex_DIR
+boost_regex_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_system_DIR
+boost_system_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_thread_DIR
+boost_thread_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_url_DIR
+boost_url_DIR-ADVANCED:INTERNAL=1
 cmake_package_name:INTERNAL=GTest
 //ADVANCED property for variable: gmock_build_tests
 gmock_build_tests-ADVANCED:INTERNAL=1
