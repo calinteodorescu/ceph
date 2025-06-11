@@ -542,16 +542,16 @@ CTAGS_EXECUTABLE:FILEPATH=CTAGS_EXECUTABLE-NOTFOUND
 CTAG_EXCLUDES:BOOL=OFF
 
 //Path to a library.
-CURSES_CURSES_LIBRARY:FILEPATH=CURSES_CURSES_LIBRARY-NOTFOUND
+CURSES_CURSES_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib
 
 //Path to a library.
-CURSES_FORM_LIBRARY:FILEPATH=CURSES_FORM_LIBRARY-NOTFOUND
+CURSES_FORM_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib
 
 //Path to a file.
-CURSES_INCLUDE_PATH:PATH=CURSES_INCLUDE_PATH-NOTFOUND
+CURSES_INCLUDE_PATH:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/include
 
 //Path to a library.
-CURSES_NCURSES_LIBRARY:FILEPATH=CURSES_NCURSES_LIBRARY-NOTFOUND
+CURSES_NCURSES_LIBRARY:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib
 
 //Value Computed by CMake
 Catch2_BINARY_DIR:STATIC=D:/Git/ceph/.build/cmake/_deps/catch2-build
@@ -580,7 +580,7 @@ DIAGNOSTICS_COLOR:STRING=auto
 DOXYGEN_DOT_EXECUTABLE:FILEPATH=DOXYGEN_DOT_EXECUTABLE-NOTFOUND
 
 //Doxygen documentation generation tool (https://www.doxygen.nl)
-DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
+DOXYGEN_EXECUTABLE:FILEPATH=C:/Tools/NuGet.Packages/packages/Doxygen.1.8.14/tools/doxygen.exe
 
 //Coverage is enabled
 ENABLE_COVERAGE:BOOL=OFF
@@ -1029,7 +1029,7 @@ WITH_SPDK:BOOL=OFF
 WITH_STATIC_LIBSTDCXX:BOOL=OFF
 
 //build with systemd support
-WITH_SYSTEMD:BOOL=ON
+WITH_SYSTEMD:BOOL=OFF
 
 //Use system-provided arrow
 WITH_SYSTEM_ARROW:BOOL=OFF
@@ -1438,7 +1438,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=86
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=85
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
@@ -1503,12 +1503,18 @@ CPM_PACKAGE_Catch2_SOURCE_DIR:INTERNAL=D:/Git/ceph/.build/cmake/_deps/catch2-src
 CPM_PACKAGE_Catch2_VERSION:INTERNAL=3.8.1
 CPM_PACKAGE_LOCK_FILE:INTERNAL=D:/Git/ceph/.build/cmake/cpm-package-lock.cmake
 CPM_VERSION:INTERNAL=0.40.8
+//Have library D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib
+CURSES_CURSES_HAS_WSYNCUP:INTERNAL=1
 //ADVANCED property for variable: CURSES_CURSES_LIBRARY
 CURSES_CURSES_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CURSES_FORM_LIBRARY
 CURSES_FORM_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CURSES_INCLUDE_PATH
 CURSES_INCLUDE_PATH-ADVANCED:INTERNAL=1
+//Have library D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib
+CURSES_NCURSES_HAS_CBREAK:INTERNAL=1
+//Have library D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib
+CURSES_NCURSES_HAS_NODELAY:INTERNAL=1
 //ADVANCED property for variable: CURSES_NCURSES_LIBRARY
 CURSES_NCURSES_LIBRARY-ADVANCED:INTERNAL=1
 //Project GUID
@@ -1527,6 +1533,10 @@ EXPAT_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 EXPAT_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //Details about finding Boost
 FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[D:/Git/ceph/.build/cmake/boost/include][D:/Git/ceph/.build/cmake/boost/lib/boost_atomic.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_chrono.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_thread.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_system.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_date_time.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_regex.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_random.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_program_options.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_iostreams.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_context.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_coroutine.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_url.lib;D:/Git/ceph/.build/cmake/boost/lib/boost_container.lib][v()]
+//Details about finding Curses
+FIND_PACKAGE_MESSAGE_DETAILS_Curses:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/lib/pdcurses.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/pdcurses_x64-windows/include][v()]
+//Details about finding Doxygen
+FIND_PACKAGE_MESSAGE_DETAILS_Doxygen:INTERNAL=[C:/Tools/NuGet.Packages/packages/Doxygen.1.8.14/tools/doxygen.exe][cfound components: doxygen missing components: dot][v1.8.14()]
 //Details about finding EXPAT
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib;debug;D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include][v2.7.1()]
 //Details about finding Git
