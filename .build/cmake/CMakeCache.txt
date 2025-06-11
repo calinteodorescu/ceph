@@ -54,82 +54,88 @@ Backtrace_HEADER:STRING=execinfo.h
 Backtrace_INCLUDE_DIR:PATH=Backtrace_INCLUDE_DIR-NOTFOUND
 
 //Boost atomic library (debug)
-Boost_ATOMIC_LIBRARY_DEBUG:FILEPATH=Boost_ATOMIC_LIBRARY_DEBUG-NOTFOUND
+Boost_ATOMIC_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-atomic_x64-windows/debug/lib/boost_atomic-vc143-mt-gd-x64-1_88.lib
 
 //Boost atomic library (release)
-Boost_ATOMIC_LIBRARY_RELEASE:FILEPATH=Boost_ATOMIC_LIBRARY_RELEASE-NOTFOUND
+Boost_ATOMIC_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-atomic_x64-windows/lib/boost_atomic-vc143-mt-x64-1_88.lib
 
 //Boost chrono library (debug)
-Boost_CHRONO_LIBRARY_DEBUG:FILEPATH=Boost_CHRONO_LIBRARY_DEBUG-NOTFOUND
+Boost_CHRONO_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-chrono_x64-windows/debug/lib/boost_chrono-vc143-mt-gd-x64-1_88.lib
 
 //Boost chrono library (release)
-Boost_CHRONO_LIBRARY_RELEASE:FILEPATH=Boost_CHRONO_LIBRARY_RELEASE-NOTFOUND
+Boost_CHRONO_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-chrono_x64-windows/lib/boost_chrono-vc143-mt-x64-1_88.lib
 
 //Boost context library (debug)
-Boost_CONTEXT_LIBRARY_DEBUG:FILEPATH=Boost_CONTEXT_LIBRARY_DEBUG-NOTFOUND
+Boost_CONTEXT_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-context_x64-windows/debug/lib/boost_context-vc143-mt-gd-x64-1_88.lib
 
 //Boost context library (release)
-Boost_CONTEXT_LIBRARY_RELEASE:FILEPATH=Boost_CONTEXT_LIBRARY_RELEASE-NOTFOUND
+Boost_CONTEXT_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-context_x64-windows/lib/boost_context-vc143-mt-x64-1_88.lib
 
 //Boost coroutine library (debug)
-Boost_COROUTINE_LIBRARY_DEBUG:FILEPATH=Boost_COROUTINE_LIBRARY_DEBUG-NOTFOUND
+Boost_COROUTINE_LIBRARY_DEBUG:FILEPATH=C:/Tools/NuGet.Packages/packages/boost_coroutine-vc143.1.87.0/lib/native/libboost_coroutine-vc143-mt-gd-x64-1_87.lib
 
 //Boost coroutine library (release)
-Boost_COROUTINE_LIBRARY_RELEASE:FILEPATH=Boost_COROUTINE_LIBRARY_RELEASE-NOTFOUND
+Boost_COROUTINE_LIBRARY_RELEASE:FILEPATH=C:/Tools/NuGet.Packages/packages/boost_coroutine-vc143.1.87.0/lib/native/boost_coroutine-vc143-mt-x64-1_87.lib
 
 //Boost date_time library (debug)
-Boost_DATE_TIME_LIBRARY_DEBUG:FILEPATH=Boost_DATE_TIME_LIBRARY_DEBUG-NOTFOUND
+Boost_DATE_TIME_LIBRARY_DEBUG:FILEPATH=C:/Tools/NuGet.Packages/packages/boost_date_time-vc143.1.87.0/lib/native/libboost_date_time-vc143-mt-gd-x64-1_87.lib
 
 //Boost date_time library (release)
-Boost_DATE_TIME_LIBRARY_RELEASE:FILEPATH=Boost_DATE_TIME_LIBRARY_RELEASE-NOTFOUND
+Boost_DATE_TIME_LIBRARY_RELEASE:FILEPATH=C:/Tools/NuGet.Packages/packages/boost_date_time-vc143.1.87.0/lib/native/boost_date_time-vc143-mt-x64-1_87.lib
 
 //The directory containing a CMake configuration file for Boost.
 Boost_DIR:PATH=Boost_DIR-NOTFOUND
 
 //Path to a file.
-Boost_INCLUDE_DIR:PATH=Boost_INCLUDE_DIR-NOTFOUND
+Boost_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs
 
 //Boost iostreams library (debug)
-Boost_IOSTREAMS_LIBRARY_DEBUG:FILEPATH=Boost_IOSTREAMS_LIBRARY_DEBUG-NOTFOUND
+Boost_IOSTREAMS_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-iostreams_x64-windows/debug/lib/boost_iostreams-vc143-mt-gd-x64-1_88.lib
 
 //Boost iostreams library (release)
-Boost_IOSTREAMS_LIBRARY_RELEASE:FILEPATH=Boost_IOSTREAMS_LIBRARY_RELEASE-NOTFOUND
+Boost_IOSTREAMS_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-iostreams_x64-windows/lib/boost_iostreams-vc143-mt-x64-1_88.lib
+
+//Boost library directory DEBUG
+Boost_LIBRARY_DIR_DEBUG:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-atomic_x64-windows/debug/lib
+
+//Boost library directory RELEASE
+Boost_LIBRARY_DIR_RELEASE:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-atomic_x64-windows/lib
 
 //Boost program_options library (debug)
-Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH=Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG-NOTFOUND
+Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-program-options_x64-windows/debug/lib/boost_program_options-vc143-mt-gd-x64-1_88.lib
 
 //Boost program_options library (release)
-Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH=Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE-NOTFOUND
+Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-program-options_x64-windows/lib/boost_program_options-vc143-mt-x64-1_88.lib
 
 //Boost random library (debug)
-Boost_RANDOM_LIBRARY_DEBUG:FILEPATH=Boost_RANDOM_LIBRARY_DEBUG-NOTFOUND
+Boost_RANDOM_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-random_x64-windows/debug/lib/boost_random-vc143-mt-gd-x64-1_88.lib
 
 //Boost random library (release)
-Boost_RANDOM_LIBRARY_RELEASE:FILEPATH=Boost_RANDOM_LIBRARY_RELEASE-NOTFOUND
+Boost_RANDOM_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-random_x64-windows/lib/boost_random-vc143-mt-x64-1_88.lib
 
 //Boost regex library (debug)
-Boost_REGEX_LIBRARY_DEBUG:FILEPATH=Boost_REGEX_LIBRARY_DEBUG-NOTFOUND
+Boost_REGEX_LIBRARY_DEBUG:FILEPATH=C:/Tools/NuGet.Packages/packages/boost_regex-vc143.1.87.0/lib/native/libboost_regex-vc143-mt-gd-x64-1_87.lib
 
 //Boost regex library (release)
-Boost_REGEX_LIBRARY_RELEASE:FILEPATH=Boost_REGEX_LIBRARY_RELEASE-NOTFOUND
+Boost_REGEX_LIBRARY_RELEASE:FILEPATH=C:/Tools/NuGet.Packages/packages/boost_regex-vc143.1.87.0/lib/native/boost_regex-vc143-mt-x64-1_87.lib
 
 //Boost system library (debug)
-Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH=Boost_SYSTEM_LIBRARY_DEBUG-NOTFOUND
+Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-system_x64-windows/debug/lib/boost_system-vc143-mt-gd-x64-1_88.lib
 
 //Boost system library (release)
-Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH=Boost_SYSTEM_LIBRARY_RELEASE-NOTFOUND
+Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-system_x64-windows/lib/boost_system-vc143-mt-x64-1_88.lib
 
 //Boost thread library (debug)
-Boost_THREAD_LIBRARY_DEBUG:FILEPATH=Boost_THREAD_LIBRARY_DEBUG-NOTFOUND
+Boost_THREAD_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-thread_x64-windows/debug/lib/boost_thread-vc143-mt-gd-x64-1_88.lib
 
 //Boost thread library (release)
-Boost_THREAD_LIBRARY_RELEASE:FILEPATH=Boost_THREAD_LIBRARY_RELEASE-NOTFOUND
+Boost_THREAD_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-thread_x64-windows/lib/boost_thread-vc143-mt-x64-1_88.lib
 
 //Boost url library (debug)
-Boost_URL_LIBRARY_DEBUG:FILEPATH=Boost_URL_LIBRARY_DEBUG-NOTFOUND
+Boost_URL_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-url_x64-windows/debug/lib/boost_url-vc143-mt-gd-x64-1_88.lib
 
 //Boost url library (release)
-Boost_URL_LIBRARY_RELEASE:FILEPATH=Boost_URL_LIBRARY_RELEASE-NOTFOUND
+Boost_URL_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/boost-url_x64-windows/lib/boost_url-vc143-mt-x64-1_88.lib
 
 //Read docs/configuration.md for details
 CATCH_CONFIG_ANDROID_LOGWRITE:BOOL=OFF
