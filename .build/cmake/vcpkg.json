@@ -1,0 +1,8 @@
+{
+  "name": "ceph",
+  "version-string": "1.0.0",
+  "builtin-baseline": "f9d77ef46dfe708b51db358acdea2b97615d5193",
+  "dependencies": [
+    "lz4"
+  ]
+}
