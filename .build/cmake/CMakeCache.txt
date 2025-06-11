@@ -592,9 +592,6 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE:STRING=
 // during RELWITHDEBINFO builds.
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=D:\Git\ceph\toolchain.cmake
-
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
@@ -817,7 +814,7 @@ ICU_GENSPREP_EXECUTABLE:FILEPATH=ICU_GENSPREP_EXECUTABLE-NOTFOUND
 ICU_I18N_LIBRARY_DEBUG:FILEPATH=ICU_I18N_LIBRARY_DEBUG-NOTFOUND
 
 //ICU i18n library (release)
-ICU_I18N_LIBRARY_RELEASE:FILEPATH=C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuin.Lib
+ICU_I18N_LIBRARY_RELEASE:FILEPATH=ICU_I18N_LIBRARY_RELEASE-NOTFOUND
 
 //ICU icu-config executable
 ICU_ICU-CONFIG_EXECUTABLE:FILEPATH=ICU_ICU-CONFIG_EXECUTABLE-NOTFOUND
@@ -829,9 +826,9 @@ ICU_ICUINFO_EXECUTABLE:FILEPATH=ICU_ICUINFO_EXECUTABLE-NOTFOUND
 ICU_ICUPKG_EXECUTABLE:FILEPATH=ICU_ICUPKG_EXECUTABLE-NOTFOUND
 
 //ICU include directory
-ICU_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/blds/icu/src/c-74_2-src-2c60f3f6bd.clean/source/common/unicode
+ICU_INCLUDE_DIR:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/icu4c-77_1/include/unicode
 
-ICU_LIBRARY:PATH=C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64
+ICU_LIBRARY:PATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/icu4c-77_1/lib64
 
 //ICU makeconv executable
 ICU_MAKECONV_EXECUTABLE:FILEPATH=ICU_MAKECONV_EXECUTABLE-NOTFOUND
@@ -852,7 +849,7 @@ ICU_UCONV_EXECUTABLE:FILEPATH=ICU_UCONV_EXECUTABLE-NOTFOUND
 ICU_UC_LIBRARY_DEBUG:FILEPATH=ICU_UC_LIBRARY_DEBUG-NOTFOUND
 
 //ICU uc library (release)
-ICU_UC_LIBRARY_RELEASE:FILEPATH=C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuuc.lib
+ICU_UC_LIBRARY_RELEASE:FILEPATH=ICU_UC_LIBRARY_RELEASE-NOTFOUND
 
 //Enable installation of googletest. (Projects embedding googletest
 // may want to turn this OFF.)
@@ -1703,7 +1700,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=85
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
@@ -1806,8 +1803,6 @@ FIND_PACKAGE_MESSAGE_DETAILS_Doxygen:INTERNAL=[C:/Tools/NuGet.Packages/packages/
 FIND_PACKAGE_MESSAGE_DETAILS_EXPAT:INTERNAL=[optimized;D:/Git/vcpkg/vcpkg_installed/x64-windows/lib/libexpat.lib;debug;D:/Git/vcpkg/vcpkg_installed/x64-windows/debug/lib/libexpatd.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/expat_x64-windows/include][v2.7.1()]
 //Details about finding Git
 FIND_PACKAGE_MESSAGE_DETAILS_Git:INTERNAL=[C:/Tools/Git/cmd/git.exe][v2.48.1.windows.1()]
-//Details about finding ICU
-FIND_PACKAGE_MESSAGE_DETAILS_ICU:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/blds/icu/src/c-74_2-src-2c60f3f6bd.clean/source/common/unicode][C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64;C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuuc.lib;C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/icuin.Lib][ON][v()]
 //Details about finding LZ4
 FIND_PACKAGE_MESSAGE_DETAILS_LZ4:INTERNAL=[D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/lib/lz4.lib][D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/lz4_x64-windows/include][v1.10.0(1.7)]
 //Details about finding Lua
