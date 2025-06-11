@@ -596,7 +596,7 @@ if(WITH_RADOSGW)
   execute_process(
     COMMAND
       "sh" "-c"
-      "${MinGW_Binaries}/objdump -p ${OPENSSL_SSL_LIBRARY} | sed -n 's/^  SONAME  *//p'"
+      "dumpbin -p ${OPENSSL_SSL_LIBRARY} | sed -n 's/^  SONAME  *//p'"
     OUTPUT_VARIABLE LIBSSL_SONAME
     ERROR_VARIABLE OBJDUMP_ERRORS
     RESULT_VARIABLE OBJDUMP_RESULTS
@@ -610,7 +610,7 @@ if(WITH_RADOSGW)
   execute_process(
     COMMAND
       "sh" "-c"
-      "objdump -p ${OPENSSL_CRYPTO_LIBRARY} | sed -n 's/^  SONAME  *//p'"
+      "dumpbin -p ${OPENSSL_CRYPTO_LIBRARY} | sed -n 's/^  SONAME  *//p'"
     OUTPUT_VARIABLE LIBCRYPTO_SONAME
     ERROR_VARIABLE OBJDUMP_ERRORS
     RESULT_VARIABLE OBJDUMP_RESULTS
