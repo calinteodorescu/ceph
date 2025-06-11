@@ -41,6 +41,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_OBJECT_PATH              "${CMAKE_BINARY_DIR}/obj")
 # Note: Object files are still managed under CMakeFiles unless explicitly overridden
 
+set(PKG_CONFIG_EXECUTABLE          "C:/Tools/Microsoft/Visual Studio/2022.Enterprise/VC/vcpkg/vcpkg.exe")
+
 set(OPENSSL_ROOT_DIR       "$(NUGET_PACKAGES_DIRECTORY)/openssl-native.3.0.16")
 set(OPENSSL_CRYPTO_LIBRARY "$(OPENSSL_ROOT_DIR)/lib/win-x64/native/libcrypto.lib")
 set(OPENSSL_SSL_LIBRARY    "$(OPENSSL_ROOT_DIR)/lib/win-x64/native/libssl.lib")
