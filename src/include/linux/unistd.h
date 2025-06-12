@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-#include <features.h>
+#include <linux/features.h>
+#include <linux/alltypes.h>
 
 #define STDIN_FILENO  0
 #define STDOUT_FILENO 1
@@ -29,8 +30,6 @@ extern "C" {
 #define __NEED_pid_t
 #define __NEED_intptr_t
 #define __NEED_useconds_t
-
-#include <alltypes.h>
 
 int pipe(int [2]);
 int pipe2(int [2], int);
@@ -249,7 +248,7 @@ int eaccess(const char *, int);
 
 #define _POSIX2_C_BIND          _POSIX_VERSION
 
-#include <posix.h>
+#include <linux/posix.h>
 
 
 

@@ -12,5 +12,49 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{34CB48D4-2195-3897-9DE1-8D0BA147961D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{77b9ef98-93dc-4798-9a7e-89156513c20f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Linux Files">
+      <UniqueIdentifier>{f5ca1d63-b6ec-41b5-af58-fdec104cafe2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\include\linux\unistd.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits_sched.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sched.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits_types.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\endian.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits_endian.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\alltypes.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\features.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\posix.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\pthread.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\typesizes.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\wordsize.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

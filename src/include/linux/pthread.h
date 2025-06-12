@@ -18,10 +18,10 @@
 #ifndef _PTHREAD_H
 #define _PTHREAD_H	1
 
-#include <features.h>
-#include <endian.h>
-#include <sched.h>
-#include <time.h>
+#include <linux/features.h>
+#include <linux/endian.h>
+#include <linux/sched.h>
+#include <linux/time.h>
 
 #include <bits/pthreadtypes.h>
 #include <bits/setjmp.h>

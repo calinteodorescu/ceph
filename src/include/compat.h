@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <linux/unistd.h>
 
 #if defined(__linux__)
 #define PROCPREFIX

@@ -432,6 +432,20 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Name>osdc</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\include\linux\alltypes.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits_endian.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits_sched.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits_types.h" />
+    <ClInclude Include="..\..\..\src\include\linux\endian.h" />
+    <ClInclude Include="..\..\..\src\include\linux\features.h" />
+    <ClInclude Include="..\..\..\src\include\linux\posix.h" />
+    <ClInclude Include="..\..\..\src\include\linux\pthread.h" />
+    <ClInclude Include="..\..\..\src\include\linux\sched.h" />
+    <ClInclude Include="..\..\..\src\include\linux\typesizes.h" />
+    <ClInclude Include="..\..\..\src\include\linux\unistd.h" />
+    <ClInclude Include="..\..\..\src\include\linux\wordsize.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />

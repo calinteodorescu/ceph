@@ -19,10 +19,10 @@
 #ifndef	_SCHED_H
 #define	_SCHED_H	1
 
-#include <features.h>
+#include <linux/features.h>
 
 /* Get type definitions.  */
-#include <bits_types.h>
+#include <linux/bits/types.h>
 
 #define __need_size_t
 #include <stddef.h>

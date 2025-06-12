@@ -18,7 +18,7 @@
 #ifndef	_ENDIAN_H
 #define	_ENDIAN_H	1
 
-#include <features.h>
+#include <linux/features.h>
 
 /* Definitions for byte order, according to significance of bytes,
    from low addresses to high addresses.  The value is what you get by
@@ -33,7 +33,7 @@
 #define	__PDP_ENDIAN	3412
 
 /* This file defines `__BYTE_ORDER' for the particular machine.  */
-#include <bits_endian.h>
+#include <linux/bits/endian.h>
 
 /* Some machines may need to use a different endianness for floating point
    values.  */
