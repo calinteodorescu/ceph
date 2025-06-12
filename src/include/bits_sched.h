@@ -79,16 +79,16 @@ __BEGIN_DECLS
 #ifdef __USE_GNU
 /* Clone current process.  */
 extern int clone (int (*__fn) (void *__arg), void *__child_stack,
-		  int __flags, void *__arg, ...) __THROW;
+		  int __flags, void *__arg, ...) throw;
 
 /* Unshare the specified resources.  */
-extern int unshare (int __flags) __THROW;
+extern int unshare (int __flags) throw;
 
 /* Get index of currently used CPU.  */
-extern int sched_getcpu (void) __THROW;
+extern int sched_getcpu (void) throw;
 
 /* Switch process to namespace of type NSTYPE indicated by FD.  */
-extern int setns (int __fd, int __nstype) __THROW;
+extern int setns (int __fd, int __nstype) throw;
 #endif
 
 
@@ -201,9 +201,9 @@ typedef struct
 __BEGIN_DECLS
 
 extern int __sched_cpucount (size_t __setsize, const cpu_set_t *__setp)
-  __THROW;
-extern cpu_set_t *__sched_cpualloc (size_t __count) __THROW __wur;
-extern void __sched_cpufree (cpu_set_t *__set) __THROW;
+  throw;
+extern cpu_set_t *__sched_cpualloc (size_t __count) throw __wur;
+extern void __sched_cpufree (cpu_set_t *__set) throw;
 
 __END_DECLS
 
