@@ -23,9 +23,9 @@
 #include <linux/sched.h>
 #include <linux/time.h>
 
-#include <bits/pthreadtypes.h>
-#include <bits/setjmp.h>
-#include <bits/wordsize.h>
+#include <linux/bits/pthreadtypes.h>
+#include <linux/bits/setjmp.h>
+#include <linux/bits/wordsize.h>
 
 
 /* Detach state.  */
