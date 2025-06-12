@@ -361,7 +361,7 @@
 /* This is here only because every header file already includes this one.  */
 #ifndef __ASSEMBLER__
 # ifndef _SYS_CDEFS_H
-#  include <sys/cdefs.h>
+#  include <linux/sys/cdefs.h>
 # endif
 
 /* If we don't have __REDIRECT, prototypes will be missing if

@@ -396,7 +396,7 @@
 # endif
 #endif
 
-#include <bits/wordsize.h>
+#include <linux/bits/wordsize.h>
 
 #if defined __LONG_DOUBLE_MATH_OPTIONAL && defined __NO_LONG_DOUBLE_MATH
 # define __LDBL_COMPAT 1
