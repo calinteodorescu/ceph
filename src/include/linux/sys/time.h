@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-#include <features.h>
+#include <linux/features.h>
 
 #include <sys/select.h>
 
