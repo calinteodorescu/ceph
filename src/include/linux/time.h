@@ -38,7 +38,7 @@ __BEGIN_DECLS
 
 /* This defines CLOCKS_PER_SEC, which is the number of processor clock
    ticks per second.  */
-#include <bits/time.h>
+#include <linux/bits/time.h>
 
 /* This is the obsolete POSIX.1-1988 name for the same constant.  */
 # if !defined __STRICT_ANSI__ && !defined __USE_XOPEN2K
@@ -52,7 +52,7 @@ __BEGIN_DECLS
 #if !defined __clock_t_defined && (defined _TIME_H || defined __need_clock_t)
 # define __clock_t_defined	1
 
-# include <bits/types.h>
+# include <linux/bits/types.h>
 
 __BEGIN_NAMESPACE_STD
 /* Returned by `clock'.  */
@@ -68,7 +68,7 @@ __USING_NAMESPACE_STD(clock_t)
 #if !defined __time_t_defined && (defined _TIME_H || defined __need_time_t)
 # define __time_t_defined	1
 
-# include <bits/types.h>
+#include <linux/bits/types.h>
 
 __BEGIN_NAMESPACE_STD
 /* Returned by `time'.  */

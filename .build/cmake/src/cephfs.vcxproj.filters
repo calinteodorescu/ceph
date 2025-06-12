@@ -21,6 +21,9 @@
     <Filter Include="Header Files\Linux Files\bits">
       <UniqueIdentifier>{b0c9d4db-0dac-4021-b696-f5017f03e2d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Linux Files\sys">
+      <UniqueIdentifier>{253e9028-23d5-4072-b595-971aedddd0ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\unistd.h">
@@ -73,6 +76,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\bits\types.h">
       <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sys\cdefs.h">
+      <Filter>Header Files\Linux Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sys\select.h">
+      <Filter>Header Files\Linux Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sys\sysmacros.h">
+      <Filter>Header Files\Linux Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sys\types.h">
+      <Filter>Header Files\Linux Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sys\ucontext.h">
+      <Filter>Header Files\Linux Files\sys</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

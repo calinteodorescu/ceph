@@ -51,7 +51,7 @@ struct timeval
    && !defined __USE_XOPEN2K
 /* Even though CLOCKS_PER_SEC has such a strange value CLK_TCK
    presents the real value for clock ticks per second for the system.  */
-#   include <bits/types.h>
+#   include <linux/bits/types.h>
 extern long int __sysconf (int);
 #   define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
 #  endif
