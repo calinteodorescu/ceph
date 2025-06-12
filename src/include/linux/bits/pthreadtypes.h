@@ -18,7 +18,7 @@
 #ifndef _BITS_PTHREADTYPES_H
 #define _BITS_PTHREADTYPES_H	1
 
-#include <bits/wordsize.h>
+#include <linux/bits/wordsize.h>
 
 #ifdef __x86_64__
 # if __WORDSIZE == 64
