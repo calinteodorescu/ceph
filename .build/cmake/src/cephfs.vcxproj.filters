@@ -56,5 +56,8 @@
     <ClInclude Include="..\..\..\src\include\linux\wordsize.h">
       <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\time.h">
+      <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

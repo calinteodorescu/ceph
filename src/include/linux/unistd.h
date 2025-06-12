@@ -1,6 +1,15 @@
 #ifndef	_UNISTD_H
 #define	_UNISTD_H
 
+#define __NEED_size_t
+#define __NEED_ssize_t
+#define __NEED_uid_t
+#define __NEED_gid_t
+#define __NEED_off_t
+#define __NEED_pid_t
+#define __NEED_intptr_t
+#define __NEED_useconds_t
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -21,15 +30,6 @@ extern "C" {
 #else
 #define NULL ((void*)0)
 #endif
-
-#define __NEED_size_t
-#define __NEED_ssize_t
-#define __NEED_uid_t
-#define __NEED_gid_t
-#define __NEED_off_t
-#define __NEED_pid_t
-#define __NEED_intptr_t
-#define __NEED_useconds_t
 
 int pipe(int [2]);
 int pipe2(int [2], int);

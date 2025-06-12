@@ -40,7 +40,7 @@ typedef __pid_t pid_t;
 
 
 /* Get system specific constant and data structure definitions.  */
-#include <bits_sched.h>
+#include <linux/bits/sched.h>
 /* Define the real names for the elements of `struct sched_param'.  */
 #define sched_priority	__sched_priority
 
