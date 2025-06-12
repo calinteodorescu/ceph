@@ -444,6 +444,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\bits\pthreadtypes.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\sched.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\setjmp.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits\sigset.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\types.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\wordsize.h" />

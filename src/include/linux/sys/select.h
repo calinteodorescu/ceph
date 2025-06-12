@@ -21,16 +21,16 @@
 #ifndef _SYS_SELECT_H
 #define _SYS_SELECT_H	1
 
-#include <features.h>
+#include <linux/features.h>
 
 /* Get definition of needed basic types.  */
-#include <bits/types.h>
+#include <linux/bits/types.h>
 
 /* Get __FD_* definitions.  */
-#include <bits/select.h>
+#include <linux/bits/select.h>
 
 /* Get __sigset_t.  */
-#include <bits/sigset.h>
+#include <linux/bits/sigset.h>
 
 #ifndef __sigset_t_defined
 # define __sigset_t_defined
@@ -42,7 +42,7 @@ typedef __sigset_t sigset_t;
 #define __need_timespec
 #include <time.h>
 #define __need_timeval
-#include <bits/time.h>
+#include <linux/bits/time.h>
 
 #ifndef __suseconds_t_defined
 typedef __suseconds_t suseconds_t;

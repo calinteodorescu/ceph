@@ -17,6 +17,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <linux/unistd.h>
+#include <linux/bits/sigset.h>
 
 #if defined(__linux__)
 #define PROCPREFIX

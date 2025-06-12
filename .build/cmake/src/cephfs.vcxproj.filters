@@ -113,5 +113,8 @@
     <ClInclude Include="..\..\..\src\include\linux\sys\time.h">
       <Filter>Header Files\Linux Files\sys</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\sigset.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
