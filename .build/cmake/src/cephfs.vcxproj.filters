@@ -24,6 +24,9 @@
     <Filter Include="Header Files\Linux Files\sys">
       <UniqueIdentifier>{253e9028-23d5-4072-b595-971aedddd0ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Linux Files\gnu">
+      <UniqueIdentifier>{27bb7020-85e1-4694-9fd6-ff7b2914ba79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\unistd.h">
@@ -85,6 +88,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\bits\wordsize.h">
       <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\gnu\stubs.h">
+      <Filter>Header Files\Linux Files\gnu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\gnu\stubs-32.h">
+      <Filter>Header Files\Linux Files\gnu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\gnu\stubs-64.h">
+      <Filter>Header Files\Linux Files\gnu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -445,6 +445,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\bits\wordsize.h" />
     <ClInclude Include="..\..\..\src\include\linux\endian.h" />
     <ClInclude Include="..\..\..\src\include\linux\features.h" />
+    <ClInclude Include="..\..\..\src\include\linux\gnu\stubs-32.h" />
+    <ClInclude Include="..\..\..\src\include\linux\gnu\stubs-64.h" />
+    <ClInclude Include="..\..\..\src\include\linux\gnu\stubs.h" />
     <ClInclude Include="..\..\..\src\include\linux\posix.h" />
     <ClInclude Include="..\..\..\src\include\linux\pthread.h" />
     <ClInclude Include="..\..\..\src\include\linux\sched.h" />
