@@ -360,12 +360,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="D:\Git\ceph\.build\cmake\ZERO_CHECK.vcxproj">
-      <Project>{109BC2A2-B4F0-3E41-BAB8-1895CCEC26A8}</Project>
-      <Name>ZERO_CHECK</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
     <ProjectReference Include="D:\Git\ceph\.build\cmake\src\arch\arch.vcxproj">
       <Project>{BB97EFE6-22E0-31A6-B072-2DE52D6A13FE}</Project>
       <Name>arch</Name>
