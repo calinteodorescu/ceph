@@ -98,5 +98,11 @@
     <ClInclude Include="..\..\..\src\include\linux\gnu\stubs-64.h">
       <Filter>Header Files\Linux Files\gnu</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\byteswap.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\byteswap-16.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

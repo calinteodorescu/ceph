@@ -438,6 +438,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\alltypes.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits\byteswap-16.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits\byteswap.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\endian.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\sched.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\time.h" />
