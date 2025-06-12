@@ -23,16 +23,16 @@
 #ifndef _BITS_BYTESWAP_H
 #define _BITS_BYTESWAP_H 1
 
-#include <features.h>
-#include <bits/types.h>
-#include <bits/wordsize.h>
+#include <linux/features.h>
+#include <linux/bits/types.h>
+#include <linux/bits/wordsize.h>
 
 /* Swap bytes in 16 bit value.  */
 #define __bswap_constant_16(x) \
      ((unsigned short int) ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8)))
 
 /* Get __bswap_16.  */
-#include <bits/byteswap-16.h>
+#include <linux/bits/byteswap-16.h>
 
 /* Swap bytes in 32 bit value.  */
 #define __bswap_constant_32(x) \

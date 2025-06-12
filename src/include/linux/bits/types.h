@@ -24,7 +24,7 @@
 #define	_BITS_TYPES_H	1
 
 #include <linux/features.h>
-#include <linux/wordsize.h>
+#include <linux/bits/wordsize.h>
 
 /* Convenience types.  */
 typedef unsigned char __u_char;
