@@ -15,6 +15,8 @@
 #ifndef CEPH_GLOBAL_CONTEXT_H
 #define CEPH_GLOBAL_CONTEXT_H
 
+const int NAME_MAX = 260;
+
 #include <limits.h>
 
 #include "common/config_fwd.h"
@@ -35,7 +37,7 @@ extern char g_process_name[NAME_MAX + 1];
 
 extern bool g_eio;
 extern char g_eio_devname[1024];
-extern char g_eio_path[PATH_MAX];
+extern char g_eio_path[NAME_MAX];
 extern int g_eio_error;
 extern int g_eio_iotype;   // IOCB_CMD_* from libaio's aio_abh.io
 extern unsigned long long g_eio_offset;
