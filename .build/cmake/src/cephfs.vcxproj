@@ -442,14 +442,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\bits\sched.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\types.h" />
-    <ClInclude Include="..\..\..\src\include\linux\bits_endian.h" />
-    <ClInclude Include="..\..\..\src\include\linux\bits_sched.h" />
-    <ClInclude Include="..\..\..\src\include\linux\bits_types.h" />
     <ClInclude Include="..\..\..\src\include\linux\endian.h" />
     <ClInclude Include="..\..\..\src\include\linux\features.h" />
     <ClInclude Include="..\..\..\src\include\linux\posix.h" />
     <ClInclude Include="..\..\..\src\include\linux\pthread.h" />
     <ClInclude Include="..\..\..\src\include\linux\sched.h" />
+    <ClInclude Include="..\..\..\src\include\linux\stdc-predef.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\cdefs.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\select.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\sysmacros.h" />

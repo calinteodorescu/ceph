@@ -18,10 +18,7 @@
 #ifndef	_SYS_CDEFS_H
 #define	_SYS_CDEFS_H	1
 
-/* We are almost always included from features.h. */
-#ifndef _FEATURES_H
-# include <features.h>
-#endif
+#include <linux/features.h>
 
 /* The GNU libc does not support any K&R compilers or the traditional mode
    of ISO C compilers anymore.  Check for some of the combinations not

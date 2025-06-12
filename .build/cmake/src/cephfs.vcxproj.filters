@@ -29,19 +29,10 @@
     <ClInclude Include="..\..\..\src\include\linux\unistd.h">
       <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\include\linux\bits_sched.h">
-      <Filter>Header Files\Linux Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\sched.h">
       <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\include\linux\bits_types.h">
-      <Filter>Header Files\Linux Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\endian.h">
-      <Filter>Header Files\Linux Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\include\linux\bits_endian.h">
       <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\alltypes.h">
@@ -91,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\sys\ucontext.h">
       <Filter>Header Files\Linux Files\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\stdc-predef.h">
+      <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
