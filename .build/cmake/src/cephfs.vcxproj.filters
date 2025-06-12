@@ -50,9 +50,6 @@
     <ClInclude Include="..\..\..\src\include\linux\typesizes.h">
       <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\include\linux\wordsize.h">
-      <Filter>Header Files\Linux Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\time.h">
       <Filter>Header Files\Linux Files</Filter>
     </ClInclude>
@@ -85,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\stdc-predef.h">
       <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\wordsize.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

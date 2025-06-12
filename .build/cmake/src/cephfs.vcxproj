@@ -442,6 +442,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\bits\sched.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\types.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits\wordsize.h" />
     <ClInclude Include="..\..\..\src\include\linux\endian.h" />
     <ClInclude Include="..\..\..\src\include\linux\features.h" />
     <ClInclude Include="..\..\..\src\include\linux\posix.h" />
@@ -456,7 +457,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\typesizes.h" />
     <ClInclude Include="..\..\..\src\include\linux\unistd.h" />
-    <ClInclude Include="..\..\..\src\include\linux\wordsize.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
