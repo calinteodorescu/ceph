@@ -24,7 +24,7 @@
 #if (! defined __need_time_t && !defined __need_clock_t && \
      ! defined __need_timespec)
 # define _TIME_H	1
-# include <features.h>
+# include <linux/features.h>
 
 __BEGIN_DECLS
 
@@ -38,7 +38,7 @@ __BEGIN_DECLS
 
 /* This defines CLOCKS_PER_SEC, which is the number of processor clock
    ticks per second.  */
-# include <bits/time.h>
+#include <bits/time.h>
 
 /* This is the obsolete POSIX.1-1988 name for the same constant.  */
 # if !defined __STRICT_ANSI__ && !defined __USE_XOPEN2K

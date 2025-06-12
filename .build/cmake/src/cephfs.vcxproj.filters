@@ -18,6 +18,9 @@
     <Filter Include="Header Files\Linux Files">
       <UniqueIdentifier>{f5ca1d63-b6ec-41b5-af58-fdec104cafe2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Linux Files\bits">
+      <UniqueIdentifier>{b0c9d4db-0dac-4021-b696-f5017f03e2d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\unistd.h">
@@ -58,6 +61,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\include\linux\time.h">
       <Filter>Header Files\Linux Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\endian.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\sched.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\time.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\types.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
