@@ -30,7 +30,7 @@ extern "C" {
 #define __NEED_intptr_t
 #define __NEED_useconds_t
 
-#include <bits/alltypes.h>
+#include <alltypes.h>
 
 int pipe(int [2]);
 int pipe2(int [2], int);
@@ -59,7 +59,7 @@ int symlink(const char *, const char *);
 int symlinkat(const char *, int, const char *);
 ssize_t readlink(const char *__restrict, char *__restrict, size_t);
 ssize_t readlinkat(int, const char *__restrict, char *__restrict, size_t);
-int unlink(const char *);
+// int unlink(const char *);
 int unlinkat(int, const char *, int);
 int rmdir(const char *);
 int truncate(const char *, off_t);
@@ -82,16 +82,16 @@ unsigned sleep(unsigned);
 int pause(void);
 
 pid_t fork(void);
-int execve(const char *, char *const [], char *const []);
-int execv(const char *, char *const []);
-int execle(const char *, const char *, ...);
-int execl(const char *, const char *, ...);
-int execvp(const char *, char *const []);
-int execlp(const char *, const char *, ...);
-int fexecve(int, char *const [], char *const []);
-_Noreturn void _exit(int);
+// int execve(const char *, char *const [], char *const []);
+// int execv(const char *, char *const []);
+// int execle(const char *, const char *, ...);
+// int execl(const char *, const char *, ...);
+// int execvp(const char *, char *const []);
+// int execlp(const char *, const char *, ...);
+// int fexecve(int, char *const [], char *const []);
+// _Noreturn void _exit(int);
 
-pid_t getpid(void);
+// pid_t getpid(void);
 pid_t getppid(void);
 pid_t getpgrp(void);
 pid_t getpgid(pid_t);
@@ -118,7 +118,7 @@ int setegid(gid_t);
 
 char *getlogin(void);
 int getlogin_r(char *, size_t);
-int gethostname(char *, size_t);
+// int gethostname(char *, size_t);
 char *ctermid(char *);
 
 int getopt(int, char * const [], const char *);
@@ -135,16 +135,16 @@ size_t confstr(int, char *, size_t);
 #define F_TLOCK 2
 #define F_TEST  3
 
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
-int lockf(int, int, off_t);
-long gethostid(void);
-int nice(int);
-void sync(void);
-pid_t setpgrp(void);
-char *crypt(const char *, const char *);
-void encrypt(char *, int);
-void swab(const void *__restrict, void *__restrict, ssize_t);
-#endif
+// #if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+// int lockf(int, int, off_t);
+// long gethostid(void);
+// int nice(int);
+// void sync(void);
+// pid_t setpgrp(void);
+// char *crypt(const char *, const char *);
+// void encrypt(char *, int);
+// void swab(const void *__restrict, void *__restrict, ssize_t);
+// #endif
 
 #if defined(_GNU_SOURCE) || defined(_BSD_SOURCE) \
  || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE+0 < 700)
@@ -174,7 +174,7 @@ void endusershell(void);
 char *getusershell(void);
 int acct(const char *);
 long syscall(long, ...);
-int execvpe(const char *, char *const [], char *const []);
+// int execvpe(const char *, char *const [], char *const []);
 int issetugid(void);
 #endif
 
@@ -249,7 +249,7 @@ int eaccess(const char *, int);
 
 #define _POSIX2_C_BIND          _POSIX_VERSION
 
-#include <bits/posix.h>
+#include <posix.h>
 
 
 

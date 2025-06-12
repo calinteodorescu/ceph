@@ -4897,6 +4897,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Test", "Unit Test", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{4D444A79-3653-4E86-BDD1-5266A4DF18E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Header Files", "01 Header Files", "{367EE524-E869-4810-8A6F-A527F6FE6885}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "win32", "win32", "{BD391E32-9C83-4601-9415-6EE1B2BE793A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\src\include\win32\dlfcn.h = ..\..\src\include\win32\dlfcn.h
+		..\..\src\include\win32\fs_compat.h = ..\..\src\include\win32\fs_compat.h
+		..\..\src\include\win32\ifaddrs.h = ..\..\src\include\win32\ifaddrs.h
+		..\..\src\include\win32\netdb.h = ..\..\src\include\win32\netdb.h
+		..\..\src\include\win32\poll.h = ..\..\src\include\win32\poll.h
+		..\..\src\include\win32\syslog.h = ..\..\src\include\win32\syslog.h
+		..\..\src\include\win32\win32_errno.h = ..\..\src\include\win32\win32_errno.h
+		..\..\src\include\win32\winioctl_compat.h = ..\..\src\include\win32\winioctl_compat.h
+		..\..\src\include\win32\winsock_compat.h = ..\..\src\include\win32\winsock_compat.h
+		..\..\src\include\win32\winsock_wrapper.h = ..\..\src\include\win32\winsock_wrapper.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -7806,6 +7822,8 @@ Global
 		{F85680D2-9A65-4A80-9F0A-CEDBB291AA6A} = {68777B95-027C-46DF-B899-BB457BC88FE9}
 		{5AEBD05F-6C52-4E74-9A5C-61B3DF8B27C0} = {68777B95-027C-46DF-B899-BB457BC88FE9}
 		{4D444A79-3653-4E86-BDD1-5266A4DF18E3} = {68777B95-027C-46DF-B899-BB457BC88FE9}
+		{367EE524-E869-4810-8A6F-A527F6FE6885} = {68EA898B-06F7-4B60-9EAA-FA6F2F463959}
+		{BD391E32-9C83-4601-9415-6EE1B2BE793A} = {367EE524-E869-4810-8A6F-A527F6FE6885}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59AE1874-A7CC-3E3B-9CFB-3E6BD708BCBB}

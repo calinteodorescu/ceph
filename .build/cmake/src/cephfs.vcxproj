@@ -361,6 +361,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="D:\Git\ceph\src\libcephfs.cc">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\include;D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\include;D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\include;D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\include;D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</ShowIncludes>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</ShowIncludes>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
