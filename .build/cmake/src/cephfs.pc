@@ -1,0 +1,10 @@
+prefix=C:/Program Files (x86)/ceph
+exec_prefix=${prefix}
+libdir=C:/Program Files (x86)/ceph/lib
+includedir=C:/Program Files (x86)/ceph/include
+
+Name: libcephfs
+Description: Ceph distributed file system client library
+Version: 
+Cflags: -I${includedir}/cephfs -D_FILE_OFFSET_BITS=64
+Libs: -L${libdir} -lcephfs

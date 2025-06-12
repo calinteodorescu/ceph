@@ -1249,6 +1249,8 @@ ZLIB_LIBRARY_DEBUG:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-win
 //Path to a library.
 ZLIB_LIBRARY_RELEASE:FILEPATH=D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/zlib_x64-windows/lib/zlib.lib
 
+_ICU_REQUIRED_LIBS_FOUND:STRING=OFF
+
 //The directory containing a CMake configuration file for boost_atomic.
 boost_atomic_DIR:PATH=D:/Git/boost/stage/lib/cmake/boost_atomic-1.88.0
 
@@ -1700,7 +1702,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=85
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
