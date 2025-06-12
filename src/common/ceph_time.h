@@ -20,7 +20,7 @@
 #include <string>
 #include <optional>
 #include <fmt/chrono.h>
-#include <sys/time.h>
+#include <linux/sys/time.h>
 
 #if defined(__APPLE__)
 #include <sys/_types/_timespec.h>

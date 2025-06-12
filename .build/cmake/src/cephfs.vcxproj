@@ -459,6 +459,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\sys\cdefs.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\select.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\sysmacros.h" />
+    <ClInclude Include="..\..\..\src\include\linux\sys\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\types.h" />
     <ClInclude Include="..\..\..\src\include\linux\sys\ucontext.h" />
     <ClInclude Include="..\..\..\src\include\linux\time.h" />

@@ -110,5 +110,8 @@
     <ClInclude Include="..\..\..\src\include\linux\bits\setjmp.h">
       <Filter>Header Files\Linux Files\bits</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\sys\time.h">
+      <Filter>Header Files\Linux Files\sys</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
