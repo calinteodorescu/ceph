@@ -20,7 +20,7 @@
 
 #include "log/Entry.h"
 
-#include <unistd.h>
+#include <linux/unistd.h>
 
 struct uuid_d;
 

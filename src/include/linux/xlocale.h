@@ -18,6 +18,8 @@
 #ifndef _LIBCPP_SUPPORT_XLOCALE_XLOCALE_H
 #define _LIBCPP_SUPPORT_XLOCALE_XLOCALE_H
 
+#include <linux/alltypes.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

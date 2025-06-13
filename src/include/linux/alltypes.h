@@ -195,8 +195,8 @@ typedef _Int64 off_t;
 #endif
 
 #if defined(__NEED_ino_t) && !defined(__DEFINED_ino_t)
-typedef unsigned _Int64 ino_t;
-#define __DEFINED_ino_t
+//typedef unsigned _Int64 ino_t;
+//#define __DEFINED_ino_t
 #endif
 
 #if defined(__NEED_dev_t) && !defined(__DEFINED_dev_t)
@@ -354,10 +354,10 @@ typedef struct __mbstate_t { unsigned __opaque1, __opaque2; } mbstate_t;
 #endif
 
 
-#if defined(__NEED_locale_t) && !defined(__DEFINED_locale_t)
+//#if defined(__NEED_locale_t) && !defined(__DEFINED_locale_t)
 typedef struct __locale_struct * locale_t;
 #define __DEFINED_locale_t
-#endif
+//#endif
 
 
 #if defined(__NEED_sigset_t) && !defined(__DEFINED_sigset_t)

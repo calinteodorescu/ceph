@@ -22,7 +22,7 @@
 #include <thread>
 #include <cstring>
 
-#include <pthread.h>
+#include <linux/pthread.h>
 #include <sys/types.h>
 
 #include "include/ceph_assert.h"

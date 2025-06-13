@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <chrono>
 #include <ctime>
-#include <sys/time.h>
+#include <linux/sys/time.h>
 
 #include "include/ceph_assert.h"
 #include "common/ceph_time.h"

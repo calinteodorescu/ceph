@@ -31,9 +31,9 @@
 #define CLOCK_REALTIME_COARSE CLOCK_REALTIME
 #define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
 
-int clock_gettime(int clk_id, struct timespec *tp);
+int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
 #else
-int clock_gettime(int clk_id, struct timespec *tp);
+int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
 #endif
 
 #ifdef _WIN32

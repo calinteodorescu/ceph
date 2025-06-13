@@ -118,8 +118,8 @@ typedef _Addr ssize_t;
 #endif
 
 #if defined(__NEED_intptr_t) && !defined(__DEFINED_intptr_t)
-typedef _Addr intptr_t;
-#define __DEFINED_intptr_t
+//typedef _Addr intptr_t;
+//#define __DEFINED_intptr_t
 #endif
 
 #if defined(__NEED_regoff_t) && !defined(__DEFINED_regoff_t)

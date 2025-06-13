@@ -13,7 +13,7 @@
 
 #include "boost/container/small_vector.hpp"
 
-#include <pthread.h>
+#include <linux/pthread.h>
 
 #include <string_view>
 

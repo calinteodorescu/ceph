@@ -19,14 +19,17 @@
  *	ISO C99 Standard: 7.23 Date and time	<time.h>
  */
 
+#include <linux/alltypes.h>
+
 #ifndef	_TIME_H
+
+__BEGIN_DECLS
 
 #if (! defined __need_time_t && !defined __need_clock_t && \
      ! defined __need_timespec)
 # define _TIME_H	1
 # include <linux/features.h>
 
-__BEGIN_DECLS
 
 #endif
 
@@ -88,10 +91,11 @@ __USING_NAMESPACE_STD(time_t)
 # include <bits/types.h>
 
 /* Clock ID used in clock and timer functions.  */
-typedef __clockid_t clockid_t;
 
 #endif /* clockid_t not defined and <time.h> or need clockid_t.  */
 #undef	__clockid_time_t
+
+typedef __clockid_t clockid_t;
 
 #if !defined __timer_t_defined && \
     ((defined _TIME_H && defined __USE_POSIX199309) || defined __need_timer_t)
@@ -100,11 +104,11 @@ typedef __clockid_t clockid_t;
 # include <bits/types.h>
 
 /* Timer ID returned by `timer_create'.  */
-typedef __timer_t timer_t;
 
 #endif /* timer_t not defined and <time.h> or need timer_t.  */
 #undef	__need_timer_t
 
+typedef __timer_t timer_t;
 
 #if (!defined __timespec_defined					\
      && ((defined _TIME_H						\
@@ -222,7 +226,7 @@ extern char *strptime (const char *__restrict __s,
 extern size_t strftime_l (char *__restrict __s, size_t __maxsize,
 			  const char *__restrict __format,
 			  const struct tm *__restrict __tp,
-			  __locale_t __loc) __THROW;
+			  _locale_t __loc) __THROW;
 # endif
 
 # ifdef __USE_GNU
@@ -278,9 +282,9 @@ extern char *ctime_r (const time_t *__restrict __timer,
 
 
 /* Defined in localtime.c.  */
-extern char *__tzname[2];	/* Current timezone names.  */
-extern int __daylight;		/* If daylight-saving time is ever in use.  */
-extern long int __timezone;	/* Seconds west of UTC.  */
+// extern char *__tzname[2];	/* Current timezone names.  */
+// extern int __daylight;		/* If daylight-saving time is ever in use.  */
+// extern long int __timezone;	/* Seconds west of UTC.  */
 
 
 # ifdef	__USE_POSIX
