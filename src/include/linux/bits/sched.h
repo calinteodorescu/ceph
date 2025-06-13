@@ -17,6 +17,7 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
+
 #ifndef __need_schedparam
 
 #ifndef _SCHED_H
@@ -121,11 +122,14 @@ typedef unsigned long int __cpu_mask;
 # define __CPUELT(cpu)	((cpu) / __NCPUBITS)
 # define __CPUMASK(cpu)	((__cpu_mask) 1 << ((cpu) % __NCPUBITS))
 
+#ifndef CPU_SET_T
 /* Data structure to describe CPU mask.  */
 typedef struct
 {
   __cpu_mask __bits[__CPU_SETSIZE / __NCPUBITS];
 } cpu_set_t;
+#define CPU_SET_T
+#endif
 
 /* Access functions for CPU masks.  */
 # if __GNUC_PREREQ (2, 91)

@@ -15,6 +15,9 @@
 #ifndef COMMON_CEPH_TIME_H
 #define COMMON_CEPH_TIME_H
 
+#include <linux/features.h>
+#include <linux/bits/time.h>
+
 #include <chrono>
 #include <iosfwd>
 #include <string>
@@ -28,6 +31,8 @@
 #define CLOCK_REALTIME_COARSE CLOCK_REALTIME
 #define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
 
+int clock_gettime(int clk_id, struct timespec *tp);
+#else
 int clock_gettime(int clk_id, struct timespec *tp);
 #endif
 

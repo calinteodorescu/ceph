@@ -246,11 +246,14 @@ typedef long long loff_t;
 
 #define CPU_SETSIZE (sizeof(size_t)*8)
 
+#ifndef CPU_SET_T
 typedef union
 {
   char cpuset[CPU_SETSIZE/8];
   size_t _align;
 } cpu_set_t;
+#define CPU_SET_T
+#endif
 
 struct iovec {
   void *iov_base;
@@ -296,10 +299,10 @@ int fchown(int fd, uid_t owner, gid_t group);
 int lchown(const char *path, uid_t owner, gid_t group);
 int setenv(const char *name, const char *value, int overwrite);
 
-int geteuid();
-int getegid();
-int getuid();
-int getgid();
+uid_t geteuid();
+uid_t getegid();
+uid_t getuid();
+uid_t getgid();
 
 #define unsetenv(name) _putenv_s(name, "")
 

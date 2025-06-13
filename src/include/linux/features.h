@@ -18,6 +18,8 @@
 #ifndef	_FEATURES_H
 #define	_FEATURES_H	1
 
+#define PLATFORM_WINDOWS
+
 /* These are defined by the user (or the compiler)
    to specify the desired environment:
 
@@ -253,6 +255,8 @@
 #if (_POSIX_C_SOURCE - 0) >= 199309L
 # define __USE_POSIX199309	1
 #endif
+
+#define __USE_POSIX199309
 
 #if (_POSIX_C_SOURCE - 0) >= 199506L
 # define __USE_POSIX199506	1

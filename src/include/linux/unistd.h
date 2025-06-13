@@ -33,17 +33,11 @@ extern "C" {
 
 int pipe(int [2]);
 int pipe2(int [2], int);
-int close(int);
 int posix_close(int, int);
-int dup(int);
-int dup2(int, int);
 int dup3(int, int, int);
-off_t lseek(int, off_t, int);
 int fsync(int);
 int fdatasync(int);
 
-ssize_t read(int, void *, size_t);
-ssize_t write(int, const void *, size_t);
 ssize_t pread(int, void *, size_t, off_t);
 ssize_t pwrite(int, const void *, size_t, off_t);
 
@@ -69,7 +63,17 @@ int ftruncate(int, off_t);
 #define W_OK 2
 #define X_OK 1
 
+#ifndef PLATFORM_WINDOWS
 int access(const char *, int);
+int close(int);
+int dup(int);
+int dup2(int,int);
+int isatty(int);
+off_t lseek(int, off_t, int);
+ssize_t read(int, void *, size_t);
+ssize_t write(int, const void *, size_t);
+#endif
+
 int faccessat(int, const char *, int, int);
 
 int chdir(const char *);
@@ -99,7 +103,6 @@ pid_t setsid(void);
 pid_t getsid(pid_t);
 char *ttyname(int);
 int ttyname_r(int, char *, size_t);
-int isatty(int);
 pid_t tcgetpgrp(int);
 int tcsetpgrp(int, pid_t);
 

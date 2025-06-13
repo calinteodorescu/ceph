@@ -19,6 +19,8 @@
 #ifndef	_SCHED_H
 #define	_SCHED_H	1
 
+#include <compat.h>
+
 #include <linux/sys/cdefs.h>
 #include <linux/features.h>
 
