@@ -438,6 +438,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\alltypes.h" />
+    <ClInclude Include="..\..\..\src\include\linux\bits\alltypes.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\byteswap-16.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\byteswap.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\endian.h" />
@@ -466,6 +467,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\typesizes.h" />
     <ClInclude Include="..\..\..\src\include\linux\unistd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\include\linux\bits\alltypes.h.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

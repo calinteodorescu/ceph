@@ -116,5 +116,13 @@
     <ClInclude Include="..\..\..\src\include\linux\bits\sigset.h">
       <Filter>Header Files\Linux Files\bits</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux\bits\alltypes.h">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\include\linux\bits\alltypes.h.in">
+      <Filter>Header Files\Linux Files\bits</Filter>
+    </None>
   </ItemGroup>
 </Project>
