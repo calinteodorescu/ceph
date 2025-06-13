@@ -72,7 +72,7 @@ __USING_NAMESPACE_STD(clock_t)
 
 __BEGIN_NAMESPACE_STD
 /* Returned by `time'.  */
-typedef __time_t time_t;
+//typedef __time_t time_t;
 __END_NAMESPACE_STD
 #ifdef __USE_POSIX
 __USING_NAMESPACE_STD(time_t)
@@ -117,11 +117,11 @@ typedef __timer_t timer_t;
 
 /* POSIX.1b structure for a time value.  This is like a `struct timeval' but
    has nanoseconds instead of microseconds.  */
-struct timespec
-  {
-    __time_t tv_sec;		/* Seconds.  */
-    __syscall_slong_t tv_nsec;	/* Nanoseconds.  */
-  };
+// struct timespec
+//   {
+//     __time_t tv_sec;		/* Seconds.  */
+//     __syscall_slong_t tv_nsec;	/* Nanoseconds.  */
+//   };
 
 #endif /* timespec not defined and <time.h> or need timespec.  */
 #undef	__need_timespec

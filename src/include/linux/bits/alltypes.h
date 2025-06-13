@@ -98,8 +98,8 @@ typedef struct { union { int __i[8]; volatile int __vi[8]; void *__p[4]; } __u; 
 #endif
 
 #if defined(__NEED_size_t) && !defined(__DEFINED_size_t)
-typedef unsigned _Addr size_t;
-#define __DEFINED_size_t
+// typedef unsigned _Addr size_t;
+// #define __DEFINED_size_t
 #endif
 
 #if defined(__NEED_uintptr_t) && !defined(__DEFINED_uintptr_t)
@@ -205,8 +205,8 @@ typedef _Int64 off_t;
 #endif
 
 #if defined(__NEED_ino_t) && !defined(__DEFINED_ino_t)
-typedef unsigned _Int64 ino_t;
-#define __DEFINED_ino_t
+// typedef unsigned _Int64 ino_t;
+// #define __DEFINED_ino_t
 #endif
 
 #if defined(__NEED_dev_t) && !defined(__DEFINED_dev_t)

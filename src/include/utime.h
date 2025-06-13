@@ -16,8 +16,8 @@
 #define CEPH_UTIME_H
 
 #include <math.h>
-#include <sys/time.h>
-#include <time.h>
+#include <linux/sys/time.h>
+#include <linux/time.h>
 #include <errno.h>
 
 #ifdef WITH_CRIMSON

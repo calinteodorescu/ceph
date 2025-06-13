@@ -5,7 +5,7 @@
 
 #include <condition_variable>
 #include <ctime>
-#include <pthread.h>
+#include <linux/pthread.h>
 #include "common/ceph_time.h"
 
 namespace ceph {

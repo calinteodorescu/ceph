@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <pthread.h>
+#include <linux/pthread.h>
 #include <atomic>
 
 #include "common/mutex_debug.h"

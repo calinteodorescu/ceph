@@ -19,7 +19,7 @@
 #include <system_error>
 #include <thread>
 
-#include <pthread.h>
+#include <linux/pthread.h>
 
 #include "include/ceph_assert.h"
 #include "include/common_fwd.h"
