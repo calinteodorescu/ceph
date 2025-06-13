@@ -127,29 +127,28 @@ typedef __timer_t timer_t;
 #undef	__need_timespec
 
 
-#ifdef	_TIME_H
 __BEGIN_NAMESPACE_STD
 /* Used by other time functions.  */
-struct tm
-{
-  int tm_sec;			/* Seconds.	[0-60] (1 leap second) */
-  int tm_min;			/* Minutes.	[0-59] */
-  int tm_hour;			/* Hours.	[0-23] */
-  int tm_mday;			/* Day.		[1-31] */
-  int tm_mon;			/* Month.	[0-11] */
-  int tm_year;			/* Year	- 1900.  */
-  int tm_wday;			/* Day of week.	[0-6] */
-  int tm_yday;			/* Days in year.[0-365]	*/
-  int tm_isdst;			/* DST.		[-1/0/1]*/
-
-# ifdef	__USE_MISC
-  long int tm_gmtoff;		/* Seconds east of UTC.  */
-  const char *tm_zone;		/* Timezone abbreviation.  */
-# else
-  long int __tm_gmtoff;		/* Seconds east of UTC.  */
-  const char *__tm_zone;	/* Timezone abbreviation.  */
-# endif
-};
+// struct tm
+// {
+//   int tm_sec;			/* Seconds.	[0-60] (1 leap second) */
+//   int tm_min;			/* Minutes.	[0-59] */
+//   int tm_hour;			/* Hours.	[0-23] */
+//   int tm_mday;			/* Day.		[1-31] */
+//   int tm_mon;			/* Month.	[0-11] */
+//   int tm_year;			/* Year	- 1900.  */
+//   int tm_wday;			/* Day of week.	[0-6] */
+//   int tm_yday;			/* Days in year.[0-365]	*/
+//   int tm_isdst;			/* DST.		[-1/0/1]*/
+// 
+// # ifdef	__USE_MISC
+//   long int tm_gmtoff;		/* Seconds east of UTC.  */
+//   const char *tm_zone;		/* Timezone abbreviation.  */
+// # else
+//   long int __tm_gmtoff;		/* Seconds east of UTC.  */
+//   const char *__tm_zone;	/* Timezone abbreviation.  */
+// # endif
+// };
 __END_NAMESPACE_STD
 #if defined __USE_XOPEN || defined __USE_POSIX
 __USING_NAMESPACE_STD(tm)
@@ -218,7 +217,7 @@ extern char *strptime (const char *__restrict __s,
 # ifdef __USE_XOPEN2K8
 /* Similar to the two functions above but take the information from
    the provided locale and not the global locale.  */
-# include <xlocale.h>
+# include <linux/xlocale.h>
 
 extern size_t strftime_l (char *__restrict __s, size_t __maxsize,
 			  const char *__restrict __format,
@@ -428,7 +427,5 @@ extern int getdate_r (const char *__restrict __string,
 # endif
 
 __END_DECLS
-
-#endif /* <time.h> included.  */
 
 #endif /* <time.h> not already included.  */
