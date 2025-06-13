@@ -10,7 +10,7 @@
 #include <utility>
 #include "buffer.h"
 
-#include "librados.h"
+#include "./librados.h"
 #include "librados_fwd.hpp"
 #include "rados_types.hpp"
 
@@ -235,7 +235,7 @@ inline namespace v14_2_0 {
    * ops added to an ObjectOperation.
    */
   enum ObjectOperationFlags {
-    OP_EXCL =   LIBRADOS_OP_FLAG_EXCL,
+    OP_EXCL = NLIBRADOS_OP::D_LIBRADOS_OP_FLAG_EXCL,
     OP_FAILOK = LIBRADOS_OP_FLAG_FAILOK,
     OP_FADVISE_RANDOM = LIBRADOS_OP_FLAG_FADVISE_RANDOM,
     OP_FADVISE_SEQUENTIAL = LIBRADOS_OP_FLAG_FADVISE_SEQUENTIAL,

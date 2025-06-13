@@ -15,6 +15,34 @@
 #ifndef CEPH_LIBRADOS_H
 #define CEPH_LIBRADOS_H
 
+/*
+ * Flags that can be set on a per-op basis via
+ * rados_read_op_set_flags() and rados_write_op_set_flags().
+ */
+enum ELIBRADOS_OP {
+  // fail a create operation if the object already exists
+  LIBRADOS_OP_FLAG_EXCL               =  0x1,
+  // allow the transaction to succeed even if the flagged op fails
+  LIBRADOS_OP_FLAG_FAILOK 	      = 0x2,
+  // indicate read/write op random
+  LIBRADOS_OP_FLAG_FADVISE_RANDOM     = 0x4,
+  // indicate read/write op sequential
+  LIBRADOS_OP_FLAG_FADVISE_SEQUENTIAL = 0x8,
+  // indicate read/write data will be accessed in the near future (by someone)
+  LIBRADOS_OP_FLAG_FADVISE_WILLNEED   = 0x10,
+  // indicate read/write data will not accessed in the near future (by anyone)
+  LIBRADOS_OP_FLAG_FADVISE_DONTNEED   = 0x20,
+  // indicate read/write data will not accessed again (by *this* client)
+  LIBRADOS_OP_FLAG_FADVISE_NOCACHE    = 0x40,
+  // optionally support FUA (force unit access) on write requests
+  LIBRADOS_OP_FLAG_FADVISE_FUA        = 0x80,
+};
+
+namespace NLIBRADOS_OP
+{
+const unsigned D_LIBRADOS_OP_FLAG_EXCL = LIBRADOS_OP_FLAG_EXCL;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -25,11 +53,11 @@ extern "C" {
 #elif defined(__FreeBSD__)
 #include <sys/types.h>
 #endif
-#include <unistd.h>
+#include <linux/unistd.h>
 #include <string.h>
 #include "rados_types.h"
 
-#include <sys/time.h>
+#include <linux/sys/time.h>
 
 #ifndef CEPH_OSD_TMAP_SET
 /* These are also defined in rados.h and objclass.h. Keep them in sync! */
@@ -64,29 +92,6 @@ extern "C" {
  */
 #define LIBRADOS_CREATE_EXCLUSIVE 1
 #define LIBRADOS_CREATE_IDEMPOTENT 0
-
-/*
- * Flags that can be set on a per-op basis via
- * rados_read_op_set_flags() and rados_write_op_set_flags().
- */
-enum {
-  // fail a create operation if the object already exists
-  LIBRADOS_OP_FLAG_EXCL               =  0x1,
-  // allow the transaction to succeed even if the flagged op fails
-  LIBRADOS_OP_FLAG_FAILOK 	      = 0x2,
-  // indicate read/write op random
-  LIBRADOS_OP_FLAG_FADVISE_RANDOM     = 0x4,
-  // indicate read/write op sequential
-  LIBRADOS_OP_FLAG_FADVISE_SEQUENTIAL = 0x8,
-  // indicate read/write data will be accessed in the near future (by someone)
-  LIBRADOS_OP_FLAG_FADVISE_WILLNEED   = 0x10,
-  // indicate read/write data will not accessed in the near future (by anyone)
-  LIBRADOS_OP_FLAG_FADVISE_DONTNEED   = 0x20,
-  // indicate read/write data will not accessed again (by *this* client)
-  LIBRADOS_OP_FLAG_FADVISE_NOCACHE    = 0x40,
-  // optionally support FUA (force unit access) on write requests
-  LIBRADOS_OP_FLAG_FADVISE_FUA        = 0x80,
-};
 
 #define CEPH_RADOS_API
 
