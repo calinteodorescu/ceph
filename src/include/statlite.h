@@ -8,8 +8,8 @@ extern "C" {
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
-#include <dirent.h>
+#include <linux/unistd.h>
+#include <linux/dirent.h>
 
 #include "include/compat.h"
 
