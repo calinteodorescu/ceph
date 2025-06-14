@@ -4,6 +4,12 @@
     <ClCompile Include="D:\Git\ceph\src\libcephfs.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\include\utime.cc">
+      <Filter>Header Files\ceph files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\include\uuid.cc">
+      <Filter>Header Files\ceph files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="D:\Git\ceph\src\CMakeLists.txt" />
@@ -26,6 +32,12 @@
     </Filter>
     <Filter Include="Header Files\Linux Files\gnu">
       <UniqueIdentifier>{27bb7020-85e1-4694-9fd6-ff7b2914ba79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ceph files">
+      <UniqueIdentifier>{4ccb2ea3-f1c1-4c95-a479-398b085906d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ceph files\cephfs">
+      <UniqueIdentifier>{45171f14-e04f-4061-8231-95878193a5c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,10 +131,261 @@
     <ClInclude Include="..\..\..\src\include\linux\bits\alltypes.h">
       <Filter>Header Files\Linux Files\bits</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\include\addr_parsing.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\alloc_ptr.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\any.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\bitmapper.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\blobhash.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\btree_map.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\buffer.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\buffer_fwd.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\buffer_raw.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\byteorder.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ceph_assert.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ceph_features.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ceph_frag.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ceph_fs.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ceph_fuse.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ceph_hash.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\color.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\common_fwd.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\compact_map.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\compact_set.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\compat.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\CompatSet.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\Context.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\coredumpctl.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\counter.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\cpp_lib_backport.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\crc32c.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\demangle.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\denc.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\Distribution.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\dlfcn_compat.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\elist.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\encoding.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\err.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\error.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\event_type.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\expected.hpp">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\filepath.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\frag.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\fs_types.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\function2.hpp">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\hash.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\health.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\inline_memory.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\int_types.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\intarith.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\interval_set.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\ipaddr.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\krbd.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\libcephsqlite.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\linux_fiemap.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\lru.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\mempool.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\msgr.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\object.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\on_exit.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\page.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\rados.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\random.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\rangeset.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\rbd_types.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\scope_guard.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\sock_compat.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\spinlock.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\stat.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\statlite.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\str_list.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\str_map.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\stringify.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\timegm.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\types.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\types_fmt.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\uses_allocator.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\util.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\utime.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\utime_fmt.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\uuid.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\xlist.h">
+      <Filter>Header Files\ceph files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\cephfs\ceph_ll_client.h">
+      <Filter>Header Files\ceph files\cephfs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\cephfs\libcephfs.h">
+      <Filter>Header Files\ceph files\cephfs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\include\cephfs\types.h">
+      <Filter>Header Files\ceph files\cephfs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\include\linux\bits\alltypes.h.in">
       <Filter>Header Files\Linux Files\bits</Filter>
     </None>
+    <None Include="..\..\..\src\include\config-h.in.cmake">
+      <Filter>Header Files\ceph files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\src\include\CMakeLists.txt">
+      <Filter>Header Files\ceph files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

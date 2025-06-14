@@ -13,6 +13,8 @@ extern "C" {
 
 #include "include/compat.h"
 
+#include "include/cephfs/ceph_ll_client.h"
+
 struct statlite {
   dev_t         st_dev;      /* device */
   ino_t         st_ino;      /* inode */

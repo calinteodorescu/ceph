@@ -363,6 +363,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\include\utime.cc" />
+    <ClCompile Include="..\..\..\src\include\uuid.cc" />
     <ClCompile Include="D:\Git\ceph\src\libcephfs.cc">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ShowIncludes>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\include;D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -437,6 +439,59 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\include\addr_parsing.h" />
+    <ClInclude Include="..\..\..\src\include\alloc_ptr.h" />
+    <ClInclude Include="..\..\..\src\include\any.h" />
+    <ClInclude Include="..\..\..\src\include\bitmapper.h" />
+    <ClInclude Include="..\..\..\src\include\blobhash.h" />
+    <ClInclude Include="..\..\..\src\include\btree_map.h" />
+    <ClInclude Include="..\..\..\src\include\buffer.h" />
+    <ClInclude Include="..\..\..\src\include\buffer_fwd.h" />
+    <ClInclude Include="..\..\..\src\include\buffer_raw.h" />
+    <ClInclude Include="..\..\..\src\include\byteorder.h" />
+    <ClInclude Include="..\..\..\src\include\cephfs\ceph_ll_client.h" />
+    <ClInclude Include="..\..\..\src\include\cephfs\libcephfs.h" />
+    <ClInclude Include="..\..\..\src\include\cephfs\types.h" />
+    <ClInclude Include="..\..\..\src\include\ceph_assert.h" />
+    <ClInclude Include="..\..\..\src\include\ceph_features.h" />
+    <ClInclude Include="..\..\..\src\include\ceph_frag.h" />
+    <ClInclude Include="..\..\..\src\include\ceph_fs.h" />
+    <ClInclude Include="..\..\..\src\include\ceph_fuse.h" />
+    <ClInclude Include="..\..\..\src\include\ceph_hash.h" />
+    <ClInclude Include="..\..\..\src\include\color.h" />
+    <ClInclude Include="..\..\..\src\include\common_fwd.h" />
+    <ClInclude Include="..\..\..\src\include\compact_map.h" />
+    <ClInclude Include="..\..\..\src\include\compact_set.h" />
+    <ClInclude Include="..\..\..\src\include\compat.h" />
+    <ClInclude Include="..\..\..\src\include\CompatSet.h" />
+    <ClInclude Include="..\..\..\src\include\Context.h" />
+    <ClInclude Include="..\..\..\src\include\coredumpctl.h" />
+    <ClInclude Include="..\..\..\src\include\counter.h" />
+    <ClInclude Include="..\..\..\src\include\cpp_lib_backport.h" />
+    <ClInclude Include="..\..\..\src\include\crc32c.h" />
+    <ClInclude Include="..\..\..\src\include\demangle.h" />
+    <ClInclude Include="..\..\..\src\include\denc.h" />
+    <ClInclude Include="..\..\..\src\include\Distribution.h" />
+    <ClInclude Include="..\..\..\src\include\dlfcn_compat.h" />
+    <ClInclude Include="..\..\..\src\include\elist.h" />
+    <ClInclude Include="..\..\..\src\include\encoding.h" />
+    <ClInclude Include="..\..\..\src\include\err.h" />
+    <ClInclude Include="..\..\..\src\include\error.h" />
+    <ClInclude Include="..\..\..\src\include\event_type.h" />
+    <ClInclude Include="..\..\..\src\include\expected.hpp" />
+    <ClInclude Include="..\..\..\src\include\filepath.h" />
+    <ClInclude Include="..\..\..\src\include\frag.h" />
+    <ClInclude Include="..\..\..\src\include\fs_types.h" />
+    <ClInclude Include="..\..\..\src\include\function2.hpp" />
+    <ClInclude Include="..\..\..\src\include\hash.h" />
+    <ClInclude Include="..\..\..\src\include\health.h" />
+    <ClInclude Include="..\..\..\src\include\inline_memory.h" />
+    <ClInclude Include="..\..\..\src\include\intarith.h" />
+    <ClInclude Include="..\..\..\src\include\interval_set.h" />
+    <ClInclude Include="..\..\..\src\include\int_types.h" />
+    <ClInclude Include="..\..\..\src\include\ipaddr.h" />
+    <ClInclude Include="..\..\..\src\include\krbd.h" />
+    <ClInclude Include="..\..\..\src\include\libcephsqlite.h" />
     <ClInclude Include="..\..\..\src\include\linux\alltypes.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\alltypes.h" />
     <ClInclude Include="..\..\..\src\include\linux\bits\byteswap-16.h" />
@@ -467,9 +522,41 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\linux\time.h" />
     <ClInclude Include="..\..\..\src\include\linux\typesizes.h" />
     <ClInclude Include="..\..\..\src\include\linux\unistd.h" />
+    <ClInclude Include="..\..\..\src\include\linux_fiemap.h" />
+    <ClInclude Include="..\..\..\src\include\lru.h" />
+    <ClInclude Include="..\..\..\src\include\mempool.h" />
+    <ClInclude Include="..\..\..\src\include\msgr.h" />
+    <ClInclude Include="..\..\..\src\include\object.h" />
+    <ClInclude Include="..\..\..\src\include\on_exit.h" />
+    <ClInclude Include="..\..\..\src\include\page.h" />
+    <ClInclude Include="..\..\..\src\include\rados.h" />
+    <ClInclude Include="..\..\..\src\include\random.h" />
+    <ClInclude Include="..\..\..\src\include\rangeset.h" />
+    <ClInclude Include="..\..\..\src\include\rbd_types.h" />
+    <ClInclude Include="..\..\..\src\include\scope_guard.h" />
+    <ClInclude Include="..\..\..\src\include\sock_compat.h" />
+    <ClInclude Include="..\..\..\src\include\spinlock.h" />
+    <ClInclude Include="..\..\..\src\include\stat.h" />
+    <ClInclude Include="..\..\..\src\include\statlite.h" />
+    <ClInclude Include="..\..\..\src\include\stringify.h" />
+    <ClInclude Include="..\..\..\src\include\str_list.h" />
+    <ClInclude Include="..\..\..\src\include\str_map.h" />
+    <ClInclude Include="..\..\..\src\include\timegm.h" />
+    <ClInclude Include="..\..\..\src\include\types.h" />
+    <ClInclude Include="..\..\..\src\include\types_fmt.h" />
+    <ClInclude Include="..\..\..\src\include\uses_allocator.h" />
+    <ClInclude Include="..\..\..\src\include\util.h" />
+    <ClInclude Include="..\..\..\src\include\utime.h" />
+    <ClInclude Include="..\..\..\src\include\utime_fmt.h" />
+    <ClInclude Include="..\..\..\src\include\uuid.h" />
+    <ClInclude Include="..\..\..\src\include\xlist.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\src\include\config-h.in.cmake" />
     <None Include="..\..\..\src\include\linux\bits\alltypes.h.in" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\src\include\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

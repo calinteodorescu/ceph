@@ -37,6 +37,8 @@
 #include "include/win32/fs_compat.h" // for uid_t, gid_t
 #endif
 
+#include "include/cephfs/ceph_ll_client.h"
+
 class MCommand;
 class MMonCommand;
 
