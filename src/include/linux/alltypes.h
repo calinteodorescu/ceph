@@ -179,10 +179,10 @@ typedef unsigned _Int64 uintmax_t;
 #endif
 
 
-#if defined(__NEED_mode_t) && !defined(__DEFINED_mode_t)
+// #if defined(__NEED_mode_t) && !defined(__DEFINED_mode_t)
 typedef unsigned mode_t;
-#define __DEFINED_mode_t
-#endif
+// #define __DEFINED_mode_t
+// #endif
 
 #if defined(__NEED_nlink_t) && !defined(__DEFINED_nlink_t)
 typedef unsigned _Reg nlink_t;

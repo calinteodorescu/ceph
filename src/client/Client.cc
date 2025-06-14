@@ -409,8 +409,8 @@ Client::Client(Messenger *m, MonClient *mc, Objecter *objecter_)
 
   _reset_faked_inos();
 
-  user_id = cct->_conf->client_mount_uid;
-  group_id = cct->_conf->client_mount_gid;
+  user_id = cct->_conf.get_val<bool>( "client_mount_uid" );
+  group_id = cct->_conf.get_val<bool>( "client_mount_gid" );
   client_permissions = cct->_conf.get_val<bool>("client_permissions");
   fuse_default_permissions = cct->_conf.get_val<bool>(
     "fuse_default_permissions");

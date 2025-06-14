@@ -39,6 +39,15 @@
     <Filter Include="Header Files\ceph files\cephfs">
       <UniqueIdentifier>{45171f14-e04f-4061-8231-95878193a5c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Documentation Files">
+      <UniqueIdentifier>{0f5a6b63-e3ce-46ad-ab45-d87498ad97d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation Files\ceph">
+      <UniqueIdentifier>{249d316e-eab1-4044-b523-d180c0ca7a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation Files\ceph\api">
+      <UniqueIdentifier>{dbe143cb-231a-4f43-b3ba-d521d783aff7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\unistd.h">
@@ -382,10 +391,186 @@
     <None Include="..\..\..\src\include\config-h.in.cmake">
       <Filter>Header Files\ceph files</Filter>
     </None>
+    <None Include="..\..\..\doc\cephfs\add-remove-mds.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\administration.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\app-best-practices.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\cache-configuration.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\capabilities.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\ceph-dokan.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\cephfs-architecture.svg">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\cephfs-io-path.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\cephfs-journal-tool.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\cephfs-mirroring.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\cephfs-top.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\charmap.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\client-auth.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\client-config-ref.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\createfs.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\dirfrags.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\disaster-recovery.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\disaster-recovery-experts.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\dynamic-metadata-management.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\eviction.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\experimental-features.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\file-layouts.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\fs-volumes.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\full.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\health-messages.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\index.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\journaler.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\kernel-features.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\lazyio.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mantle.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mdcache.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mds-config-ref.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mds-journaling.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mds-state-diagram.dot">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mds-states.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\metrics.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mount-prerequisites.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mount-using-fuse.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\mount-using-kernel-driver.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\multifs.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\multimds.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\nfs.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\posix.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\purge-queue.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\quiesce-set-states.svg">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\quota.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\recover-fs-after-mon-store-loss.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\scrub.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\snap-schedule.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\snapshots.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\standby.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\subtree-partitioning.svg">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\troubleshooting.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\upgrading.rst">
+      <Filter>Documentation Files\ceph</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\api\index.rst">
+      <Filter>Documentation Files\ceph\api</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\api\libcephfs-java.rst">
+      <Filter>Documentation Files\ceph\api</Filter>
+    </None>
+    <None Include="..\..\..\doc\cephfs\api\libcephfs-py.rst">
+      <Filter>Documentation Files\ceph\api</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\src\include\CMakeLists.txt">
       <Filter>Header Files\ceph files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\doc\cephfs\cephfs-top.png">
+      <Filter>Documentation Files\ceph</Filter>
+    </Image>
   </ItemGroup>
 </Project>

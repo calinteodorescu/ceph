@@ -552,11 +552,71 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="..\..\..\src\include\xlist.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\doc\cephfs\add-remove-mds.rst" />
+    <None Include="..\..\..\doc\cephfs\administration.rst" />
+    <None Include="..\..\..\doc\cephfs\api\index.rst" />
+    <None Include="..\..\..\doc\cephfs\api\libcephfs-java.rst" />
+    <None Include="..\..\..\doc\cephfs\api\libcephfs-py.rst" />
+    <None Include="..\..\..\doc\cephfs\app-best-practices.rst" />
+    <None Include="..\..\..\doc\cephfs\cache-configuration.rst" />
+    <None Include="..\..\..\doc\cephfs\capabilities.rst" />
+    <None Include="..\..\..\doc\cephfs\ceph-dokan.rst" />
+    <None Include="..\..\..\doc\cephfs\cephfs-architecture.svg" />
+    <None Include="..\..\..\doc\cephfs\cephfs-io-path.rst" />
+    <None Include="..\..\..\doc\cephfs\cephfs-journal-tool.rst" />
+    <None Include="..\..\..\doc\cephfs\cephfs-mirroring.rst" />
+    <None Include="..\..\..\doc\cephfs\cephfs-top.rst" />
+    <None Include="..\..\..\doc\cephfs\charmap.rst" />
+    <None Include="..\..\..\doc\cephfs\client-auth.rst" />
+    <None Include="..\..\..\doc\cephfs\client-config-ref.rst" />
+    <None Include="..\..\..\doc\cephfs\createfs.rst" />
+    <None Include="..\..\..\doc\cephfs\dirfrags.rst" />
+    <None Include="..\..\..\doc\cephfs\disaster-recovery-experts.rst" />
+    <None Include="..\..\..\doc\cephfs\disaster-recovery.rst" />
+    <None Include="..\..\..\doc\cephfs\dynamic-metadata-management.rst" />
+    <None Include="..\..\..\doc\cephfs\eviction.rst" />
+    <None Include="..\..\..\doc\cephfs\experimental-features.rst" />
+    <None Include="..\..\..\doc\cephfs\file-layouts.rst" />
+    <None Include="..\..\..\doc\cephfs\fs-volumes.rst" />
+    <None Include="..\..\..\doc\cephfs\full.rst" />
+    <None Include="..\..\..\doc\cephfs\health-messages.rst" />
+    <None Include="..\..\..\doc\cephfs\index.rst" />
+    <None Include="..\..\..\doc\cephfs\journaler.rst" />
+    <None Include="..\..\..\doc\cephfs\kernel-features.rst" />
+    <None Include="..\..\..\doc\cephfs\lazyio.rst" />
+    <None Include="..\..\..\doc\cephfs\mantle.rst" />
+    <None Include="..\..\..\doc\cephfs\mdcache.rst" />
+    <None Include="..\..\..\doc\cephfs\mds-config-ref.rst" />
+    <None Include="..\..\..\doc\cephfs\mds-journaling.rst" />
+    <None Include="..\..\..\doc\cephfs\mds-state-diagram.dot" />
+    <None Include="..\..\..\doc\cephfs\mds-states.rst" />
+    <None Include="..\..\..\doc\cephfs\metrics.rst" />
+    <None Include="..\..\..\doc\cephfs\mount-prerequisites.rst" />
+    <None Include="..\..\..\doc\cephfs\mount-using-fuse.rst" />
+    <None Include="..\..\..\doc\cephfs\mount-using-kernel-driver.rst" />
+    <None Include="..\..\..\doc\cephfs\multifs.rst" />
+    <None Include="..\..\..\doc\cephfs\multimds.rst" />
+    <None Include="..\..\..\doc\cephfs\nfs.rst" />
+    <None Include="..\..\..\doc\cephfs\posix.rst" />
+    <None Include="..\..\..\doc\cephfs\purge-queue.rst" />
+    <None Include="..\..\..\doc\cephfs\quiesce-set-states.svg" />
+    <None Include="..\..\..\doc\cephfs\quota.rst" />
+    <None Include="..\..\..\doc\cephfs\recover-fs-after-mon-store-loss.rst" />
+    <None Include="..\..\..\doc\cephfs\scrub.rst" />
+    <None Include="..\..\..\doc\cephfs\snap-schedule.rst" />
+    <None Include="..\..\..\doc\cephfs\snapshots.rst" />
+    <None Include="..\..\..\doc\cephfs\standby.rst" />
+    <None Include="..\..\..\doc\cephfs\subtree-partitioning.svg" />
+    <None Include="..\..\..\doc\cephfs\troubleshooting.rst" />
+    <None Include="..\..\..\doc\cephfs\upgrading.rst" />
     <None Include="..\..\..\src\include\config-h.in.cmake" />
     <None Include="..\..\..\src\include\linux\bits\alltypes.h.in" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\src\include\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\doc\cephfs\cephfs-top.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
