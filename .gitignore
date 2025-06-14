@@ -116,6 +116,5 @@ src/pybind/rgw/rgw.egg-info/
 /src/out/build/x64-Debug
 /.build/cmake
 /vcpkg_installed
-/doc.html
 /doc/venv
 /venv
