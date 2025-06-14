@@ -52,7 +52,8 @@ version, codename, release = parse_ceph_release()
 pygments_style = 'sphinx'
 
 # HTML output options
-html_theme = 'ceph'
+# html_theme = 'ceph'
+html_theme = 'sphinx_rtd_theme'
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
