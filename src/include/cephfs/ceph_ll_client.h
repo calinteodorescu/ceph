@@ -19,7 +19,7 @@
 #include "include/win32/fs_compat.h"
 #endif
 
-#include "../elist.h"
+#include "linux/alltypes.h"
 
 #ifdef __cplusplus
 extern "C" {
