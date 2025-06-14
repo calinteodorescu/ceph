@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logging and Debugging &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CPU Profiling" href="cpu-profiling.html" />
+    <link rel="prev" title="Troubleshooting PGs" href="troubleshooting-pg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Troubleshooting</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="community.html">The Ceph Community</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Logging and Debugging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#runtime">Runtime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#boot-time">Boot Time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accelerating-log-rotation">Accelerating Log Rotation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#valgrind">Valgrind</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subsystem-log-and-debug-settings">Subsystem, Log and Debug Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="memory-profiling.html">Memory Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiling.html">CPU Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="../operations/index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Logging and Debugging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/troubleshooting/log-and-debug.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="logging-and-debugging">
+<h1>Logging and Debugging<a class="headerlink" href="#logging-and-debugging" title="Link to this heading"></a></h1>
+<p>Ceph component debug log levels can be adjusted at runtime, while services are
+running. In some circumstances you might want to adjust debug log levels in
+<code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> or in the central config store. Increased debug logging can be
+useful if you are encountering issues when operating your cluster.  By default,
+Ceph log files are in <code class="docutils literal notranslate"><span class="pre">/var/log/ceph</span></code>; containerized deployments often log
+elsewhere under <code class="docutils literal notranslate"><span class="pre">/var/log</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Remember that debug output can slow down your system, and that this
+latency sometimes hides race conditions.</p>
+</div>
+<p>Debug logging is resource intensive. If you encounter a problem in a specific
+component of your cluster, begin troubleshooting by enabling logging for only
+that component. For example, if your OSDs are running without
+errors, but your CephFS metadata servers (MDS) are not, enable logging for specific
+instances that are having problems. Continue by enabling
+logging for each subsystem only as needed.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Verbose logging sometimes generates over 1 GB of data per hour.
+If the disk that your operating system runs on (your “OS disk”) reaches its
+capacity, the node associated with that disk will stop working.</p>
+</div>
+<p>Whenever you enable or increase the level of debug logging, ensure that you
+have ample capacity for log files, as this may dramatically increase their
+size.  For details on rotating log files, see <a class="reference internal" href="#accelerating-log-rotation">Accelerating Log Rotation</a>.
+When your system is running well again, remove unnecessary debugging settings
+in order to ensure that your cluster runs optimally. Logging debug-output
+messages is a slow process and a potential waste of your cluster’s resources.</p>
+<p>For details on available settings, see <a class="reference internal" href="#subsystem-log-and-debug-settings">Subsystem, Log and Debug Settings</a>.</p>
+<section id="runtime">
+<h2>Runtime<a class="headerlink" href="#runtime" title="Link to this heading"></a></h2>
+<p>To see configuration settings at runtime, log in to a host that has a
+running daemon and run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>daemon<span class="w"> </span><span class="o">{</span>daemon-name<span class="o">}</span><span class="w"> </span>config<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>less</span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>daemon<span class="w"> </span>osd.0<span class="w"> </span>config<span class="w"> </span>show<span class="w"> </span><span class="p">|</span><span class="w"> </span>less</span>
+</pre></div></div><p>To activate Ceph’s debugging output (that is, the <code class="docutils literal notranslate"><span class="pre">dout()</span></code> logging function)
+at runtime, inject arguments into the runtime configuration by running a <code class="docutils literal notranslate"><span class="pre">ceph</span>
+<span class="pre">tell</span></code> command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>tell<span class="w"> </span><span class="o">{</span>daemon-type<span class="o">}</span>.<span class="o">{</span>daemon<span class="w"> </span>id<span class="w"> </span>or<span class="w"> </span>*<span class="o">}</span><span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">{</span>name<span class="o">}</span><span class="w"> </span><span class="o">{</span>value<span class="o">}</span></span>
+</pre></div></div><p>Here <code class="docutils literal notranslate"><span class="pre">{daemon-type}</span></code> is <code class="docutils literal notranslate"><span class="pre">osd</span></code>, <code class="docutils literal notranslate"><span class="pre">mon</span></code>, or <code class="docutils literal notranslate"><span class="pre">mds</span></code>. Apply the runtime
+setting either to a specific daemon (by specifying its ID) or to all daemons of
+a particular type (by using the <code class="docutils literal notranslate"><span class="pre">*</span></code> wildcard as the ID).  For example, to increase
+debug logging for a specific <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon named <code class="docutils literal notranslate"><span class="pre">osd.0</span></code>, run the
+following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>tell<span class="w"> </span>osd.0<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>debug_osd<span class="w"> </span><span class="m">0</span>/5</span>
+</pre></div></div><p>The <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">tell</span></code> command goes through the monitors. However, if you are unable
+to bind to the monitor, there is another method that can be used to activate
+Ceph’s debugging output: use the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">daemon</span></code> command to log in to the host
+of a specific daemon and change the daemon’s configuration. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>ceph<span class="w"> </span>daemon<span class="w"> </span>osd.0<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>debug_osd<span class="w"> </span><span class="m">0</span>/5</span>
+</pre></div></div><p>For details on available settings, see <a class="reference internal" href="#subsystem-log-and-debug-settings">Subsystem, Log and Debug Settings</a>.</p>
+</section>
+<section id="boot-time">
+<h2>Boot Time<a class="headerlink" href="#boot-time" title="Link to this heading"></a></h2>
+<p>To activate Ceph’s debugging output (that is, the <code class="docutils literal notranslate"><span class="pre">dout()</span></code> logging function)
+at boot time, you must add settings to your Ceph configuration file (or
+set corresponding values in the central config store).
+Subsystems that are common to all daemons are set under <code class="docutils literal notranslate"><span class="pre">[global]</span></code> in the
+configuration file. Subsystems for a specific daemon are set under the relevant
+daemon section in the configuration file (for example, <code class="docutils literal notranslate"><span class="pre">[mon]</span></code>, <code class="docutils literal notranslate"><span class="pre">[osd]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[mds]</span></code>). Here is an example that shows possible debugging settings in a Ceph
+configuration file:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[global]</span>
+<span class="w">    </span><span class="na">debug_ms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1/5</span>
+
+<span class="k">[mon]</span>
+<span class="w">    </span><span class="na">debug_mon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">20</span>
+<span class="w">    </span><span class="na">debug_paxos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1/5</span>
+<span class="w">    </span><span class="na">debug_auth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2</span>
+
+<span class="w"> </span><span class="k">[osd]</span>
+<span class="w">     </span><span class="na">debug_osd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1/5</span>
+<span class="w">     </span><span class="na">debug_filestore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1/5</span>
+<span class="w">     </span><span class="na">debug_journal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+<span class="w">     </span><span class="na">debug_monc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5/20</span>
+
+<span class="k">[mds]</span>
+<span class="w">    </span><span class="na">debug_mds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+<span class="w">    </span><span class="na">debug_mds_balancer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1</span>
+</pre></div>
+</div>
+<p>For details, see <a class="reference internal" href="#subsystem-log-and-debug-settings">Subsystem, Log and Debug Settings</a>.</p>
+</section>
+<section id="accelerating-log-rotation">
+<h2>Accelerating Log Rotation<a class="headerlink" href="#accelerating-log-rotation" title="Link to this heading"></a></h2>
+<p>If a host’s log filesystem is nearly full, you can accelerate log rotation by
+modifying the Ceph log rotation file at <code class="docutils literal notranslate"><span class="pre">/etc/logrotate.d/ceph</span></code>. To increase
+the frequency of log rotation (which will guard against a filesystem reaching
+capacity), add a <code class="docutils literal notranslate"><span class="pre">size</span></code> directive after the <code class="docutils literal notranslate"><span class="pre">weekly</span></code> frequency directive.
+To smooth out volume spikes, consider changing <code class="docutils literal notranslate"><span class="pre">weekly</span></code> to <code class="docutils literal notranslate"><span class="pre">daily</span></code> and
+consider changing <code class="docutils literal notranslate"><span class="pre">rotate</span></code> to <code class="docutils literal notranslate"><span class="pre">30</span></code>. The procedure for adding the size
+setting is shown immediately below.</p>
+<ol class="arabic">
+<li><p>Note the default settings of the <code class="docutils literal notranslate"><span class="pre">/etc/logrotate.d/ceph</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rotate</span> <span class="mi">7</span>
+<span class="n">weekly</span>
+<span class="n">compress</span>
+<span class="n">sharedscripts</span>
+</pre></div>
+</div>
+</li>
+<li><p>Modify them by adding a <code class="docutils literal notranslate"><span class="pre">size</span></code> setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rotate</span> <span class="mi">7</span>
+<span class="n">weekly</span>
+<span class="n">size</span> <span class="mi">500</span><span class="n">M</span>
+<span class="n">compress</span>
+<span class="n">sharedscripts</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the crontab editor for your user space:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crontab<span class="w"> </span>-e</span>
+</pre></div></div></li>
+<li><p>Add an entry to crontab that instructs cron to check the
+<code class="docutils literal notranslate"><span class="pre">etc/logrotate.d/ceph</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">30</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">logrotate</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">logrotate</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">ceph</span> <span class="o">&gt;/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>In this example, the <code class="docutils literal notranslate"><span class="pre">etc/logrotate.d/ceph</span></code> file will be checked and possibly
+rotated every 30 minutes.</p>
+</section>
+<section id="valgrind">
+<h2>Valgrind<a class="headerlink" href="#valgrind" title="Link to this heading"></a></h2>
+<p>When you are debugging your cluster’s performance, you might find it necessary
+to track down memory and threading issues. The Valgrind tool suite can be used
+to detect problems in a specific daemon, in a particular type of daemon, or in
+the entire cluster. Because Valgrind is computationally expensive, it should be
+used only when developing or debugging Ceph, and it will slow down your system
+if used at other times. Valgrind messages are logged to <code class="docutils literal notranslate"><span class="pre">stderr</span></code>.</p>
+</section>
+<section id="subsystem-log-and-debug-settings">
+<h2>Subsystem, Log and Debug Settings<a class="headerlink" href="#subsystem-log-and-debug-settings" title="Link to this heading"></a></h2>
+<p>Debug logging output is typically enabled via subsystems.</p>
+<section id="ceph-subsystems">
+<h3>Ceph Subsystems<a class="headerlink" href="#ceph-subsystems" title="Link to this heading"></a></h3>
+<p>For each subsystem, there is a logging level for its output logs (a so-called
+“log level”) and a logging level for its in-memory logs (a so-called “memory
+level”). Different values may be set for these two logging levels in each
+subsystem. Ceph’s logging levels operate on a scale of <code class="docutils literal notranslate"><span class="pre">1</span></code> to <code class="docutils literal notranslate"><span class="pre">20</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">1</span></code> is terse and <code class="docutils literal notranslate"><span class="pre">20</span></code> is verbose.  In a certain few cases, there are logging
+levels that can take a value greater than 20. The resulting logs are extremely
+verbose.</p>
+<p>The in-memory logs are not sent to the output log unless one or more of the
+following conditions are true:</p>
+<ul class="simple">
+<li><p>a fatal signal has been raised or</p></li>
+<li><p>an assertion within Ceph code has been triggered or</p></li>
+<li><p>sending in-memory logs to the output log has been manually triggered.
+Consult <a class="reference external" href="http://docs.ceph.com/en/latest/man/8/ceph/#daemon">the portion of the “Ceph Administration Tool documentation
+that provides an example of how to submit admin socket commands</a> for more detail.</p></li>
+</ul>
+<p>Log levels and memory levels can be set either together or separately. If a
+subsystem is assigned a single value, then that value determines both the log
+level and the memory level. For example, <code class="docutils literal notranslate"><span class="pre">debug</span> <span class="pre">ms</span> <span class="pre">=</span> <span class="pre">5</span></code> will give the <code class="docutils literal notranslate"><span class="pre">ms</span></code>
+subsystem a log level of <code class="docutils literal notranslate"><span class="pre">5</span></code> and a memory level of <code class="docutils literal notranslate"><span class="pre">5</span></code>.  On the other hand,
+if a subsystem is assigned two values that are separated by a forward slash
+(/), then the first value determines the log level and the second value
+determines the memory level. For example, <code class="docutils literal notranslate"><span class="pre">debug</span> <span class="pre">ms</span> <span class="pre">=</span> <span class="pre">1/5</span></code> will give the
+<code class="docutils literal notranslate"><span class="pre">ms</span></code> subsystem a log level of <code class="docutils literal notranslate"><span class="pre">1</span></code> and a memory level of <code class="docutils literal notranslate"><span class="pre">5</span></code>. See the
+following:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">debug {subsystem}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">{log-level}/{memory-level}</span>
+<span class="c1">#for example</span>
+<span class="na">debug mds balancer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1/20</span>
+</pre></div>
+</div>
+<p>The following table provides a list of Ceph subsystems and their default log and
+memory levels. Once you complete your logging efforts, restore each subsystem’s
+values to their defaults or to a level suitable for normal operations.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Subsystem</p></th>
+<th class="head"><p>Log Level</p></th>
+<th class="head"><p>Memory Level</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">lockdep</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">context</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crush</span></code></p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mds</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mds</span> <span class="pre">balancer</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mds</span> <span class="pre">log</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mds</span> <span class="pre">log</span> <span class="pre">expire</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mds</span> <span class="pre">migrator</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">buffer</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">timer</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">filer</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">striper</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">objecter</span></code></p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rados</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rbd</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">mirror</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">replay</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">pwl</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">journaler</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">objectcacher</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">immutable</span> <span class="pre">obj</span> <span class="pre">cache</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">client</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">osd</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optracker</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">objclass</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">filestore</span></code></p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">journal</span></code></p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ms</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mon</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">monc</span></code></p></td>
+<td><p>0</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">paxos</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tp</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">auth</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crypto</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">finisher</span></code></p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reserver</span></code></p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">heartbeatmap</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">perfcounter</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span> <span class="pre">sync</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span> <span class="pre">datacache</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span> <span class="pre">access</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span> <span class="pre">dbstore</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span> <span class="pre">lifecycle</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rgw</span> <span class="pre">notification</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">javaclient</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">asok</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">throttle</span></code></p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">refs</span></code></p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compressor</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bluestore</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bluefs</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">bdev</span></code></p></td>
+<td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kstore</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rocksdb</span></code></p></td>
+<td><p>4</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fuse</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mgr</span></code></p></td>
+<td><p>2</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mgrc</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dpdk</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eventtrace</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prioritycache</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cephfs</span> <span class="pre">mirror</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cephsqlite</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">onode</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">odata</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">ompap</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">tm</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">t</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">cleaner</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">epm</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">lba</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">fixedkv</span> <span class="pre">tree</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">cache</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">journal</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">device</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seastore</span> <span class="pre">backref</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">alienstore</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mclock</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cyanstore</span></code></p></td>
+<td><p>0</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">exporter</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">memstore</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trace</span></code></p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="logging-and-debugging-settings">
+<h3>Logging and Debugging Settings<a class="headerlink" href="#logging-and-debugging-settings" title="Link to this heading"></a></h3>
+<p>It is not necessary to specify logging and debugging settings in the Ceph
+configuration file, but you may override default settings when needed. Ceph
+supports the following settings:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_file">
+<span class="sig-name descname"><span class="pre">log_file</span></span><a class="headerlink" href="#confval-log_file" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The location of the logging file for your cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-log_to_file"><code class="xref std std-confval docutils literal notranslate"><span class="pre">log_to_file</span></code></a>, <a class="reference internal" href="#confval-log_to_stderr"><code class="xref std std-confval docutils literal notranslate"><span class="pre">log_to_stderr</span></code></a>, <a class="reference internal" href="#confval-err_to_stderr"><code class="xref std std-confval docutils literal notranslate"><span class="pre">err_to_stderr</span></code></a>, <a class="reference internal" href="#confval-log_to_syslog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">log_to_syslog</span></code></a>, <a class="reference internal" href="#confval-err_to_syslog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">err_to_syslog</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_max_new">
+<span class="sig-name descname"><span class="pre">log_max_new</span></span><a class="headerlink" href="#confval-log_max_new" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of new log files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1000</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-log_max_recent"><code class="xref std std-confval docutils literal notranslate"><span class="pre">log_max_recent</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_max_recent">
+<span class="sig-name descname"><span class="pre">log_max_recent</span></span><a class="headerlink" href="#confval-log_max_recent" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The purpose of this option is to log at a higher debug level only to
+the in-memory buffer, and write out the detailed log messages only if
+there is a crash.  Only log entries below the lower log level will be
+written unconditionally to the log.  For example, debug_osd=1/5 will
+write everything &lt;= 1 to the log unconditionally but keep entries at
+levels 2-5 in memory.  If there is a seg fault or assertion failure,
+all entries will be dumped to the log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_to_file">
+<span class="sig-name descname"><span class="pre">log_to_file</span></span><a class="headerlink" href="#confval-log_to_file" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if logging messages should appear in a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-log_file"><code class="xref std std-confval docutils literal notranslate"><span class="pre">log_file</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_to_stderr">
+<span class="sig-name descname"><span class="pre">log_to_stderr</span></span><a class="headerlink" href="#confval-log_to_stderr" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if logging messages should appear in <code class="docutils literal notranslate"><span class="pre">stderr</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-err_to_stderr">
+<span class="sig-name descname"><span class="pre">err_to_stderr</span></span><a class="headerlink" href="#confval-err_to_stderr" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if error messages should appear in <code class="docutils literal notranslate"><span class="pre">stderr</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_to_syslog">
+<span class="sig-name descname"><span class="pre">log_to_syslog</span></span><a class="headerlink" href="#confval-log_to_syslog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if logging messages should appear in <code class="docutils literal notranslate"><span class="pre">syslog</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-err_to_syslog">
+<span class="sig-name descname"><span class="pre">err_to_syslog</span></span><a class="headerlink" href="#confval-err_to_syslog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if error messages should appear in <code class="docutils literal notranslate"><span class="pre">syslog</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-log_flush_on_exit">
+<span class="sig-name descname"><span class="pre">log_flush_on_exit</span></span><a class="headerlink" href="#confval-log_flush_on_exit" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if Ceph should flush the log files after exit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-clog_to_monitors">
+<span class="sig-name descname"><span class="pre">clog_to_monitors</span></span><a class="headerlink" href="#confval-clog_to_monitors" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if <code class="docutils literal notranslate"><span class="pre">clog</span></code> messages should be sent to monitors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">default=true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-clog_to_syslog">
+<span class="sig-name descname"><span class="pre">clog_to_syslog</span></span><a class="headerlink" href="#confval-clog_to_syslog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if <code class="docutils literal notranslate"><span class="pre">clog</span></code> messages should be sent to syslog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="monitors">
+<h3>Monitors<a class="headerlink" href="#monitors" title="Link to this heading"></a></h3>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_level">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_level</span></span><a class="headerlink" href="#confval-mon_cluster_log_level" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Log level to control the cluster log message verbosity for the cluster
+log file as well as for all external entities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">debug</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_cluster_log_file"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_cluster_log_file</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_file">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_file</span></span><a class="headerlink" href="#confval-mon_cluster_log_file" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The locations of the cluster’s log files. There are two channels in
+Ceph: <code class="docutils literal notranslate"><span class="pre">cluster</span></code> and <code class="docutils literal notranslate"><span class="pre">audit</span></code>. This option represents a mapping
+from channels to log files, where the log entries of that
+channel are sent to. The <code class="docutils literal notranslate"><span class="pre">default</span></code> entry is a fallback
+mapping for channels not explicitly specified. So, the following
+default setting will send cluster log to <code class="docutils literal notranslate"><span class="pre">$cluster.log</span></code>, and
+send audit log to <code class="docutils literal notranslate"><span class="pre">$cluster.audit.log</span></code>, where <code class="docutils literal notranslate"><span class="pre">$cluster</span></code> will
+be replaced with the actual cluster name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">default=/var/log/ceph/$cluster.$channel.log</span> <span class="pre">cluster=/var/log/ceph/$cluster.log</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_cluster_log_to_file"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_cluster_log_to_file</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_file">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_file</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_file" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Make monitor send cluster log messages to file</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_cluster_log_file"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_cluster_log_file</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_syslog">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_syslog</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_syslog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines if the cluster log should be output to the syslog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">default=false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_syslog_facility">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_syslog_facility</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_syslog_facility" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Syslog facility for cluster log messages</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">daemon</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_cluster_log_to_syslog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_cluster_log_to_syslog</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_stderr">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_stderr</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_stderr" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Make monitor send cluster log messages to stderr (prefixed by channel)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref std std-confval docutils literal notranslate"><span class="pre">log_stderr_prefix</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_journald">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_journald</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_journald" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Make monitor send cluster log to journald</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_graylog">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_graylog</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_graylog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Make monitor send cluster log to graylog</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_graylog_host">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_graylog_host</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_graylog_host" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Graylog host for cluster log messages</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_cluster_log_to_graylog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_cluster_log_to_graylog</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cluster_log_to_graylog_port">
+<span class="sig-name descname"><span class="pre">mon_cluster_log_to_graylog_port</span></span><a class="headerlink" href="#confval-mon_cluster_log_to_graylog_port" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Graylog port for cluster log messages</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">12201</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_cluster_log_to_graylog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_cluster_log_to_graylog</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_log_max">
+<span class="sig-name descname"><span class="pre">mon_log_max</span></span><a class="headerlink" href="#confval-mon_log_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>number of recent cluster log messages to retain</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_health_to_clog">
+<span class="sig-name descname"><span class="pre">mon_health_to_clog</span></span><a class="headerlink" href="#confval-mon_health_to_clog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enable sending a health summary to the cluster log periodically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_health_to_clog_interval">
+<span class="sig-name descname"><span class="pre">mon_health_to_clog_interval</span></span><a class="headerlink" href="#confval-mon_health_to_clog_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How often (in seconds) the monitor sends a health summary to the
+cluster log (a non-positive number disables). Monitors will always
+send a summary to the cluster log whether or not it differs from the
+previous summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">minutes</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_health_to_clog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_health_to_clog</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="osd">
+<h3>OSD<a class="headerlink" href="#osd" title="Link to this heading"></a></h3>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_debug_drop_ping_probability">
+<span class="sig-name descname"><span class="pre">osd_debug_drop_ping_probability</span></span><a class="headerlink" href="#confval-osd_debug_drop_ping_probability" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>N/A</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_debug_drop_ping_duration">
+<span class="sig-name descname"><span class="pre">osd_debug_drop_ping_duration</span></span><a class="headerlink" href="#confval-osd_debug_drop_ping_duration" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>N/A</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="filestore">
+<h3>Filestore<a class="headerlink" href="#filestore" title="Link to this heading"></a></h3>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-filestore_debug_omap_check">
+<span class="sig-name descname"><span class="pre">filestore_debug_omap_check</span></span><a class="headerlink" href="#confval-filestore_debug_omap_check" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Debugging check on synchronization. This is an expensive operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="mds">
+<h3>MDS<a class="headerlink" href="#mds" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../cephfs/mds-config-ref.html#confval-mds_debug_scatterstat"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mds_debug_scatterstat</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../cephfs/mds-config-ref.html#confval-mds_debug_frag"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mds_debug_frag</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../cephfs/mds-config-ref.html#confval-mds_debug_auth_pins"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mds_debug_auth_pins</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../cephfs/mds-config-ref.html#confval-mds_debug_subtrees"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mds_debug_subtrees</span></code></a></p></li>
+</ul>
+</section>
+<section id="rados-gateway">
+<h3>RADOS Gateway<a class="headerlink" href="#rados-gateway" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_log_nonexistent_bucket"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_log_nonexistent_bucket</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_log_object_name"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_log_object_name</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_log_object_name_utc"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_log_object_name_utc</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_enable_ops_log"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_enable_ops_log</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_enable_usage_log"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_enable_usage_log</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_usage_log_flush_threshold"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_usage_log_flush_threshold</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../radosgw/config-ref.html#confval-rgw_usage_log_tick_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_usage_log_tick_interval</span></code></a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting-pg.html" class="btn btn-neutral float-left" title="Troubleshooting PGs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cpu-profiling.html" class="btn btn-neutral float-right" title="CPU Profiling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Argonaut &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Security" href="../security/index.html" />
+    <link rel="prev" title="Bobtail" href="bobtail.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Releases (index)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#active-releases">Active Releases</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#archived-releases">Archived Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="quincy.html">Quincy (v17.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pacific.html">Pacific (v16.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="octopus.html">Octopus (v15.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nautilus.html">Nautilus (v14.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mimic.html">Mimic (v13.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="luminous.html">Luminous (v12.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kraken.html">Kraken (v11.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jewel.html">Jewel (v10.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="infernalis.html">Infernalis (v9.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hammer.html">Hammer (v0.94.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="giant.html">Giant (v0.87.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firefly.html">Firefly (v0.80.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="emperor.html">Emperor (v0.72.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dumpling.html">Dumpling (v0.67.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cuttlefish.html">Cuttlefish (v0.61.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bobtail.html">Bobtail (v0.56.*)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Argonaut (v0.48.*)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#v0-48-3-argonaut">v0.48.3 “argonaut”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-48-2-argonaut">v0.48.2 “argonaut”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-48-1-argonaut">v0.48.1 “argonaut”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-48-argonaut">v0.48 “argonaut”</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#release-timeline">Release timeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Releases (index)</a></li>
+      <li class="breadcrumb-item active">Argonaut</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releases/argonaut.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="argonaut">
+<h1>Argonaut<a class="headerlink" href="#argonaut" title="Link to this heading"></a></h1>
+<p>Argonaut is the first stable release of Ceph.  It is named after a
+genus of octopuses, sometimes also referred to as paper nautiluses.</p>
+<section id="v0-48-3-argonaut">
+<h2>v0.48.3 “argonaut”<a class="headerlink" href="#v0-48-3-argonaut" title="Link to this heading"></a></h2>
+<p>This release contains a critical fix that can prevent data loss or
+corruption after a power loss or kernel panic event.  Please upgrade
+immediately.</p>
+<section id="upgrading">
+<h3>Upgrading<a class="headerlink" href="#upgrading" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>If you are using the undocumented <code class="docutils literal notranslate"><span class="pre">ceph-disk-prepare</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ceph-disk-activate</span></code> tools, they have several new features and
+some additional functionality.  Please review the changes in
+behavior carefully before upgrading.</p></li>
+<li><p>The .deb packages now require xfsprogs.</p></li>
+</ul>
+</section>
+<section id="notable-changes">
+<h3>Notable changes<a class="headerlink" href="#notable-changes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>filestore: fix op_seq write order (fixes journal replay after power loss)</p></li>
+<li><p>osd: fix occasional indefinitely hung “slow” request</p></li>
+<li><p>osd: fix encoding for pool_snap_info_t when talking to pre-v0.48 clients</p></li>
+<li><p>osd: fix heartbeat check</p></li>
+<li><p>osd: reduce log noise about rbd watch</p></li>
+<li><p>log: fixes for deadlocks in the internal logging code</p></li>
+<li><p>log: make log buffer size adjustable</p></li>
+<li><p>init script: fix for ‘ceph status’ across machines</p></li>
+<li><p>radosgw: fix swift error handling</p></li>
+<li><p>radosgw: fix swift authentication concurrency bug</p></li>
+<li><p>radosgw: don’t cache large objects</p></li>
+<li><p>radosgw: fix some memory leaks</p></li>
+<li><p>radosgw: fix timezone conversion on read</p></li>
+<li><p>radosgw: relax date format restrictions</p></li>
+<li><p>radosgw: fix multipart overwrite</p></li>
+<li><p>radosgw: stop processing requests on client disconnect</p></li>
+<li><p>radosgw: avoid adding port to url that already has a port</p></li>
+<li><p>radosgw: fix copy to not override ETAG</p></li>
+<li><p>common: make parsing of ip address lists more forgiving</p></li>
+<li><p>common: fix admin socket compatibility with old protocol (for collectd plugin)</p></li>
+<li><p>mon: drop dup commands on paxos reset</p></li>
+<li><p>mds: fix loner selection for multiclient workloads</p></li>
+<li><p>mds: fix compat bit checks</p></li>
+<li><p>ceph-fuse: fix segfault on startup when keyring is missing</p></li>
+<li><p>ceph-authtool: fix usage</p></li>
+<li><p>ceph-disk-activate: misc backports</p></li>
+<li><p>ceph-disk-prepare: misc backports</p></li>
+<li><p>debian: depend on xfsprogs (we use xfs by default)</p></li>
+<li><p>rpm: build rpms, some related Makefile changes</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/600f90678d4146b40dd5bf0da87e3d49/v0.48.3argonaut.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-48-2-argonaut">
+<h2>v0.48.2 “argonaut”<a class="headerlink" href="#v0-48-2-argonaut" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Upgrading<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The default search path for keyring files now includes /etc/ceph/ceph.$name.keyring.  If such files are present on your cluster, be aware that by default they may now be used.</p></li>
+<li><p>There are several changes to the upstart init files.  These have not been previously documented or recommended.  Any existing users should review the changes before upgrading.</p></li>
+<li><p>The ceph-disk-prepare and ceph-disk-active scripts have been updated significantly.  These have not been previously documented or recommended.  Any existing users should review the changes before upgrading.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Notable changes<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mkcephfs: fix keyring generation for mds, osd when default paths are used</p></li>
+<li><p>radosgw: fix bug causing occasional corruption of per-bucket stats</p></li>
+<li><p>radosgw: workaround to avoid previously corrupted stats from going negative</p></li>
+<li><p>radosgw: fix bug in usage stats reporting on busy buckets</p></li>
+<li><p>radosgw: fix Content-Range: header for objects bigger than 2 GB.</p></li>
+<li><p>rbd: avoid leaving watch acting when command line tool errors out (avoids 30s delay on subsequent operations)</p></li>
+<li><p>rbd: friendlier use of --pool/--image options for import (old calling convention still works)</p></li>
+<li><p>librbd: fix rare snapshot creation race (could “lose” a snap when creation is concurrent)</p></li>
+<li><p>librbd: fix discard handling when spanning holes</p></li>
+<li><p>librbd: fix memory leak on discard when caching is enabled</p></li>
+<li><p>objecter: misc fixes for op reordering</p></li>
+<li><p>objecter: fix for rare startup-time deadlock waiting for osdmap</p></li>
+<li><p>ceph: fix usage</p></li>
+<li><p>mon: reduce log noise about “check_sub”</p></li>
+<li><p>ceph-disk-activate: misc fixes, improvements</p></li>
+<li><p>ceph-disk-prepare: partition and format osd disks automatically</p></li>
+<li><p>upstart: start everyone on a reboot</p></li>
+<li><p>upstart: always update the osd crush location on start if specified in the config</p></li>
+<li><p>config: add /etc/ceph/ceph.$name.keyring to default keyring search path</p></li>
+<li><p>ceph.spec: don’t package crush headers</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/f35a177ab0cf1dc41e3ad1bd91971aac/v0.48.2argonaut.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-48-1-argonaut">
+<h2>v0.48.1 “argonaut”<a class="headerlink" href="#v0-48-1-argonaut" title="Link to this heading"></a></h2>
+<section id="id3">
+<h3>Upgrading<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The radosgw usage trim function was effectively broken in v0.48.  Earlier it would remove more usage data than what was requested.  This is fixed in v0.48.1, but the fix is incompatible.  The v0.48 radosgw-admin tool cannot be used to initiate the trimming; please use the v0.48.1 version.</p></li>
+<li><p>v0.48.1 now explicitly indicates support for the CRUSH_TUNABLES feature.  No other version of Ceph requires this, yet, but future versions will when the tunables are adjusted from their historical defaults.</p></li>
+<li><p>There are no other compatibility changes between v0.48.1 and v0.48.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Notable changes<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mkcephfs: use default ‘keyring’, ‘osd data’, ‘osd journal’ paths when not specified in conf</p></li>
+<li><p>msgr: various fixes to socket error handling</p></li>
+<li><p>osd: reduce scrub overhead</p></li>
+<li><p>osd: misc peering fixes (past_interval sharing, pgs stuck in ‘peering’ states)</p></li>
+<li><p>osd: fail on EIO in read path (do not silently ignore read errors from failing disks)</p></li>
+<li><p>osd: avoid internal heartbeat errors by breaking some large transactions into pieces</p></li>
+<li><p>osd: fix osdmap catch-up during startup (catch up and then add daemon to osdmap)</p></li>
+<li><p>osd: fix spurious ‘misdirected op’ messages</p></li>
+<li><p>osd: report scrub status via ‘pg … query’</p></li>
+<li><p>rbd: fix race when watch registrations are resent</p></li>
+<li><p>rbd: fix rbd image id assignment scheme (new image data objects have slightly different names)</p></li>
+<li><p>rbd: fix perf stats for cache hit rate</p></li>
+<li><p>rbd tool: fix off-by-one in key name (crash when empty key specified)</p></li>
+<li><p>rbd: more robust udev rules</p></li>
+<li><p>rados tool: copy object, pool commands</p></li>
+<li><p>radosgw: fix in usage stats trimming</p></li>
+<li><p>radosgw: misc API compatibility fixes (date strings, ETag quoting, swift headers, etc.)</p></li>
+<li><p>ceph-fuse: fix locking in read/write paths</p></li>
+<li><p>mon: fix rare race corrupting on-disk data</p></li>
+<li><p>config: fix admin socket ‘config set’ command</p></li>
+<li><p>log: fix in-memory log event gathering</p></li>
+<li><p>debian: remove crush headers, include librados-config</p></li>
+<li><p>rpm: add ceph-disk-{activate, prepare}</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/2bebe44e11e4b1772c74a2bae214fb92/v0.48.1argonaut.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-48-argonaut">
+<h2>v0.48 “argonaut”<a class="headerlink" href="#v0-48-argonaut" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>Upgrading<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul>
+<li><p>This release includes a disk format upgrade.  Each ceph-osd daemon, upon startup, will migrate its locally stored data to the new format.  This process can take a while (for large object counts, even hours), especially on non-btrfs file systems.</p></li>
+<li><p>To keep the cluster available while the upgrade is in progress, we recommend you upgrade a storage node or rack at a time, and wait for the cluster to recover each time.  To prevent the cluster from moving data around in response to the OSD daemons being down for minutes or hours, you may want to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">osd</span> <span class="nb">set</span> <span class="n">noout</span>
+</pre></div>
+</div>
+<p>This will prevent the cluster from marking down OSDs as “out” and re-replicating the data elsewhere. If you do this, be sure to clear the flag when the upgrade is complete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">osd</span> <span class="n">unset</span> <span class="n">noout</span>
+</pre></div>
+</div>
+</li>
+<li><p>There is a encoding format change internal to the monitor cluster. The monitor daemons are careful to switch to the new format only when all members of the quorum support it.  However, that means that a partial quorum with new code may move to the new format, and a recovering monitor running old code will be unable to join (it will crash).  If this occurs, simply upgrading the remaining monitor will resolve the problem.</p></li>
+<li><p>The ceph tool’s -s and -w commands from previous versions are incompatible with this version. Upgrade your client tools at the same time you upgrade the monitors if you rely on those commands.</p></li>
+<li><p>It is not possible to downgrade from v0.48 to a previous version.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Notable changes<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>osd: stability improvements</p></li>
+<li><p>osd: capability model simplification</p></li>
+<li><p>osd: simpler/safer --mkfs (no longer removes all files; safe to re-run on active osd)</p></li>
+<li><p>osd: potentially buggy FIEMAP behavior disabled by default</p></li>
+<li><p>rbd: caching improvements</p></li>
+<li><p>rbd: improved instrumentation</p></li>
+<li><p>rbd: bug fixes</p></li>
+<li><p>radosgw: new, scalable usage logging infrastructure</p></li>
+<li><p>radosgw: per-user bucket limits</p></li>
+<li><p>mon: streamlined process for setting up authentication keys</p></li>
+<li><p>mon: stability improvements</p></li>
+<li><p>mon: log message throttling</p></li>
+<li><p>doc: improved documentation (ceph, rbd, radosgw, chef, etc.)</p></li>
+<li><p>config: new default locations for daemon keyrings</p></li>
+<li><p>config: arbitrary variable substitutions</p></li>
+<li><p>improved ‘admin socket’ daemon admin interface (ceph --admin-daemon …)</p></li>
+<li><p>chef: support for multiple monitor clusters</p></li>
+<li><p>upstart: basic support for monitors, mds, radosgw; osd support still a work in progress.</p></li>
+</ul>
+<p>The new default keyring locations mean that when enabling authentication (<code class="docutils literal notranslate"><span class="pre">auth</span> <span class="pre">supported</span> <span class="pre">=</span> <span class="pre">cephx</span></code>), keyring locations do not need to be specified if the keyring file is located inside the daemon’s data directory (<code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/$type/ceph-$id</span></code> by default).</p>
+<p>There is also a lot of librbd code in this release that is laying the groundwork for the upcoming layering functionality, but is not actually used. Likewise, the upstart support is still incomplete and not recommended; we will backport that functionality later if it turns out to be non-disruptive.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bobtail.html" class="btn btn-neutral float-left" title="Bobtail" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../security/index.html" class="btn btn-neutral float-right" title="Security" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

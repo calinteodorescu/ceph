@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CephFS Snapshots &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ceph file system client eviction" href="eviction.html" />
+    <link rel="prev" title="Configuring multiple active MDS daemons" href="multimds.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mds-states.html"> MDS States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posix.html"> POSIX compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds-journaling.html"> MDS Journaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-layouts.html"> File layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdcache.html"> Distributed Metadata Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamic-metadata-management.html"> Dynamic Metadata Management in CephFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-io-path.html"> CephFS IO Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="charmap.html"> Case Sensitivity and Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazyio.html"> LazyIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dirfrags.html"> Directory fragmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimds.html"> Multiple active MDS daemons</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Snapshots</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#snapshot-creation">Snapshot Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-snapshots-to-recover-data">Using Snapshots to Recover Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#snapshot-deletion">Snapshot Deletion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">CephFS Snapshots</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/snapshots.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="cephfs-snapshots">
+<h1>CephFS Snapshots<a class="headerlink" href="#cephfs-snapshots" title="Link to this heading"></a></h1>
+<p>CephFS snapshots create an immutable view of the file system at the point in
+time they are taken. CephFS snapshots are managed in a special hidden
+subdirectory named <code class="docutils literal notranslate"><span class="pre">.snap</span></code>. Snapshots are created using <code class="docutils literal notranslate"><span class="pre">mkdir</span></code> inside the
+<code class="docutils literal notranslate"><span class="pre">.snap</span></code> directory.</p>
+<p>Snapshots can be exposed with different names by changing the following client
+configurations:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">snapdirname</span></code> which is a mount option for kernel clients</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">client_snapdir</span></code> which is a mount option for ceph-fuse.</p></li>
+</ul>
+<section id="snapshot-creation">
+<h2>Snapshot Creation<a class="headerlink" href="#snapshot-creation" title="Link to this heading"></a></h2>
+<p>The CephFS snapshot feature is enabled by default on new file systems. To
+enable the CephFS snapshot feature on existing file systems, use the command
+below.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ceph<span class="w"> </span>fs<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>allow_new_snaps<span class="w"> </span><span class="nb">true</span>
+</pre></div>
+</div>
+<p>When snapshots are enabled, all directories in CephFS will have a special
+<code class="docutils literal notranslate"><span class="pre">.snap</span></code> directory. (You may configure a different name with the client’s
+<code class="docutils literal notranslate"><span class="pre">snapdir</span></code> setting if you wish.) To create a CephFS snapshot, create a
+subdirectory under <code class="docutils literal notranslate"><span class="pre">.snap</span></code> with a name of your choice.  For example, to
+create a snapshot on directory <code class="docutils literal notranslate"><span class="pre">/file1/</span></code>, run the command <code class="docutils literal notranslate"><span class="pre">mkdir</span>
+<span class="pre">/file1/.snap/snapshot-name</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>touch<span class="w"> </span>file1
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.snap
+$<span class="w"> </span>mkdir<span class="w"> </span>my_snapshot
+</pre></div>
+</div>
+</section>
+<section id="using-snapshots-to-recover-data">
+<h2>Using Snapshots to Recover Data<a class="headerlink" href="#using-snapshots-to-recover-data" title="Link to this heading"></a></h2>
+<p>Snapshots can also be used to recover deleted files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create</span> <span class="pre">a</span> <span class="pre">file1</span> <span class="pre">and</span> <span class="pre">create</span> <span class="pre">snapshot</span> <span class="pre">snap1</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>touch<span class="w"> </span>/mnt/cephfs/file1
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.snap
+$<span class="w"> </span>mkdir<span class="w"> </span>snap1
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create</span> <span class="pre">a</span> <span class="pre">file2</span> <span class="pre">and</span> <span class="pre">create</span> <span class="pre">snapshot</span> <span class="pre">snap2</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>touch<span class="w"> </span>/mnt/cephfs/file2
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.snap
+$<span class="w"> </span>mkdir<span class="w"> </span>snap2
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delete</span> <span class="pre">file1</span> <span class="pre">and</span> <span class="pre">create</span> <span class="pre">a</span> <span class="pre">new</span> <span class="pre">snapshot</span> <span class="pre">snap3</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>rm<span class="w"> </span>/mnt/cephfs/file1
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.snap
+$<span class="w"> </span>mkdir<span class="w"> </span>snap3
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">recover</span> <span class="pre">file1</span> <span class="pre">using</span> <span class="pre">snapshot</span> <span class="pre">snap2</span> <span class="pre">using</span> <span class="pre">cp</span> <span class="pre">command</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.snap
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>snap2
+$<span class="w"> </span>cp<span class="w"> </span>file1<span class="w"> </span>/mnt/cephfs/
+</pre></div>
+</div>
+</section>
+<section id="snapshot-deletion">
+<h2>Snapshot Deletion<a class="headerlink" href="#snapshot-deletion" title="Link to this heading"></a></h2>
+<p>Snapshots are deleted by running <code class="docutils literal notranslate"><span class="pre">rmdir</span></code> on the <code class="docutils literal notranslate"><span class="pre">.snap</span></code> directory that they
+are rooted in. (Attempts to delete a directory that roots the snapshots will
+fail. You must delete the snapshots first.)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>.snap
+$<span class="w"> </span>rmdir<span class="w"> </span>my_snapshot
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="multimds.html" class="btn btn-neutral float-left" title="Configuring multiple active MDS daemons" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="eviction.html" class="btn btn-neutral float-right" title="Ceph file system client eviction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation (Manual) &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Get Packages" href="get-packages.html" />
+    <link rel="prev" title="Installing Ceph" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installing Ceph</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#recommended-methods">Recommended methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#other-methods">Other methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Installation (Manual)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-software">Get Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-software">Install Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deploy-a-cluster-manually">Deploy a Cluster Manually</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upgrade-software">Upgrade Software</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#windows">Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installing Ceph</a></li>
+      <li class="breadcrumb-item active">Installation (Manual)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/install/index_manual.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="installation-manual">
+<span id="install-manual"></span><h1>Installation (Manual)<a class="headerlink" href="#installation-manual" title="Link to this heading"></a></h1>
+<section id="get-software">
+<h2>Get Software<a class="headerlink" href="#get-software" title="Link to this heading"></a></h2>
+<p>There are several methods for getting Ceph software. The easiest and most common
+method is to <a class="reference external" href="../get-packages">get packages</a> by adding repositories for use with package
+management tools such as the Advanced Package Tool (APT) or Yellowdog Updater,
+Modified (YUM). You may also retrieve pre-compiled packages from the Ceph
+repository. Finally, you can retrieve tarballs or clone the Ceph source code
+repository and build Ceph yourself.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get-packages.html">     Get Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get-tarballs.html">     Get Tarballs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clone-source.html">     Clone Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="build-ceph.html">     Build Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirrors.html">     Ceph Mirrors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="containers.html">     Ceph Containers</a></li>
+</ul>
+</div>
+</section>
+<section id="install-software">
+<h2>Install Software<a class="headerlink" href="#install-software" title="Link to this heading"></a></h2>
+<p>Once you have the Ceph software (or added repositories), installing the software
+is easy. To install packages on each <a class="reference internal" href="../glossary.html#term-Ceph-Node"><span class="xref std std-term">Ceph Node</span></a> in your cluster, use package
+management tools. You should install Yum Priorities for RHEL/CentOS and other
+distributions that use Yum if you intend to install the Ceph Object Gateway or
+QEMU.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install-storage-cluster.html">     Install Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-vm-cloud.html">     Install Virtualization for Block</a></li>
+</ul>
+</div>
+</section>
+<section id="deploy-a-cluster-manually">
+<h2>Deploy a Cluster Manually<a class="headerlink" href="#deploy-a-cluster-manually" title="Link to this heading"></a></h2>
+<p>Once you have Ceph installed on your nodes, you can deploy a cluster manually.
+The manual procedure is primarily for exemplary purposes for those developing
+deployment scripts with Chef, Juju, Puppet, etc.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="manual-deployment.html">Manual Deployment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual-deployment.html#monitor-bootstrapping">Monitor Bootstrapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual-deployment.html#manager-daemon-configuration">Manager daemon configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual-deployment.html#adding-osds">Adding OSDs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="manual-deployment.html#short-form">Short Form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="manual-deployment.html#long-form">Long Form</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="manual-deployment.html#adding-mds">Adding MDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual-deployment.html#manually-installing-radosgw">Manually Installing RADOSGW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual-deployment.html#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="manual-freebsd-deployment.html">Manual Deployment on FreeBSD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="manual-freebsd-deployment.html#disklayout-on-freebsd">Disklayout on FreeBSD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="manual-freebsd-deployment.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="manual-freebsd-deployment.html#monitor-bootstrapping">Monitor Bootstrapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual-freebsd-deployment.html#adding-osds">Adding OSDs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="manual-freebsd-deployment.html#long-form">Long Form</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="manual-freebsd-deployment.html#adding-mds">Adding MDS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manual-freebsd-deployment.html#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="upgrade-software">
+<h2>Upgrade Software<a class="headerlink" href="#upgrade-software" title="Link to this heading"></a></h2>
+<p>As new versions of Ceph become available, you may upgrade your cluster to take
+advantage of new functionality. Read the upgrade documentation before you
+upgrade your cluster. Sometimes upgrading Ceph requires you to follow an upgrade
+sequence.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Installing Ceph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="get-packages.html" class="btn btn-neutral float-right" title="Get Packages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

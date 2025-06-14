@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>simple &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="activate" href="activate.html" />
+    <link rel="prev" title="new-wal" href="../lvm/newwal.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">ceph-volume</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#migrating">Migrating</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#new-deployments">New deployments</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#existing-osds">Existing OSDs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../intro.html">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#replacing-ceph-disk">Replacing <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#gpt-partitions-are-simple">GPT partitions are simple?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#modularity">Modularity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#ceph-volume-lvm"><code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">lvm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#lvm-performance-penalty">LVM performance penalty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inventory.html"><code class="docutils literal notranslate"><span class="pre">inventory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../drive-group.html"><code class="docutils literal notranslate"><span class="pre">drive-group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/index.html"><code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/activate.html"><code class="docutils literal notranslate"><span class="pre">activate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html"><code class="docutils literal notranslate"><span class="pre">batch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html#reporting">Reporting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html#sizing">Sizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html#idempotency-and-disk-replacements">Idempotency and disk replacements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/encryption.html">Encryption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/prepare.html"><code class="docutils literal notranslate"><span class="pre">prepare</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/create.html"><code class="docutils literal notranslate"><span class="pre">create</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/scan.html">scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/list.html"><code class="docutils literal notranslate"><span class="pre">list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/zap.html"><code class="docutils literal notranslate"><span class="pre">zap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/migrate.html"><code class="docutils literal notranslate"><span class="pre">migrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/newdb.html"><code class="docutils literal notranslate"><span class="pre">new-db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/newwal.html"><code class="docutils literal notranslate"><span class="pre">new-wal</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">simple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="activate.html"><code class="docutils literal notranslate"><span class="pre">activate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scan.html"><code class="docutils literal notranslate"><span class="pre">scan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../zfs/index.html"><code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../zfs/inventory.html"><code class="docutils literal notranslate"><span class="pre">inventory</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">ceph-volume</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">simple</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/ceph-volume/simple/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="simple">
+<span id="ceph-volume-simple"></span><h1><code class="docutils literal notranslate"><span class="pre">simple</span></code><a class="headerlink" href="#simple" title="Link to this heading"></a></h1>
+<p>Implements the functionality needed to manage OSDs from the <code class="docutils literal notranslate"><span class="pre">simple</span></code> subcommand:
+<code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">simple</span></code></p>
+<p><strong>Command Line Subcommands</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="scan.html#ceph-volume-simple-scan"><span class="std std-ref">scan</span></a></p></li>
+<li><p><a class="reference internal" href="activate.html#ceph-volume-simple-activate"><span class="std std-ref">activate</span></a></p></li>
+<li><p><a class="reference internal" href="systemd.html#ceph-volume-simple-systemd"><span class="std std-ref">systemd</span></a></p></li>
+</ul>
+<p>By <em>taking over</em> management, it disables all <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code> systemd units used
+to trigger devices at startup, relying on basic (customizable) JSON
+configuration and systemd for starting up OSDs.</p>
+<p>This process involves two steps:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="scan.html#ceph-volume-simple-scan"><span class="std std-ref">Scan</span></a> the running OSD or the data device</p></li>
+<li><p><a class="reference internal" href="activate.html#ceph-volume-simple-activate"><span class="std std-ref">Activate</span></a> the scanned OSD</p></li>
+</ol>
+<p>The scanning will infer everything that <code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code> needs to start the OSD,
+so that when activation is needed, the OSD can start normally without getting
+interference from <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code>.</p>
+<p>As part of the activation process the systemd units for <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code> in charge
+of reacting to <code class="docutils literal notranslate"><span class="pre">udev</span></code> events, are linked to <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code> so that they are
+fully inactive.</p>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../lvm/newwal.html" class="btn btn-neutral float-left" title="new-wal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="activate.html" class="btn btn-neutral float-right" title="activate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

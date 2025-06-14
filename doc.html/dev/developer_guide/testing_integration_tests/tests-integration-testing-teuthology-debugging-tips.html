@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analyzing and Debugging A Teuthology Job &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Integration Tests for Kernel Development" href="tests-integration-testing-teuthology-kernel.html" />
+    <link rel="prev" title="Integration Tests using Teuthology Workflow" href="tests-integration-testing-teuthology-workflow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../essentials.html">Essentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../merging.html">What is Merged and When</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../issue-tracker.html">Issue tracker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests-unit-tests.html">Tests: Unit Tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Tests: Integration Tests (Teuthology)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tests-integration-testing-teuthology-intro.html">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests-integration-testing-teuthology-workflow.html">Workflow</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Debugging Tips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#viewing-test-results">Viewing Test Results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#identifying-failed-jobs">Identifying Failed Jobs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#triaging-the-cause-of-failure">Triaging the cause of failure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reporting-the-issue">Reporting the Issue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-an-issue-using-interactive-on-error">Debugging an issue using interactive-on-error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#suggested-resources">Suggested Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests-integration-testing-teuthology-kernel.html">Kernel Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests-sentry-developers-guide.html">Sentry Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../running-tests-locally.html">Tests: Running Tests (Locally)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests-windows.html">Tests: Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash-devel.html">Ceph Dashboard Developer Documentation (formerly HACKING.rst)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jaegertracing.html">Tracing Developer Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephadm/index.html">Cephadm Developer Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging-gdb.html">Debugging with GDB</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Contributing to Ceph: A Guide for Developers</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Teuthology User Guide</a></li>
+      <li class="breadcrumb-item active">Analyzing and Debugging A Teuthology Job</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/dev/developer_guide/testing_integration_tests/tests-integration-testing-teuthology-debugging-tips.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="analyzing-and-debugging-a-teuthology-job">
+<span id="tests-integration-testing-teuthology-debugging-tips"></span><h1>Analyzing and Debugging A Teuthology Job<a class="headerlink" href="#analyzing-and-debugging-a-teuthology-job" title="Link to this heading"></a></h1>
+<p>To learn more about how to schedule an integration test, refer to <a class="reference external" href="../tests-integration-testing-teuthology-workflow/#scheduling-test-run">Scheduling
+Test Run</a>.</p>
+<section id="viewing-test-results">
+<h2>Viewing Test Results<a class="headerlink" href="#viewing-test-results" title="Link to this heading"></a></h2>
+<p>When a teuthology run has been completed successfully, use <a class="reference external" href="https://pulpito.ceph.com">pulpito</a> dashboard
+to view the results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">pulpito</span><span class="o">.</span><span class="n">front</span><span class="o">.</span><span class="n">sepia</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/&lt;</span><span class="n">job</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">job</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;/</span>
+</pre></div>
+</div>
+<p>or ssh into the teuthology server to view the results of the integration test:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span>&lt;username&gt;@teuthology.front.sepia.ceph.com</span>
+</pre></div></div></div></blockquote>
+<p>and access <a class="reference external" href="../tests-integration-testing-teuthology-workflow/#teuthology-archives">teuthology archives</a>, as in this example:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">nano<span class="w"> </span>/a/teuthology-2021-01-06_07:01:02-rados-master-distro-basic-smithi/</span>
+</pre></div></div></div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This requires you to have access to the Sepia lab. To learn how to
+request access to the Sepia lab, see:
+<a class="reference external" href="https://ceph.github.io/sepia/adding_users/">https://ceph.github.io/sepia/adding_users/</a></p>
+</div>
+</section>
+<section id="identifying-failed-jobs">
+<h2>Identifying Failed Jobs<a class="headerlink" href="#identifying-failed-jobs" title="Link to this heading"></a></h2>
+<p>On pulpito, a job in red means either a failed job or a dead job. A job is
+combination of daemons and configurations defined in the yaml fragments in
+<a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites">qa/suites</a> . Teuthology uses these configurations and runs the tasks listed
+in <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/tasks">qa/tasks</a>, which are commands that set up the test environment and test
+Ceph’s components. These tasks cover a large subset of use cases and help to
+expose bugs not exposed by <a class="reference external" href="../tests-integration-testing-teuthology-intro/#make-check">make check</a> testing.</p>
+<p>A job failure might be caused by one or more of the following reasons:</p>
+<ul>
+<li><p>environment setup (<a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/distros/supported">testing on varied
+systems</a>):
+testing compatibility with stable releases for supported versions.</p></li>
+<li><p>permutation of config values: for instance, <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rados/thrash">qa/suites/rados/thrash</a> ensures
+that we run thrashing tests against Ceph under stressful workloads so that we
+can catch corner-case bugs. The final setup config yaml file used for testing
+can be accessed at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">a</span><span class="o">/&lt;</span><span class="n">job</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">job</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;/</span><span class="n">orig</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>More details about config.yaml can be found at <a class="reference external" href="https://docs.ceph.com/projects/teuthology/en/latest/detailed_test_config.html">detailed test config</a></p>
+</section>
+<section id="triaging-the-cause-of-failure">
+<h2>Triaging the cause of failure<a class="headerlink" href="#triaging-the-cause-of-failure" title="Link to this heading"></a></h2>
+<p>When a job fails, you will need to read its teuthology log in order to triage
+the cause of its failure. Use the job’s name and id from pulpito to locate your
+failed job’s teuthology log:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">qa</span><span class="o">-</span><span class="n">proxy</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/&lt;</span><span class="n">job</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">job</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;/</span><span class="n">teuthology</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>Open the log file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">a</span><span class="o">/&lt;</span><span class="n">job</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">job</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;/</span><span class="n">teuthology</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">nano<span class="w"> </span>/a/teuthology-2021-01-06_07:01:02-rados-master-distro-basic-smithi/5759282/teuthology.log</span>
+</pre></div></div></div></blockquote>
+<p>Every job failure is recorded in the teuthology log as a Traceback and is
+added to the job summary.</p>
+<p>Find the <code class="docutils literal notranslate"><span class="pre">Traceback</span></code> keyword and search the call stack and the logs for
+issues that caused the failure. Usually the traceback will include the command
+that failed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The teuthology logs are deleted from time to time. If you are unable
+to access the link in this example, just use any other case from
+<a class="reference external" href="http://pulpito.front.sepia.ceph.com/">http://pulpito.front.sepia.ceph.com/</a></p>
+</div>
+</section>
+<section id="reporting-the-issue">
+<h2>Reporting the Issue<a class="headerlink" href="#reporting-the-issue" title="Link to this heading"></a></h2>
+<p>In short: first check to see if your job failure was caused by a known issue,
+and if it wasn’t, raise a tracker ticket.</p>
+<p>After you have triaged the cause of the failure and you have determined that it
+wasn’t caused by the changes that you made to the code, this might indicate
+that you have encountered a known failure in the upstream branch (in the
+example we’re considering in this section, the upstream branch is “octopus”).
+If the failure was not caused by the changes you made to the code, go to
+<a class="reference external" href="https://tracker.ceph.com">https://tracker.ceph.com</a> and look for tracker issues related to the failure by
+using keywords spotted in the failure under investigation.</p>
+<p>If you find a similar issue on <a class="reference external" href="https://tracker.ceph.com">https://tracker.ceph.com</a>, leave a comment on
+that issue explaining the failure as you understand it and make sure to
+include a link to your recent test run. If you don’t find a similar issue,
+create a new tracker ticket for this issue and explain the cause of your job’s
+failure as thoroughly as you can. If you’re not sure what caused the job’s
+failure, ask one of the team members for help.</p>
+</section>
+<section id="debugging-an-issue-using-interactive-on-error">
+<h2>Debugging an issue using interactive-on-error<a class="headerlink" href="#debugging-an-issue-using-interactive-on-error" title="Link to this heading"></a></h2>
+<p>When you encounter a job failure during testing, you should attempt to
+reproduce it. This is where <code class="docutils literal notranslate"><span class="pre">--interactive-on-error</span></code> comes in. This
+section explains how to use <code class="docutils literal notranslate"><span class="pre">interactive-on-error</span></code> and what it does.</p>
+<p>When you have verified that a job has failed, run the same job again in
+teuthology but add the <a class="reference external" href="https://docs.ceph.com/projects/teuthology/en/latest/detailed_test_config.html#troubleshooting">interactive-on-error</a> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ideepika@teuthology:~/teuthology$ ./virtualenv/bin/teuthology -v --lock --block $&lt;your-config-yaml&gt; --interactive-on-error
+</pre></div>
+</div>
+<p>Use either <a class="reference external" href="https://docs.ceph.com/projects/teuthology/en/latest/detailed_test_config.html#test-configuration">custom config.yaml</a> or the yaml file from the failed job. If
+you use the yaml file from the failed job, copy <code class="docutils literal notranslate"><span class="pre">orig.config.yaml</span></code> to
+your local directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ideepika@teuthology:~/teuthology$ cp /a/teuthology-2021-01-06_07:01:02-rados-master-distro-basic-smithi/5759282/orig.config.yaml test.yaml
+ideepika@teuthology:~/teuthology$ ./virtualenv/bin/teuthology -v --lock --block test.yaml --interactive-on-error
+</pre></div>
+</div>
+<p>If a job fails when the <code class="docutils literal notranslate"><span class="pre">interactive-on-error</span></code> flag is used, teuthology
+will lock the machines required by <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>. Teuthology will halt
+the testing machines and hold them in the state that they were in at the
+time of the job failure. You will be put into an interactive python
+session. From there, you can ssh into the system to investigate the cause
+of the job failure.</p>
+<p>After you have investigated the failure, just terminate the session.
+Teuthology will then clean up the session and unlock the machines.</p>
+</section>
+<section id="suggested-resources">
+<h2>Suggested Resources<a class="headerlink" href="#suggested-resources" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=gj1OXrKdSrs">Testing Ceph: Pains &amp; Pleasures</a></p></li>
+<li><p><a class="reference external" href="https://www.youtube.com/playlist?list=PLrBUGiINAakNsOwHaIM27OBGKezQbUdM-">Teuthology Training</a></p></li>
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=WiEUzoS6Nc4">Intro to Teuthology</a></p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests-integration-testing-teuthology-workflow.html" class="btn btn-neutral float-left" title="Integration Tests using Teuthology Workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests-integration-testing-teuthology-kernel.html" class="btn btn-neutral float-right" title="Integration Tests for Kernel Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stretch Clusters &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Configuring Monitor Election Strategies" href="change-mon-elections.html" />
+    <link rel="prev" title="Manually editing the CRUSH Map" href="crush-map-edits.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Stretch Clusters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Stretch Clusters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stretch-cluster-issues">Stretch Cluster Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#individual-stretch-pools">Individual Stretch Pools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stretch-mode1">Stretch Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations-of-stretch-mode">Limitations of Stretch Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-commands">Other commands</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Stretch Clusters</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/stretch-mode.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="stretch-clusters">
+<span id="stretch-mode"></span><h1>Stretch Clusters<a class="headerlink" href="#stretch-clusters" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>Stretch Clusters<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>A stretch cluster is a cluster that has servers in geographically separated
+data centers, distributed over a WAN. Stretch clusters have LAN-like high-speed
+and low-latency connections, but limited links. Stretch clusters have a higher
+likelihood of (possibly asymmetric) network splits, and a higher likelihood of
+temporary or complete loss of an entire data center (which can represent
+one-third to one-half of the total cluster).</p>
+<p>Ceph is designed with the expectation that all parts of its network and cluster
+will be reliable and that failures will be distributed randomly across the
+CRUSH map. Even if a switch goes down and causes the loss of many OSDs, Ceph is
+designed so that the remaining OSDs and monitors will route around such a loss.</p>
+<p>Sometimes this cannot be relied upon. If you have a “stretched-cluster”
+deployment in which much of your cluster is behind a single network component,
+you might need to use <strong>stretch mode</strong> to ensure data integrity.</p>
+<p>We will here consider two standard configurations: a configuration with two
+data centers (or, in clouds, two availability zones), and a configuration with
+three data centers (or, in clouds, three availability zones).</p>
+<p>In the two-site configuration, Ceph expects each of the sites to hold a copy of
+the data, and Ceph also expects there to be a third site that has a tiebreaker
+monitor. This tiebreaker monitor picks a winner if the network connection fails
+and both data centers remain alive.</p>
+<p>The tiebreaker monitor can be a VM. It can also have high latency relative to
+the two main sites.</p>
+<p>The standard Ceph configuration is able to survive MANY network failures or
+data-center failures without ever compromising data availability. If enough
+Ceph servers are brought back following a failure, the cluster <em>will</em> recover.
+If you lose a data center but are still able to form a quorum of monitors and
+still have all the data available, Ceph will maintain availability. (This
+assumes that the cluster has enough copies to satisfy the pools’ <code class="docutils literal notranslate"><span class="pre">min_size</span></code>
+configuration option, or (failing that) that the cluster has CRUSH rules in
+place that will cause the cluster to re-replicate the data until the
+<code class="docutils literal notranslate"><span class="pre">min_size</span></code> configuration option has been met.)</p>
+</section>
+<section id="stretch-cluster-issues">
+<h2>Stretch Cluster Issues<a class="headerlink" href="#stretch-cluster-issues" title="Link to this heading"></a></h2>
+<p>Ceph does not permit the compromise of data integrity and data consistency
+under any circumstances. When service is restored after a network failure or a
+loss of Ceph nodes, Ceph will restore itself to a state of normal functioning
+without operator intervention.</p>
+<p>Ceph does not permit the compromise of data integrity or data consistency, but
+there are situations in which <em>data availability</em> is compromised. These
+situations can occur even though there are enough clusters available to satisfy
+Ceph’s consistency and sizing constraints. In some situations, you might
+discover that your cluster does not satisfy those constraints.</p>
+<p>The first category of these failures that we will discuss involves inconsistent
+networks -- if there is a netsplit (a disconnection between two servers that
+splits the network into two pieces), Ceph might be unable to mark OSDs <code class="docutils literal notranslate"><span class="pre">down</span></code>
+and remove them from the acting PG sets. This failure to mark ODSs <code class="docutils literal notranslate"><span class="pre">down</span></code>
+will occur, despite the fact that the primary PG is unable to replicate data (a
+situation that, under normal non-netsplit circumstances, would result in the
+marking of affected OSDs as <code class="docutils literal notranslate"><span class="pre">down</span></code> and their removal from the PG). If this
+happens, Ceph will be unable to satisfy its durability guarantees and
+consequently IO will not be permitted.</p>
+<p>The second category of failures that we will discuss involves the situation in
+which the constraints are not sufficient to guarantee the replication of data
+across data centers, though it might seem that the data is correctly replicated
+across data centers. For example, in a scenario in which there are two data
+centers named Data Center A and Data Center B, and the CRUSH rule targets three
+replicas and places a replica in each data center with a <code class="docutils literal notranslate"><span class="pre">min_size</span></code> of <code class="docutils literal notranslate"><span class="pre">2</span></code>,
+the PG might go active with two replicas in Data Center A and zero replicas in
+Data Center B. In a situation of this kind, the loss of Data Center A means
+that the data is lost and Ceph will not be able to operate on it. This
+situation is surprisingly difficult to avoid using only standard CRUSH rules.</p>
+</section>
+<section id="individual-stretch-pools">
+<h2>Individual Stretch Pools<a class="headerlink" href="#individual-stretch-pools" title="Link to this heading"></a></h2>
+<p>Setting individual <code class="docutils literal notranslate"><span class="pre">stretch</span> <span class="pre">pool</span></code> is an option that allows for the configuration
+of specific pools to be distributed across <code class="docutils literal notranslate"><span class="pre">two</span> <span class="pre">or</span> <span class="pre">more</span> <span class="pre">data</span> <span class="pre">centers</span></code>.
+This is achieved by executing the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">pool</span> <span class="pre">stretch</span> <span class="pre">set</span></code> command on each desired pool,
+as opposed to applying a cluster-wide configuration <code class="docutils literal notranslate"><span class="pre">with</span> <span class="pre">stretch</span> <span class="pre">mode</span></code>.
+See <a class="reference internal" href="pools.html#id1"><span class="std std-ref">Unsetting values for a stretch pool</span></a></p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">stretch</span> <span class="pre">mode</span></code> when you have exactly <code class="docutils literal notranslate"><span class="pre">two</span> <span class="pre">data</span> <span class="pre">centers</span></code> and require a uniform
+configuration across the entire cluster. Conversely, opt for a <code class="docutils literal notranslate"><span class="pre">stretch</span> <span class="pre">pool</span></code>
+when you need a particular pool to be replicated across <code class="docutils literal notranslate"><span class="pre">more</span> <span class="pre">than</span> <span class="pre">two</span> <span class="pre">data</span> <span class="pre">centers</span></code>,
+providing a more granular level of control and a larger cluster size.</p>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h3>
+<p>Individual Stretch Pools do not support I/O operations during a netsplit
+scenario between two or more zones. While the cluster remains accessible for
+basic Ceph commands, I/O usage remains unavailable until the netsplit is
+resolved. This is different from <code class="docutils literal notranslate"><span class="pre">stretch</span> <span class="pre">mode</span></code>, where the tiebreaker monitor
+can isolate one zone of the cluster and continue I/O operations in degraded
+mode during a netsplit. See <a class="reference internal" href="#stretch-mode1"><span class="std std-ref">Stretch Mode</span></a></p>
+<p>Ceph is designed to tolerate multiple host failures. However, if more than 25% of
+the OSDs in the cluster go down, Ceph may stop marking OSDs as out which will prevent rebalancing
+and some PGs might go inactive. This behavior is controlled by the <code class="docutils literal notranslate"><span class="pre">mon_osd_min_in_ratio</span></code> parameter.
+By default, mon_osd_min_in_ratio is set to 0.75, meaning that at least 75% of the OSDs
+in the cluster must remain <code class="docutils literal notranslate"><span class="pre">active</span></code> before any additional OSDs can be marked out.
+This setting prevents too many OSDs from being marked out as this might lead to significant
+data movement. The data movement can cause high client I/O impact and long recovery times when
+the OSDs are returned to service. If Ceph stops marking OSDs as out, some PGs may fail to
+rebalance to surviving OSDs, potentially leading to <code class="docutils literal notranslate"><span class="pre">inactive</span></code> PGs.
+See <a class="reference external" href="https://tracker.ceph.com/issues/68338">https://tracker.ceph.com/issues/68338</a> for more information.</p>
+</section>
+</section>
+<section id="stretch-mode1">
+<span id="id2"></span><h2>Stretch Mode<a class="headerlink" href="#stretch-mode1" title="Link to this heading"></a></h2>
+<p>Stretch mode is designed to handle netsplit scenarios between two data zones as well
+as the loss of one data zone. It handles the netsplit scenario by choosing the surviving zone
+that has the better connection to the <code class="docutils literal notranslate"><span class="pre">tiebreaker</span> <span class="pre">monitor</span></code>. It handles the loss of one zone by
+reducing the <code class="docutils literal notranslate"><span class="pre">min_size</span></code> of all pools to <code class="docutils literal notranslate"><span class="pre">1</span></code>, allowing the cluster to continue operating
+with the remaining zone. When the lost zone comes back, the cluster will recover the lost data
+and return to normal operation.</p>
+<section id="connectivity-monitor-election-strategy">
+<h3>Connectivity Monitor Election Strategy<a class="headerlink" href="#connectivity-monitor-election-strategy" title="Link to this heading"></a></h3>
+<p>When using stretch mode, the monitor election strategy must be set to <code class="docutils literal notranslate"><span class="pre">connectivity</span></code>.
+This strategy tracks network connectivity between the monitors and is
+used to determine which zone should be favored when the cluster is in a netsplit scenario.</p>
+<p>See <a class="reference external" href="../change-mon-elections">Changing Monitor Elections</a></p>
+</section>
+<section id="stretch-peering-rule">
+<h3>Stretch Peering Rule<a class="headerlink" href="#stretch-peering-rule" title="Link to this heading"></a></h3>
+<p>One critical behavior of stretch mode is its ability to prevent a PG from going active if the acting set
+contains only replicas from a single zone. This safeguard is crucial for mitigating the risk of data
+loss during site failures because if a PG were allowed to go active with replicas only in a single site,
+writes could be acknowledged despite a lack of redundancy. In the event of a site failure, all data in the
+affected PG would be lost.</p>
+</section>
+<section id="entering-stretch-mode">
+<h3>Entering Stretch Mode<a class="headerlink" href="#entering-stretch-mode" title="Link to this heading"></a></h3>
+<p>To enable stretch mode, you must set the location of each monitor, matching
+your CRUSH map. This procedure shows how to do this.</p>
+<ol class="arabic">
+<li><p>Place <code class="docutils literal notranslate"><span class="pre">mon.a</span></code> in your first data center:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>set_location<span class="w"> </span>a<span class="w"> </span><span class="nv">datacenter</span><span class="o">=</span>site1</span>
+</pre></div></div></li>
+<li><p>Generate a CRUSH rule that places two copies in each data center.
+This requires editing the CRUSH map directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>getcrushmap<span class="w"> </span>&gt;<span class="w"> </span>crush.map.bin</span>
+<span class="prompt2">crushtool<span class="w"> </span>-d<span class="w"> </span>crush.map.bin<span class="w"> </span>-o<span class="w"> </span>crush.map.txt</span>
+</pre></div></div></li>
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">crush.map.txt</span></code> file to add a new rule. Here there is only one
+other rule (<code class="docutils literal notranslate"><span class="pre">id</span> <span class="pre">1</span></code>), but you might need to use a different rule ID. We
+have two data-center buckets named <code class="docutils literal notranslate"><span class="pre">site1</span></code> and <code class="docutils literal notranslate"><span class="pre">site2</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">rule</span> <span class="n">stretch_rule</span> <span class="p">{</span>
+        <span class="nb">id</span> <span class="mi">1</span>
+        <span class="nb">type</span> <span class="n">replicated</span>
+        <span class="n">step</span> <span class="n">take</span> <span class="n">site1</span>
+        <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+        <span class="n">step</span> <span class="n">emit</span>
+        <span class="n">step</span> <span class="n">take</span> <span class="n">site2</span>
+        <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+        <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If a CRUSH rule is defined for a stretch mode cluster and the
+rule has multiple “takes” in it, then <code class="docutils literal notranslate"><span class="pre">MAX</span> <span class="pre">AVAIL</span></code> for the pools
+associated with the CRUSH rule will report that the available size is all
+of the available space from the datacenter, not the available space for
+the pools associated with the CRUSH rule.</p>
+<p>For example, consider a cluster with two CRUSH rules, <code class="docutils literal notranslate"><span class="pre">stretch_rule</span></code> and
+<code class="docutils literal notranslate"><span class="pre">stretch_replicated_rule</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">stretch_rule</span> <span class="p">{</span>
+     <span class="nb">id</span> <span class="mi">1</span>
+     <span class="nb">type</span> <span class="n">replicated</span>
+     <span class="n">step</span> <span class="n">take</span> <span class="n">DC1</span>
+     <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+     <span class="n">step</span> <span class="n">emit</span>
+     <span class="n">step</span> <span class="n">take</span> <span class="n">DC2</span>
+     <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+     <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+
+<span class="n">rule</span> <span class="n">stretch_replicated_rule</span> <span class="p">{</span>
+        <span class="nb">id</span> <span class="mi">2</span>
+        <span class="nb">type</span> <span class="n">replicated</span>
+        <span class="n">step</span> <span class="n">take</span> <span class="n">default</span>
+        <span class="n">step</span> <span class="n">choose</span> <span class="n">firstn</span> <span class="mi">0</span> <span class="nb">type</span> <span class="n">datacenter</span>
+        <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+        <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the above example, <code class="docutils literal notranslate"><span class="pre">stretch_rule</span></code> will report an incorrect value for
+<code class="docutils literal notranslate"><span class="pre">MAX</span> <span class="pre">AVAIL</span></code>. <code class="docutils literal notranslate"><span class="pre">stretch_replicated_rule</span></code> will report the correct value.
+This is because <code class="docutils literal notranslate"><span class="pre">stretch_rule</span></code> is defined in such a way that
+<code class="docutils literal notranslate"><span class="pre">PGMap::get_rule_avail</span></code> considers only the available size of a single
+data center, and not (as would be correct) the total available size from
+both datacenters.</p>
+<p>Here is a workaround. Instead of defining the stretch rule as defined in
+the <code class="docutils literal notranslate"><span class="pre">stretch_rule</span></code> function above, define it as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">stretch_rule</span> <span class="p">{</span>
+  <span class="nb">id</span> <span class="mi">2</span>
+  <span class="nb">type</span> <span class="n">replicated</span>
+  <span class="n">step</span> <span class="n">take</span> <span class="n">default</span>
+  <span class="n">step</span> <span class="n">choose</span> <span class="n">firstn</span> <span class="mi">0</span> <span class="nb">type</span> <span class="n">datacenter</span>
+  <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+  <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://tracker.ceph.com/issues/56650">https://tracker.ceph.com/issues/56650</a> for more detail on this workaround.</p>
+</div>
+<p><em>The above procedure was developed in May and June of 2024 by Prashant Dhange.</em></p>
+</li>
+<li><p>Inject the CRUSH map to make the rule available to the cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>-c<span class="w"> </span>crush.map.txt<span class="w"> </span>-o<span class="w"> </span>crush2.map.bin</span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>setcrushmap<span class="w"> </span>-i<span class="w"> </span>crush2.map.bin</span>
+</pre></div></div></li>
+<li><p>Run the monitors in connectivity mode. See <a class="reference external" href="../change-mon-elections">Changing Monitor Elections</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span><span class="nb">set</span><span class="w"> </span>election_strategy<span class="w"> </span>connectivity</span>
+</pre></div></div></li>
+<li><p>Command the cluster to enter stretch mode. In this example, <code class="docutils literal notranslate"><span class="pre">mon.e</span></code> is the
+tiebreaker monitor and we are splitting across data centers. The tiebreaker
+monitor must be assigned a data center that is neither <code class="docutils literal notranslate"><span class="pre">site1</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">site2</span></code>. This data center <strong>should not</strong> be defined in your CRUSH map, here
+we are placing <code class="docutils literal notranslate"><span class="pre">mon.e</span></code> in a virtual data center called <code class="docutils literal notranslate"><span class="pre">site3</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>set_location<span class="w"> </span>e<span class="w"> </span><span class="nv">datacenter</span><span class="o">=</span>site3</span>
+<span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>enable_stretch_mode<span class="w"> </span>e<span class="w"> </span>stretch_rule<span class="w"> </span>datacenter</span>
+</pre></div></div></li>
+</ol>
+<p>When stretch mode is enabled, PGs will become active only when they peer
+across data centers (or across whichever CRUSH bucket type was specified),
+assuming both are alive. Pools will increase in size from the default <code class="docutils literal notranslate"><span class="pre">3</span></code> to
+<code class="docutils literal notranslate"><span class="pre">4</span></code>, and two copies will be expected in each site. OSDs will be allowed to
+connect to monitors only if they are in the same data center as the monitors.
+New monitors will not be allowed to join the cluster if they do not specify a
+location.</p>
+<p>If all OSDs and monitors in one of the data centers become inaccessible at once,
+the surviving data center enters a “degraded stretch mode”. A warning will be
+issued, the <code class="docutils literal notranslate"><span class="pre">min_size</span></code> will be reduced to <code class="docutils literal notranslate"><span class="pre">1</span></code>, and the cluster will be
+allowed to go active with the data in the single remaining site. The pool size
+does not change, so warnings will be generated that report that the pools are
+too small -- but a special stretch mode flag will prevent the OSDs from
+creating extra copies in the remaining data center. This means that the data
+center will keep only two copies, just as before.</p>
+<p>When the missing data center comes back, the cluster will enter a “recovery
+stretch mode”. This changes the warning and allows peering, but requires OSDs
+only from the data center that was <code class="docutils literal notranslate"><span class="pre">up</span></code> throughout the duration of the
+downtime. When all PGs are in a known state, and are neither degraded nor
+incomplete, the cluster transitions back to regular stretch mode, ends the
+warning, restores <code class="docutils literal notranslate"><span class="pre">min_size</span></code> to its original value (<code class="docutils literal notranslate"><span class="pre">2</span></code>), requires both
+sites to peer, and no longer requires the site that was up throughout the
+duration of the downtime when peering (which makes failover to the other site
+possible, if needed).</p>
+</section>
+<section id="exiting-stretch-mode">
+<h3>Exiting Stretch Mode<a class="headerlink" href="#exiting-stretch-mode" title="Link to this heading"></a></h3>
+<p>To exit stretch mode, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>disable_stretch_mode<span class="w"> </span><span class="o">[{</span>crush_rule<span class="o">}]</span><span class="w"> </span>--yes-i-really-mean-it</span>
+</pre></div></div><dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{crush_rule}</span></span></dt>
+<dd><p>The CRUSH rule that the user wants all pools to move back to. If this
+is not specified, the pools will move back to the default CRUSH rule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>The command will move the cluster back to normal mode,
+and the cluster will no longer be in stretch mode.
+All pools will move its <code class="docutils literal notranslate"><span class="pre">size</span></code> and <code class="docutils literal notranslate"><span class="pre">min_size</span></code>
+back to the default values it started with.
+At this point the user is responsible for scaling down the cluster
+to the desired number of OSDs if they choose to operate with less number of OSDs.</p>
+<p>Please note that the command will not execute when the cluster is in
+<code class="docutils literal notranslate"><span class="pre">recovery</span> <span class="pre">stretch</span> <span class="pre">mode</span></code>. The command will only execute when the cluster
+is in <code class="docutils literal notranslate"><span class="pre">degraded</span> <span class="pre">stretch</span> <span class="pre">mode</span></code> or <code class="docutils literal notranslate"><span class="pre">healthy</span> <span class="pre">stretch</span> <span class="pre">mode</span></code>.</p>
+</section>
+</section>
+<section id="limitations-of-stretch-mode">
+<h2>Limitations of Stretch Mode<a class="headerlink" href="#limitations-of-stretch-mode" title="Link to this heading"></a></h2>
+<p>When using stretch mode, OSDs must be located at exactly two sites.</p>
+<p>Two monitors should be run in each data center, plus a tiebreaker in a third
+(or in the cloud) for a total of five monitors. While in stretch mode, OSDs
+will connect only to monitors within the data center in which they are located.
+OSDs <em>DO NOT</em> connect to the tiebreaker monitor.</p>
+<p>Erasure-coded pools cannot be used with stretch mode. Attempts to use erasure
+coded pools with stretch mode will fail. Erasure coded pools cannot be created
+while in stretch mode.</p>
+<p>To use stretch mode, you will need to create a CRUSH rule that provides two
+replicas in each data center. Ensure that there are four total replicas: two in
+each data center. If pools exist in the cluster that do not have the default
+<code class="docutils literal notranslate"><span class="pre">size</span></code> or <code class="docutils literal notranslate"><span class="pre">min_size</span></code>, Ceph will not enter stretch mode. An example of such
+a CRUSH rule is given above.</p>
+<p>Because stretch mode runs with <code class="docutils literal notranslate"><span class="pre">min_size</span></code> set to <code class="docutils literal notranslate"><span class="pre">1</span></code> (or, more directly,
+<code class="docutils literal notranslate"><span class="pre">min_size</span> <span class="pre">1</span></code>), we recommend enabling stretch mode only when using OSDs on
+SSDs. Hybrid HDD+SSD or HDD-only OSDs are not recommended
+due to the long time it takes for them to recover after connectivity between
+data centers has been restored. This reduces the potential for data loss.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>CRUSH rules that specify a device class are not supported in stretch mode.
+For example, the following rule specifying the <code class="docutils literal notranslate"><span class="pre">ssd</span></code> device class will not work:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">stretch_replicated_rule</span> <span class="p">{</span>
+           <span class="nb">id</span> <span class="mi">2</span>
+           <span class="nb">type</span> <span class="n">replicated</span> <span class="k">class</span><span class="w"> </span><span class="nc">ssd</span>
+           <span class="n">step</span> <span class="n">take</span> <span class="n">default</span>
+           <span class="n">step</span> <span class="n">choose</span> <span class="n">firstn</span> <span class="mi">0</span> <span class="nb">type</span> <span class="n">datacenter</span>
+           <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">2</span> <span class="nb">type</span> <span class="n">host</span>
+           <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<p>In the future, stretch mode could support erasure-coded pools,
+enable deployments across multiple data centers,
+and accommodate multiple CRUSH device classes.</p>
+</section>
+<section id="other-commands">
+<h2>Other commands<a class="headerlink" href="#other-commands" title="Link to this heading"></a></h2>
+<section id="replacing-a-failed-tiebreaker-monitor">
+<h3>Replacing a failed tiebreaker monitor<a class="headerlink" href="#replacing-a-failed-tiebreaker-monitor" title="Link to this heading"></a></h3>
+<p>Turn on a new monitor and run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>set_new_tiebreaker<span class="w"> </span>mon.&lt;new_mon_name&gt;</span>
+</pre></div></div><p>This command protests if the new monitor is in the same location as the
+existing non-tiebreaker monitors. <strong>This command WILL NOT remove the previous
+tiebreaker monitor.</strong> Remove the previous tiebreaker monitor yourself.</p>
+</section>
+<section id="using-set-crush-location-and-not-ceph-mon-set-location">
+<h3>Using “--set-crush-location” and not “ceph mon set_location”<a class="headerlink" href="#using-set-crush-location-and-not-ceph-mon-set-location" title="Link to this heading"></a></h3>
+<p>If you write your own tooling for deploying Ceph, use the
+<code class="docutils literal notranslate"><span class="pre">--set-crush-location</span></code> option when booting monitors instead of running <code class="docutils literal notranslate"><span class="pre">ceph</span>
+<span class="pre">mon</span> <span class="pre">set_location</span></code>. This option accepts only a single <code class="docutils literal notranslate"><span class="pre">bucket=loc</span></code> pair (for
+example, <code class="docutils literal notranslate"><span class="pre">ceph-mon</span> <span class="pre">--set-crush-location</span> <span class="pre">'datacenter=a'</span></code>), and that pair must
+match the bucket type that was specified when running <code class="docutils literal notranslate"><span class="pre">enable_stretch_mode</span></code>.</p>
+</section>
+<section id="forcing-recovery-stretch-mode">
+<h3>Forcing recovery stretch mode<a class="headerlink" href="#forcing-recovery-stretch-mode" title="Link to this heading"></a></h3>
+<p>When in stretch degraded mode, the cluster will go into “recovery” mode
+automatically when the disconnected data center comes back. If that does not
+happen or you want to enable recovery mode early, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>force_recovery_stretch_mode<span class="w"> </span>--yes-i-really-mean-it</span>
+</pre></div></div></section>
+<section id="forcing-normal-stretch-mode">
+<h3>Forcing normal stretch mode<a class="headerlink" href="#forcing-normal-stretch-mode" title="Link to this heading"></a></h3>
+<p>When in recovery mode, the cluster should go back into normal stretch mode when
+the PGs are healthy. If this fails to happen or if you want to force the
+cross-data-center peering early and are willing to risk data downtime (or have
+verified separately that all the PGs can peer, even if they aren’t fully
+recovered), run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>force_healthy_stretch_mode<span class="w"> </span>--yes-i-really-mean-it</span>
+</pre></div></div><p>This command can be used to to remove the <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> state, which recovery
+mode generates.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="crush-map-edits.html" class="btn btn-neutral float-left" title="Manually editing the CRUSH Map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="change-mon-elections.html" class="btn btn-neutral float-right" title="Configuring Monitor Election Strategies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

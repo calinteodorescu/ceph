@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>monmaptool -- ceph monitor cluster map manipulation tool &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="osdmaptool -- ceph osd cluster map manipulation tool" href="osdmaptool.html" />
+    <link rel="prev" title="librados-config -- display information about librados" href="librados-config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../rados/configuration/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rados/operations/index.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../rados/man/index.html">Man Pages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume.html">ceph-volume -- Ceph OSD deployment and inspection tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume-systemd.html">ceph-volume-systemd -- systemd ceph-volume helper tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph.html">ceph -- ceph administration tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-authtool.html">ceph-authtool -- ceph keyring manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-clsinfo.html">ceph-clsinfo -- show class object information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">ceph-conf -- ceph conf file tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-debugpack.html">ceph-debugpack -- ceph debug packer utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-dencoder.html">ceph-dencoder -- ceph encoder/decoder utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-mon.html">ceph-mon -- ceph monitor daemon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-osd.html">ceph-osd -- ceph object storage daemon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-kvstore-tool.html">ceph-kvstore-tool -- ceph kvstore manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-run.html">ceph-run -- restart daemon on core dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-syn.html">ceph-syn -- ceph synthetic workload generator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crushdiff.html">crushdiff -- ceph crush map test tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crushtool.html">crushtool -- CRUSH map manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="librados-config.html">librados-config -- display information about librados</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">monmaptool -- ceph monitor cluster map manipulation tool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#availability">Availability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osdmaptool.html">osdmaptool -- ceph osd cluster map manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados.html">rados -- rados object storage utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-post-file.html">ceph-post-file -- post files for ceph developers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../rados/troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rados/api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../rados/index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="../../rados/man/index.html">Object Store Manpages</a></li>
+      <li class="breadcrumb-item active">monmaptool -- ceph monitor cluster map manipulation tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/man/8/monmaptool.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="monmaptool-ceph-monitor-cluster-map-manipulation-tool">
+<h1>monmaptool -- ceph monitor cluster map manipulation tool<a class="headerlink" href="#monmaptool-ceph-monitor-cluster-map-manipulation-tool" title="Link to this heading"></a></h1>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line"><strong>monmaptool</strong> &lt;action&gt; [options] <em>mapfilename</em></div>
+</div>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p><strong>monmaptool</strong> is a utility to create, view, and modify a monitor
+cluster map for the Ceph distributed storage system. The monitor map
+specifies the only fixed addresses in the Ceph distributed system.
+All other daemons bind to arbitrary addresses and register themselves
+with the monitors.</p>
+<p>When creating a map with --create, a new monitor map with a new,
+random UUID will be created. It should be followed by one or more
+monitor addresses.</p>
+<p>The default Ceph monitor port for messenger protocol v1 is 6789, and
+3300 for protocol v2.</p>
+<p>Multiple actions can be performed per invocation.</p>
+</section>
+<section id="options">
+<h2>Options<a class="headerlink" href="#options" title="Link to this heading"></a></h2>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-print">
+<span class="sig-name descname"><span class="pre">--print</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-monmaptool-print" title="Link to this definition"></a></dt>
+<dd><p>print a plaintext dump of the map, after any modifications are
+made.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-feature-list">
+<span class="sig-name descname"><span class="pre">--feature-list</span></span><span class="sig-prename descclassname"> <span class="pre">[plain|parseable]</span></span><a class="headerlink" href="#cmdoption-monmaptool-feature-list" title="Link to this definition"></a></dt>
+<dd><p>list the enabled features as well as the available ones.</p>
+<p>By default, a human readable output is produced.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-create">
+<span class="sig-name descname"><span class="pre">--create</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-monmaptool-create" title="Link to this definition"></a></dt>
+<dd><p>create a new monitor map with a new UUID (and with it, a new,
+empty Ceph cluster).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-clobber">
+<span class="sig-name descname"><span class="pre">--clobber</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-monmaptool-clobber" title="Link to this definition"></a></dt>
+<dd><p>allow monmaptool to create a new mapfilename in place of an existing map.</p>
+<p>Only useful when <em>--create</em> is used.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-generate">
+<span class="sig-name descname"><span class="pre">--generate</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-monmaptool-generate" title="Link to this definition"></a></dt>
+<dd><p>generate a new monmap based on the values on the command line or specified
+in the ceph configuration.  This is, in order of preference,</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--monmap</span> <span class="pre">filename</span></code> to specify a monmap to load</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--mon-host</span> <span class="pre">'host1,ip2'</span></code> to specify a list of hosts or ip addresses</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[mon.foo]</span></code> sections containing <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">addr</span></code> settings in the config. Note that this method is not recommended and support will be removed in a future release.</p></li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-filter-initial-members">
+<span class="sig-name descname"><span class="pre">--filter-initial-members</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-monmaptool-filter-initial-members" title="Link to this definition"></a></dt>
+<dd><p>filter the initial monmap by applying the <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">initial</span> <span class="pre">members</span></code>
+setting.  Monitors not present in that list will be removed, and
+initial members not present in the map will be added with dummy
+addresses.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-add">
+<span class="sig-name descname"><span class="pre">--add</span></span><span class="sig-prename descclassname"> <span class="pre">name</span> <span class="pre">ip[:port]</span></span><a class="headerlink" href="#cmdoption-monmaptool-add" title="Link to this definition"></a></dt>
+<dd><p>add a monitor with the specified ip:port to the map.</p>
+<p>If the <em>nautilus</em> feature is set, and the port is not, the monitor
+will be added for both messenger protocols.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-addv">
+<span class="sig-name descname"><span class="pre">--addv</span></span><span class="sig-prename descclassname"> <span class="pre">name</span> <span class="pre">[protocol:ip:port[,...]]</span></span><a class="headerlink" href="#cmdoption-monmaptool-addv" title="Link to this definition"></a></dt>
+<dd><p>add a monitor with the specified version:ip:port to the map.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-rm">
+<span class="sig-name descname"><span class="pre">--rm</span></span><span class="sig-prename descclassname"> <span class="pre">name</span></span><a class="headerlink" href="#cmdoption-monmaptool-rm" title="Link to this definition"></a></dt>
+<dd><p>remove the monitor with the specified name from the map.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-fsid">
+<span class="sig-name descname"><span class="pre">--fsid</span></span><span class="sig-prename descclassname"> <span class="pre">uuid</span></span><a class="headerlink" href="#cmdoption-monmaptool-fsid" title="Link to this definition"></a></dt>
+<dd><p>set the fsid to the given uuid.  If not specified with <em>--create</em>, a random fsid will be generated.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-feature-set">
+<span class="sig-name descname"><span class="pre">--feature-set</span></span><span class="sig-prename descclassname"> <span class="pre">value</span> <span class="pre">[--optional|--persistent]</span></span><a class="headerlink" href="#cmdoption-monmaptool-feature-set" title="Link to this definition"></a></dt>
+<dd><p>enable a feature.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-feature-unset">
+<span class="sig-name descname"><span class="pre">--feature-unset</span></span><span class="sig-prename descclassname"> <span class="pre">value</span> <span class="pre">[--optional|--persistent]</span></span><a class="headerlink" href="#cmdoption-monmaptool-feature-unset" title="Link to this definition"></a></dt>
+<dd><p>disable a feature.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-enable-all-features">
+<span class="sig-name descname"><span class="pre">--enable-all-features</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-monmaptool-enable-all-features" title="Link to this definition"></a></dt>
+<dd><p>enable all supported features.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-monmaptool-set-min-mon-release">
+<span class="sig-name descname"><span class="pre">--set-min-mon-release</span></span><span class="sig-prename descclassname"> <span class="pre">release</span></span><a class="headerlink" href="#cmdoption-monmaptool-set-min-mon-release" title="Link to this definition"></a></dt>
+<dd><p>set the min_mon_release.</p>
+</dd></dl>
+
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>To create a new map with three monitors (for a fresh Ceph cluster):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span> <span class="o">--</span><span class="n">create</span> <span class="o">--</span><span class="n">add</span> <span class="n">nodeA</span> <span class="mf">192.168.0.10</span> <span class="o">--</span><span class="n">add</span> <span class="n">nodeB</span> <span class="mf">192.168.0.11</span> \
+  <span class="o">--</span><span class="n">add</span> <span class="n">nodeC</span> <span class="mf">192.168.0.12</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">features</span> <span class="o">--</span><span class="n">clobber</span> <span class="n">monmap</span>
+</pre></div>
+</div>
+<p>To display the contents of the map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span> <span class="o">--</span><span class="nb">print</span> <span class="n">monmap</span>
+</pre></div>
+</div>
+<p>To replace one monitor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span> <span class="o">--</span><span class="n">rm</span> <span class="n">nodeA</span> <span class="n">monmap</span>
+<span class="n">monmaptool</span> <span class="o">--</span><span class="n">add</span> <span class="n">nodeA</span> <span class="mf">192.168.0.9</span> <span class="n">monmap</span>
+</pre></div>
+</div>
+</section>
+<section id="availability">
+<h2>Availability<a class="headerlink" href="#availability" title="Link to this heading"></a></h2>
+<p><strong>monmaptool</strong> is part of Ceph, a massively scalable, open-source, distributed
+storage system. Please refer to the Ceph documentation at <a class="reference external" href="https://docs.ceph.com">https://docs.ceph.com</a>
+for more information.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="ceph.html"><span class="doc">ceph</span></a>(8),
+<a class="reference internal" href="crushtool.html"><span class="doc">crushtool</span></a>(8),</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="librados-config.html" class="btn btn-neutral float-left" title="librados-config -- display information about librados" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="osdmaptool.html" class="btn btn-neutral float-right" title="osdmaptool -- ceph osd cluster map manipulation tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

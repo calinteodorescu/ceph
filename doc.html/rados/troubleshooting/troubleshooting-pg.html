@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troubleshooting PGs &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Logging and Debugging" href="log-and-debug.html" />
+    <link rel="prev" title="Troubleshooting OSDs" href="troubleshooting-osd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Troubleshooting</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Troubleshooting PGs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#placement-groups-never-get-clean">Placement Groups Never Get Clean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stuck-placement-groups">Stuck Placement Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#placement-group-down-peering-failure">Placement Group Down - Peering Failure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unfound-objects">Unfound Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#homeless-placement-groups">Homeless Placement Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#only-a-few-osds-receive-data">Only a Few OSDs Receive Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#can-t-write-data">Can’t Write Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgs-inconsistent">PGs Inconsistent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#erasure-coded-pgs-are-not-active-clean">Erasure Coded PGs are not active+clean</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="memory-profiling.html">Memory Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiling.html">CPU Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="../operations/index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Troubleshooting PGs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/troubleshooting/troubleshooting-pg.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="troubleshooting-pgs">
+<h1>Troubleshooting PGs<a class="headerlink" href="#troubleshooting-pgs" title="Link to this heading"></a></h1>
+<section id="placement-groups-never-get-clean">
+<h2>Placement Groups Never Get Clean<a class="headerlink" href="#placement-groups-never-get-clean" title="Link to this heading"></a></h2>
+<p>Placement Groups (PGs) that remain in the <code class="docutils literal notranslate"><span class="pre">active</span></code> status, the
+<code class="docutils literal notranslate"><span class="pre">active+remapped</span></code> status or the <code class="docutils literal notranslate"><span class="pre">active+degraded</span></code> status and never achieve
+an <code class="docutils literal notranslate"><span class="pre">active+clean</span></code> status might indicate a problem with the configuration of
+the Ceph cluster.</p>
+<p>In such a situation, review the settings in the <a class="reference external" href="../../configuration/pool-pg-config-ref">Pool, PG and CRUSH Config
+Reference</a> and make appropriate adjustments.</p>
+<p>As a general rule, run your cluster with more than one OSD and a pool size
+of greater than two object replicas.</p>
+<section id="one-node-cluster">
+<span id="id1"></span><h3>One Node Cluster<a class="headerlink" href="#one-node-cluster" title="Link to this heading"></a></h3>
+<p>Ceph no longer provides documentation for operating on a single node.  Systems
+designed for distributed computing by definition do not run on a single node.
+The mounting of client kernel modules on a single node that contains a Ceph
+daemon may cause a deadlock due to issues with the Linux kernel itself (unless
+VMs are used as clients). You can experiment with Ceph in a one-node
+configuration, in spite of the limitations as described herein.</p>
+<p>To create a cluster on a single node, you must change the
+<code class="docutils literal notranslate"><span class="pre">osd_crush_chooseleaf_type</span></code> setting from the default of <code class="docutils literal notranslate"><span class="pre">1</span></code> (meaning
+<code class="docutils literal notranslate"><span class="pre">host</span></code> or <code class="docutils literal notranslate"><span class="pre">node</span></code>) to <code class="docutils literal notranslate"><span class="pre">0</span></code> (meaning <code class="docutils literal notranslate"><span class="pre">osd</span></code>) in your Ceph configuration
+file before you create your monitors and OSDs. This tells Ceph that an OSD is
+permitted to place another OSD on the same host. If you are trying to set up a
+single-node cluster and <code class="docutils literal notranslate"><span class="pre">osd_crush_chooseleaf_type</span></code> is greater than <code class="docutils literal notranslate"><span class="pre">0</span></code>,
+Ceph will attempt to place the PGs of one OSD with the PGs of another OSD on
+another node, chassis, rack, row, or datacenter depending on the setting.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>DO NOT mount kernel clients directly on the same node as your Ceph
+Storage Cluster. Kernel conflicts can arise. However, you can mount kernel
+clients within virtual machines (VMs) on a single node.</p>
+</div>
+<p>If you are creating OSDs using a single disk, you must manually create
+directories for the data first.</p>
+</section>
+<section id="fewer-osds-than-replicas">
+<h3>Fewer OSDs than Replicas<a class="headerlink" href="#fewer-osds-than-replicas" title="Link to this heading"></a></h3>
+<p>If two OSDs are in an <code class="docutils literal notranslate"><span class="pre">up</span></code> and <code class="docutils literal notranslate"><span class="pre">in</span></code> state, but the placement gropus are not
+in an <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span></code> state, you may have an <code class="docutils literal notranslate"><span class="pre">osd_pool_default_size</span></code> set
+to greater than <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
+<p>There are a few ways to address this situation. If you want to operate your
+cluster in an <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">degraded</span></code> state with two replicas, you can set the
+<code class="docutils literal notranslate"><span class="pre">osd_pool_default_min_size</span></code> to <code class="docutils literal notranslate"><span class="pre">2</span></code> so that you can write objects in an
+<code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">degraded</span></code> state. You may also set the <code class="docutils literal notranslate"><span class="pre">osd_pool_default_size</span></code>
+setting to <code class="docutils literal notranslate"><span class="pre">2</span></code> so that you have only two stored replicas (the original and
+one replica). In such a case, the cluster should achieve an <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span></code>
+state.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can make the changes while the cluster is running. If you make
+the changes in your Ceph configuration file, you might need to restart your
+cluster.</p>
+</div>
+</section>
+<section id="pool-size-1">
+<h3>Pool Size = 1<a class="headerlink" href="#pool-size-1" title="Link to this heading"></a></h3>
+<p>If you have <code class="docutils literal notranslate"><span class="pre">osd_pool_default_size</span></code> set to <code class="docutils literal notranslate"><span class="pre">1</span></code>, you will have only one copy
+of the object. OSDs rely on other OSDs to tell them which objects they should
+have. If one OSD has a copy of an object and there is no second copy, then
+there is no second OSD to tell the first OSD that it should have that copy. For
+each placement group mapped to the first OSD (see <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">pg</span> <span class="pre">dump</span></code>), you can
+force the first OSD to notice the placement groups it needs by running a
+command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>force-create-pg<span class="w"> </span>&lt;pgid&gt;</span>
+</pre></div></div></section>
+<section id="crush-map-errors">
+<h3>CRUSH Map Errors<a class="headerlink" href="#crush-map-errors" title="Link to this heading"></a></h3>
+<p>If any placement groups in your cluster are unclean, then there might be errors
+in your CRUSH map.</p>
+</section>
+</section>
+<section id="stuck-placement-groups">
+<h2>Stuck Placement Groups<a class="headerlink" href="#stuck-placement-groups" title="Link to this heading"></a></h2>
+<p>It is normal for placement groups to enter “degraded” or “peering” states after
+a component failure. Normally, these states reflect the expected progression
+through the failure recovery process. However, a placement group that stays in
+one of these states for a long time might be an indication of a larger problem.
+For this reason, the Ceph Monitors will warn when placement groups get “stuck”
+in a non-optimal state. Specifically, we check for:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inactive</span></code> - The placement group has not been <code class="docutils literal notranslate"><span class="pre">active</span></code> for too long (that
+is, it hasn’t been able to service read/write requests).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unclean</span></code> - The placement group has not been <code class="docutils literal notranslate"><span class="pre">clean</span></code> for too long (that
+is, it hasn’t been able to completely recover from a previous failure).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stale</span></code> - The placement group status has not been updated by a
+<code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code>.  This indicates that all nodes storing this placement group may
+be <code class="docutils literal notranslate"><span class="pre">down</span></code>.</p></li>
+</ul>
+<p>List stuck placement groups by running one of the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span>dump_stuck<span class="w"> </span>stale</span>
+<span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span>dump_stuck<span class="w"> </span>inactive</span>
+<span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span>dump_stuck<span class="w"> </span>unclean</span>
+</pre></div></div><ul class="simple">
+<li><p>Stuck <code class="docutils literal notranslate"><span class="pre">stale</span></code> placement groups usually indicate that key <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code>
+daemons are not running.</p></li>
+<li><p>Stuck <code class="docutils literal notranslate"><span class="pre">inactive</span></code> placement groups usually indicate a peering problem (see
+<a class="reference internal" href="#failures-osd-peering"><span class="std std-ref">Placement Group Down - Peering Failure</span></a>).</p></li>
+<li><p>Stuck <code class="docutils literal notranslate"><span class="pre">unclean</span></code> placement groups usually indicate that something is
+preventing recovery from completing, possibly unfound objects (see
+<a class="reference internal" href="#failures-osd-unfound"><span class="std std-ref">Unfound Objects</span></a>);</p></li>
+</ul>
+</section>
+<section id="placement-group-down-peering-failure">
+<span id="failures-osd-peering"></span><h2>Placement Group Down - Peering Failure<a class="headerlink" href="#placement-group-down-peering-failure" title="Link to this heading"></a></h2>
+<p>In certain cases, the <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> <cite>peering</cite> process can run into problems,
+which can prevent a PG from becoming active and usable. In such a case, running
+the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">health</span> <span class="pre">detail</span></code> will report something similar to the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>health<span class="w"> </span>detail</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HEALTH_ERR</span> <span class="mi">7</span> <span class="n">pgs</span> <span class="n">degraded</span><span class="p">;</span> <span class="mi">12</span> <span class="n">pgs</span> <span class="n">down</span><span class="p">;</span> <span class="mi">12</span> <span class="n">pgs</span> <span class="n">peering</span><span class="p">;</span> <span class="mi">1</span> <span class="n">pgs</span> <span class="n">recovering</span><span class="p">;</span> <span class="mi">6</span> <span class="n">pgs</span> <span class="n">stuck</span> <span class="n">unclean</span><span class="p">;</span> <span class="mi">114</span><span class="o">/</span><span class="mi">3300</span> <span class="n">degraded</span> <span class="p">(</span><span class="mf">3.455</span><span class="o">%</span><span class="p">);</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span> <span class="ow">in</span> <span class="n">osds</span> <span class="n">are</span> <span class="n">down</span>
+<span class="o">...</span>
+<span class="n">pg</span> <span class="mf">0.5</span> <span class="ow">is</span> <span class="n">down</span><span class="o">+</span><span class="n">peering</span>
+<span class="n">pg</span> <span class="mf">1.4</span> <span class="ow">is</span> <span class="n">down</span><span class="o">+</span><span class="n">peering</span>
+<span class="o">...</span>
+<span class="n">osd</span><span class="mf">.1</span> <span class="ow">is</span> <span class="n">down</span> <span class="n">since</span> <span class="n">epoch</span> <span class="mi">69</span><span class="p">,</span> <span class="n">last</span> <span class="n">address</span> <span class="mf">192.168.106.220</span><span class="p">:</span><span class="mi">6801</span><span class="o">/</span><span class="mi">8651</span>
+</pre></div>
+</div>
+<p>Query the cluster to determine exactly why the PG is marked <code class="docutils literal notranslate"><span class="pre">down</span></code> by running a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span>query</span>
+</pre></div></div><div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;state&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;down+peering&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="w">  </span><span class="s2">&quot;recovery_state&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">       </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Started\/Primary\/Peering\/GetInfo&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;enter_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2012-03-06 14:40:16.169679&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;requested_info_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[]},</span>
+<span class="w">       </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Started\/Primary\/Peering&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;enter_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2012-03-06 14:40:16.169659&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;probing_osds&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">               </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">               </span><span class="mf">1</span><span class="p">],</span>
+<span class="w">         </span><span class="s2">&quot;blocked&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;peering is blocked due to down osds&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;down_osds_we_would_probe&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">               </span><span class="mf">1</span><span class="p">],</span>
+<span class="w">         </span><span class="s2">&quot;peering_blocked_by&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">               </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;osd&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">                 </span><span class="s2">&quot;current_lost_at&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">                 </span><span class="s2">&quot;comment&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;starting or marking this osd lost may let us proceed&quot;</span><span class="p">}]},</span>
+<span class="w">       </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Started&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;enter_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2012-03-06 14:40:16.169513&quot;</span><span class="p">}</span>
+<span class="w">   </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">recovery_state</span></code> section tells us that peering is blocked due to down
+<code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemons, specifically <code class="docutils literal notranslate"><span class="pre">osd.1</span></code>. In this case, we can start that
+particular <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> and recovery will proceed.</p>
+<p>Alternatively, if there is a catastrophic failure of <code class="docutils literal notranslate"><span class="pre">osd.1</span></code> (for example, if
+there has been a disk failure), the cluster can be informed that the OSD is
+<code class="docutils literal notranslate"><span class="pre">lost</span></code> and the cluster can be instructed that it must cope as best it can.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Informing the cluster that an OSD has been lost is dangerous
+because the cluster cannot guarantee that the other copies of the data are
+consistent and up to date.</p>
+</div>
+<p>To report an OSD <code class="docutils literal notranslate"><span class="pre">lost</span></code> and to instruct Ceph to continue to attempt recovery
+anyway, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>lost<span class="w"> </span><span class="m">1</span></span>
+</pre></div></div><p>Recovery will proceed.</p>
+</section>
+<section id="unfound-objects">
+<span id="failures-osd-unfound"></span><h2>Unfound Objects<a class="headerlink" href="#unfound-objects" title="Link to this heading"></a></h2>
+<p>Under certain combinations of failures, Ceph may complain about <code class="docutils literal notranslate"><span class="pre">unfound</span></code>
+objects, as in this example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>health<span class="w"> </span>detail</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HEALTH_WARN</span> <span class="mi">1</span> <span class="n">pgs</span> <span class="n">degraded</span><span class="p">;</span> <span class="mi">78</span><span class="o">/</span><span class="mi">3778</span> <span class="n">unfound</span> <span class="p">(</span><span class="mf">2.065</span><span class="o">%</span><span class="p">)</span>
+<span class="n">pg</span> <span class="mf">2.4</span> <span class="ow">is</span> <span class="n">active</span><span class="o">+</span><span class="n">degraded</span><span class="p">,</span> <span class="mi">78</span> <span class="n">unfound</span>
+</pre></div>
+</div>
+<p>This means that the storage cluster knows that some objects (or newer copies of
+existing objects) exist, but it hasn’t found copies of them.  Here is an
+example of how this might come about for a PG whose data is on two OSDS, which
+we will call “1” and “2”:</p>
+<ul class="simple">
+<li><p>1 goes down</p></li>
+<li><p>2 handles some writes, alone</p></li>
+<li><p>1 comes up</p></li>
+<li><p>1 and 2 re-peer, and the objects missing on 1 are queued for recovery.</p></li>
+<li><p>Before the new objects are copied, 2 goes down.</p></li>
+</ul>
+<p>At this point, 1 knows that these objects exist, but there is no live
+<code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> that has a copy of the objects. In this case, IO to those objects
+will block, and the cluster will hope that the failed node comes back soon.
+This is assumed to be preferable to returning an IO error to the user.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The situation described immediately above is one reason that setting
+<code class="docutils literal notranslate"><span class="pre">size=2</span></code> on a replicated pool and <code class="docutils literal notranslate"><span class="pre">m=1</span></code> on an erasure coded pool risks
+data loss.</p>
+</div>
+<p>Identify which objects are unfound by running a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span><span class="m">2</span>.4<span class="w"> </span>list_unfound<span class="w"> </span><span class="o">[</span>starting<span class="w"> </span>offset,<span class="w"> </span><span class="k">in</span><span class="w"> </span>json<span class="o">]</span></span>
+</pre></div></div><div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="s2">&quot;num_missing&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;num_unfound&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;objects&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">          </span><span class="s2">&quot;oid&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">              </span><span class="s2">&quot;oid&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;key&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;snapid&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">2</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;hash&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2249616407</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;max&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;pool&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;namespace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="s2">&quot;need&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;43&#39;251&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;have&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0&#39;0&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;flags&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;clean_regions&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;clean_offsets: [], clean_omap: 0, new_object: 1&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;locations&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="s2">&quot;0(3)&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="s2">&quot;4(2)&quot;</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;state&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NotRecovering&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;available_might_have_unfound&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;might_have_unfound&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">          </span><span class="s2">&quot;osd&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2(4)&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;osd is down&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="s2">&quot;more&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If there are too many objects to list in a single result, the <code class="docutils literal notranslate"><span class="pre">more</span></code> field
+will be true and you can query for more.  (Eventually the command line tool
+will hide this from you, but not yet.)</p>
+<p>Now you can identify which OSDs have been probed or might contain data.</p>
+<p>At the end of the listing (before <code class="docutils literal notranslate"><span class="pre">more:</span> <span class="pre">false</span></code>), <code class="docutils literal notranslate"><span class="pre">might_have_unfound</span></code> is
+provided when <code class="docutils literal notranslate"><span class="pre">available_might_have_unfound</span></code> is true.  This is equivalent to
+the output of <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">pg</span> <span class="pre">#.#</span> <span class="pre">query</span></code>.  This eliminates the need to use <code class="docutils literal notranslate"><span class="pre">query</span></code>
+directly.  The <code class="docutils literal notranslate"><span class="pre">might_have_unfound</span></code> information given behaves the same way as
+that <code class="docutils literal notranslate"><span class="pre">query</span></code> does, which is described below.  The only difference is that
+OSDs that have the status of <code class="docutils literal notranslate"><span class="pre">already</span> <span class="pre">probed</span></code> are ignored.</p>
+<p>Use of <code class="docutils literal notranslate"><span class="pre">query</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span><span class="m">2</span>.4<span class="w"> </span>query</span>
+</pre></div></div><div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;recovery_state&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">     </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Started\/Primary\/Active&quot;</span><span class="p">,</span>
+<span class="w">       </span><span class="s2">&quot;enter_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2012-03-06 15:15:46.713212&quot;</span><span class="p">,</span>
+<span class="w">       </span><span class="s2">&quot;might_have_unfound&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">             </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;osd&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">               </span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;osd is down&quot;</span><span class="p">}]},</span>
+</pre></div>
+</div>
+<p>In this case, the cluster knows that <code class="docutils literal notranslate"><span class="pre">osd.1</span></code> might have data, but it is
+<code class="docutils literal notranslate"><span class="pre">down</span></code>. Here is the full range of possible states:</p>
+<ul class="simple">
+<li><p>already probed</p></li>
+<li><p>querying</p></li>
+<li><p>OSD is down</p></li>
+<li><p>not queried (yet)</p></li>
+</ul>
+<p>Sometimes it simply takes some time for the cluster to query possible
+locations.</p>
+<p>It is possible that there are other locations where the object might exist that
+are not listed. For example: if an OSD is stopped and taken out of the cluster
+and then the cluster fully recovers, and then through a subsequent set of
+failures the cluster ends up with an unfound object, the cluster will ignore
+the removed OSD. (This scenario, however, is unlikely.)</p>
+<p>If all possible locations have been queried and objects are still lost, you may
+have to give up on the lost objects. This, again, is possible only when unusual
+combinations of failures have occurred that allow the cluster to learn about
+writes that were performed before the writes themselves have been recovered. To
+mark the “unfound” objects as “lost”, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>mark_unfound_lost<span class="w"> </span>revert<span class="p">|</span>delete</span>
+</pre></div></div><p>Here the final argument (<code class="docutils literal notranslate"><span class="pre">revert|delete</span></code>) specifies how the cluster should
+deal with lost objects.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">delete</span></code> option will cause the cluster to forget about them entirely.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">revert</span></code> option (which is not available for erasure coded pools) will
+either roll back to a previous version of the object or (if it was a new
+object) forget about the object entirely. Use <code class="docutils literal notranslate"><span class="pre">revert</span></code> with caution, as it
+may confuse applications that expect the object to exist.</p>
+</section>
+<section id="homeless-placement-groups">
+<h2>Homeless Placement Groups<a class="headerlink" href="#homeless-placement-groups" title="Link to this heading"></a></h2>
+<p>It is possible that every OSD that has copies of a given placement group fails.
+If this happens, then the subset of the object store that contains those
+placement groups becomes unavailable and the monitor will receive no status
+updates for those placement groups. The monitor marks as <code class="docutils literal notranslate"><span class="pre">stale</span></code> any
+placement group whose primary OSD has failed. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>health</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HEALTH_WARN</span> <span class="mi">24</span> <span class="n">pgs</span> <span class="n">stale</span><span class="p">;</span> <span class="mi">3</span><span class="o">/</span><span class="mi">300</span> <span class="ow">in</span> <span class="n">osds</span> <span class="n">are</span> <span class="n">down</span>
+</pre></div>
+</div>
+<p>Identify which placement groups are <code class="docutils literal notranslate"><span class="pre">stale</span></code> and which were the last OSDs to
+store the <code class="docutils literal notranslate"><span class="pre">stale</span></code> placement groups by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>health<span class="w"> </span>detail</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HEALTH_WARN</span> <span class="mi">24</span> <span class="n">pgs</span> <span class="n">stale</span><span class="p">;</span> <span class="mi">3</span><span class="o">/</span><span class="mi">300</span> <span class="ow">in</span> <span class="n">osds</span> <span class="n">are</span> <span class="n">down</span>
+<span class="o">...</span>
+<span class="n">pg</span> <span class="mf">2.5</span> <span class="ow">is</span> <span class="n">stuck</span> <span class="n">stale</span><span class="o">+</span><span class="n">active</span><span class="o">+</span><span class="n">remapped</span><span class="p">,</span> <span class="n">last</span> <span class="n">acting</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">osd</span><span class="mf">.10</span> <span class="ow">is</span> <span class="n">down</span> <span class="n">since</span> <span class="n">epoch</span> <span class="mi">23</span><span class="p">,</span> <span class="n">last</span> <span class="n">address</span> <span class="mf">192.168.106.220</span><span class="p">:</span><span class="mi">6800</span><span class="o">/</span><span class="mi">11080</span>
+<span class="n">osd</span><span class="mf">.11</span> <span class="ow">is</span> <span class="n">down</span> <span class="n">since</span> <span class="n">epoch</span> <span class="mi">13</span><span class="p">,</span> <span class="n">last</span> <span class="n">address</span> <span class="mf">192.168.106.220</span><span class="p">:</span><span class="mi">6803</span><span class="o">/</span><span class="mi">11539</span>
+<span class="n">osd</span><span class="mf">.12</span> <span class="ow">is</span> <span class="n">down</span> <span class="n">since</span> <span class="n">epoch</span> <span class="mi">24</span><span class="p">,</span> <span class="n">last</span> <span class="n">address</span> <span class="mf">192.168.106.220</span><span class="p">:</span><span class="mi">6806</span><span class="o">/</span><span class="mi">11861</span>
+</pre></div>
+</div>
+<p>This output indicates that placement group 2.5 (<code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">2.5</span></code>) was last managed by
+<code class="docutils literal notranslate"><span class="pre">osd.0</span></code> and <code class="docutils literal notranslate"><span class="pre">osd.2</span></code>. Restart those OSDs to allow the cluster to recover
+that placement group.</p>
+</section>
+<section id="only-a-few-osds-receive-data">
+<h2>Only a Few OSDs Receive Data<a class="headerlink" href="#only-a-few-osds-receive-data" title="Link to this heading"></a></h2>
+<p>If only a few of the nodes in the cluster are receiving data, check the number
+of placement groups in the pool as instructed in the <a class="reference internal" href="../operations/placement-groups.html#rados-ops-pgs-get-pg-num"><span class="std std-ref">Placement Groups</span></a> documentation. Since placement groups get mapped to
+OSDs in an operation involving dividing the number of placement groups in the
+cluster by the number of OSDs in the cluster, a small number of placement
+groups (the remainder, in this operation) are sometimes not distributed across
+the cluster. In situations like this, create a pool with a placement group
+count that is a multiple of the number of OSDs. See <a class="reference external" href="../../operations/placement-groups">Placement Groups</a> for
+details. See the <a class="reference internal" href="../configuration/pool-pg-config-ref.html#rados-config-pool-pg-crush-ref"><span class="std std-ref">Pool, PG, and CRUSH Config Reference</span></a> for instructions on changing the default
+values used to determine how many placement groups are assigned to each pool.</p>
+</section>
+<section id="can-t-write-data">
+<h2>Can’t Write Data<a class="headerlink" href="#can-t-write-data" title="Link to this heading"></a></h2>
+<p>If the cluster is up, but some OSDs are down and you cannot write data, make
+sure that you have the minimum number of OSDs running in the pool. If you don’t
+have the minimum number of OSDs running in the pool, Ceph will not allow you to
+write data to it because there is no guarantee that Ceph can replicate your
+data. See <code class="docutils literal notranslate"><span class="pre">osd_pool_default_min_size</span></code> in the <a class="reference internal" href="../configuration/pool-pg-config-ref.html#rados-config-pool-pg-crush-ref"><span class="std std-ref">Pool, PG, and CRUSH
+Config Reference</span></a> for details.</p>
+</section>
+<section id="pgs-inconsistent">
+<h2>PGs Inconsistent<a class="headerlink" href="#pgs-inconsistent" title="Link to this heading"></a></h2>
+<p>If the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">health</span> <span class="pre">detail</span></code> returns an <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span> <span class="pre">+</span>
+<span class="pre">inconsistent</span></code> state, this might indicate an error during scrubbing. Identify
+the inconsistent placement group or placement groups by running the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>health<span class="w"> </span>detail</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HEALTH_ERR</span> <span class="mi">1</span> <span class="n">pgs</span> <span class="n">inconsistent</span><span class="p">;</span> <span class="mi">2</span> <span class="n">scrub</span> <span class="n">errors</span>
+<span class="n">pg</span> <span class="mf">0.6</span> <span class="ow">is</span> <span class="n">active</span><span class="o">+</span><span class="n">clean</span><span class="o">+</span><span class="n">inconsistent</span><span class="p">,</span> <span class="n">acting</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="mi">2</span> <span class="n">scrub</span> <span class="n">errors</span>
+</pre></div>
+</div>
+<p>Alternatively, run this command if you prefer to inspect the output in a
+programmatic way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">rados<span class="w"> </span>list-inconsistent-pg<span class="w"> </span>rbd</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;0.6&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>There is only one consistent state, but in the worst case, we could have
+different inconsistencies in multiple perspectives found in more than one
+object. If an object named <code class="docutils literal notranslate"><span class="pre">foo</span></code> in PG <code class="docutils literal notranslate"><span class="pre">0.6</span></code> is truncated, the output of
+<code class="docutils literal notranslate"><span class="pre">rados</span> <span class="pre">list-inconsistent-pg</span> <span class="pre">rbd</span></code> will look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">rados<span class="w"> </span>list-inconsistent-obj<span class="w"> </span><span class="m">0</span>.6<span class="w"> </span>--format<span class="o">=</span>json-pretty</span>
+</pre></div></div><div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;epoch&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">14</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;inconsistents&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="s2">&quot;object&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;foo&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;nspace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;locator&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;snap&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;head&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;version&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="s2">&quot;errors&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;data_digest_mismatch&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;size_mismatch&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;union_shard_errors&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;data_digest_mismatch_info&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;size_mismatch_info&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;selected_object_info&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0:602f83fe:::foo:head(16&#39;1 client.4110.0:1 dirty|data_digest|omap_digest s 968 uv 1 dd e978e67f od ffffffff alloc_hint [0 0 0])&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;shards&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="s2">&quot;osd&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;errors&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">                    </span><span class="s2">&quot;size&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">968</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;omap_digest&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0xffffffff&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;data_digest&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0xe978e67f&quot;</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="s2">&quot;osd&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;errors&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">                    </span><span class="s2">&quot;size&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">968</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;omap_digest&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0xffffffff&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;data_digest&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0xe978e67f&quot;</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="s2">&quot;osd&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;errors&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                        </span><span class="s2">&quot;data_digest_mismatch_info&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="s2">&quot;size_mismatch_info&quot;</span>
+<span class="w">                    </span><span class="p">],</span>
+<span class="w">                    </span><span class="s2">&quot;size&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;omap_digest&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0xffffffff&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="s2">&quot;data_digest&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0xffffffff&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this case, the output indicates the following:</p>
+<ul class="simple">
+<li><p>The only inconsistent object is named <code class="docutils literal notranslate"><span class="pre">foo</span></code>, and its head has
+inconsistencies.</p></li>
+<li><p>The inconsistencies fall into two categories:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">errors</span></code>: these errors indicate inconsistencies between shards, without
+an indication of which shard(s) are bad. Check for the <code class="docutils literal notranslate"><span class="pre">errors</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">shards</span></code> array, if available, to pinpoint the problem.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_digest_mismatch</span></code>: the digest of the replica read from <code class="docutils literal notranslate"><span class="pre">OSD.2</span></code>
+is different from the digests of the replica reads of <code class="docutils literal notranslate"><span class="pre">OSD.0</span></code> and
+<code class="docutils literal notranslate"><span class="pre">OSD.1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size_mismatch</span></code>: the size of the replica read from <code class="docutils literal notranslate"><span class="pre">OSD.2</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>,
+but the size reported by <code class="docutils literal notranslate"><span class="pre">OSD.0</span></code> and <code class="docutils literal notranslate"><span class="pre">OSD.1</span></code> is <code class="docutils literal notranslate"><span class="pre">968</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">union_shard_errors</span></code>: the union of all shard-specific <code class="docutils literal notranslate"><span class="pre">errors</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">shards</span></code> array. The <code class="docutils literal notranslate"><span class="pre">errors</span></code> are set for the shard with the problem.
+These errors include <code class="docutils literal notranslate"><span class="pre">read_error</span></code> and other similar errors. The
+<code class="docutils literal notranslate"><span class="pre">errors</span></code> ending in <code class="docutils literal notranslate"><span class="pre">oi</span></code> indicate a comparison with
+<code class="docutils literal notranslate"><span class="pre">selected_object_info</span></code>. Examine the <code class="docutils literal notranslate"><span class="pre">shards</span></code> array to determine
+which shard has which error or errors.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_digest_mismatch_info</span></code>: the digest stored in the <code class="docutils literal notranslate"><span class="pre">object-info</span></code>
+is not <code class="docutils literal notranslate"><span class="pre">0xffffffff</span></code>, which is calculated from the shard read from
+<code class="docutils literal notranslate"><span class="pre">OSD.2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size_mismatch_info</span></code>: the size stored in the <code class="docutils literal notranslate"><span class="pre">object-info</span></code> is
+different from the size read from <code class="docutils literal notranslate"><span class="pre">OSD.2</span></code>. The latter is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">read_error</span></code> is listed in a shard’s <code class="docutils literal notranslate"><span class="pre">errors</span></code> attribute, the
+inconsistency is likely due to physical storage errors. In cases like this,
+check the storage used by that OSD.</p>
+<p>Examine the output of <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> and <code class="docutils literal notranslate"><span class="pre">smartctl</span></code> before attempting a drive
+repair.</p>
+</div>
+<p>To repair the inconsistent placement group, run a command of the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>pg<span class="w"> </span>repair<span class="w"> </span><span class="o">{</span>placement-group-ID<span class="o">}</span></span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>pg<span class="w"> </span>repair<span class="w"> </span><span class="m">1</span>.4</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PG IDs have the form <code class="docutils literal notranslate"><span class="pre">N.xxxxx</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of the
+pool that contains the PG. The command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">listpools</span></code> and the
+command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">dump</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">pool</span></code> return a list of pool numbers.</p>
+</div>
+<p>If you receive <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span> <span class="pre">+</span> <span class="pre">inconsistent</span></code> states periodically due to
+clock skew, consider configuring the <a class="reference external" href="https://en.wikipedia.org/wiki/Network_Time_Protocol">NTP</a> daemons on your monitor
+hosts to act as peers. See <a class="reference external" href="http://www.ntp.org">The Network Time Protocol</a>
+and Ceph <a class="reference internal" href="../configuration/mon-config-ref.html#mon-config-ref-clock"><span class="std std-ref">Clock Settings</span></a> for more information.</p>
+<section id="more-information-on-pg-repair">
+<h3>More Information on PG Repair<a class="headerlink" href="#more-information-on-pg-repair" title="Link to this heading"></a></h3>
+<p>Ceph stores and updates the checksums of objects stored in the cluster. When a
+scrub is performed on a PG, the lead OSD attempts to choose an authoritative
+copy from among its replicas. Only one of the possible cases is consistent.
+After performing a deep scrub, Ceph calculates the checksum of each object that
+is read from disk and compares it to the checksum that was previously recorded.
+If the current checksum and the previously recorded checksum do not match, that
+mismatch is considered to be an inconsistency. In the case of replicated pools,
+any mismatch between the checksum of any replica of an object and the checksum
+of the authoritative copy means that there is an inconsistency. The discovery
+of these inconsistencies cause a PG’s state to be set to <code class="docutils literal notranslate"><span class="pre">inconsistent</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">repair</span></code> command attempts to fix inconsistencies of various kinds. When
+<code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">repair</span></code> finds an inconsistent PG, it attempts to overwrite the digest of
+the inconsistent copy with the digest of the authoritative copy. When <code class="docutils literal notranslate"><span class="pre">pg</span>
+<span class="pre">repair</span></code> finds an inconsistent copy in a replicated pool, it marks the
+inconsistent copy as missing. In the case of replicated pools, recovery is
+beyond the scope of <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">repair</span></code>.</p>
+<p>In the case of erasure-coded and BlueStore pools, Ceph will automatically
+perform repairs if <code class="docutils literal notranslate"><span class="pre">osd_scrub_auto_repair</span></code> (default <code class="docutils literal notranslate"><span class="pre">false</span></code>) is set to
+<code class="docutils literal notranslate"><span class="pre">true</span></code> and if no more than <code class="docutils literal notranslate"><span class="pre">osd_scrub_auto_repair_num_errors</span></code> (default
+<code class="docutils literal notranslate"><span class="pre">5</span></code>) errors are found.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">repair</span></code> command will not solve every problem. Ceph does not
+automatically repair PGs when they are found to contain inconsistencies.</p>
+<p>The checksum of a RADOS object or an omap is not always available. Checksums
+are calculated incrementally. If a replicated object is updated
+non-sequentially, the write operation involved in the update changes the object
+and invalidates its checksum. The whole object is not read while the checksum
+is recalculated. The <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">repair</span></code> command is able to make repairs even when
+checksums are not available to it, as in the case of Filestore. Users working
+with replicated Filestore pools might prefer manual repair to <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">pg</span>
+<span class="pre">repair</span></code>.</p>
+<p>This material is relevant for Filestore, but not for BlueStore, which has its
+own internal checksums. The matched-record checksum and the calculated checksum
+cannot prove that any specific copy is in fact authoritative. If there is no
+checksum available, <code class="docutils literal notranslate"><span class="pre">pg</span> <span class="pre">repair</span></code> favors the data on the primary, but this
+might not be the uncorrupted replica. Because of this uncertainty, human
+intervention is necessary when an inconsistency is discovered. This
+intervention sometimes involves use of <code class="docutils literal notranslate"><span class="pre">ceph-objectstore-tool</span></code>.</p>
+</section>
+<section id="pg-repair-walkthrough">
+<h3>PG Repair Walkthrough<a class="headerlink" href="#pg-repair-walkthrough" title="Link to this heading"></a></h3>
+<p><a class="reference external" href="https://ceph.io/geen-categorie/ceph-manually-repair-object/">https://ceph.io/geen-categorie/ceph-manually-repair-object/</a> - This page
+contains a walkthrough of the repair of a PG. It is recommended reading if you
+want to repair a PG but have never done so.</p>
+</section>
+</section>
+<section id="erasure-coded-pgs-are-not-active-clean">
+<h2>Erasure Coded PGs are not active+clean<a class="headerlink" href="#erasure-coded-pgs-are-not-active-clean" title="Link to this heading"></a></h2>
+<p>If CRUSH fails to find enough OSDs to map to a PG, it will show as a
+<code class="docutils literal notranslate"><span class="pre">2147483647</span></code> which is <code class="docutils literal notranslate"><span class="pre">ITEM_NONE</span></code> or <code class="docutils literal notranslate"><span class="pre">no</span> <span class="pre">OSD</span> <span class="pre">found</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2147483647</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<section id="not-enough-osds">
+<h3>Not enough OSDs<a class="headerlink" href="#not-enough-osds" title="Link to this heading"></a></h3>
+<p>If the Ceph cluster has only eight OSDs and an erasure coded pool needs nine
+OSDs, the cluster will show “Not enough OSDs”. In this case, you either create
+another erasure coded pool that requires fewer OSDs, by running commands of the
+following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>erasure-code-profile<span class="w"> </span><span class="nb">set</span><span class="w"> </span>myprofile<span class="w"> </span><span class="nv">k</span><span class="o">=</span><span class="m">5</span><span class="w"> </span><span class="nv">m</span><span class="o">=</span><span class="m">3</span></span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>create<span class="w"> </span>erasurepool<span class="w"> </span>erasure<span class="w"> </span>myprofile</span>
+</pre></div></div><p>or add new OSDs, and the PG will automatically use them.</p>
+</section>
+<section id="crush-constraints-cannot-be-satisfied">
+<h3>CRUSH constraints cannot be satisfied<a class="headerlink" href="#crush-constraints-cannot-be-satisfied" title="Link to this heading"></a></h3>
+<p>If the cluster has enough OSDs, it is possible that the CRUSH rule is imposing
+constraints that cannot be satisfied. If there are ten OSDs on two hosts and
+the CRUSH rule requires that no two OSDs from the same host are used in the
+same PG, the mapping may fail because only two OSDs will be found. Check the
+constraint by displaying (“dumping”) the rule, as shown here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>crush<span class="w"> </span>rule<span class="w"> </span>ls</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[
+    &quot;replicated_rule&quot;,
+    &quot;erasurepool&quot;]
+$ ceph osd crush rule dump erasurepool
+{ &quot;rule_id&quot;: 1,
+  &quot;rule_name&quot;: &quot;erasurepool&quot;,
+  &quot;type&quot;: 3,
+  &quot;steps&quot;: [
+        { &quot;op&quot;: &quot;take&quot;,
+          &quot;item&quot;: -1,
+          &quot;item_name&quot;: &quot;default&quot;},
+        { &quot;op&quot;: &quot;chooseleaf_indep&quot;,
+          &quot;num&quot;: 0,
+          &quot;type&quot;: &quot;host&quot;},
+        { &quot;op&quot;: &quot;emit&quot;}]}
+</pre></div>
+</div>
+<p>Resolve this problem by creating a new pool in which PGs are allowed to have
+OSDs residing on the same host by running the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>erasure-code-profile<span class="w"> </span><span class="nb">set</span><span class="w"> </span>myprofile<span class="w"> </span>crush-failure-domain<span class="o">=</span>osd</span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>create<span class="w"> </span>erasurepool<span class="w"> </span>erasure<span class="w"> </span>myprofile</span>
+</pre></div></div></section>
+<section id="crush-gives-up-too-soon">
+<h3>CRUSH gives up too soon<a class="headerlink" href="#crush-gives-up-too-soon" title="Link to this heading"></a></h3>
+<p>If the Ceph cluster has just enough OSDs to map the PG (for instance a cluster
+with a total of nine OSDs and an erasure coded pool that requires nine OSDs per
+PG), it is possible that CRUSH gives up before finding a mapping. This problem
+can be resolved by:</p>
+<ul class="simple">
+<li><p>lowering the erasure coded pool requirements to use fewer OSDs per PG (this
+requires the creation of another pool, because erasure code profiles cannot
+be modified dynamically).</p></li>
+<li><p>adding more OSDs to the cluster (this does not require the erasure coded pool
+to be modified, because it will become clean automatically)</p></li>
+<li><p>using a handmade CRUSH rule that tries more times to find a good mapping.
+This can be modified for an existing CRUSH rule by setting
+<code class="docutils literal notranslate"><span class="pre">set_choose_tries</span></code> to a value greater than the default.</p></li>
+</ul>
+<p>First, verify the problem by using  <code class="docutils literal notranslate"><span class="pre">crushtool</span></code> after extracting the crushmap
+from the cluster. This ensures that your experiments do not modify the Ceph
+cluster and that they operate only on local files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>crush<span class="w"> </span>rule<span class="w"> </span>dump<span class="w"> </span>erasurepool</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{ &quot;rule_id&quot;: 1,
+  &quot;rule_name&quot;: &quot;erasurepool&quot;,
+  &quot;type&quot;: 3,
+  &quot;steps&quot;: [
+        { &quot;op&quot;: &quot;take&quot;,
+          &quot;item&quot;: -1,
+          &quot;item_name&quot;: &quot;default&quot;},
+        { &quot;op&quot;: &quot;chooseleaf_indep&quot;,
+          &quot;num&quot;: 0,
+          &quot;type&quot;: &quot;host&quot;},
+        { &quot;op&quot;: &quot;emit&quot;}]}
+$ ceph osd getcrushmap &gt; crush.map
+got crush map from osdmap epoch 13
+$ crushtool -i crush.map --test --show-bad-mappings \
+   --rule 1 \
+   --num-rep 9 \
+   --min-x 1 --max-x $((1024 * 1024))
+bad mapping rule 8 x 43 num_rep 9 result [3,2,7,1,2147483647,8,5,6,0]
+bad mapping rule 8 x 79 num_rep 9 result [6,0,2,1,4,7,2147483647,5,8]
+bad mapping rule 8 x 173 num_rep 9 result [0,4,6,8,2,1,3,7,2147483647]
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">--num-rep</span></code> is the number of OSDs that the erasure code CRUSH rule
+needs, <code class="docutils literal notranslate"><span class="pre">--rule</span></code> is the value of the <code class="docutils literal notranslate"><span class="pre">rule_id</span></code> field that was displayed by
+<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">crush</span> <span class="pre">rule</span> <span class="pre">dump</span></code>. This test will attempt to map one million values
+(in this example, the range defined by <code class="docutils literal notranslate"><span class="pre">[--min-x,--max-x]</span></code>) and must display
+at least one bad mapping. If this test outputs nothing, all mappings have been
+successful and you can be assured that the problem with your cluster is not
+caused by bad mappings.</p>
+<section id="changing-the-value-of-set-choose-tries">
+<h4>Changing the value of set_choose_tries<a class="headerlink" href="#changing-the-value-of-set-choose-tries" title="Link to this heading"></a></h4>
+<ol class="arabic">
+<li><p>Decompile the CRUSH map to edit the CRUSH rule by running the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>--decompile<span class="w"> </span>crush.map<span class="w"> </span>&gt;<span class="w"> </span>crush.txt</span>
+</pre></div></div></li>
+<li><p>Add the following line to the rule:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">step</span> <span class="n">set_choose_tries</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>The relevant part of the <code class="docutils literal notranslate"><span class="pre">crush.txt</span></code> file will resemble this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">erasurepool</span> <span class="p">{</span>
+        <span class="nb">id</span> <span class="mi">1</span>
+        <span class="nb">type</span> <span class="n">erasure</span>
+        <span class="n">step</span> <span class="n">set_chooseleaf_tries</span> <span class="mi">5</span>
+        <span class="n">step</span> <span class="n">set_choose_tries</span> <span class="mi">100</span>
+        <span class="n">step</span> <span class="n">take</span> <span class="n">default</span>
+        <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">indep</span> <span class="mi">0</span> <span class="nb">type</span> <span class="n">host</span>
+        <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Recompile and retest the CRUSH rule:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>--compile<span class="w"> </span>crush.txt<span class="w"> </span>-o<span class="w"> </span>better-crush.map</span>
+</pre></div></div></li>
+<li><p>When all mappings succeed, display a histogram of the number of tries that
+were necessary to find all of the mapping by using the
+<code class="docutils literal notranslate"><span class="pre">--show-choose-tries</span></code> option of the <code class="docutils literal notranslate"><span class="pre">crushtool</span></code> command, as in the
+following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2"><span class="w">  </span>crushtool<span class="w"> </span>-i<span class="w"> </span>better-crush.map<span class="w"> </span>--test<span class="w"> </span>--show-bad-mappings<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--show-choose-tries<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--rule<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--num-rep<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--min-x<span class="w"> </span><span class="m">1</span><span class="w"> </span>--max-x<span class="w"> </span><span class="k">$((</span><span class="m">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1024</span><span class="k">))</span></span>
+<span class="prompt2">...</span>
+<span class="prompt2"><span class="m">11</span>:<span class="w">        </span><span class="m">42</span></span>
+<span class="prompt2"><span class="m">12</span>:<span class="w">        </span><span class="m">44</span></span>
+<span class="prompt2"><span class="m">13</span>:<span class="w">        </span><span class="m">54</span></span>
+<span class="prompt2"><span class="m">14</span>:<span class="w">        </span><span class="m">45</span></span>
+<span class="prompt2"><span class="m">15</span>:<span class="w">        </span><span class="m">35</span></span>
+<span class="prompt2"><span class="m">16</span>:<span class="w">        </span><span class="m">34</span></span>
+<span class="prompt2"><span class="m">17</span>:<span class="w">        </span><span class="m">30</span></span>
+<span class="prompt2"><span class="m">18</span>:<span class="w">        </span><span class="m">25</span></span>
+<span class="prompt2"><span class="m">19</span>:<span class="w">        </span><span class="m">19</span></span>
+<span class="prompt2"><span class="m">20</span>:<span class="w">        </span><span class="m">22</span></span>
+<span class="prompt2"><span class="m">21</span>:<span class="w">        </span><span class="m">20</span></span>
+<span class="prompt2"><span class="m">22</span>:<span class="w">        </span><span class="m">17</span></span>
+<span class="prompt2"><span class="m">23</span>:<span class="w">        </span><span class="m">13</span></span>
+<span class="prompt2"><span class="m">24</span>:<span class="w">        </span><span class="m">16</span></span>
+<span class="prompt2"><span class="m">25</span>:<span class="w">        </span><span class="m">13</span></span>
+<span class="prompt2"><span class="m">26</span>:<span class="w">        </span><span class="m">11</span></span>
+<span class="prompt2"><span class="m">27</span>:<span class="w">        </span><span class="m">11</span></span>
+<span class="prompt2"><span class="m">28</span>:<span class="w">        </span><span class="m">13</span></span>
+<span class="prompt2"><span class="m">29</span>:<span class="w">        </span><span class="m">11</span></span>
+<span class="prompt2"><span class="m">30</span>:<span class="w">        </span><span class="m">10</span></span>
+<span class="prompt2"><span class="m">31</span>:<span class="w">         </span><span class="m">6</span></span>
+<span class="prompt2"><span class="m">32</span>:<span class="w">         </span><span class="m">5</span></span>
+<span class="prompt2"><span class="m">33</span>:<span class="w">        </span><span class="m">10</span></span>
+<span class="prompt2"><span class="m">34</span>:<span class="w">         </span><span class="m">3</span></span>
+<span class="prompt2"><span class="m">35</span>:<span class="w">         </span><span class="m">7</span></span>
+<span class="prompt2"><span class="m">36</span>:<span class="w">         </span><span class="m">5</span></span>
+<span class="prompt2"><span class="m">37</span>:<span class="w">         </span><span class="m">2</span></span>
+<span class="prompt2"><span class="m">38</span>:<span class="w">         </span><span class="m">5</span></span>
+<span class="prompt2"><span class="m">39</span>:<span class="w">         </span><span class="m">5</span></span>
+<span class="prompt2"><span class="m">40</span>:<span class="w">         </span><span class="m">2</span></span>
+<span class="prompt2"><span class="m">41</span>:<span class="w">         </span><span class="m">5</span></span>
+<span class="prompt2"><span class="m">42</span>:<span class="w">         </span><span class="m">4</span></span>
+<span class="prompt2"><span class="m">43</span>:<span class="w">         </span><span class="m">1</span></span>
+<span class="prompt2"><span class="m">44</span>:<span class="w">         </span><span class="m">2</span></span>
+<span class="prompt2"><span class="m">45</span>:<span class="w">         </span><span class="m">2</span></span>
+<span class="prompt2"><span class="m">46</span>:<span class="w">         </span><span class="m">3</span></span>
+<span class="prompt2"><span class="m">47</span>:<span class="w">         </span><span class="m">1</span></span>
+<span class="prompt2"><span class="m">48</span>:<span class="w">         </span><span class="m">0</span></span>
+<span class="prompt2">...</span>
+<span class="prompt2"><span class="m">102</span>:<span class="w">         </span><span class="m">0</span></span>
+<span class="prompt2"><span class="m">103</span>:<span class="w">         </span><span class="m">1</span></span>
+<span class="prompt2"><span class="m">104</span>:<span class="w">         </span><span class="m">0</span></span>
+<span class="prompt2">...</span>
+</pre></div></div><p>This output indicates that it took eleven tries to map forty-two PGs, twelve
+tries to map forty-four PGs etc. The highest number of tries is the minimum
+value of <code class="docutils literal notranslate"><span class="pre">set_choose_tries</span></code> that prevents bad mappings (for example,
+<code class="docutils literal notranslate"><span class="pre">103</span></code> in the above output, because it did not take more than 103 tries for
+any PG to be mapped).</p>
+</li>
+</ol>
+</section>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting-osd.html" class="btn btn-neutral float-left" title="Troubleshooting OSDs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="log-and-debug.html" class="btn btn-neutral float-right" title="Logging and Debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

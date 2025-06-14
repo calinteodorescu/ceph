@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Squid &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reef" href="reef.html" />
+    <link rel="prev" title="Ceph Releases (index)" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Releases (index)</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#active-releases">Active Releases</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Squid (v19.2.*)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#v19-2-2-squid">v19.2.2 Squid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v19-2-1-squid">v19.2.1 Squid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v19-2-0-squid">v19.2.0 Squid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="reef.html">Reef (v18.2.*)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#archived-releases">Archived Releases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#release-timeline">Release timeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Releases (index)</a></li>
+      <li class="breadcrumb-item active">Squid</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releases/squid.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="squid">
+<h1>Squid<a class="headerlink" href="#squid" title="Link to this heading"></a></h1>
+<p>Squid is the 19th stable release of Ceph.</p>
+<section id="v19-2-2-squid">
+<h2>v19.2.2 Squid<a class="headerlink" href="#v19-2-2-squid" title="Link to this heading"></a></h2>
+<p>This is the second hotfix release in the Squid series.
+We recommend that all users update to this release.</p>
+<section id="notable-changes">
+<h3>Notable Changes<a class="headerlink" href="#notable-changes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>This hotfix release resolves an RGW data loss bug when CopyObject is used to copy an object onto itself.
+S3 clients typically do this when they want to change the metadata of an existing object.
+Due to a regression caused by an earlier fix for <a class="reference external" href="https://tracker.ceph.com/issues/66286">https://tracker.ceph.com/issues/66286</a>,
+any tail objects associated with such objects are erroneously marked for garbage collection.
+RGW deployments on Squid are encouraged to upgrade as soon as possible to minimize the damage.
+The experimental rgw-gap-list tool can help to identify damaged objects.</p></li>
+</ul>
+</section>
+<section id="changelog">
+<h3>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>squid: rgw: keep the tails when copying object to itself (<a class="reference external" href="https://github.com/ceph/ceph/pull/62711">pr#62711</a>, cbodley)</p></li>
+</ul>
+</section>
+</section>
+<section id="v19-2-1-squid">
+<h2>v19.2.1 Squid<a class="headerlink" href="#v19-2-1-squid" title="Link to this heading"></a></h2>
+<p>This is the first backport release in the Squid series.</p>
+<section id="id1">
+<h3>Notable Changes<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul>
+<li><p>CephFS: The command <cite>fs subvolume create</cite> now allows tagging subvolumes by supplying the option
+<cite>--earmark</cite> with a unique identifier needed for NFS or SMB services. The earmark
+string for a subvolume is empty by default. To remove an already present earmark,
+an empty string can be assigned to it. Additionally, the commands
+<cite>ceph fs subvolume earmark set</cite>, <cite>ceph fs subvolume earmark get</cite>, and
+<cite>ceph fs subvolume earmark rm</cite> have been added to set, get and remove earmark from a given subvolume.</p></li>
+<li><p>CephFS: Expanded removexattr support for CephFS virtual extended attributes.
+Previously one had to use setxattr to restore the default in order to “remove”.
+You may now properly use removexattr to remove. You can also now remove layout
+on the root inode, which then will restore the layout to the default.</p></li>
+<li><p>RADOS: A performance bottleneck in the balancer mgr module has been fixed.</p>
+<p>Related Tracker: <a class="reference external" href="https://tracker.ceph.com/issues/68657">https://tracker.ceph.com/issues/68657</a></p>
+</li>
+<li><p>RADOS: Based on tests performed at scale on an HDD-based Ceph cluster, it was found
+that scheduling with mClock was not optimal with multiple OSD shards. For
+example, in the test cluster with multiple OSD node failures, the client
+throughput was found to be inconsistent across test runs coupled with multiple
+reported slow requests. However, the same test with a single OSD shard and
+with multiple worker threads yielded significantly better results in terms of
+consistency of client and recovery throughput across multiple test runs.
+Therefore, as an interim measure until the issue with multiple OSD shards
+(or multiple mClock queues per OSD) is investigated and fixed, the following
+change to the default HDD OSD shard configuration is made:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>osd_op_num_shards_hdd = 1</cite> (was 5)</p></li>
+<li><p><cite>osd_op_num_threads_per_shard_hdd = 5</cite> (was 1)</p></li>
+</ul>
+</div></blockquote>
+<p>For more details, see <a class="reference external" href="https://tracker.ceph.com/issues/66289">https://tracker.ceph.com/issues/66289</a>.</p>
+</li>
+<li><p>mgr/REST: The REST manager module will trim requests based on the ‘max_requests’ option.
+Without this feature, and in the absence of manual deletion of old requests,
+the accumulation of requests in the array can lead to Out Of Memory (OOM) issues,
+resulting in the Manager crashing.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Changelog<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>doc/rgw/notification: add missing admin commands (<a class="reference external" href="https://github.com/ceph/ceph/pull/60609">pr#60609</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: [RGW] Fix the handling of HEAD requests that do not comply with RFC standards (<a class="reference external" href="https://github.com/ceph/ceph/pull/59123">pr#59123</a>, liubingrun)</p></li>
+<li><p>squid: a series of optimizations for kerneldevice discard (<a class="reference external" href="https://github.com/ceph/ceph/pull/59065">pr#59065</a>, Adam Kupczyk, Joshua Baergen, Gabriel BenHanokh, Matt Vandermeulen)</p></li>
+<li><p>squid: Add Containerfile and build.sh to build it (<a class="reference external" href="https://github.com/ceph/ceph/pull/60229">pr#60229</a>, Dan Mick)</p></li>
+<li><p>squid: AsyncMessenger: Don’t decrease l_msgr_active_connections if it is negative (<a class="reference external" href="https://github.com/ceph/ceph/pull/60447">pr#60447</a>, Mohit Agrawal)</p></li>
+<li><p>squid: blk/aio: fix long batch (64+K entries) submission (<a class="reference external" href="https://github.com/ceph/ceph/pull/58676">pr#58676</a>, Yingxin Cheng, Igor Fedotov, Adam Kupczyk, Robin Geuze)</p></li>
+<li><p>squid: blk/KernelDevice: using join() to wait thread end is more safe (<a class="reference external" href="https://github.com/ceph/ceph/pull/60616">pr#60616</a>, Yite Gu)</p></li>
+<li><p>squid: bluestore/bluestore_types: avoid heap-buffer-overflow in another way to keep code uniformity (<a class="reference external" href="https://github.com/ceph/ceph/pull/58816">pr#58816</a>, Rongqi Sun)</p></li>
+<li><p>squid: ceph-bluestore-tool: Fixes for multilple bdev label (<a class="reference external" href="https://github.com/ceph/ceph/pull/59967">pr#59967</a>, Adam Kupczyk, Igor Fedotov)</p></li>
+<li><p>squid: ceph-volume: add call to <cite>ceph-bluestore-tool zap-device</cite> (<a class="reference external" href="https://github.com/ceph/ceph/pull/59968">pr#59968</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: add new class UdevData (<a class="reference external" href="https://github.com/ceph/ceph/pull/60091">pr#60091</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: add TPM2 token enrollment support for encrypted OSDs (<a class="reference external" href="https://github.com/ceph/ceph/pull/59196">pr#59196</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: do not convert LVs’s symlink to real path (<a class="reference external" href="https://github.com/ceph/ceph/pull/58954">pr#58954</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: do source devices zapping if they’re detached (<a class="reference external" href="https://github.com/ceph/ceph/pull/58964">pr#58964</a>, Guillaume Abrioux, Igor Fedotov)</p></li>
+<li><p>squid: ceph-volume: drop unnecessary call to <cite>get_single_lv()</cite> (<a class="reference external" href="https://github.com/ceph/ceph/pull/60353">pr#60353</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: fix dmcrypt activation regression (<a class="reference external" href="https://github.com/ceph/ceph/pull/60734">pr#60734</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: fix generic activation with raw osds (<a class="reference external" href="https://github.com/ceph/ceph/pull/59598">pr#59598</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: fix OSD lvm/tpm2 activation (<a class="reference external" href="https://github.com/ceph/ceph/pull/59953">pr#59953</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: pass self.osd_id to create_id() call (<a class="reference external" href="https://github.com/ceph/ceph/pull/59622">pr#59622</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph-volume: switch over to new disk sorting behavior (<a class="reference external" href="https://github.com/ceph/ceph/pull/59623">pr#59623</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: ceph.spec.in: we need jsonnet for all distroes for make check (<a class="reference external" href="https://github.com/ceph/ceph/pull/60075">pr#60075</a>, Kyr Shatskyy)</p></li>
+<li><p>squid: cephadm/services/ingress: fixed keepalived config bug (<a class="reference external" href="https://github.com/ceph/ceph/pull/58381">pr#58381</a>, Bernard Landon)</p></li>
+<li><p>Squid: cephadm: bootstrap should not have “This is a development version of cephadm” message (<a class="reference external" href="https://github.com/ceph/ceph/pull/60880">pr#60880</a>, Shweta Bhosale)</p></li>
+<li><p>squid: cephadm: emit warning if daemon’s image is not to be used (<a class="reference external" href="https://github.com/ceph/ceph/pull/59929">pr#59929</a>, Matthew Vernon)</p></li>
+<li><p>squid: cephadm: fix apparmor profiles with spaces in the names (<a class="reference external" href="https://github.com/ceph/ceph/pull/58542">pr#58542</a>, John Mulligan)</p></li>
+<li><p>squid: cephadm: pull container images from quay.io (<a class="reference external" href="https://github.com/ceph/ceph/pull/60354">pr#60354</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: cephadm: Support Docker Live Restore (<a class="reference external" href="https://github.com/ceph/ceph/pull/59933">pr#59933</a>, Michal Nasiadka)</p></li>
+<li><p>squid: cephadm: update default image and latest stable release (<a class="reference external" href="https://github.com/ceph/ceph/pull/59827">pr#59827</a>, Adam King)</p></li>
+<li><p>squid: cephfs,mon: fix bugs related to updating MDS caps (<a class="reference external" href="https://github.com/ceph/ceph/pull/59672">pr#59672</a>, Rishabh Dave)</p></li>
+<li><p>squid: cephfs-shell: excute cmd ‘rmdir_helper’ reported error (<a class="reference external" href="https://github.com/ceph/ceph/pull/58810">pr#58810</a>, teng jie)</p></li>
+<li><p>squid: cephfs: Fixed a bug in the readdir_cache_cb function that may have us… (<a class="reference external" href="https://github.com/ceph/ceph/pull/58804">pr#58804</a>, Tod Chen)</p></li>
+<li><p>squid: cephfs_mirror: provide metrics for last successful snapshot sync (<a class="reference external" href="https://github.com/ceph/ceph/pull/59070">pr#59070</a>, Jos Collin)</p></li>
+<li><p>squid: cephfs_mirror: update peer status for invalid metadata in remote snapshot (<a class="reference external" href="https://github.com/ceph/ceph/pull/59406">pr#59406</a>, Jos Collin)</p></li>
+<li><p>squid: cephfs_mirror: use snapdiff api for incremental syncing (<a class="reference external" href="https://github.com/ceph/ceph/pull/58984">pr#58984</a>, Jos Collin)</p></li>
+<li><p>squid: client: calls to _ll_fh_exists() should hold client_lock (<a class="reference external" href="https://github.com/ceph/ceph/pull/59487">pr#59487</a>, Venky Shankar)</p></li>
+<li><p>squid: client: check mds down status before getting mds_gid_t from mdsmap (<a class="reference external" href="https://github.com/ceph/ceph/pull/58587">pr#58587</a>, Yite Gu, Dhairya Parmar)</p></li>
+<li><p>squid: cls/user: reset stats only returns marker when truncated (<a class="reference external" href="https://github.com/ceph/ceph/pull/60164">pr#60164</a>, Casey Bodley)</p></li>
+<li><p>squid: cmake: use ExternalProjects to build isa-l and isa-l_crypto libraries (<a class="reference external" href="https://github.com/ceph/ceph/pull/60107">pr#60107</a>, Casey Bodley)</p></li>
+<li><p>squid: common,osd: Use last valid OSD IOPS value if measured IOPS is unrealistic (<a class="reference external" href="https://github.com/ceph/ceph/pull/60660">pr#60660</a>, Sridhar Seshasayee)</p></li>
+<li><p>squid: common/dout: fix FTBFS on GCC 14 (<a class="reference external" href="https://github.com/ceph/ceph/pull/59055">pr#59055</a>, Radoslaw Zarzynski)</p></li>
+<li><p>squid: common/options: Change HDD OSD shard configuration defaults for mClock (<a class="reference external" href="https://github.com/ceph/ceph/pull/59973">pr#59973</a>, Sridhar Seshasayee)</p></li>
+<li><p>squid: corpus: update submodule with mark cls_rgw_reshard_entry forward_inco… (<a class="reference external" href="https://github.com/ceph/ceph/pull/58923">pr#58923</a>, NitzanMordhai)</p></li>
+<li><p>squid: crimson/os/seastore/cached_extent: add the “refresh” ability to lba mappings (<a class="reference external" href="https://github.com/ceph/ceph/pull/58957">pr#58957</a>, Xuehan Xu)</p></li>
+<li><p>squid: crimson/os/seastore/lba_manager: do batch mapping allocs when remapping multiple mappings (<a class="reference external" href="https://github.com/ceph/ceph/pull/58820">pr#58820</a>, Xuehan Xu)</p></li>
+<li><p>squid: crimson/os/seastore/onode: add hobject_t into Onode (<a class="reference external" href="https://github.com/ceph/ceph/pull/58830">pr#58830</a>, Xuehan Xu)</p></li>
+<li><p>squid: crimson/os/seastore/transaction_manager: consider inconsistency between backrefs and lbas acceptable when cleaning segments (<a class="reference external" href="https://github.com/ceph/ceph/pull/58837">pr#58837</a>, Xuehan Xu)</p></li>
+<li><p>squid: crimson/os/seastore: add checksum offload to RBM (<a class="reference external" href="https://github.com/ceph/ceph/pull/59298">pr#59298</a>, Myoungwon Oh)</p></li>
+<li><p>squid: crimson/os/seastore: add writer level stats to RBM (<a class="reference external" href="https://github.com/ceph/ceph/pull/58828">pr#58828</a>, Myoungwon Oh)</p></li>
+<li><p>squid: crimson/os/seastore: track transactions/conflicts/outstanding periodically (<a class="reference external" href="https://github.com/ceph/ceph/pull/58835">pr#58835</a>, Yingxin Cheng)</p></li>
+<li><p>squid: crimson/osd/pg_recovery: push the iteration forward after finding unfound objects when starting primary recoveries (<a class="reference external" href="https://github.com/ceph/ceph/pull/58958">pr#58958</a>, Xuehan Xu)</p></li>
+<li><p>squid: crimson: access coll_map under alien tp with a lock (<a class="reference external" href="https://github.com/ceph/ceph/pull/58841">pr#58841</a>, Samuel Just)</p></li>
+<li><p>squid: crimson: audit and correct epoch captured by IOInterruptCondition (<a class="reference external" href="https://github.com/ceph/ceph/pull/58839">pr#58839</a>, Samuel Just)</p></li>
+<li><p>squid: crimson: simplify obc loading by locking excl for load and demoting to needed lock (<a class="reference external" href="https://github.com/ceph/ceph/pull/58905">pr#58905</a>, Matan Breizman, Samuel Just)</p></li>
+<li><p>squid: debian pkg: record python3-packaging dependency for ceph-volume (<a class="reference external" href="https://github.com/ceph/ceph/pull/59202">pr#59202</a>, Kefu Chai, Thomas Lamprecht)</p></li>
+<li><p>squid: doc,mailmap: update my email / association to ibm (<a class="reference external" href="https://github.com/ceph/ceph/pull/60338">pr#60338</a>, Patrick Donnelly)</p></li>
+<li><p>squid: doc/ceph-volume: add spillover fix procedure (<a class="reference external" href="https://github.com/ceph/ceph/pull/59540">pr#59540</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: add malformed-JSON removal instructions (<a class="reference external" href="https://github.com/ceph/ceph/pull/59663">pr#59663</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: Clarify “Deploying a new Cluster” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60809">pr#60809</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: clean “Adv. OSD Service Specs” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60679">pr#60679</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: correct “ceph orch apply” command (<a class="reference external" href="https://github.com/ceph/ceph/pull/60432">pr#60432</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: how to get exact size_spec from device (<a class="reference external" href="https://github.com/ceph/ceph/pull/59430">pr#59430</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: link to “host pattern” matching sect (<a class="reference external" href="https://github.com/ceph/ceph/pull/60644">pr#60644</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephadm: Update operations.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/60637">pr#60637</a>, rhkelson)</p></li>
+<li><p>squid: doc/cephfs: add cache pressure information (<a class="reference external" href="https://github.com/ceph/ceph/pull/59148">pr#59148</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: add doc for disabling mgr/volumes plugin (<a class="reference external" href="https://github.com/ceph/ceph/pull/60496">pr#60496</a>, Rishabh Dave)</p></li>
+<li><p>squid: doc/cephfs: edit “Disabling Volumes Plugin” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60467">pr#60467</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: edit “Layout Fields” text (<a class="reference external" href="https://github.com/ceph/ceph/pull/59021">pr#59021</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: edit 3rd 3rd of mount-using-kernel-driver (<a class="reference external" href="https://github.com/ceph/ceph/pull/61080">pr#61080</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: improve “layout fields” text (<a class="reference external" href="https://github.com/ceph/ceph/pull/59250">pr#59250</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: improve cache-configuration.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59214">pr#59214</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: rearrange subvolume group information (<a class="reference external" href="https://github.com/ceph/ceph/pull/60435">pr#60435</a>, Indira Sawant)</p></li>
+<li><p>squid: doc/cephfs: s/mountpoint/mount point/ (<a class="reference external" href="https://github.com/ceph/ceph/pull/59294">pr#59294</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: s/mountpoint/mount point/ (<a class="reference external" href="https://github.com/ceph/ceph/pull/59289">pr#59289</a>, Zac Dover)</p></li>
+<li><p>squid: doc/cephfs: use ‘p’ flag to set layouts or quotas (<a class="reference external" href="https://github.com/ceph/ceph/pull/60482">pr#60482</a>, TruongSinh Tran-Nguyen)</p></li>
+<li><p>squid: doc/dev/peering: Change acting set num (<a class="reference external" href="https://github.com/ceph/ceph/pull/59062">pr#59062</a>, qn2060)</p></li>
+<li><p>squid: doc/dev/release-checklist: check telemetry validation (<a class="reference external" href="https://github.com/ceph/ceph/pull/59813">pr#59813</a>, Yaarit Hatuka)</p></li>
+<li><p>squid: doc/dev/release-checklists.rst: enable rtd for squid (<a class="reference external" href="https://github.com/ceph/ceph/pull/59812">pr#59812</a>, Neha Ojha)</p></li>
+<li><p>squid: doc/dev/release-process.rst: New container build/release process (<a class="reference external" href="https://github.com/ceph/ceph/pull/60971">pr#60971</a>, Dan Mick)</p></li>
+<li><p>squid: doc/dev: add “activate latest release” RTD step (<a class="reference external" href="https://github.com/ceph/ceph/pull/59654">pr#59654</a>, Zac Dover)</p></li>
+<li><p>squid: doc/dev: instruct devs to backport (<a class="reference external" href="https://github.com/ceph/ceph/pull/61063">pr#61063</a>, Zac Dover)</p></li>
+<li><p>squid: doc/dev: remove “Stable Releases and Backports” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60272">pr#60272</a>, Zac Dover)</p></li>
+<li><p>squid: doc/glossary.rst: add “Dashboard Plugin” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60896">pr#60896</a>, Zac Dover)</p></li>
+<li><p>squid: doc/glossary: add “ceph-ansible” (<a class="reference external" href="https://github.com/ceph/ceph/pull/59007">pr#59007</a>, Zac Dover)</p></li>
+<li><p>squid: doc/glossary: add “flapping OSD” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60864">pr#60864</a>, Zac Dover)</p></li>
+<li><p>squid: doc/glossary: add “object storage” (<a class="reference external" href="https://github.com/ceph/ceph/pull/59424">pr#59424</a>, Zac Dover)</p></li>
+<li><p>squid: doc/glossary: add “PLP” to glossary (<a class="reference external" href="https://github.com/ceph/ceph/pull/60503">pr#60503</a>, Zac Dover)</p></li>
+<li><p>squid: doc/governance: add exec council responsibilites (<a class="reference external" href="https://github.com/ceph/ceph/pull/60139">pr#60139</a>, Zac Dover)</p></li>
+<li><p>squid: doc/governance: add Zac Dover’s updated email (<a class="reference external" href="https://github.com/ceph/ceph/pull/60134">pr#60134</a>, Zac Dover)</p></li>
+<li><p>squid: doc/install: Keep the name field of the created user consistent with … (<a class="reference external" href="https://github.com/ceph/ceph/pull/59756">pr#59756</a>, hejindong)</p></li>
+<li><p>squid: doc/man: edit ceph-bluestore-tool.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59682">pr#59682</a>, Zac Dover)</p></li>
+<li><p>squid: doc/mds: improve wording (<a class="reference external" href="https://github.com/ceph/ceph/pull/59585">pr#59585</a>, Piotr Parczewski)</p></li>
+<li><p>squid: doc/mgr/dashboard: fix TLS typo (<a class="reference external" href="https://github.com/ceph/ceph/pull/59031">pr#59031</a>, Mindy Preston)</p></li>
+<li><p>squid: doc/rados/operations: Improve health-checks.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59582">pr#59582</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc/rados/troubleshooting: Improve log-and-debug.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/60824">pr#60824</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc/rados: add “pgs not deep scrubbed in time” info (<a class="reference external" href="https://github.com/ceph/ceph/pull/59733">pr#59733</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: add blaum_roth coding guidance (<a class="reference external" href="https://github.com/ceph/ceph/pull/60537">pr#60537</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: add confval directives to health-checks (<a class="reference external" href="https://github.com/ceph/ceph/pull/59871">pr#59871</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: add link to messenger v2 info in mon-lookup-dns.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59794">pr#59794</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: add osd_deep_scrub_interval setting operation (<a class="reference external" href="https://github.com/ceph/ceph/pull/59802">pr#59802</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: correct “full ratio” note (<a class="reference external" href="https://github.com/ceph/ceph/pull/60737">pr#60737</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: document unfound object cache-tiering scenario (<a class="reference external" href="https://github.com/ceph/ceph/pull/59380">pr#59380</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: edit “Placement Groups Never Get Clean” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60046">pr#60046</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: fix sentences in health-checks (2 of x) (<a class="reference external" href="https://github.com/ceph/ceph/pull/60931">pr#60931</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: fix sentences in health-checks (3 of x) (<a class="reference external" href="https://github.com/ceph/ceph/pull/60949">pr#60949</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: make sentences agree in health-checks.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/60920">pr#60920</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rados: standardize markup of “clean” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60500">pr#60500</a>, Zac Dover)</p></li>
+<li><p>squid: doc/radosgw/multisite: fix Configuring Secondary Zones -&gt; Updating the Period (<a class="reference external" href="https://github.com/ceph/ceph/pull/60332">pr#60332</a>, Casey Bodley)</p></li>
+<li><p>squid: doc/radosgw/qat-accel: Update and Add QATlib information (<a class="reference external" href="https://github.com/ceph/ceph/pull/58874">pr#58874</a>, Feng, Hualong)</p></li>
+<li><p>squid: doc/radosgw: Improve archive-sync-module.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/60852">pr#60852</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc/radosgw: Improve archive-sync-module.rst more (<a class="reference external" href="https://github.com/ceph/ceph/pull/60867">pr#60867</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc/radosgw: Improve config-ref.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59578">pr#59578</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc/radosgw: improve qat-accel.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59179">pr#59179</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc/radosgw: s/Poliicy/Policy/ (<a class="reference external" href="https://github.com/ceph/ceph/pull/60707">pr#60707</a>, Zac Dover)</p></li>
+<li><p>squid: doc/radosgw: update rgw_dns_name doc (<a class="reference external" href="https://github.com/ceph/ceph/pull/60885">pr#60885</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rbd: add namespace information for mirror commands (<a class="reference external" href="https://github.com/ceph/ceph/pull/60269">pr#60269</a>, N Balachandran)</p></li>
+<li><p>squid: doc/README.md - add ordered list (<a class="reference external" href="https://github.com/ceph/ceph/pull/59798">pr#59798</a>, Zac Dover)</p></li>
+<li><p>squid: doc/README.md: create selectable commands (<a class="reference external" href="https://github.com/ceph/ceph/pull/59834">pr#59834</a>, Zac Dover)</p></li>
+<li><p>squid: doc/README.md: edit “Build Prerequisites” (<a class="reference external" href="https://github.com/ceph/ceph/pull/59637">pr#59637</a>, Zac Dover)</p></li>
+<li><p>squid: doc/README.md: improve formatting (<a class="reference external" href="https://github.com/ceph/ceph/pull/59785">pr#59785</a>, Zac Dover)</p></li>
+<li><p>squid: doc/README.md: improve formatting (<a class="reference external" href="https://github.com/ceph/ceph/pull/59700">pr#59700</a>, Zac Dover)</p></li>
+<li><p>squid: doc/rgw/account: Handling notification topics when migrating an existing user into an account (<a class="reference external" href="https://github.com/ceph/ceph/pull/59491">pr#59491</a>, Oguzhan Ozmen)</p></li>
+<li><p>squid: doc/rgw/d3n: pass cache dir volume to extra_container_args (<a class="reference external" href="https://github.com/ceph/ceph/pull/59767">pr#59767</a>, Mark Kogan)</p></li>
+<li><p>squid: doc/rgw/notification: clarified the notification_v2 behavior upon upg… (<a class="reference external" href="https://github.com/ceph/ceph/pull/60662">pr#60662</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: doc/rgw/notification: persistent notification queue full behavior (<a class="reference external" href="https://github.com/ceph/ceph/pull/59233">pr#59233</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: doc/start: add supported Squid distros (<a class="reference external" href="https://github.com/ceph/ceph/pull/60557">pr#60557</a>, Zac Dover)</p></li>
+<li><p>squid: doc/start: add vstart install guide (<a class="reference external" href="https://github.com/ceph/ceph/pull/60461">pr#60461</a>, Zac Dover)</p></li>
+<li><p>squid: doc/start: fix “are are” typo (<a class="reference external" href="https://github.com/ceph/ceph/pull/60708">pr#60708</a>, Zac Dover)</p></li>
+<li><p>squid: doc/start: separate package chart from container chart (<a class="reference external" href="https://github.com/ceph/ceph/pull/60698">pr#60698</a>, Zac Dover)</p></li>
+<li><p>squid: doc/start: update os-recommendations.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/60766">pr#60766</a>, Zac Dover)</p></li>
+<li><p>squid: doc: Correct link to Prometheus docs (<a class="reference external" href="https://github.com/ceph/ceph/pull/59559">pr#59559</a>, Matthew Vernon)</p></li>
+<li><p>squid: doc: Document the Windows CI job (<a class="reference external" href="https://github.com/ceph/ceph/pull/60033">pr#60033</a>, Lucian Petrut)</p></li>
+<li><p>squid: doc: Document which options are disabled by mClock (<a class="reference external" href="https://github.com/ceph/ceph/pull/60671">pr#60671</a>, Niklas Hambüchen)</p></li>
+<li><p>squid: doc: documenting the feature that scrub clear the entries from damage… (<a class="reference external" href="https://github.com/ceph/ceph/pull/59078">pr#59078</a>, Neeraj Pratap Singh)</p></li>
+<li><p>squid: doc: explain the consequence of enabling mirroring through monitor co… (<a class="reference external" href="https://github.com/ceph/ceph/pull/60525">pr#60525</a>, Jos Collin)</p></li>
+<li><p>squid: doc: fix email (<a class="reference external" href="https://github.com/ceph/ceph/pull/60233">pr#60233</a>, Ernesto Puerta)</p></li>
+<li><p>squid: doc: fix typo (<a class="reference external" href="https://github.com/ceph/ceph/pull/59991">pr#59991</a>, N Balachandran)</p></li>
+<li><p>squid: doc: Harmonize ‘mountpoint’ (<a class="reference external" href="https://github.com/ceph/ceph/pull/59291">pr#59291</a>, Anthony D’Atri)</p></li>
+<li><p>squid: doc: s/Whereas,/Although/ (<a class="reference external" href="https://github.com/ceph/ceph/pull/60593">pr#60593</a>, Zac Dover)</p></li>
+<li><p>squid: doc: SubmittingPatches-backports - remove backports team (<a class="reference external" href="https://github.com/ceph/ceph/pull/60297">pr#60297</a>, Zac Dover)</p></li>
+<li><p>squid: doc: Update “Getting Started” to link to start not install (<a class="reference external" href="https://github.com/ceph/ceph/pull/59907">pr#59907</a>, Matthew Vernon)</p></li>
+<li><p>squid: doc: update Key Idea in cephfs-mirroring.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/60343">pr#60343</a>, Jos Collin)</p></li>
+<li><p>squid: doc: update nfs doc for Kerberos setup of ganesha in Ceph (<a class="reference external" href="https://github.com/ceph/ceph/pull/59939">pr#59939</a>, Avan Thakkar)</p></li>
+<li><p>squid: doc: update tests-integration-testing-teuthology-workflow.rst (<a class="reference external" href="https://github.com/ceph/ceph/pull/59548">pr#59548</a>, Vallari Agrawal)</p></li>
+<li><p>squid: doc:update e-mail addresses governance (<a class="reference external" href="https://github.com/ceph/ceph/pull/60084">pr#60084</a>, Tobias Fischer)</p></li>
+<li><p>squid: docs/rados/operations/stretch-mode: warn device class is not supported (<a class="reference external" href="https://github.com/ceph/ceph/pull/59099">pr#59099</a>, Kamoltat Sirivadhna)</p></li>
+<li><p>squid: global: Call getnam_r with a 64KiB buffer on the heap (<a class="reference external" href="https://github.com/ceph/ceph/pull/60127">pr#60127</a>, Adam Emerson)</p></li>
+<li><p>squid: librados: use CEPH_OSD_FLAG_FULL_FORCE for IoCtxImpl::remove (<a class="reference external" href="https://github.com/ceph/ceph/pull/59284">pr#59284</a>, Chen Yuanrun)</p></li>
+<li><p>squid: librbd/crypto/LoadRequest: clone format for migration source image (<a class="reference external" href="https://github.com/ceph/ceph/pull/60171">pr#60171</a>, Ilya Dryomov)</p></li>
+<li><p>squid: librbd/crypto: fix issue when live-migrating from encrypted export (<a class="reference external" href="https://github.com/ceph/ceph/pull/59145">pr#59145</a>, Ilya Dryomov)</p></li>
+<li><p>squid: librbd/migration/HttpClient: avoid reusing ssl_stream after shut down (<a class="reference external" href="https://github.com/ceph/ceph/pull/61095">pr#61095</a>, Ilya Dryomov)</p></li>
+<li><p>squid: librbd/migration: prune snapshot extents in RawFormat::list_snaps() (<a class="reference external" href="https://github.com/ceph/ceph/pull/59661">pr#59661</a>, Ilya Dryomov)</p></li>
+<li><p>squid: librbd: avoid data corruption on flatten when object map is inconsistent (<a class="reference external" href="https://github.com/ceph/ceph/pull/61168">pr#61168</a>, Ilya Dryomov)</p></li>
+<li><p>squid: log: save/fetch thread name infra (<a class="reference external" href="https://github.com/ceph/ceph/pull/60279">pr#60279</a>, Milind Changire)</p></li>
+<li><p>squid: Make mon addrs consistent with mon info (<a class="reference external" href="https://github.com/ceph/ceph/pull/60751">pr#60751</a>, shenjiatong)</p></li>
+<li><p>squid: mds/QuiesceDbManager: get requested state of members before iterating… (<a class="reference external" href="https://github.com/ceph/ceph/pull/58912">pr#58912</a>, junxiang Mu)</p></li>
+<li><p>squid: mds: CInode::item_caps used in two different lists (<a class="reference external" href="https://github.com/ceph/ceph/pull/56887">pr#56887</a>, Dhairya Parmar)</p></li>
+<li><p>squid: mds: encode quiesce payload on demand (<a class="reference external" href="https://github.com/ceph/ceph/pull/59517">pr#59517</a>, Patrick Donnelly)</p></li>
+<li><p>squid: mds: find a new head for the batch ops when the head is dead (<a class="reference external" href="https://github.com/ceph/ceph/pull/57494">pr#57494</a>, Xiubo Li)</p></li>
+<li><p>squid: mds: fix session/client evict command (<a class="reference external" href="https://github.com/ceph/ceph/pull/58727">pr#58727</a>, Neeraj Pratap Singh)</p></li>
+<li><p>squid: mds: only authpin on wrlock when not a locallock (<a class="reference external" href="https://github.com/ceph/ceph/pull/59097">pr#59097</a>, Patrick Donnelly)</p></li>
+<li><p>squid: mgr/balancer: optimize ‘balancer status detail’ (<a class="reference external" href="https://github.com/ceph/ceph/pull/60718">pr#60718</a>, Laura Flores)</p></li>
+<li><p>squid: mgr/cephadm/services/ingress Fix HAProxy to listen on IPv4 and IPv6 (<a class="reference external" href="https://github.com/ceph/ceph/pull/58515">pr#58515</a>, Bernard Landon)</p></li>
+<li><p>squid: mgr/cephadm: add “original_weight” parameter to OSD class (<a class="reference external" href="https://github.com/ceph/ceph/pull/59410">pr#59410</a>, Adam King)</p></li>
+<li><p>squid: mgr/cephadm: add --no-exception-when-missing flag to cert-store cert/key get (<a class="reference external" href="https://github.com/ceph/ceph/pull/59935">pr#59935</a>, Adam King)</p></li>
+<li><p>squid: mgr/cephadm: add command to expose systemd units of all daemons (<a class="reference external" href="https://github.com/ceph/ceph/pull/59931">pr#59931</a>, Adam King)</p></li>
+<li><p>squid: mgr/cephadm: bump monitoring stacks version (<a class="reference external" href="https://github.com/ceph/ceph/pull/58711">pr#58711</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/cephadm: make ssh keepalive settings configurable (<a class="reference external" href="https://github.com/ceph/ceph/pull/59710">pr#59710</a>, Adam King)</p></li>
+<li><p>squid: mgr/cephadm: redeploy when some dependency daemon is add/removed (<a class="reference external" href="https://github.com/ceph/ceph/pull/58383">pr#58383</a>, Redouane Kachach)</p></li>
+<li><p>squid: mgr/cephadm: Update multi-site configs before deploying  daemons on rgw service create (<a class="reference external" href="https://github.com/ceph/ceph/pull/60321">pr#60321</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/cephadm: use host address while updating rgw zone endpoints (<a class="reference external" href="https://github.com/ceph/ceph/pull/59948">pr#59948</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/client: validate connection before sending (<a class="reference external" href="https://github.com/ceph/ceph/pull/58887">pr#58887</a>, NitzanMordhai)</p></li>
+<li><p>squid: mgr/dashboard: add cephfs rename REST API (<a class="reference external" href="https://github.com/ceph/ceph/pull/60620">pr#60620</a>, Yite Gu)</p></li>
+<li><p>squid: mgr/dashboard: Add group field in nvmeof service form (<a class="reference external" href="https://github.com/ceph/ceph/pull/59446">pr#59446</a>, Afreen Misbah)</p></li>
+<li><p>squid: mgr/dashboard: add gw_groups support to nvmeof api (<a class="reference external" href="https://github.com/ceph/ceph/pull/59751">pr#59751</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: add gw_groups to all nvmeof endpoints (<a class="reference external" href="https://github.com/ceph/ceph/pull/60310">pr#60310</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: add restful api for creating crush rule with type of ‘erasure’ (<a class="reference external" href="https://github.com/ceph/ceph/pull/59139">pr#59139</a>, sunlan)</p></li>
+<li><p>squid: mgr/dashboard: Changes for Sign out text to Login out (<a class="reference external" href="https://github.com/ceph/ceph/pull/58988">pr#58988</a>, Prachi Goel)</p></li>
+<li><p>Squid: mgr/dashboard: Cloning subvolume not listing _nogroup if no subvolume (<a class="reference external" href="https://github.com/ceph/ceph/pull/59951">pr#59951</a>, Dnyaneshwari talwekar)</p></li>
+<li><p>squid: mgr/dashboard: custom image for kcli bootstrap script (<a class="reference external" href="https://github.com/ceph/ceph/pull/59879">pr#59879</a>, Pedro Gonzalez Gomez)</p></li>
+<li><p>squid: mgr/dashboard: Dashboard not showing Object/Overview correctly (<a class="reference external" href="https://github.com/ceph/ceph/pull/59038">pr#59038</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/dashboard: Fix adding listener and null issue for groups (<a class="reference external" href="https://github.com/ceph/ceph/pull/60078">pr#60078</a>, Afreen Misbah)</p></li>
+<li><p>squid: mgr/dashboard: fix bucket get for s3 account owned bucket (<a class="reference external" href="https://github.com/ceph/ceph/pull/60466">pr#60466</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: fix ceph-users api doc (<a class="reference external" href="https://github.com/ceph/ceph/pull/59140">pr#59140</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: fix doc links in rgw-multisite (<a class="reference external" href="https://github.com/ceph/ceph/pull/60154">pr#60154</a>, Pedro Gonzalez Gomez)</p></li>
+<li><p>squid: mgr/dashboard: fix gateways section error:”404 - Not Found RGW Daemon not found: None” (<a class="reference external" href="https://github.com/ceph/ceph/pull/60231">pr#60231</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/dashboard: fix group name bugs in the nvmeof API (<a class="reference external" href="https://github.com/ceph/ceph/pull/60348">pr#60348</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: fix handling NaN values in dashboard charts (<a class="reference external" href="https://github.com/ceph/ceph/pull/59961">pr#59961</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/dashboard: fix lifecycle issues (<a class="reference external" href="https://github.com/ceph/ceph/pull/60378">pr#60378</a>, Pedro Gonzalez Gomez)</p></li>
+<li><p>squid: mgr/dashboard: Fix listener deletion (<a class="reference external" href="https://github.com/ceph/ceph/pull/60292">pr#60292</a>, Afreen Misbah)</p></li>
+<li><p>squid: mgr/dashboard: fix setting compression type while editing rgw zone (<a class="reference external" href="https://github.com/ceph/ceph/pull/59970">pr#59970</a>, Aashish Sharma)</p></li>
+<li><p>Squid: mgr/dashboard: Forbid snapshot name “.” and any containing “/” (<a class="reference external" href="https://github.com/ceph/ceph/pull/59995">pr#59995</a>, Dnyaneshwari Talwekar)</p></li>
+<li><p>squid: mgr/dashboard: handle infinite values for pools (<a class="reference external" href="https://github.com/ceph/ceph/pull/61096">pr#61096</a>, Afreen)</p></li>
+<li><p>squid: mgr/dashboard: ignore exceptions raised when no cert/key found (<a class="reference external" href="https://github.com/ceph/ceph/pull/60311">pr#60311</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: Increase maximum namespace count to 1024 (<a class="reference external" href="https://github.com/ceph/ceph/pull/59717">pr#59717</a>, Afreen Misbah)</p></li>
+<li><p>squid: mgr/dashboard: introduce server side pagination for osds (<a class="reference external" href="https://github.com/ceph/ceph/pull/60294">pr#60294</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: mgr/dashboard: Select no device by default in EC profile (<a class="reference external" href="https://github.com/ceph/ceph/pull/59811">pr#59811</a>, Afreen Misbah)</p></li>
+<li><p>Squid: mgr/dashboard: multisite sync policy improvements (<a class="reference external" href="https://github.com/ceph/ceph/pull/59965">pr#59965</a>, Naman Munet)</p></li>
+<li><p>Squid: mgr/dashboard: NFS Export form fixes (<a class="reference external" href="https://github.com/ceph/ceph/pull/59900">pr#59900</a>, Dnyaneshwari Talwekar)</p></li>
+<li><p>squid: mgr/dashboard: Nvme mTLS support and service name changes (<a class="reference external" href="https://github.com/ceph/ceph/pull/59819">pr#59819</a>, Afreen Misbah)</p></li>
+<li><p>squid: mgr/dashboard: provide option to enable pool based mirroring mode while creating a pool (<a class="reference external" href="https://github.com/ceph/ceph/pull/58638">pr#58638</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/dashboard: remove cherrypy_backports.py (<a class="reference external" href="https://github.com/ceph/ceph/pull/60632">pr#60632</a>, Nizamudeen A)</p></li>
+<li><p>Squid: mgr/dashboard: remove orch required decorator from host UI router (list) (<a class="reference external" href="https://github.com/ceph/ceph/pull/59851">pr#59851</a>, Naman Munet)</p></li>
+<li><p>squid: mgr/dashboard: Rephrase dedicated pool helper in rbd create form (<a class="reference external" href="https://github.com/ceph/ceph/pull/59721">pr#59721</a>, Aashish Sharma)</p></li>
+<li><p>Squid: mgr/dashboard: RGW multisite sync remove zones fix (<a class="reference external" href="https://github.com/ceph/ceph/pull/59825">pr#59825</a>, Naman Munet)</p></li>
+<li><p>squid: mgr/dashboard: rm nvmeof conf based on its daemon name (<a class="reference external" href="https://github.com/ceph/ceph/pull/60604">pr#60604</a>, Nizamudeen A)</p></li>
+<li><p>Squid: mgr/dashboard: service form hosts selection only show up to 10 entries (<a class="reference external" href="https://github.com/ceph/ceph/pull/59760">pr#59760</a>, Naman Munet)</p></li>
+<li><p>squid: mgr/dashboard: show non default realm sync status in rgw overview page (<a class="reference external" href="https://github.com/ceph/ceph/pull/60232">pr#60232</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/dashboard: Show which daemons failed in CEPHADM_FAILED_DAEMON healthcheck (<a class="reference external" href="https://github.com/ceph/ceph/pull/59597">pr#59597</a>, Aashish Sharma)</p></li>
+<li><p>Squid: mgr/dashboard: sync policy’s in Object &gt;&gt; Multi-site &gt;&gt; Sync-policy, does not show the zonegroup to which policy belongs to (<a class="reference external" href="https://github.com/ceph/ceph/pull/60346">pr#60346</a>, Naman Munet)</p></li>
+<li><p>Squid: mgr/dashboard: The subvolumes are missing from the dropdown menu on the “Create NFS export” page (<a class="reference external" href="https://github.com/ceph/ceph/pull/60356">pr#60356</a>, Dnyaneshwari Talwekar)</p></li>
+<li><p>Squid: mgr/dashboard: unable to edit pipe config for bucket level policy of bucket (<a class="reference external" href="https://github.com/ceph/ceph/pull/60293">pr#60293</a>, Naman Munet)</p></li>
+<li><p>squid: mgr/dashboard: Update nvmeof microcopies (<a class="reference external" href="https://github.com/ceph/ceph/pull/59718">pr#59718</a>, Afreen Misbah)</p></li>
+<li><p>squid: mgr/dashboard: update period after migrating to multi-site (<a class="reference external" href="https://github.com/ceph/ceph/pull/59964">pr#59964</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/dashboard: update translations for squid (<a class="reference external" href="https://github.com/ceph/ceph/pull/60367">pr#60367</a>, Nizamudeen A)</p></li>
+<li><p>squid: mgr/dashboard: use grafana server instead of grafana-server in grafana 10.4.0 (<a class="reference external" href="https://github.com/ceph/ceph/pull/59722">pr#59722</a>, Aashish Sharma)</p></li>
+<li><p>Squid: mgr/dashboard: Wrong(half) uid is observed in dashboard when user created via cli contains $ in its name (<a class="reference external" href="https://github.com/ceph/ceph/pull/59693">pr#59693</a>, Dnyaneshwari Talwekar)</p></li>
+<li><p>squid: mgr/dashboard: Zone details showing incorrect data for data pool values and compression info for Storage Classes (<a class="reference external" href="https://github.com/ceph/ceph/pull/59596">pr#59596</a>, Aashish Sharma)</p></li>
+<li><p>Squid: mgr/dashboard: zonegroup level policy created at master zone did not sync to non-master zone (<a class="reference external" href="https://github.com/ceph/ceph/pull/59892">pr#59892</a>, Naman Munet)</p></li>
+<li><p>squid: mgr/nfs: generate user_id &amp; access_key for apply_export(CephFS) (<a class="reference external" href="https://github.com/ceph/ceph/pull/59896">pr#59896</a>, Avan Thakkar, avanthakkar, John Mulligan)</p></li>
+<li><p>squid: mgr/orchestrator: fix encrypted flag handling in orch daemon add osd (<a class="reference external" href="https://github.com/ceph/ceph/pull/59473">pr#59473</a>, Yonatan Zaken)</p></li>
+<li><p>squid: mgr/rest: Trim  requests array and limit size (<a class="reference external" href="https://github.com/ceph/ceph/pull/59372">pr#59372</a>, Nitzan Mordechai)</p></li>
+<li><p>squid: mgr/rgw: Adding a retry config while calling zone_create() (<a class="reference external" href="https://github.com/ceph/ceph/pull/59138">pr#59138</a>, Kritik Sachdeva)</p></li>
+<li><p>squid: mgr/rgwam: use realm/zonegroup/zone method arguments for period update (<a class="reference external" href="https://github.com/ceph/ceph/pull/59945">pr#59945</a>, Aashish Sharma)</p></li>
+<li><p>squid: mgr/volumes: add earmarking for subvol (<a class="reference external" href="https://github.com/ceph/ceph/pull/59894">pr#59894</a>, Avan Thakkar)</p></li>
+<li><p>squid: Modify container/ software to support release containers and the promotion of prerelease containers (<a class="reference external" href="https://github.com/ceph/ceph/pull/60962">pr#60962</a>, Dan Mick)</p></li>
+<li><p>squid: mon/ElectionLogic: tie-breaker mon ignore proposal from marked down mon (<a class="reference external" href="https://github.com/ceph/ceph/pull/58669">pr#58669</a>, Kamoltat)</p></li>
+<li><p>squid: mon/MonClient: handle ms_handle_fast_authentication return (<a class="reference external" href="https://github.com/ceph/ceph/pull/59306">pr#59306</a>, Patrick Donnelly)</p></li>
+<li><p>squid: mon/OSDMonitor: Add force-remove-snap mon command (<a class="reference external" href="https://github.com/ceph/ceph/pull/59402">pr#59402</a>, Matan Breizman)</p></li>
+<li><p>squid: mon/OSDMonitor: fix get_min_last_epoch_clean() (<a class="reference external" href="https://github.com/ceph/ceph/pull/55865">pr#55865</a>, Matan Breizman)</p></li>
+<li><p>squid: mon: Remove any pg_upmap_primary mapping during remove a pool (<a class="reference external" href="https://github.com/ceph/ceph/pull/58914">pr#58914</a>, Mohit Agrawal)</p></li>
+<li><p>squid: msg: insert PriorityDispatchers in sorted position (<a class="reference external" href="https://github.com/ceph/ceph/pull/58991">pr#58991</a>, Casey Bodley)</p></li>
+<li><p>squid: node-proxy: fix a regression when processing the RedFish API (<a class="reference external" href="https://github.com/ceph/ceph/pull/59997">pr#59997</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: node-proxy: make the daemon discover endpoints (<a class="reference external" href="https://github.com/ceph/ceph/pull/58482">pr#58482</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: objclass: deprecate cls_cxx_gather (<a class="reference external" href="https://github.com/ceph/ceph/pull/57819">pr#57819</a>, Nitzan Mordechai)</p></li>
+<li><p>squid: orch: disk replacement enhancement (<a class="reference external" href="https://github.com/ceph/ceph/pull/60486">pr#60486</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: orch: refactor boolean handling in drive group spec (<a class="reference external" href="https://github.com/ceph/ceph/pull/59863">pr#59863</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: os/bluestore: enable async manual compactions (<a class="reference external" href="https://github.com/ceph/ceph/pull/58740">pr#58740</a>, Igor Fedotov)</p></li>
+<li><p>squid: os/bluestore: Fix BlueFS allocating bdev label reserved location (<a class="reference external" href="https://github.com/ceph/ceph/pull/59969">pr#59969</a>, Adam Kupczyk)</p></li>
+<li><p>squid: os/bluestore: Fix ceph-bluestore-tool allocmap command (<a class="reference external" href="https://github.com/ceph/ceph/pull/60335">pr#60335</a>, Adam Kupczyk)</p></li>
+<li><p>squid: os/bluestore: Fix repair of multilabel when collides with BlueFS (<a class="reference external" href="https://github.com/ceph/ceph/pull/60336">pr#60336</a>, Adam Kupczyk)</p></li>
+<li><p>squid: os/bluestore: Improve documentation introduced by #57722 (<a class="reference external" href="https://github.com/ceph/ceph/pull/60893">pr#60893</a>, Anthony D’Atri)</p></li>
+<li><p>squid: os/bluestore: Multiple bdev labels on main block device (<a class="reference external" href="https://github.com/ceph/ceph/pull/59106">pr#59106</a>, Adam Kupczyk)</p></li>
+<li><p>squid: os/bluestore: Mute warnings (<a class="reference external" href="https://github.com/ceph/ceph/pull/59217">pr#59217</a>, Adam Kupczyk)</p></li>
+<li><p>squid: os/bluestore: Warning added for slow operations and stalled read (<a class="reference external" href="https://github.com/ceph/ceph/pull/59464">pr#59464</a>, Md Mahamudur Rahaman Sajib)</p></li>
+<li><p>squid: osd/scheduler: add mclock queue length perfcounter (<a class="reference external" href="https://github.com/ceph/ceph/pull/59035">pr#59035</a>, zhangjianwei2)</p></li>
+<li><p>squid: osd/scrub: decrease default deep scrub chunk size (<a class="reference external" href="https://github.com/ceph/ceph/pull/59791">pr#59791</a>, Ronen Friedman)</p></li>
+<li><p>squid: osd/scrub: exempt only operator scrubs from max_scrubs limit (<a class="reference external" href="https://github.com/ceph/ceph/pull/59020">pr#59020</a>, Ronen Friedman)</p></li>
+<li><p>squid: osd/scrub: reduce osd_requested_scrub_priority default value (<a class="reference external" href="https://github.com/ceph/ceph/pull/59885">pr#59885</a>, Ronen Friedman)</p></li>
+<li><p>squid: osd: fix require_min_compat_client handling for msr rules (<a class="reference external" href="https://github.com/ceph/ceph/pull/59492">pr#59492</a>, Samuel Just, Radoslaw Zarzynski)</p></li>
+<li><p>squid: PeeringState.cc: Only populate want_acting when num_osds &lt; bucket_max (<a class="reference external" href="https://github.com/ceph/ceph/pull/59083">pr#59083</a>, Kamoltat)</p></li>
+<li><p>squid: qa/cephadm: extend iscsi teuth test (<a class="reference external" href="https://github.com/ceph/ceph/pull/59934">pr#59934</a>, Adam King)</p></li>
+<li><p>squid: qa/cephfs: fix TestRenameCommand and unmount the clinet before failin… (<a class="reference external" href="https://github.com/ceph/ceph/pull/59398">pr#59398</a>, Xiubo Li)</p></li>
+<li><p>squid: qa/cephfs: ignore variant of MDS_UP_LESS_THAN_MAX (<a class="reference external" href="https://github.com/ceph/ceph/pull/58788">pr#58788</a>, Patrick Donnelly)</p></li>
+<li><p>squid: qa/distros: reinstall nvme-cli on centos 9 nodes (<a class="reference external" href="https://github.com/ceph/ceph/pull/59471">pr#59471</a>, Adam King)</p></li>
+<li><p>squid: qa/rgw/multisite: specify realm/zonegroup/zone args for ‘account create’ (<a class="reference external" href="https://github.com/ceph/ceph/pull/59603">pr#59603</a>, Casey Bodley)</p></li>
+<li><p>squid: qa/rgw: bump keystone/barbican from 2023.1 to 2024.1 (<a class="reference external" href="https://github.com/ceph/ceph/pull/61023">pr#61023</a>, Casey Bodley)</p></li>
+<li><p>squid: qa/rgw: fix s3 java tests by forcing gradle to run on Java 8 (<a class="reference external" href="https://github.com/ceph/ceph/pull/61053">pr#61053</a>, J. Eric Ivancich)</p></li>
+<li><p>squid: qa/rgw: force Hadoop to run under Java 1.8 (<a class="reference external" href="https://github.com/ceph/ceph/pull/61120">pr#61120</a>, J. Eric Ivancich)</p></li>
+<li><p>squid: qa/rgw: pull Apache artifacts from mirror instead of archive.apache.org (<a class="reference external" href="https://github.com/ceph/ceph/pull/61101">pr#61101</a>, J. Eric Ivancich)</p></li>
+<li><p>squid: qa/standalone/scrub: fix the searched-for text for snaps decode errors (<a class="reference external" href="https://github.com/ceph/ceph/pull/58967">pr#58967</a>, Ronen Friedman)</p></li>
+<li><p>squid: qa/standalone/scrub: increase status updates frequency (<a class="reference external" href="https://github.com/ceph/ceph/pull/59974">pr#59974</a>, Ronen Friedman)</p></li>
+<li><p>squid: qa/standalone/scrub: remove TEST_recovery_scrub_2 (<a class="reference external" href="https://github.com/ceph/ceph/pull/60287">pr#60287</a>, Ronen Friedman)</p></li>
+<li><p>squid: qa/suites/crimson-rados/perf: add ssh keys (<a class="reference external" href="https://github.com/ceph/ceph/pull/61109">pr#61109</a>, Nitzan Mordechai)</p></li>
+<li><p>squid: qa/suites/rados/thrash-old-clients: Add noscrub, nodeep-scrub to ignorelist (<a class="reference external" href="https://github.com/ceph/ceph/pull/58629">pr#58629</a>, Kamoltat)</p></li>
+<li><p>squid: qa/suites/rados/thrash-old-clients: test with N-2 releases on centos 9 (<a class="reference external" href="https://github.com/ceph/ceph/pull/58607">pr#58607</a>, Laura Flores)</p></li>
+<li><p>squid: qa/suites/rados/verify/validater: increase heartbeat grace timeout (<a class="reference external" href="https://github.com/ceph/ceph/pull/58785">pr#58785</a>, Sridhar Seshasayee)</p></li>
+<li><p>squid: qa/suites/rados: Cancel injectfull to allow cleanup (<a class="reference external" href="https://github.com/ceph/ceph/pull/59156">pr#59156</a>, Brad Hubbard)</p></li>
+<li><p>squid: qa/suites/rbd/iscsi: enable all supported container hosts (<a class="reference external" href="https://github.com/ceph/ceph/pull/60089">pr#60089</a>, Ilya Dryomov)</p></li>
+<li><p>squid: qa/suites: drop --show-reachable=yes from fs:valgrind tests (<a class="reference external" href="https://github.com/ceph/ceph/pull/59068">pr#59068</a>, Jos Collin)</p></li>
+<li><p>squid: qa/task: update alertmanager endpoints version (<a class="reference external" href="https://github.com/ceph/ceph/pull/59930">pr#59930</a>, Nizamudeen A)</p></li>
+<li><p>squid: qa/tasks/mgr/test_progress.py: deal with pre-exisiting pool (<a class="reference external" href="https://github.com/ceph/ceph/pull/58263">pr#58263</a>, Kamoltat)</p></li>
+<li><p>squid: qa/tasks/nvme_loop: update task to work with new nvme list format (<a class="reference external" href="https://github.com/ceph/ceph/pull/61026">pr#61026</a>, Adam King)</p></li>
+<li><p>squid: qa/upgrade: fix checks to make sure upgrade is still in progress (<a class="reference external" href="https://github.com/ceph/ceph/pull/59472">pr#59472</a>, Adam King)</p></li>
+<li><p>squid: qa: adjust expected io_opt in krbd_discard_granularity.t (<a class="reference external" href="https://github.com/ceph/ceph/pull/59232">pr#59232</a>, Ilya Dryomov)</p></li>
+<li><p>squid: qa: ignore container checkpoint/restore related selinux denials for c… (<a class="reference external" href="http://tracker.ceph.com/issues/66640">issue#66640</a>, <a class="reference external" href="http://tracker.ceph.com/issues/67117">issue#67117</a>, <a class="reference external" href="https://github.com/ceph/ceph/pull/58808">pr#58808</a>, Venky Shankar)</p></li>
+<li><p>squid: qa: load all dirfrags before testing altname recovery (<a class="reference external" href="https://github.com/ceph/ceph/pull/59521">pr#59521</a>, Patrick Donnelly)</p></li>
+<li><p>squid: qa: remove all bluestore signatures on devices (<a class="reference external" href="https://github.com/ceph/ceph/pull/60021">pr#60021</a>, Guillaume Abrioux)</p></li>
+<li><p>squid: qa: suppress __trans_list_add valgrind warning (<a class="reference external" href="https://github.com/ceph/ceph/pull/58790">pr#58790</a>, Patrick Donnelly)</p></li>
+<li><p>squid: RADOS: Generalize stretch mode pg temp handling to be usable without stretch mode (<a class="reference external" href="https://github.com/ceph/ceph/pull/59084">pr#59084</a>, Kamoltat)</p></li>
+<li><p>squid: rbd-mirror: use correct ioctx for namespace (<a class="reference external" href="https://github.com/ceph/ceph/pull/59771">pr#59771</a>, N Balachandran)</p></li>
+<li><p>squid: rbd: “rbd bench” always writes the same byte (<a class="reference external" href="https://github.com/ceph/ceph/pull/59502">pr#59502</a>, Ilya Dryomov)</p></li>
+<li><p>squid: rbd: amend “rbd {group,} rename” and “rbd mirror pool” command descriptions (<a class="reference external" href="https://github.com/ceph/ceph/pull/59602">pr#59602</a>, Ilya Dryomov)</p></li>
+<li><p>squid: rbd: handle --{group,image}-namespace in “rbd group image {add,rm}” (<a class="reference external" href="https://github.com/ceph/ceph/pull/61172">pr#61172</a>, Ilya Dryomov)</p></li>
+<li><p>squid: rgw/beast: optimize for accept when meeting error in listenning (<a class="reference external" href="https://github.com/ceph/ceph/pull/60244">pr#60244</a>, Mingyuan Liang, Casey Bodley)</p></li>
+<li><p>squid: rgw/http: finish_request() after logging errors (<a class="reference external" href="https://github.com/ceph/ceph/pull/59439">pr#59439</a>, Casey Bodley)</p></li>
+<li><p>squid: rgw/kafka: refactor topic creation to avoid rd_kafka_topic_name() (<a class="reference external" href="https://github.com/ceph/ceph/pull/59754">pr#59754</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: rgw/lc: Fix lifecycle not working while bucket versioning is suspended (<a class="reference external" href="https://github.com/ceph/ceph/pull/61138">pr#61138</a>, Trang Tran)</p></li>
+<li><p>squid: rgw/multipart: use cls_version to avoid racing between part upload and multipart complete (<a class="reference external" href="https://github.com/ceph/ceph/pull/59678">pr#59678</a>, Jane Zhu)</p></li>
+<li><p>squid: rgw/multisite: metadata polling event based on unmodified mdlog_marker (<a class="reference external" href="https://github.com/ceph/ceph/pull/60792">pr#60792</a>, Shilpa Jagannath)</p></li>
+<li><p>squid: rgw/notifications: fixing radosgw-admin notification json (<a class="reference external" href="https://github.com/ceph/ceph/pull/59302">pr#59302</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: rgw/notifications: free completion pointer using unique_ptr (<a class="reference external" href="https://github.com/ceph/ceph/pull/59671">pr#59671</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: rgw/notify: visit() returns copy of owner string (<a class="reference external" href="https://github.com/ceph/ceph/pull/59226">pr#59226</a>, Casey Bodley)</p></li>
+<li><p>squid: rgw/rados: don’t rely on IoCtx::get_last_version() for async ops (<a class="reference external" href="https://github.com/ceph/ceph/pull/60065">pr#60065</a>, Casey Bodley)</p></li>
+<li><p>squid: rgw: add s3select usage to log usage (<a class="reference external" href="https://github.com/ceph/ceph/pull/59120">pr#59120</a>, Seena Fallah)</p></li>
+<li><p>squid: rgw: decrement qlen/qactive perf counters on error (<a class="reference external" href="https://github.com/ceph/ceph/pull/59670">pr#59670</a>, Mark Kogan)</p></li>
+<li><p>squid: rgw: decrypt multipart get part when encrypted (<a class="reference external" href="https://github.com/ceph/ceph/pull/60130">pr#60130</a>, sungjoon-koh)</p></li>
+<li><p>squid: rgw: ignore zoneless default realm when not configured (<a class="reference external" href="https://github.com/ceph/ceph/pull/59445">pr#59445</a>, Casey Bodley)</p></li>
+<li><p>squid: rgw: load copy source bucket attrs in putobj (<a class="reference external" href="https://github.com/ceph/ceph/pull/59413">pr#59413</a>, Seena Fallah)</p></li>
+<li><p>squid: rgw: optimize bucket listing to skip past regions of namespaced entries (<a class="reference external" href="https://github.com/ceph/ceph/pull/61070">pr#61070</a>, J. Eric Ivancich)</p></li>
+<li><p>squid: rgw: revert account-related changes to get_iam_policy_from_attr() (<a class="reference external" href="https://github.com/ceph/ceph/pull/59221">pr#59221</a>, Casey Bodley)</p></li>
+<li><p>squid: rgw: RGWAccessKey::decode_json() preserves default value of ‘active’ (<a class="reference external" href="https://github.com/ceph/ceph/pull/60823">pr#60823</a>, Casey Bodley)</p></li>
+<li><p>squid: rgw: switch back to boost::asio for spawn() and yield_context (<a class="reference external" href="https://github.com/ceph/ceph/pull/60133">pr#60133</a>, Casey Bodley)</p></li>
+<li><p>squid: rgwlc: fix typo in getlc (ObjectSizeGreaterThan) (<a class="reference external" href="https://github.com/ceph/ceph/pull/59223">pr#59223</a>, Matt Benjamin)</p></li>
+<li><p>squid: RGW|BN: fix lifecycle test issue (<a class="reference external" href="https://github.com/ceph/ceph/pull/59010">pr#59010</a>, Ali Masarwa)</p></li>
+<li><p>squid: RGW|Bucket notification: fix for v2 topics rgw-admin list operation (<a class="reference external" href="https://github.com/ceph/ceph/pull/60774">pr#60774</a>, Oshrey Avraham, Ali Masarwa)</p></li>
+<li><p>squid: seastar: update submodule (<a class="reference external" href="https://github.com/ceph/ceph/pull/58955">pr#58955</a>, Matan Breizman)</p></li>
+<li><p>squid: src/ceph_release, doc: mark squid stable (<a class="reference external" href="https://github.com/ceph/ceph/pull/59537">pr#59537</a>, Neha Ojha)</p></li>
+<li><p>squid: src/crimson/osd/scrub: fix the null pointer error (<a class="reference external" href="https://github.com/ceph/ceph/pull/58885">pr#58885</a>, junxiang Mu)</p></li>
+<li><p>squid: src/mon/ConnectionTracker.cc: Fix dump function (<a class="reference external" href="https://github.com/ceph/ceph/pull/60003">pr#60003</a>, Kamoltat)</p></li>
+<li><p>squid: suites/upgrade/quincy-x: update the ignore list (<a class="reference external" href="https://github.com/ceph/ceph/pull/59624">pr#59624</a>, Nitzan Mordechai)</p></li>
+<li><p>squid: suites: adding ignore list for stray daemon (<a class="reference external" href="https://github.com/ceph/ceph/pull/58267">pr#58267</a>, Nitzan Mordechai)</p></li>
+<li><p>squid: suites: test should ignore osd_down warnings (<a class="reference external" href="https://github.com/ceph/ceph/pull/59147">pr#59147</a>, Nitzan Mordechai)</p></li>
+<li><p>squid: test/neorados: remove depreciated RemoteReads cls test (<a class="reference external" href="https://github.com/ceph/ceph/pull/58144">pr#58144</a>, Laura Flores)</p></li>
+<li><p>squid: test/rgw/notification: fixing backport issues in the tests (<a class="reference external" href="https://github.com/ceph/ceph/pull/60545">pr#60545</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: test/rgw/notification: use real ip address instead of localhost (<a class="reference external" href="https://github.com/ceph/ceph/pull/59303">pr#59303</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: test/rgw/notifications: don’t check for full queue if topics expired (<a class="reference external" href="https://github.com/ceph/ceph/pull/59917">pr#59917</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: test/rgw/notifications: fix test regression (<a class="reference external" href="https://github.com/ceph/ceph/pull/61119">pr#61119</a>, Yuval Lifshitz)</p></li>
+<li><p>squid: Test: osd-recovery-space.sh extends the wait time for “recovery toofull” (<a class="reference external" href="https://github.com/ceph/ceph/pull/59041">pr#59041</a>, Nitzan Mordechai)</p></li>
+<li><p>upgrade/cephfs/mds_upgrade_sequence: ignore osds down (<a class="reference external" href="https://github.com/ceph/ceph/pull/59865">pr#59865</a>, Kamoltat Sirivadhna)</p></li>
+<li><p>squid: rgw: Don’t crash on exceptions from pool listing (<a class="reference external" href="https://github.com/ceph/ceph/pull/61306">pr#61306</a>, Adam Emerson)</p></li>
+<li><p>squid: container/Containerfile: replace CEPH_VERSION label for backward compact (<a class="reference external" href="https://github.com/ceph/ceph/pull/61583">pr#61583</a>, Dan Mick)</p></li>
+<li><p>squid: container/build.sh: fix up org vs. repo naming (<a class="reference external" href="https://github.com/ceph/ceph/pull/61584">pr#61584</a>, Dan Mick)</p></li>
+<li><p>squid: container/build.sh: don’t require repo creds on NO_PUSH (<a class="reference external" href="https://github.com/ceph/ceph/pull/61585">pr#61585</a>, Dan Mick)</p></li>
+</ul>
+</section>
+</section>
+<section id="v19-2-0-squid">
+<h2>v19.2.0 Squid<a class="headerlink" href="#v19-2-0-squid" title="Link to this heading"></a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>iSCSI users are advised that the upstream developers of Ceph encountered a
+bug during an upgrade from Ceph 19.1.1 to Ceph 19.2.0. Read <a class="reference external" href="https://tracker.ceph.com/issues/68215">Tracker Issue
+68215</a> before attempting an upgrade
+to 19.2.0.</p>
+<p>Some users have encountered a Ceph Manager balancer module issue when
+upgrading to Ceph 19.2.0. If you encounter this issue, disable the balancer
+by running the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">balancer</span> <span class="pre">off</span></code> and the cluster will operate as
+expected. A fix has been implemented in 19.2.1, please read <a class="reference external" href="https://tracker.ceph.com/issues/68657">Tracker Issue
+68657</a> before attempting an
+upgrade.</p>
+</div>
+<section id="highlights">
+<h3>Highlights<a class="headerlink" href="#highlights" title="Link to this heading"></a></h3>
+<p>RADOS</p>
+<ul class="simple">
+<li><p>BlueStore has been optimized for better performance in snapshot-intensive workloads.</p></li>
+<li><p>BlueStore RocksDB LZ4 compression is now enabled by default to improve average performance
+and “fast device” space usage.</p></li>
+<li><p>Other improvements include more flexible EC configurations, an OpTracker to help debug mgr
+module issues, and better scrub scheduling.</p></li>
+</ul>
+<p>Dashboard</p>
+<ul class="simple">
+<li><p>Improved navigation layout</p></li>
+<li><p>Support for managing CephFS snapshots and clones, as well as snapshot schedule management</p></li>
+<li><p>Manage authorization capabilities for CephFS resources</p></li>
+<li><p>Helpers on mounting a CephFS volume</p></li>
+</ul>
+<p>RBD</p>
+<ul class="simple">
+<li><p>diff-iterate can now execute locally, bringing a dramatic performance improvement for QEMU
+live disk synchronization and backup use cases.</p></li>
+<li><p>Support for cloning from non-user type snapshots is added.</p></li>
+<li><p>rbd-wnbd driver has gained the ability to multiplex image mappings.</p></li>
+</ul>
+<p>RGW</p>
+<ul class="simple">
+<li><p>The User Accounts feature unlocks several new AWS-compatible IAM APIs for the self-service
+management of users, keys, groups, roles, policy and more.</p></li>
+</ul>
+<p>Crimson/Seastore</p>
+<ul class="simple">
+<li><p>Crimson’s first tech preview release! Supporting RBD workloads on Replicated pools. For more
+information please visit: <a class="reference external" href="https://ceph.io/en/news/crimson">https://ceph.io/en/news/crimson</a></p></li>
+</ul>
+</section>
+<section id="ceph">
+<h3>Ceph<a class="headerlink" href="#ceph" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>ceph: a new <cite>--daemon-output-file</cite> switch is available for <cite>ceph tell</cite>
+commands to dump output to a file local to the daemon. For commands which
+produce large amounts of output, this avoids a potential spike in memory
+usage on the daemon, allows for faster streaming writes to a file local to
+the daemon, and reduces time holding any locks required to execute the
+command. For analysis, it is necessary to manually retrieve the file from the host
+running the daemon. Currently, only <code class="docutils literal notranslate"><span class="pre">--format=json|json-pretty</span></code>
+are supported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cls_cxx_gather</span></code> is marked as deprecated.</p></li>
+<li><p>Tracing: The blkin tracing feature (see
+<a class="reference external" href="https://docs.ceph.com/en/reef/dev/blkin/">https://docs.ceph.com/en/reef/dev/blkin/</a>) is now deprecated in favor of
+Opentracing
+(<a class="reference external" href="https://docs.ceph.com/en/reef/dev/developer_guide/jaegertracing/">https://docs.ceph.com/en/reef/dev/developer_guide/jaegertracing/</a>) and will
+be removed in a later release.</p></li>
+<li><p>PG dump: The default output of <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">pg</span> <span class="pre">dump</span> <span class="pre">--format</span> <span class="pre">json</span></code> has changed.
+The default JSON format produces a rather massive output in large clusters
+and isn’t scalable, so we have removed the ‘network_ping_times’ section from
+the output. Details in the tracker: <a class="reference external" href="https://tracker.ceph.com/issues/57460">https://tracker.ceph.com/issues/57460</a></p></li>
+</ul>
+</section>
+<section id="cephfs">
+<h3>CephFS<a class="headerlink" href="#cephfs" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>CephFS: it is now possible to pause write I/O and metadata mutations on a
+tree in the file system using a new suite of subvolume quiesce commands.
+This is implemented to support crash-consistent snapshots for distributed
+applications. Please see the relevant section in the documentation on CephFS
+subvolumes for more information.</p></li>
+<li><p>CephFS: MDS evicts clients which are not advancing their request tids which
+causes a large buildup of session metadata resulting in the MDS going
+read-only due to the RADOS operation exceeding the size threshold.
+<cite>mds_session_metadata_threshold</cite> config controls the maximum size that a
+(encoded) session metadata can grow.</p></li>
+<li><p>CephFS: A new “mds last-seen” command is available for querying the last time
+an MDS was in the FSMap, subject to a pruning threshold.</p></li>
+<li><p>CephFS: For clusters with multiple CephFS file systems, all the snap-schedule
+commands now expect the ‘--fs’ argument.</p></li>
+<li><p>CephFS: The period specifier <code class="docutils literal notranslate"><span class="pre">m</span></code> now implies minutes and the period
+specifier <code class="docutils literal notranslate"><span class="pre">M</span></code> now implies months. This has been made consistent with the
+rest of the system.</p></li>
+<li><p>CephFS: Running the command “ceph fs authorize” for an existing entity now
+upgrades the entity’s capabilities instead of printing an error. It can now
+also change read/write permissions in a capability that the entity already
+holds. If the capability passed by user is same as one of the capabilities
+that the entity already holds, idempotency is maintained.</p></li>
+<li><p>CephFS: Two FS names can now be swapped, optionally along with their IDs,
+using “ceph fs swap” command. The function of this API is to facilitate
+file system swaps for disaster recovery. In particular, it avoids situations
+where a named file system is temporarily missing which would prompt a higher
+level storage operator (like Rook) to recreate the missing file system.
+See <a class="reference external" href="https://docs.ceph.com/en/latest/cephfs/administration/#file-systems">https://docs.ceph.com/en/latest/cephfs/administration/#file-systems</a>
+docs for more information.</p></li>
+<li><p>CephFS: Before running the command “ceph fs rename”, the filesystem to be
+renamed must be offline and the config “refuse_client_session” must be set
+for it. The config “refuse_client_session” can be removed/unset and
+filesystem can be online after the rename operation is complete.</p></li>
+<li><p>CephFS: Disallow delegating preallocated inode ranges to clients. Config
+<cite>mds_client_delegate_inos_pct</cite> defaults to 0 which disables async dirops
+in the kclient.</p></li>
+<li><p>CephFS: MDS log trimming is now driven by a separate thread which tries to
+trim the log every second (<cite>mds_log_trim_upkeep_interval</cite> config). Also, a
+couple of configs govern how much time the MDS spends in trimming its logs.
+These configs are <cite>mds_log_trim_threshold</cite> and <cite>mds_log_trim_decay_rate</cite>.</p></li>
+<li><p>CephFS: Full support for subvolumes and subvolume groups is now available</p></li>
+<li><p>CephFS: The <cite>subvolume snapshot clone</cite> command now depends on the config
+option <cite>snapshot_clone_no_wait</cite> which is used to reject the clone operation
+when all the cloner threads are busy. This config option is enabled by
+default which means that if no cloner threads are free, the clone request
+errors out with EAGAIN.  The value of the config option can be fetched by
+using: <cite>ceph config get mgr mgr/volumes/snapshot_clone_no_wait</cite> and it can be
+disabled by using: <cite>ceph config set mgr mgr/volumes/snapshot_clone_no_wait
+false</cite>
+for snap_schedule Manager module.</p></li>
+<li><p>CephFS: Commands <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mds</span> <span class="pre">fail</span></code> and <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">fs</span> <span class="pre">fail</span></code> now require a
+confirmation flag when some MDSs exhibit health warning MDS_TRIM or
+MDS_CACHE_OVERSIZED. This is to prevent accidental MDS failover causing
+further delays in recovery.</p></li>
+<li><p>CephFS: fixes to the implementation of the <code class="docutils literal notranslate"><span class="pre">root_squash</span></code> mechanism enabled
+via cephx <code class="docutils literal notranslate"><span class="pre">mds</span></code> caps on a client credential require a new client feature
+bit, <code class="docutils literal notranslate"><span class="pre">client_mds_auth_caps</span></code>. Clients using credentials with <code class="docutils literal notranslate"><span class="pre">root_squash</span></code>
+without this feature will trigger the MDS to raise a HEALTH_ERR on the
+cluster, MDS_CLIENTS_BROKEN_ROOTSQUASH. See the documentation on this warning
+and the new feature bit for more information.</p></li>
+<li><p>CephFS: Expanded removexattr support for cephfs virtual extended attributes.
+Previously one had to use setxattr to restore the default in order to
+“remove”.  You may now properly use removexattr to remove. You can also now
+remove layout on root inode, which then will restore layout to default
+layout.</p></li>
+<li><p>CephFS: cephfs-journal-tool is guarded against running on an online file
+system.  The ‘cephfs-journal-tool --rank &lt;fs_name&gt;:&lt;mds_rank&gt; journal reset’
+and ‘cephfs-journal-tool --rank &lt;fs_name&gt;:&lt;mds_rank&gt; journal reset --force’
+commands require ‘--yes-i-really-really-mean-it’.</p></li>
+<li><p>CephFS: “ceph fs clone status” command will now print statistics about clone
+progress in terms of how much data has been cloned (in both percentage as
+well as bytes) and how many files have been cloned.</p></li>
+<li><p>CephFS: “ceph status” command will now print a progress bar when cloning is
+ongoing. If clone jobs are more than the cloner threads, it will print one
+more progress bar that shows total amount of progress made by both ongoing
+as well as pending clones. Both progress are accompanied by messages that
+show number of clone jobs in the respective categories and the amount of
+progress made by each of them.</p></li>
+<li><p>cephfs-shell: The cephfs-shell utility is now packaged for RHEL 9 / CentOS 9
+as required python dependencies are now available in EPEL9.</p></li>
+<li><p>The CephFS automatic metadata load (sometimes called “default”) balancer is
+now disabled by default. The new file system flag <cite>balance_automate</cite>
+can be used to toggle it on or off. It can be enabled or disabled via
+<cite>ceph fs set &lt;fs_name&gt; balance_automate &lt;bool&gt;</cite>.</p></li>
+</ul>
+</section>
+<section id="cephx">
+<h3>CephX<a class="headerlink" href="#cephx" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>cephx: key rotation is now possible using <cite>ceph auth rotate</cite>. Previously,
+this was only possible by deleting and then recreating the key.</p></li>
+</ul>
+</section>
+<section id="dashboard">
+<h3>Dashboard<a class="headerlink" href="#dashboard" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Dashboard: Rearranged Navigation Layout: The navigation layout has been reorganized for improved usability and easier access to key features.</p></li>
+<li><p>Dashboard: CephFS Improvments
+* Support for managing CephFS snapshots and clones, as well as snapshot schedule management
+* Manage authorization capabilities for CephFS resources
+* Helpers on mounting a CephFS volume</p></li>
+<li><p>Dashboard: RGW Improvements
+* Support for managing bucket policies
+* Add/Remove bucket tags
+* ACL Management
+* Several UI/UX Improvements to the bucket form</p></li>
+</ul>
+</section>
+<section id="mgr">
+<h3>MGR<a class="headerlink" href="#mgr" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>MGR/REST: The REST manager module will trim requests based on the
+‘max_requests’ option.  Without this feature, and in the absence of manual
+deletion of old requests, the accumulation of requests in the array can lead
+to Out Of Memory (OOM) issues, resulting in the Manager crashing.</p></li>
+<li><p>MGR: An OpTracker to help debug mgr module issues is now available.</p></li>
+</ul>
+</section>
+<section id="monitoring">
+<h3>Monitoring<a class="headerlink" href="#monitoring" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Monitoring: Grafana dashboards are now loaded into the container at runtime
+rather than building a grafana image with the grafana dashboards. Official
+Ceph grafana images can be found in quay.io/ceph/grafana</p></li>
+<li><p>Monitoring: RGW S3 Analytics: A new Grafana dashboard is now available,
+enabling you to visualize per bucket and user analytics data, including total
+GETs, PUTs, Deletes, Copies, and list metrics.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">mon_cluster_log_file_level</span></code> and <code class="docutils literal notranslate"><span class="pre">mon_cluster_log_to_syslog_level</span></code>
+options have been removed. Henceforth, users should use the new generic
+option <code class="docutils literal notranslate"><span class="pre">mon_cluster_log_level</span></code> to control the cluster log level verbosity
+for the cluster log file as well as for all external entities.</p></li>
+</ul>
+</section>
+<section id="rados">
+<h3>RADOS<a class="headerlink" href="#rados" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>RADOS: <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">POOL_APP_NOT_ENABLED</span></code> health warning will now be reported if the
+application is not enabled for the pool irrespective of whether the pool is
+in use or not. Always tag a pool with an application using <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">pool</span>
+<span class="pre">application</span> <span class="pre">enable</span></code> command to avoid reporting of POOL_APP_NOT_ENABLED
+health warning for that pool. The user might temporarily mute this warning
+using <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">health</span> <span class="pre">mute</span> <span class="pre">POOL_APP_NOT_ENABLED</span></code>.</p></li>
+<li><p>RADOS: <cite>get_pool_is_selfmanaged_snaps_mode</cite> C++ API has been deprecated due
+to being prone to false negative results.  Its safer replacement is
+<cite>pool_is_in_selfmanaged_snaps_mode</cite>.</p></li>
+<li><p>RADOS: For bug 62338 (<a class="reference external" href="https://tracker.ceph.com/issues/62338">https://tracker.ceph.com/issues/62338</a>), we did not
+choose to condition the fix on a server flag in order to simplify
+backporting.  As a result, in rare cases it may be possible for a PG to flip
+between two acting sets while an upgrade to a version with the fix is in
+progress.  If you observe this behavior, you should be able to work around it
+by completing the upgrade or by disabling async recovery by setting
+osd_async_recovery_min_cost to a very large value on all OSDs until the
+upgrade is complete: <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">osd</span> <span class="pre">osd_async_recovery_min_cost</span>
+<span class="pre">1099511627776</span></code></p></li>
+<li><p>RADOS: A detailed version of the <cite>balancer status</cite> CLI command in the
+balancer module is now available. Users may run <cite>ceph balancer status detail</cite>
+to see more details about which PGs were updated in the balancer’s last
+optimization.  See <a class="reference external" href="https://docs.ceph.com/en/latest/rados/operations/balancer/">https://docs.ceph.com/en/latest/rados/operations/balancer/</a>
+for more information.</p></li>
+<li><p>RADOS: Read balancing may now be managed automatically via the balancer
+manager module. Users may choose between two new modes: <code class="docutils literal notranslate"><span class="pre">upmap-read</span></code>, which
+offers upmap and read optimization simultaneously, or <code class="docutils literal notranslate"><span class="pre">read</span></code>, which may be
+used to only optimize reads. For more detailed information see
+<a class="reference external" href="https://docs.ceph.com/en/latest/rados/operations/read-balancer/#online-optimization">https://docs.ceph.com/en/latest/rados/operations/read-balancer/#online-optimization</a>.</p></li>
+<li><p>RADOS: BlueStore has been optimized for better performance in snapshot-intensive workloads.</p></li>
+<li><p>RADOS: BlueStore RocksDB LZ4 compression is now enabled by default to improve average
+performance and “fast device” space usage.</p></li>
+<li><p>RADOS: A new CRUSH rule type, MSR (Multi-Step Retry), allows for more flexible EC
+configurations.</p></li>
+<li><p>RADOS: Scrub scheduling behavior has been improved.</p></li>
+</ul>
+</section>
+<section id="crimson-seastore">
+<h3>Crimson/Seastore<a class="headerlink" href="#crimson-seastore" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Crimson’s first tech preview release!
+Supporting RBD workloads on Replicated pools.
+For more information please visit: <a class="reference external" href="https://ceph.io/en/news/crimson">https://ceph.io/en/news/crimson</a></p></li>
+</ul>
+</section>
+<section id="rbd">
+<h3>RBD<a class="headerlink" href="#rbd" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>RBD: When diffing against the beginning of time (<cite>fromsnapname == NULL</cite>) in
+fast-diff mode (<cite>whole_object == true</cite> with <code class="docutils literal notranslate"><span class="pre">fast-diff</span></code> image feature enabled
+and valid), diff-iterate is now guaranteed to execute locally if exclusive
+lock is available.  This brings a dramatic performance improvement for QEMU
+live disk synchronization and backup use cases.</p></li>
+<li><p>RBD: The <code class="docutils literal notranslate"><span class="pre">try-netlink</span></code> mapping option for rbd-nbd has become the default
+and is now deprecated. If the NBD netlink interface is not supported by the
+kernel, then the mapping is retried using the legacy ioctl interface.</p></li>
+<li><p>RBD: The option <code class="docutils literal notranslate"><span class="pre">--image-id</span></code> has been added to <cite>rbd children</cite> CLI command,
+so it can be run for images in the trash.</p></li>
+<li><p>RBD: <cite>Image::access_timestamp</cite> and <cite>Image::modify_timestamp</cite> Python APIs now
+return timestamps in UTC.</p></li>
+<li><p>RBD: Support for cloning from non-user type snapshots is added.  This is
+intended primarily as a building block for cloning new groups from group
+snapshots created with <cite>rbd group snap create</cite> command, but has also been
+exposed via the new <cite>--snap-id</cite> option for <cite>rbd clone</cite> command.</p></li>
+<li><p>RBD: The output of <cite>rbd snap ls --all</cite> command now includes the original
+type for trashed snapshots.</p></li>
+<li><p>RBD: <cite>RBD_IMAGE_OPTION_CLONE_FORMAT</cite> option has been exposed in Python
+bindings via <cite>clone_format</cite> optional parameter to <cite>clone</cite>, <cite>deep_copy</cite> and
+<cite>migration_prepare</cite> methods.</p></li>
+<li><p>RBD: <cite>RBD_IMAGE_OPTION_FLATTEN</cite> option has been exposed in Python bindings
+via <cite>flatten</cite> optional parameter to <cite>deep_copy</cite> and <cite>migration_prepare</cite>
+methods.</p></li>
+<li><p>RBD: <cite>rbd-wnbd</cite> driver has gained the ability to multiplex image mappings.
+Previously, each image mapping spawned its own <cite>rbd-wnbd</cite> daemon, which lead
+to an excessive amount of TCP sessions and other resources being consumed,
+eventually exceeding Windows limits.  With this change, a single <cite>rbd-wnbd</cite>
+daemon is spawned per host and most OS resources are shared between image
+mappings.  Additionally, <cite>ceph-rbd</cite> service starts much faster.</p></li>
+</ul>
+</section>
+<section id="rgw">
+<h3>RGW<a class="headerlink" href="#rgw" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>RGW: GetObject and HeadObject requests now return a x-rgw-replicated-at
+header for replicated objects. This timestamp can be compared against the
+Last-Modified header to determine how long the object took to replicate.</p></li>
+<li><p>RGW: S3 multipart uploads using Server-Side Encryption now replicate
+correctly in multi-site. Previously, the replicas of such objects were
+corrupted on decryption.  A new tool, <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">bucket</span> <span class="pre">resync</span> <span class="pre">encrypted</span>
+<span class="pre">multipart</span></code>, can be used to identify these original multipart uploads. The
+<code class="docutils literal notranslate"><span class="pre">LastModified</span></code> timestamp of any identified object is incremented by 1ns to
+cause peer zones to replicate it again.  For multi-site deployments that make
+any use of Server-Side Encryption, we recommended running this command
+against every bucket in every zone after all zones have upgraded.</p></li>
+<li><p>RGW: Introducing a new data layout for the Topic metadata associated with S3
+Bucket Notifications, where each Topic is stored as a separate RADOS object
+and the bucket notification configuration is stored in a bucket attribute.
+This new representation supports multisite replication via metadata sync and
+can scale to many topics. This is on by default for new deployments, but is
+not enabled by default on upgrade. Once all radosgws have upgraded (on all
+zones in a multisite configuration), the <code class="docutils literal notranslate"><span class="pre">notification_v2</span></code> zone feature can
+be enabled to migrate to the new format. See
+<a class="reference external" href="https://docs.ceph.com/en/squid/radosgw/zone-features">https://docs.ceph.com/en/squid/radosgw/zone-features</a> for details. The “v1”
+format is now considered deprecated and may be removed after 2 major releases.</p></li>
+<li><p>RGW: New tools have been added to radosgw-admin for identifying and
+correcting issues with versioned bucket indexes. Historical bugs with the
+versioned bucket index transaction workflow made it possible for the index
+to accumulate extraneous “book-keeping” olh entries and plain placeholder
+entries. In some specific scenarios where clients made concurrent requests
+referencing the same object key, it was likely that a lot of extra index
+entries would accumulate. When a significant number of these entries are
+present in a single bucket index shard, they can cause high bucket listing
+latencies and lifecycle processing failures. To check whether a versioned
+bucket has unnecessary olh entries, users can now run <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span>
+<span class="pre">bucket</span> <span class="pre">check</span> <span class="pre">olh</span></code>. If the <code class="docutils literal notranslate"><span class="pre">--fix</span></code> flag is used, the extra entries will
+be safely removed. A distinct issue from the one described thus far, it is
+also possible that some versioned buckets are maintaining extra unlinked
+objects that are not listable from the S3/ Swift APIs. These extra objects
+are typically a result of PUT requests that exited abnormally, in the middle
+of a bucket index transaction - so the client would not have received a
+successful response. Bugs in prior releases made these unlinked objects easy
+to reproduce with any PUT request that was made on a bucket that was actively
+resharding. Besides the extra space that these hidden, unlinked objects
+consume, there can be another side effect in certain scenarios, caused by
+the nature of the failure mode that produced them, where a client of a bucket
+that was a victim of this bug may find the object associated with the key to
+be in an inconsistent state. To check whether a versioned bucket has unlinked
+entries, users can now run <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">bucket</span> <span class="pre">check</span> <span class="pre">unlinked</span></code>. If the
+<code class="docutils literal notranslate"><span class="pre">--fix</span></code> flag is used, the unlinked objects will be safely removed. Finally,
+a third issue made it possible for versioned bucket index stats to be
+accounted inaccurately. The tooling for recalculating versioned bucket stats
+also had a bug, and was not previously capable of fixing these inaccuracies.
+This release resolves those issues and users can now expect that the existing
+<code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">bucket</span> <span class="pre">check</span></code> command will produce correct results. We
+recommend that users with versioned buckets, especially those that existed
+on prior releases, use these new tools to check whether their buckets are
+affected and to clean them up accordingly.</p></li>
+<li><p>RGW: The User Accounts feature unlocks several new AWS-compatible IAM APIs
+for the self-service management of users, keys, groups, roles, policy and
+more. Existing users can be adopted into new accounts. This process is
+optional but irreversible. See <a class="reference external" href="https://docs.ceph.com/en/squid/radosgw/account">https://docs.ceph.com/en/squid/radosgw/account</a>
+and <a class="reference external" href="https://docs.ceph.com/en/squid/radosgw/iam">https://docs.ceph.com/en/squid/radosgw/iam</a> for details.</p></li>
+<li><p>RGW: On startup, radosgw and radosgw-admin now validate the <code class="docutils literal notranslate"><span class="pre">rgw_realm</span></code>
+config option. Previously, they would ignore invalid or missing realms and go
+on to load a zone/zonegroup in a different realm. If startup fails with a
+“failed to load realm” error, fix or remove the <code class="docutils literal notranslate"><span class="pre">rgw_realm</span></code> option.</p></li>
+<li><p>RGW: The radosgw-admin commands <code class="docutils literal notranslate"><span class="pre">realm</span> <span class="pre">create</span></code> and <code class="docutils literal notranslate"><span class="pre">realm</span> <span class="pre">pull</span></code> no longer
+set the default realm without <code class="docutils literal notranslate"><span class="pre">--default</span></code>.</p></li>
+<li><p>RGW: Fixed an S3 Object Lock bug with PutObjectRetention requests that
+specify a RetainUntilDate after the year 2106. This date was truncated to 32
+bits when stored, so a much earlier date was used for object lock
+enforcement.  This does not effect PutBucketObjectLockConfiguration where a
+duration is given in Days.  The RetainUntilDate encoding is fixed for new
+PutObjectRetention requests, but cannot repair the dates of existing object
+locks. Such objects can be identified with a HeadObject request based on the
+x-amz-object-lock-retain-until-date response header.</p></li>
+<li><p>S3 <code class="docutils literal notranslate"><span class="pre">Get/HeadObject</span></code> now supports the query parameter <code class="docutils literal notranslate"><span class="pre">partNumber</span></code> to read
+a specific part of a completed multipart upload.</p></li>
+<li><p>RGW: The SNS CreateTopic API now enforces the same topic naming requirements
+as AWS: Topic names must be made up of only uppercase and lowercase ASCII
+letters, numbers, underscores, and hyphens, and must be between 1 and 256
+characters long.</p></li>
+<li><p>RGW: Notification topics are now owned by the user that created them.  By
+default, only the owner can read/write their topics. Topic policy documents
+are now supported to grant these permissions to other users. Preexisting
+topics are treated as if they have no owner, and any user can read/write them
+using the SNS API.  If such a topic is recreated with CreateTopic, the
+issuing user becomes the new owner.  For backward compatibility, all users
+still have permission to publish bucket notifications to topics owned by
+other users. A new configuration parameter,
+<code class="docutils literal notranslate"><span class="pre">rgw_topic_require_publish_policy</span></code>, can be enabled to deny <code class="docutils literal notranslate"><span class="pre">sns:Publish</span></code>
+permissions unless explicitly granted by topic policy.</p></li>
+<li><p>RGW: Fix issue with persistent notifications where the changes to topic param
+that were modified while persistent notifications were in the queue will be
+reflected in notifications.  So if the user sets up topic with incorrect config
+(password/ssl) causing failure while delivering the notifications to broker,
+can now modify the incorrect topic attribute and on retry attempt to delivery
+the notifications, new configs will be used.</p></li>
+<li><p>RGW: in bucket notifications, the <code class="docutils literal notranslate"><span class="pre">principalId</span></code> inside <code class="docutils literal notranslate"><span class="pre">ownerIdentity</span></code>
+now contains the complete user ID, prefixed with the tenant ID.</p></li>
+</ul>
+</section>
+<section id="telemetry">
+<h3>Telemetry<a class="headerlink" href="#telemetry" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">basic</span></code> channel in telemetry now captures pool flags that allows us to
+better understand feature adoption, such as Crimson.
+To opt in to telemetry, run <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">telemetry</span> <span class="pre">on</span></code>.</p></li>
+</ul>
+</section>
+<section id="upgrading-from-quincy-or-reef">
+<h3>Upgrading from Quincy or Reef<a class="headerlink" href="#upgrading-from-quincy-or-reef" title="Link to this heading"></a></h3>
+<p>Before starting, make sure your cluster is stable and healthy (no down or recovering OSDs).
+(This is optional, but recommended.) You can disable the autoscaler for all pools during the
+upgrade using the noautoscale flag.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can monitor the progress of your upgrade at each stage with the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">versions</span></code> command, which will tell you what ceph version(s) are running for each type of daemon.</p>
+</div>
+</section>
+<section id="upgrading-cephadm-clusters">
+<h3>Upgrading cephadm clusters<a class="headerlink" href="#upgrading-cephadm-clusters" title="Link to this heading"></a></h3>
+<p>If your cluster is deployed with cephadm (first introduced in Octopus), then the upgrade process is entirely automated. To initiate the upgrade,</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--image<span class="w"> </span>quay.io/ceph/ceph:v19.2.0</span>
+</pre></div></div></div></blockquote>
+<p>The same process is used to upgrade to future minor releases.</p>
+<p>Upgrade progress can be monitored with</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>status</span>
+</pre></div></div></div></blockquote>
+<p>Upgrade progress can also be monitored with <cite>ceph -s</cite> (which provides a simple progress bar) or more verbosely with</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>-W<span class="w"> </span>cephadm</span>
+</pre></div></div></div></blockquote>
+<p>The upgrade can be paused or resumed with</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>pause<span class="w">  </span><span class="c1"># to pause</span></span>
+<span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>resume<span class="w"> </span><span class="c1"># to resume</span></span>
+</pre></div></div></div></blockquote>
+<p>or canceled with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>stop</span>
+</pre></div></div><p>Note that canceling the upgrade simply stops the process; there is no ability to downgrade back to Quincy or Reef.</p>
+</section>
+<section id="upgrading-non-cephadm-clusters">
+<h3>Upgrading non-cephadm clusters<a class="headerlink" href="#upgrading-non-cephadm-clusters" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ol class="arabic">
+<li><p>If your cluster is running Quincy (17.2.x) or later, you might choose to first convert it to use cephadm so that the upgrade to Squid is automated (see above).
+For more information, see <a class="reference external" href="https://docs.ceph.com/en/squid/cephadm/adoption/">https://docs.ceph.com/en/squid/cephadm/adoption/</a>.</p></li>
+<li><p>If your cluster is running Quincy (17.2.x) or later, systemd unit file names have changed to include the cluster fsid. To find the correct systemd unit file name for your cluster, run following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="o">-</span><span class="n">l</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">&lt;</span><span class="n">daemon</span> <span class="nb">type</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">systemctl<span class="w"> </span>-l<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>mon<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>active</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="mi">6</span><span class="n">ce0347c</span><span class="o">-</span><span class="mi">314</span><span class="n">a</span><span class="o">-</span><span class="mi">11</span><span class="n">ee</span><span class="o">-</span><span class="mi">9</span><span class="n">b52</span><span class="o">-</span><span class="mi">000</span><span class="n">af7995d6c</span><span class="nd">@mon</span><span class="o">.</span><span class="n">f28</span><span class="o">-</span><span class="n">h21</span><span class="o">-</span><span class="mi">000</span><span class="o">-</span><span class="n">r630</span><span class="o">.</span><span class="n">service</span>                                           <span class="n">loaded</span> <span class="n">active</span> <span class="n">running</span>   <span class="n">Ceph</span> <span class="n">mon</span><span class="o">.</span><span class="n">f28</span><span class="o">-</span><span class="n">h21</span><span class="o">-</span><span class="mi">000</span><span class="o">-</span><span class="n">r630</span> <span class="k">for</span> <span class="mi">6</span><span class="n">ce0347c</span><span class="o">-</span><span class="mi">314</span><span class="n">a</span><span class="o">-</span><span class="mi">11</span><span class="n">ee</span><span class="o">-</span><span class="mi">9</span><span class="n">b52</span><span class="o">-</span><span class="mi">000</span><span class="n">af7995d6c</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<ol class="arabic">
+<li><p>Set the <cite>noout</cite> flag for the duration of the upgrade. (Optional, but recommended.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>osd<span class="w"> </span><span class="nb">set</span><span class="w"> </span>noout</span>
+</pre></div></div></li>
+<li><p>Upgrade monitors by installing the new packages and restarting the monitor daemons. For example, on each monitor host</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>restart<span class="w"> </span>ceph-mon.target</span>
+</pre></div></div><p>Once all monitors are up, verify that the monitor upgrade is complete by looking for the <cite>squid</cite> string in the mon map. The command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>mon<span class="w"> </span>dump<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>min_mon_release</span>
+</pre></div></div><p>should report:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">min_mon_release<span class="w"> </span><span class="m">19</span><span class="w"> </span><span class="o">(</span>squid<span class="o">)</span></span>
+</pre></div></div><p>If it does not, that implies that one or more monitors hasn’t been upgraded and restarted and/or the quorum does not include all monitors.</p>
+</li>
+<li><p>Upgrade <cite>ceph-mgr</cite> daemons by installing the new packages and restarting all manager daemons. For example, on each manager host,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>restart<span class="w"> </span>ceph-mgr.target</span>
+</pre></div></div><p>Verify the <cite>ceph-mgr</cite> daemons are running by checking <cite>ceph -s</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>-s</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+  <span class="n">services</span><span class="p">:</span>
+   <span class="n">mon</span><span class="p">:</span> <span class="mi">3</span> <span class="n">daemons</span><span class="p">,</span> <span class="n">quorum</span> <span class="n">foo</span><span class="p">,</span><span class="n">bar</span><span class="p">,</span><span class="n">baz</span>
+   <span class="n">mgr</span><span class="p">:</span> <span class="n">foo</span><span class="p">(</span><span class="n">active</span><span class="p">),</span> <span class="n">standbys</span><span class="p">:</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p>Upgrade all OSDs by installing the new packages and restarting the ceph-osd daemons on all OSD hosts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>restart<span class="w"> </span>ceph-osd.target</span>
+</pre></div></div></li>
+<li><p>Upgrade all CephFS MDS daemons. For each CephFS file system,</p>
+<ol class="arabic">
+<li><p>Disable standby_replay:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>fs<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>allow_standby_replay<span class="w"> </span><span class="nb">false</span></span>
+</pre></div></div></div></blockquote>
+</li>
+<li><p>Reduce the number of ranks to 1. (Make note of the original number of MDS daemons first if you plan to restore it later.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>status<span class="w"> </span><span class="c1"># ceph fs set &lt;fs_name&gt; max_mds 1</span></span>
+</pre></div></div></li>
+<li><p>Wait for the cluster to deactivate any non-zero ranks by periodically checking the status</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>status</span>
+</pre></div></div></li>
+<li><p>Take all standby MDS daemons offline on the appropriate hosts with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>stop<span class="w"> </span>ceph-mds@&lt;daemon_name&gt;</span>
+</pre></div></div></li>
+<li><p>Confirm that only one MDS is online and is rank 0 for your FS</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>status</span>
+</pre></div></div></li>
+<li><p>Upgrade the last remaining MDS daemon by installing the new packages and restarting the daemon</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>restart<span class="w"> </span>ceph-mds.target</span>
+</pre></div></div></li>
+<li><p>Restart all standby MDS daemons that were taken offline</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>start<span class="w"> </span>ceph-mds.target</span>
+</pre></div></div></li>
+<li><p>Restore the original value of <cite>max_mds</cite> for the volume</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>fs<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>max_mds<span class="w"> </span>&lt;original_max_mds&gt;</span>
+</pre></div></div></li>
+</ol>
+</li>
+<li><p>Upgrade all radosgw daemons by upgrading packages and restarting daemons on all hosts</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span>restart<span class="w"> </span>ceph-radosgw.target</span>
+</pre></div></div></li>
+<li><p>Complete the upgrade by disallowing pre-Squid OSDs and enabling all new Squid-only functionality</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>osd<span class="w"> </span>require-osd-release<span class="w"> </span>squid</span>
+</pre></div></div></li>
+<li><p>If you set <cite>noout</cite> at the beginning, be sure to clear it with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>osd<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>noout</span>
+</pre></div></div></li>
+<li><p>Consider transitioning your cluster to use the cephadm deployment and orchestration framework to simplify
+cluster management and future upgrades. For more information on converting an existing cluster to cephadm,
+see <a class="reference external" href="https://docs.ceph.com/en/squid/cephadm/adoption/">https://docs.ceph.com/en/squid/cephadm/adoption/</a>.</p></li>
+</ol>
+</section>
+<section id="post-upgrade">
+<h3>Post-upgrade<a class="headerlink" href="#post-upgrade" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p>Verify the cluster is healthy with <cite>ceph health</cite>. If your cluster is running Filestore, and you are upgrading directly from Quincy to Squid, a deprecation warning is expected. This warning can be temporarily muted using the following command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>health<span class="w"> </span>mute<span class="w"> </span>OSD_FILESTORE</span>
+</pre></div></div></li>
+<li><p>Consider enabling the <a class="reference external" href="https://docs.ceph.com/en/squid/mgr/telemetry/">telemetry module</a> to send anonymized usage statistics and crash information to the Ceph upstream developers. To see what would be reported (without actually sending any information to anyone),</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>telemetry<span class="w"> </span>preview-all</span>
+</pre></div></div><p>If you are comfortable with the data that is reported, you can opt-in to automatically report the high-level cluster metadata with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>telemetry<span class="w"> </span>on</span>
+</pre></div></div><p>The public dashboard that aggregates Ceph telemetry can be found at <a class="reference external" href="https://telemetry-public.ceph.com/">https://telemetry-public.ceph.com/</a>.</p>
+</li>
+</ol>
+</section>
+<section id="upgrading-from-pre-quincy-releases-like-pacific">
+<h3>Upgrading from pre-Quincy releases (like Pacific)<a class="headerlink" href="#upgrading-from-pre-quincy-releases-like-pacific" title="Link to this heading"></a></h3>
+<p>You <strong>must</strong> first upgrade to Quincy (17.2.z) or Reef (18.2.z) before upgrading to Squid.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Ceph Releases (index)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reef.html" class="btn btn-neutral float-right" title="Reef" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

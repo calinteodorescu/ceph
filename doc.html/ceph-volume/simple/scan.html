@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scan &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="systemd" href="systemd.html" />
+    <link rel="prev" title="activate" href="activate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">ceph-volume</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#migrating">Migrating</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#new-deployments">New deployments</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#existing-osds">Existing OSDs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../intro.html">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#replacing-ceph-disk">Replacing <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#gpt-partitions-are-simple">GPT partitions are simple?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#modularity">Modularity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#ceph-volume-lvm"><code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">lvm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#lvm-performance-penalty">LVM performance penalty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inventory.html"><code class="docutils literal notranslate"><span class="pre">inventory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../drive-group.html"><code class="docutils literal notranslate"><span class="pre">drive-group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/index.html"><code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/activate.html"><code class="docutils literal notranslate"><span class="pre">activate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html"><code class="docutils literal notranslate"><span class="pre">batch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html#reporting">Reporting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html#sizing">Sizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/batch.html#idempotency-and-disk-replacements">Idempotency and disk replacements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/encryption.html">Encryption</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/prepare.html"><code class="docutils literal notranslate"><span class="pre">prepare</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/create.html"><code class="docutils literal notranslate"><span class="pre">create</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/scan.html">scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/list.html"><code class="docutils literal notranslate"><span class="pre">list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/zap.html"><code class="docutils literal notranslate"><span class="pre">zap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/migrate.html"><code class="docutils literal notranslate"><span class="pre">migrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/newdb.html"><code class="docutils literal notranslate"><span class="pre">new-db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lvm/newwal.html"><code class="docutils literal notranslate"><span class="pre">new-wal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">simple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="activate.html"><code class="docutils literal notranslate"><span class="pre">activate</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">scan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../zfs/index.html"><code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../zfs/inventory.html"><code class="docutils literal notranslate"><span class="pre">inventory</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">ceph-volume</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">scan</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/ceph-volume/simple/scan.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="scan">
+<span id="ceph-volume-simple-scan"></span><h1><code class="docutils literal notranslate"><span class="pre">scan</span></code><a class="headerlink" href="#scan" title="Link to this heading"></a></h1>
+<p>Scanning allows to capture any important details from an already-deployed OSD
+so that <code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code> can manage it without the need of any other startup
+workflows or tools (like <code class="docutils literal notranslate"><span class="pre">udev</span></code> or <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code>). Encryption with LUKS or
+PLAIN formats is fully supported.</p>
+<p>The command has the ability to inspect a running OSD, by inspecting the
+directory where the OSD data is stored, or by consuming the data partition.
+The command can also scan all running OSDs if no path or device is provided.</p>
+<p>Once scanned, information will (by default) persist the metadata as JSON in
+a file in <code class="docutils literal notranslate"><span class="pre">/etc/ceph/osd</span></code>. This <code class="docutils literal notranslate"><span class="pre">JSON</span></code> file will use the naming convention
+of: <code class="docutils literal notranslate"><span class="pre">{OSD</span> <span class="pre">ID}-{OSD</span> <span class="pre">FSID}.json</span></code>. An OSD with an id of 1, and an FSID like
+<code class="docutils literal notranslate"><span class="pre">86ebd829-1405-43d3-8fd6-4cbc9b6ecf96</span></code> the absolute path of the file would
+be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">osd</span><span class="o">/</span><span class="mi">1</span><span class="o">-</span><span class="mi">86</span><span class="n">ebd829</span><span class="o">-</span><span class="mi">1405</span><span class="o">-</span><span class="mi">43</span><span class="n">d3</span><span class="o">-</span><span class="mi">8</span><span class="n">fd6</span><span class="o">-</span><span class="mi">4</span><span class="n">cbc9b6ecf96</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">scan</span></code> subcommand will refuse to write to this file if it already exists.
+If overwriting the contents is needed, the <code class="docutils literal notranslate"><span class="pre">--force</span></code> flag must be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">volume</span> <span class="n">simple</span> <span class="n">scan</span> <span class="o">--</span><span class="n">force</span> <span class="p">{</span><span class="n">path</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If there is no need to persist the <code class="docutils literal notranslate"><span class="pre">JSON</span></code> metadata, there is support to send
+the contents to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> (no file will be written):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">volume</span> <span class="n">simple</span> <span class="n">scan</span> <span class="o">--</span><span class="n">stdout</span> <span class="p">{</span><span class="n">path</span><span class="p">}</span>
+</pre></div>
+</div>
+<section id="running-osds-scan">
+<span id="ceph-volume-simple-scan-directory"></span><h2>Running OSDs scan<a class="headerlink" href="#running-osds-scan" title="Link to this heading"></a></h2>
+<p>Using this command without providing an OSD directory or device will scan the
+directories of any currently running OSDs. If a running OSD was not created
+by ceph-disk it will be ignored and not scanned.</p>
+<p>To scan all running ceph-disk OSDs, the command would look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">volume</span> <span class="n">simple</span> <span class="n">scan</span>
+</pre></div>
+</div>
+</section>
+<section id="directory-scan">
+<h2>Directory scan<a class="headerlink" href="#directory-scan" title="Link to this heading"></a></h2>
+<p>The directory scan will capture OSD file contents from interesting files. There
+are a few files that must exist in order to have a successful scan:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_fsid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fsid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keyring</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ready</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">whoami</span></code></p></li>
+</ul>
+<p>If the OSD is encrypted, it will additionally add the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encryption_type</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lockbox_keyring</span></code></p></li>
+</ul>
+<p>In the case of any other file, as long as it is not a binary or a directory, it
+will also get captured and persisted as part of the JSON object.</p>
+<p>The convention for the keys in the JSON object is that any file name will be
+a key, and its contents will be its value. If the contents are a single line
+(like in the case of the <code class="docutils literal notranslate"><span class="pre">whoami</span></code>) the contents are trimmed, and the newline
+is dropped. For example with an OSD with an id of 1, this is how the JSON entry
+would look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;whoami&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>For files that may have more than one line, the contents are left as-is, except
+for keyrings which are treated specially and parsed to extract the keyring. For
+example, a <code class="docutils literal notranslate"><span class="pre">keyring</span></code> that gets read as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">osd</span><span class="mf">.1</span><span class="p">]</span>\<span class="n">n</span>\<span class="n">tkey</span> <span class="o">=</span> <span class="n">AQBBJ</span><span class="o">/</span><span class="n">dZp57NIBAAtnuQS9WOS0hnLVe0rZnE6Q</span><span class="o">==</span>\<span class="n">n</span>
+</pre></div>
+</div>
+<p>Would get stored as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;keyring&quot;</span><span class="p">:</span> <span class="s2">&quot;AQBBJ/dZp57NIBAAtnuQS9WOS0hnLVe0rZnE6Q==&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>For a directory like <code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/osd/ceph-1</span></code>, the command could look
+like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">volume</span> <span class="n">simple</span> <span class="n">scan</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">osd</span><span class="o">/</span><span class="n">ceph1</span>
+</pre></div>
+</div>
+</section>
+<section id="device-scan">
+<span id="ceph-volume-simple-scan-device"></span><h2>Device scan<a class="headerlink" href="#device-scan" title="Link to this heading"></a></h2>
+<p>When an OSD directory is not available (OSD is not running, or device is not
+mounted) the <code class="docutils literal notranslate"><span class="pre">scan</span></code> command is able to introspect the device to capture
+required data. Just like <a class="reference internal" href="#ceph-volume-simple-scan-directory"><span class="std std-ref">Running OSDs scan</span></a>, it would
+still require a few files present. This means that the device to be scanned
+<strong>must be</strong> the data partition of the OSD.</p>
+<p>As long as the data partition of the OSD is being passed in as an argument, the
+sub-command can scan its contents.</p>
+<p>In the case where the device is already mounted, the tool can detect this
+scenario and capture file contents from that directory.</p>
+<p>If the device is not mounted, a temporary directory will be created, and the
+device will be mounted temporarily just for scanning the contents. Once
+contents are scanned, the device will be unmounted.</p>
+<p>For a device like <code class="docutils literal notranslate"><span class="pre">/dev/sda1</span></code> which <strong>must</strong> be a data partition, the command
+could look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">volume</span> <span class="n">simple</span> <span class="n">scan</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span>
+</pre></div>
+</div>
+</section>
+<section id="json-contents">
+<span id="ceph-volume-simple-scan-json"></span><h2><code class="docutils literal notranslate"><span class="pre">JSON</span></code> contents<a class="headerlink" href="#json-contents" title="Link to this heading"></a></h2>
+<p>The contents of the JSON object is very simple. The scan not only will persist
+information from the special OSD files and their contents, but will also
+validate paths and device UUIDs. Unlike what <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code> would do, by storing
+them in <code class="docutils literal notranslate"><span class="pre">{device</span> <span class="pre">type}_uuid</span></code> files, the tool will persist them as part of the
+device type key.</p>
+<p>For example, a <code class="docutils literal notranslate"><span class="pre">block.db</span></code> device would look something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;block.db&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/dev/disk/by-partuuid/6cc43680-4f6e-4feb-92ff-9c7ba204120e&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;6cc43680-4f6e-4feb-92ff-9c7ba204120e&quot;</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<p>But it will also persist the <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code> special file generated, like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;block.db_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;6cc43680-4f6e-4feb-92ff-9c7ba204120e&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>This duplication is in place because the tool is trying to ensure the
+following:</p>
+<p># Support OSDs that may not have ceph-disk special files
+# Check the most up-to-date information on the device, by querying against LVM
+and <code class="docutils literal notranslate"><span class="pre">blkid</span></code>
+# Support both logical volumes and GPT devices</p>
+<p>This is a sample <code class="docutils literal notranslate"><span class="pre">JSON</span></code> metadata, from an OSD that is using <code class="docutils literal notranslate"><span class="pre">bluestore</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;active&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;block&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/dev/disk/by-partuuid/40fd0a64-caa5-43a3-9717-1836ac661a12&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;40fd0a64-caa5-43a3-9717-1836ac661a12&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;block.db&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/dev/disk/by-partuuid/6cc43680-4f6e-4feb-92ff-9c7ba204120e&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;6cc43680-4f6e-4feb-92ff-9c7ba204120e&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;block.db_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;6cc43680-4f6e-4feb-92ff-9c7ba204120e&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;block_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;40fd0a64-caa5-43a3-9717-1836ac661a12&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bluefs&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ceph_fsid&quot;</span><span class="p">:</span> <span class="s2">&quot;c92fc9eb-0610-4363-aafc-81ddf70aaf1b&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cluster_name&quot;</span><span class="p">:</span> <span class="s2">&quot;ceph&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="s2">&quot;/dev/sdr1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;86ebd829-1405-43d3-8fd6-4cbc9b6ecf96&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;fsid&quot;</span><span class="p">:</span> <span class="s2">&quot;86ebd829-1405-43d3-8fd6-4cbc9b6ecf96&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;keyring&quot;</span><span class="p">:</span> <span class="s2">&quot;AQBBJ/dZp57NIBAAtnuQS9WOS0hnLVe0rZnE6Q==&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;kv_backend&quot;</span><span class="p">:</span> <span class="s2">&quot;rocksdb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;magic&quot;</span><span class="p">:</span> <span class="s2">&quot;ceph osd volume v026&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mkfs_done&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ready&quot;</span><span class="p">:</span> <span class="s2">&quot;ready&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;systemd&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bluestore&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;whoami&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="activate.html" class="btn btn-neutral float-left" title="activate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="systemd.html" class="btn btn-neutral float-right" title="systemd" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

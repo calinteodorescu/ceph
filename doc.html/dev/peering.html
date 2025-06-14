@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peering &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using perf" href="perf.html" />
+    <link rel="prev" title="OSD class path issues" href="osd-class-path.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Peering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#concepts">Concepts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description-of-the-peering-process">Description of the Peering Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-a-state-model">Generate a State Model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">Peering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/peering.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="peering">
+<h1>Peering<a class="headerlink" href="#peering" title="Link to this heading"></a></h1>
+<section id="concepts">
+<h2>Concepts<a class="headerlink" href="#concepts" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><em>Peering</em></dt><dd><p>the process of bringing all of the OSDs that store a Placement Group (PG)
+into agreement about the state of all of the objects in that PG and all of
+the metadata associated with those objects. Two OSDs can agree on the state
+of the objects in the placement group yet still may not necessarily have the
+latest contents.</p>
+</dd>
+<dt><em>Acting set</em></dt><dd><p>the ordered list of OSDs that are (or were as of some epoch) responsible for
+a particular PG.</p>
+</dd>
+<dt><em>Up set</em></dt><dd><p>the ordered list of OSDs responsible for a particular PG for a particular
+epoch, according to CRUSH. This is the same as the <em>acting set</em> except when
+the <em>acting set</em> has been explicitly overridden via <em>PG temp</em> in the OSDMap.</p>
+</dd>
+<dt><em>PG temp</em></dt><dd><p>a temporary placement group acting set that is used while backfilling the
+primary OSD. Assume that the acting set is <code class="docutils literal notranslate"><span class="pre">[0,1,2]</span></code> and we are
+<code class="docutils literal notranslate"><span class="pre">active+clean</span></code>. Now assume that something happens and the acting set
+becomes <code class="docutils literal notranslate"><span class="pre">[3,1,2]</span></code>. Under these circumstances, OSD <code class="docutils literal notranslate"><span class="pre">3</span></code> is empty and can’t
+serve reads even though it is the primary. <code class="docutils literal notranslate"><span class="pre">osd.3</span></code> will respond by
+requesting a <em>PG temp</em> of <code class="docutils literal notranslate"><span class="pre">[1,2,3]</span></code> to the monitors using a <code class="docutils literal notranslate"><span class="pre">MOSDPGTemp</span></code>
+message, and <code class="docutils literal notranslate"><span class="pre">osd.1</span></code> will become the primary temporarily. <code class="docutils literal notranslate"><span class="pre">osd.1</span></code> will
+select <code class="docutils literal notranslate"><span class="pre">osd.3</span></code> as a backfill peer and will continue to serve reads and
+writes while <code class="docutils literal notranslate"><span class="pre">osd.3</span></code> is backfilled. When backfilling is complete, <em>PG
+temp</em> is discarded. The acting set changes back to <code class="docutils literal notranslate"><span class="pre">[3,1,2]</span></code> and <code class="docutils literal notranslate"><span class="pre">osd.3</span></code>
+becomes the primary.</p>
+</dd>
+<dt><em>current interval</em> or <em>past interval</em></dt><dd><p>a sequence of OSD map epochs during which the <em>acting set</em> and the <em>up
+set</em> for particular PG do not change.</p>
+</dd>
+<dt><em>primary</em></dt><dd><p>the member of the <em>acting set</em> that is responsible for coordination peering.
+The only OSD that accepts client-initiated writes to the objects in a
+placement group. By convention, the primary is the first member of the
+<em>acting set</em>.</p>
+</dd>
+<dt><em>replica</em></dt><dd><p>a non-primary OSD in the <em>acting set</em> of a placement group. A replica has
+been recognized as a non-primary OSD and has been <em>activated</em> by the
+primary.</p>
+</dd>
+<dt><em>stray</em></dt><dd><p>an OSD that is not a member of the current <em>acting set</em> and has not yet been
+told to delete its copies of a particular placement group.</p>
+</dd>
+<dt><em>recovery</em></dt><dd><p>the process of ensuring that copies of all of the objects in a PG are on all
+of the OSDs in the <em>acting set</em>. After <em>peering</em> has been performed, the
+primary can begin accepting write operations and <em>recovery</em> can proceed in
+the background.</p>
+</dd>
+<dt><em>PG info</em></dt><dd><p>basic metadata about the PG’s creation epoch, the version for the most
+recent write to the PG, the <em>last epoch started</em>, the <em>last epoch clean</em>,
+and the beginning of the <em>current interval</em>. Any inter-OSD communication
+about PGs includes the <em>PG info</em>, such that any OSD that knows a PG exists
+(or once existed) and also has a lower bound on <em>last epoch clean</em> or <em>last
+epoch started</em>.</p>
+</dd>
+<dt><em>PG log</em></dt><dd><p>a list of recent updates made to objects in a PG. These logs can be
+truncated after all OSDs in the <em>acting set</em> have acknowledged the changes.</p>
+</dd>
+<dt><em>missing set</em></dt><dd><p>the set of all objects that have not yet had their contents updated to match
+the log entries. The missing set is collated by each OSD. Missing sets are
+kept track of on an <code class="docutils literal notranslate"><span class="pre">&lt;OSD,PG&gt;</span></code> basis.</p>
+</dd>
+<dt><em>Authoritative History</em></dt><dd><p>a complete and fully-ordered set of operations that bring an OSD’s copy of a
+Placement Group up to date.</p>
+</dd>
+<dt><em>epoch</em></dt><dd><p>a (monotonically increasing) OSD map version number.</p>
+</dd>
+<dt><em>last epoch start</em></dt><dd><p>the last epoch at which all nodes in the <em>acting set</em> for a given placement
+group agreed on an <em>authoritative history</em>.  At the start of the last epoch,
+<em>peering</em> is deemed to have been successful.</p>
+</dd>
+<dt><em>up_thru</em></dt><dd><p>before a primary can successfully complete the <em>peering</em> process,
+it must inform a monitor that is alive through the current
+OSD map epoch by having the monitor set its <em>up_thru</em> in the osd
+map. This helps peering ignore previous <em>acting sets</em> for which
+peering never completed after certain sequences of failures, such as
+the second interval below:</p>
+<ul class="simple">
+<li><p><em>acting set</em> = [A,B]</p></li>
+<li><p><em>acting set</em> = [A]</p></li>
+<li><p><em>acting set</em> = [] very shortly after (e.g., simultaneous failure, but staggered detection)</p></li>
+<li><p><em>acting set</em> = [B] (B restarts, A does not)</p></li>
+</ul>
+</dd>
+<dt><em>last epoch clean</em></dt><dd><p>the last epoch at which all nodes in the <em>acting set</em> for a given placement
+group were completely up to date (this includes both the PG’s logs and the
+PG’s object contents). At this point, <em>recovery</em> is deemed to have been
+completed.</p>
+</dd>
+</dl>
+</section>
+<section id="description-of-the-peering-process">
+<h2>Description of the Peering Process<a class="headerlink" href="#description-of-the-peering-process" title="Link to this heading"></a></h2>
+<p>The <em>Golden Rule</em> is that no write operation to any PG
+is acknowledged to a client until it has been persisted
+by all members of the <em>acting set</em> for that PG.  This means
+that if we can communicate with at least one member of
+each <em>acting set</em> since the last successful <em>peering</em>, someone
+will have a record of every (acknowledged) operation
+since the last successful <em>peering</em>.
+This means that it should be possible for the current
+primary to construct and disseminate a new <em>authoritative history</em>.</p>
+<p>It is also important to appreciate the role of the OSD map
+(list of all known OSDs and their states, as well as some
+information about the placement groups) in the <em>peering</em>
+process:</p>
+<blockquote>
+<div><p>When OSDs go up or down (or get added or removed)
+this has the potential to affect the <em>active sets</em>
+of many placement groups.</p>
+<p>Before a primary successfully completes the <em>peering</em>
+process, the OSD map must reflect that the OSD was alive
+and well as of the first epoch in the <em>current interval</em>.</p>
+<p>Changes can only be made after successful <em>peering</em>.</p>
+</div></blockquote>
+<p>Thus, a new primary can use the latest OSD map along with a recent
+history of past maps to generate a set of <em>past intervals</em> to
+determine which OSDs must be consulted before we can successfully
+<em>peer</em>.  The set of past intervals is bounded by <em>last epoch started</em>,
+the most recent <em>past interval</em> for which we know <em>peering</em> completed.
+The process by which an OSD discovers a PG exists in the first place is
+by exchanging <em>PG info</em> messages, so the OSD always has some lower
+bound on <em>last epoch started</em>.</p>
+<p>The high level process is for the current PG primary to:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>get a recent OSD map (to identify the members of the all
+interesting <em>acting sets</em>, and confirm that we are still the
+primary).</p></li>
+<li><p>generate a list of <em>past intervals</em> since <em>last epoch started</em>.
+Consider the subset of those for which <em>up_thru</em> was greater than
+the first interval epoch by the last interval epoch’s OSD map; that is,
+the subset for which <em>peering</em> could have completed before the <em>acting
+set</em> changed to another set of OSDs.</p>
+<p>Successful <em>peering</em> will require that we be able to contact at
+least one OSD from each of <em>past interval</em>’s <em>acting set</em>.</p>
+</li>
+<li><p>ask every node in that list for its <em>PG info</em>, which includes the most
+recent write made to the PG, and a value for <em>last epoch started</em>.  If
+we learn about a <em>last epoch started</em> that is newer than our own, we can
+prune older <em>past intervals</em> and reduce the peer OSDs we need to contact.</p></li>
+<li><p>if anyone else has (in its PG log) operations that I do not have,
+instruct them to send me the missing log entries so that the primary’s
+<em>PG log</em> is up to date (includes the newest write)..</p></li>
+<li><p>for each member of the current <em>acting set</em>:</p>
+<ol class="loweralpha">
+<li><p>ask it for copies of all PG log entries since <em>last epoch start</em>
+so that I can verify that they agree with mine (or know what
+objects I will be telling it to delete).</p>
+<p>If the cluster failed before an operation was persisted by all
+members of the <em>acting set</em>, and the subsequent <em>peering</em> did not
+remember that operation, and a node that did remember that
+operation later rejoined, its logs would record a different
+(divergent) history than the <em>authoritative history</em> that was
+reconstructed in the <em>peering</em> after the failure.</p>
+<p>Since the <em>divergent</em> events were not recorded in other logs
+from that <em>acting set</em>, they were not acknowledged to the client,
+and there is no harm in discarding them (so that all OSDs agree
+on the <em>authoritative history</em>).  But, we will have to instruct
+any OSD that stores data from a divergent update to delete the
+affected (and now deemed to be apocryphal) objects.</p>
+</li>
+<li><p>ask it for its <em>missing set</em> (object updates recorded
+in its PG log, but for which it does not have the new data).
+This is the list of objects that must be fully replicated
+before we can accept writes.</p></li>
+</ol>
+</li>
+<li><p>at this point, the primary’s PG log contains an <em>authoritative history</em> of
+the placement group, and the OSD now has sufficient
+information to bring any other OSD in the <em>acting set</em> up to date.</p></li>
+<li><p>if the primary’s <em>up_thru</em> value in the current OSD map is not greater than
+or equal to the first epoch in the <em>current interval</em>, send a request to the
+monitor to update it, and wait until receive an updated OSD map that reflects
+the change.</p></li>
+<li><p>for each member of the current <em>acting set</em>:</p>
+<ol class="loweralpha simple">
+<li><p>send them log updates to bring their PG logs into agreement with
+my own (<em>authoritative history</em>) … which may involve deciding
+to delete divergent objects.</p></li>
+<li><p>await acknowledgment that they have persisted the PG log entries.</p></li>
+</ol>
+</li>
+<li><p>at this point all OSDs in the <em>acting set</em> agree on all of the meta-data,
+and would (in any future <em>peering</em>) return identical accounts of all
+updates.</p>
+<ol class="loweralpha">
+<li><p>start accepting client write operations (because we have unanimous
+agreement on the state of the objects into which those updates are
+being accepted).  Note, however, that if a client tries to write to an
+object it will be promoted to the front of the recovery queue, and the
+write willy be applied after it is fully replicated to the current <em>acting set</em>.</p></li>
+<li><p>update the <em>last epoch started</em> value in our local <em>PG info</em>, and instruct
+other <em>active set</em> OSDs to do the same.</p></li>
+<li><p>start pulling object data updates that other OSDs have, but I do not.  We may
+need to query OSDs from additional <em>past intervals</em> prior to <em>last epoch started</em>
+(the last time <em>peering</em> completed) and following <em>last epoch clean</em> (the last epoch that
+recovery completed) in order to find copies of all objects.</p></li>
+<li><p>start pushing object data updates to other OSDs that do not yet have them.</p>
+<p>We push these updates from the primary (rather than having the replicas
+pull them) because this allows the primary to ensure that a replica has
+the current contents before sending it an update write.  It also makes
+it possible for a single read (from the primary) to be used to write
+the data to multiple replicas.  If each replica did its own pulls,
+the data might have to be read multiple times.</p>
+</li>
+</ol>
+</li>
+<li><p>once all replicas store the all copies of all objects (that
+existed prior to the start of this epoch) we can update <em>last
+epoch clean</em> in the <em>PG info</em>, and we can dismiss all of the
+<em>stray</em> replicas, allowing them to delete their copies of objects
+for which they are no longer in the <em>acting set</em>.</p>
+<p>We could not dismiss the <em>strays</em> prior to this because it was possible
+that one of those <em>strays</em> might hold the sole surviving copy of an
+old object (all of whose copies disappeared before they could be
+replicated on members of the current <em>acting set</em>).</p>
+</li>
+</ol>
+</div></blockquote>
+</section>
+<section id="generate-a-state-model">
+<h2>Generate a State Model<a class="headerlink" href="#generate-a-state-model" title="Link to this heading"></a></h2>
+<p>Use the <a class="reference external" href="https://github.com/ceph/ceph/blob/master/doc/scripts/gen_state_diagram.py">gen_state_diagram.py</a> script to generate a copy of the latest peering state model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/ceph/ceph.git
+$ cd ceph
+$ cat src/osd/PeeringState.h src/osd/PeeringState.cc | doc/scripts/gen_state_diagram.py &gt; doc/dev/peering_graph.generated.dot
+$ sed -i &#39;s/7,7/1080,1080/&#39; doc/dev/peering_graph.generated.dot
+$ dot -Tsvg doc/dev/peering_graph.generated.dot &gt; doc/dev/peering_graph.generated.svg
+</pre></div>
+</div>
+<p>Sample state model:</p>
+<img alt="../_images/peering_graph.generated.svg" src="../_images/peering_graph.generated.svg" />
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="osd-class-path.html" class="btn btn-neutral float-left" title="OSD class path issues" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="perf.html" class="btn btn-neutral float-right" title="Using perf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ISA erasure code plugin &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Locally repairable erasure code plugin" href="erasure-code-lrc.html" />
+    <link rel="prev" title="Jerasure erasure code plugin" href="erasure-code-jerasure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="erasure-code.html">Erasure code</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#creating-a-sample-erasure-coded-pool">Creating a sample erasure-coded pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#erasure-code-profiles">Erasure-code profiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#erasure-coding-with-overwrites">Erasure Coding with Overwrites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#erasure-coded-pool-overhead">Erasure-coded pool overhead</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#erasure-coded-pools-and-cache-tiering">Erasure-coded pools and cache tiering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#erasure-coded-pool-recovery">Erasure-coded pool recovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure-code.html#glossary">Glossary</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="erasure-code.html#table-of-contents">Table of contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+          <li class="breadcrumb-item"><a href="erasure-code.html">Erasure code</a></li>
+          <li class="breadcrumb-item"><a href="erasure-code-profile.html">Erasure code profiles</a></li>
+      <li class="breadcrumb-item active">ISA erasure code plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/erasure-code-isa.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="isa-erasure-code-plugin">
+<h1>ISA erasure code plugin<a class="headerlink" href="#isa-erasure-code-plugin" title="Link to this heading"></a></h1>
+<p>The <em>isa</em> plugin is the default for Ceph erasure coded pools.
+The <em>isa</em> plugin encapsulates the <a class="reference external" href="https://01.org/intel%C2%AE-storage-acceleration-library-open-source-version/">ISA</a>
+library.</p>
+<section id="create-an-isa-profile">
+<h2>Create an isa profile<a class="headerlink" href="#create-an-isa-profile" title="Link to this heading"></a></h2>
+<p>To create a new <em>isa</em> erasure code profile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>erasure-code-profile<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">{</span>name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="nv">plugin</span><span class="o">=</span>isa<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="nv">technique</span><span class="o">={</span>reed_sol_van<span class="p">|</span>cauchy<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span><span class="nv">k</span><span class="o">={</span>data-chunks<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span><span class="nv">m</span><span class="o">={</span>coding-chunks<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>crush-root<span class="o">={</span>root<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>crush-failure-domain<span class="o">={</span>bucket-type<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>crush-device-class<span class="o">={</span>device-class<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span><span class="nv">directory</span><span class="o">={</span>directory<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="o">[</span>--force<span class="o">]</span></span>
+</pre></div></div><p>Where:</p>
+<p><code class="docutils literal notranslate"><span class="pre">k={data</span> <span class="pre">chunks}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Each object is split in <strong>data-chunks</strong> parts,
+each stored on a different OSD.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p>7</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">m={coding-chunks}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Compute <strong>coding chunks</strong> for each object and store them
+on different OSDs. The number of coding chunks is also
+the number of OSDs that can be down without losing data.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p>3</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">technique={reed_sol_van|cauchy}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The ISA plugin comes in two <a class="reference external" href="https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction">Reed Solomon</a>
+forms. If <em>reed_sol_van</em> is set, it is <a class="reference external" href="https://en.wikipedia.org/wiki/Vandermonde_matrix">Vandermonde</a>, if
+<em>cauchy</em> is set, it is <a class="reference external" href="https://en.wikipedia.org/wiki/Cauchy_matrix">Cauchy</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p>reed_sol_van</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">crush-root={root}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the crush bucket used for the first step of
+the CRUSH rule. For instance <strong>step take default</strong>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p>default</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">crush-failure-domain={bucket-type}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ensure that no two chunks are in a bucket with the same
+failure domain. For instance, if the failure domain is
+<strong>host</strong> no two chunks will be stored on the same
+host. It is used to create a CRUSH rule step such as <strong>step
+chooseleaf host</strong>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p>host</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">crush-device-class={device-class}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Restrict placement to devices of a specific class (e.g.,
+<code class="docutils literal notranslate"><span class="pre">ssd</span></code> or <code class="docutils literal notranslate"><span class="pre">hdd</span></code>), using the crush device class names
+in the CRUSH map.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">directory={directory}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set the <strong>directory</strong> name from which the erasure code
+plugin is loaded.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p>/usr/lib/ceph/erasure-code</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">--force</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Override an existing profile by the same name.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="erasure-code-jerasure.html" class="btn btn-neutral float-left" title="Jerasure erasure code plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="erasure-code-lrc.html" class="btn btn-neutral float-right" title="Locally repairable erasure code plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

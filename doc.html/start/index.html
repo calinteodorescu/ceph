@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intro to Ceph &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Beginner’s Guide" href="beginners-guide.html" />
+    <link rel="prev" title="Welcome to Ceph" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Intro to Ceph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="beginners-guide.html">Beginner's Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html">Hardware Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="os-recommendations.html">OS Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get-involved.html">Get Involved in the Ceph Community!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documenting-ceph.html">Documenting Ceph</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Intro to Ceph</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/start/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="intro-to-ceph">
+<h1>Intro to Ceph<a class="headerlink" href="#intro-to-ceph" title="Link to this heading"></a></h1>
+<p>Ceph can be used to provide <a class="reference internal" href="../glossary.html#term-Ceph-Object-Storage"><span class="xref std std-term">Ceph Object Storage</span></a> to <a class="reference internal" href="../glossary.html#term-Cloud-Platforms"><span class="xref std std-term">Cloud
+Platforms</span></a> and Ceph can be used to provide <a class="reference internal" href="../glossary.html#term-Ceph-Block-Device"><span class="xref std std-term">Ceph Block Device</span></a> services
+to <a class="reference internal" href="../glossary.html#term-Cloud-Platforms"><span class="xref std std-term">Cloud Platforms</span></a>. Ceph can be used to deploy a <a class="reference internal" href="../glossary.html#term-Ceph-File-System"><span class="xref std std-term">Ceph File
+System</span></a>.  All <a class="reference internal" href="../glossary.html#term-Ceph-Storage-Cluster"><span class="xref std std-term">Ceph Storage Cluster</span></a> deployments begin with setting up
+each <a class="reference internal" href="../glossary.html#term-Ceph-Node"><span class="xref std std-term">Ceph Node</span></a> and then setting up the network.</p>
+<p>A Ceph Storage Cluster requires the following: at least one Ceph Monitor and at
+least one Ceph Manager, and at least as many <a class="reference internal" href="../glossary.html#term-Ceph-OSD"><span class="xref std std-term">Ceph Object Storage
+Daemon</span></a>s (OSDs) as there are copies of a given object stored in the
+Ceph cluster (for example, if three copies of a given object are stored in the
+Ceph cluster, then at least three OSDs must exist in that Ceph cluster).</p>
+<p>The Ceph Metadata Server is necessary to run Ceph File System clients.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is a best practice to have a Ceph Manager for each Monitor, but it is not
+necessary.</p>
+</div>
+<img alt="../_images/5076c4d9d3850f135d69e884959097f8882cf39156b6eaca1f46f2eb82f4e877.png" class="align-center" src="../_images/5076c4d9d3850f135d69e884959097f8882cf39156b6eaca1f46f2eb82f4e877.png" />
+<ul class="simple">
+<li><p><strong>Monitors</strong>: A <a class="reference internal" href="../glossary.html#term-Ceph-Monitor"><span class="xref std std-term">Ceph Monitor</span></a> (<code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code>) maintains maps of the
+cluster state, including the <a class="reference internal" href="../rados/operations/monitoring.html#display-mon-map"><span class="std std-ref">monitor map</span></a>, manager
+map, the OSD map, the MDS map, and the CRUSH map.  These maps are critical
+cluster state required for Ceph daemons to coordinate with each other.
+Monitors are also responsible for managing authentication between daemons and
+clients.  At least three monitors are normally required for redundancy and
+high availability.</p></li>
+<li><p><strong>Managers</strong>: A <a class="reference internal" href="../glossary.html#term-Ceph-Manager"><span class="xref std std-term">Ceph Manager</span></a> daemon (<code class="docutils literal notranslate"><span class="pre">ceph-mgr</span></code>) is
+responsible for keeping track of runtime metrics and the current
+state of the Ceph cluster, including storage utilization, current
+performance metrics, and system load.  The Ceph Manager daemons also
+host python-based modules to manage and expose Ceph cluster
+information, including a web-based <a class="reference internal" href="../mgr/dashboard.html#mgr-dashboard"><span class="std std-ref">Ceph Dashboard</span></a>.
+At least two managers are normally required for high
+availability.</p></li>
+<li><p><strong>Ceph OSDs</strong>: An Object Storage Daemon (<a class="reference internal" href="../glossary.html#term-Ceph-OSD"><span class="xref std std-term">Ceph OSD</span></a>,
+<code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code>) stores data, handles data replication, recovery,
+rebalancing, and provides some monitoring information to Ceph
+Monitors and Managers by checking other Ceph OSD Daemons for a
+heartbeat. At least three Ceph OSDs are normally required for
+redundancy and high availability.</p></li>
+<li><p><strong>MDSes</strong>: A <a class="reference internal" href="../glossary.html#term-Ceph-Metadata-Server"><span class="xref std std-term">Ceph Metadata Server</span></a> (MDS, <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code>) stores metadata
+for the <a class="reference internal" href="../glossary.html#term-Ceph-File-System"><span class="xref std std-term">Ceph File System</span></a>. Ceph Metadata Servers allow CephFS users to
+run basic commands (like <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">find</span></code>, etc.) without placing a burden on
+the Ceph Storage Cluster.</p></li>
+<li><p><strong>RGWs</strong>: A <a class="reference internal" href="../glossary.html#term-Ceph-Object-Gateway"><span class="xref std std-term">Ceph Object Gateway</span></a> (RGW, <code class="docutils literal notranslate"><span class="pre">ceph-radosgw</span></code>) daemon provides
+a RESTful gateway between applications and Ceph storage clusters. The
+S3-compatible API is most commonly used, though Swift is also available.</p></li>
+</ul>
+<p>Ceph stores data as objects within logical storage pools. Using the
+<a class="reference internal" href="../glossary.html#term-CRUSH"><span class="xref std std-term">CRUSH</span></a> algorithm, Ceph calculates which placement group (PG) should
+contain the object, and which OSD should store the placement group.  The
+CRUSH algorithm enables the Ceph Storage Cluster to scale, rebalance, and
+recover dynamically.</p>
+<div class="columns-2 docutils container">
+<div class="column docutils container">
+<h3>Recommendations</h3><p>To begin using Ceph in production, you should review our hardware
+recommendations and operating system recommendations.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="beginners-guide.html">Beginner's Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="beginners-guide.html#components-of-ceph">Components of Ceph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="beginners-guide.html#vstart-cluster-installation-and-configuration-procedure">Vstart Cluster Installation and Configuration Procedure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware-recommendations.html">Hardware Recommendations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#cpu">CPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#ram">RAM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#data-storage">Data Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#networks">Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#failure-domains">Failure Domains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware-recommendations.html#minimum-hardware-recommendations">Minimum Hardware Recommendations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="os-recommendations.html">OS Recommendations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="os-recommendations.html#ceph-dependencies">Ceph Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="os-recommendations.html#platforms">Platforms</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="column docutils container">
+<h3>Get Involved</h3><p>You can avail yourself of help or contribute documentation, source
+code or bugs by getting involved in the Ceph community.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="get-involved.html">Get Involved in the Ceph Community!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documenting-ceph.html">Documenting Ceph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="documenting-ceph.html#location-of-the-documentation-in-the-repository">Location of the Documentation in the Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documenting-ceph.html#viewing-old-ceph-documentation">Viewing Old Ceph Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documenting-ceph.html#making-contributions">Making Contributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documenting-ceph.html#documentation-style-guide">Documentation Style Guide</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to Ceph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="beginners-guide.html" class="btn btn-neutral float-right" title="Beginner’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

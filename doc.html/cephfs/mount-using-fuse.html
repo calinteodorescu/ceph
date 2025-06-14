@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mount CephFS using FUSE &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Mount CephFS on Windows" href="ceph-dokan.html" />
+    <link rel="prev" title="Mount CephFS using Kernel Driver" href="mount-using-kernel-driver.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="client-config-ref.html"> Client Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="client-auth.html"> Client Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-prerequisites.html"> Mount CephFS: Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-using-kernel-driver.html"> Mount CephFS using Kernel Driver</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Mount CephFS using FUSE</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unmounting-cephfs">Unmounting CephFS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#persistent-mounts">Persistent Mounts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-dokan.html"> Mount CephFS on Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/cephfs-shell.html"> Use the CephFS Shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kernel-features.html"> Supported Features of Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-fuse.html"> Manual: ceph-fuse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/mount.ceph.html"> Manual: mount.ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/mount.fuse.ceph.html"> Manual: mount.fuse.ceph</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">Mount CephFS using FUSE</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/mount-using-fuse.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="mount-cephfs-using-fuse">
+<h1>Mount CephFS using FUSE<a class="headerlink" href="#mount-cephfs-using-fuse" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="../../man/8/ceph-fuse/#options">ceph-fuse</a> can be used as an alternative to the <a class="reference internal" href="mount-using-kernel-driver.html#cephfs-mount-using-kernel-driver"><span class="std std-ref">CephFS kernel
+driver</span></a> to mount CephFS file systems.
+<a class="reference external" href="../../man/8/ceph-fuse/#options">ceph-fuse</a> mounts are made in userspace. This means that <a class="reference external" href="../../man/8/ceph-fuse/#options">ceph-fuse</a> mounts
+are less performant than kernel driver mounts, but they are easier to manage
+and easier to upgrade.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Ensure that you have all the prerequisites required by both kernel and FUSE
+mounts, as listed on the <a class="reference external" href="../mount-prerequisites">Mount CephFS: Prerequisites</a> page.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Mounting CephFS using FUSE requires superuser privileges (sudo/root).
+The libfuse interface does not provide a mechanism to trim cache entries in
+the kernel so a remount (<code class="docutils literal notranslate"><span class="pre">mount(2)</span></code>) system call is required to force the
+kernel to drop the cached metadata. <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code> issues these remount
+system calls periodically in response to cache pressure in the MDS or due to
+metadata cache revocations.</p>
+</div>
+</section>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<p>This is the general form of the command for mounting CephFS via FUSE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-fuse<span class="w"> </span><span class="o">{</span>mount<span class="w"> </span>point<span class="o">}</span><span class="w"> </span><span class="o">{</span>options<span class="o">}</span></span>
+</pre></div></div></section>
+<section id="mounting-cephfs">
+<h2>Mounting CephFS<a class="headerlink" href="#mounting-cephfs" title="Link to this heading"></a></h2>
+<p>To FUSE-mount the Ceph file system, use the <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+<span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">--</span><span class="nb">id</span> <span class="n">foo</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>Option <code class="docutils literal notranslate"><span class="pre">--id</span></code> passes the name of the CephX user whose keyring we intend to
+use for mounting CephFS. In the above command, it’s <code class="docutils literal notranslate"><span class="pre">foo</span></code>. You can also use
+<code class="docutils literal notranslate"><span class="pre">-n</span></code> instead, although <code class="docutils literal notranslate"><span class="pre">--id</span></code> is evidently easier:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">-</span><span class="n">n</span> <span class="n">client</span><span class="o">.</span><span class="n">foo</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>In case the keyring is not present in standard locations, you may pass it
+too:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">--</span><span class="nb">id</span> <span class="n">foo</span> <span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keyring</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>You may pass the MON’s socket too, although this is not mandatory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">--</span><span class="nb">id</span> <span class="n">foo</span> <span class="o">-</span><span class="n">m</span> <span class="mf">192.168.0.1</span><span class="p">:</span><span class="mi">6789</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>You can also mount a specific directory within CephFS instead of mounting
+root of CephFS on your local FS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">--</span><span class="nb">id</span> <span class="n">foo</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="nb">dir</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>If you have more than one FS on your Ceph cluster, use the option
+<code class="docutils literal notranslate"><span class="pre">--client_fs</span></code> to mount the non-default FS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">--</span><span class="nb">id</span> <span class="n">foo</span> <span class="o">--</span><span class="n">client_fs</span> <span class="n">mycephfs2</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs2</span>
+</pre></div>
+</div>
+<p>You may also add a <code class="docutils literal notranslate"><span class="pre">client_fs</span></code> setting to your <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code>. Alternatively, the option
+<code class="docutils literal notranslate"><span class="pre">--client_mds_namespace</span></code> is supported for backward compatibility.</p>
+</section>
+<section id="unmounting-cephfs">
+<h2>Unmounting CephFS<a class="headerlink" href="#unmounting-cephfs" title="Link to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">umount</span></code> to unmount CephFS like any other FS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">umount</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Ensure that you are not within the file system directories before
+executing this command.</p>
+</div>
+</section>
+<section id="persistent-mounts">
+<h2>Persistent Mounts<a class="headerlink" href="#persistent-mounts" title="Link to this heading"></a></h2>
+<p>To mount CephFS as a file system in user space, add the following to <code class="docutils literal notranslate"><span class="pre">/etc/fstab</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#DEVICE PATH       TYPE      OPTIONS</span>
+<span class="n">none</span>    <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>  <span class="n">fuse</span><span class="o">.</span><span class="n">ceph</span> <span class="n">ceph</span><span class="o">.</span><span class="n">id</span><span class="o">=</span><span class="p">{</span><span class="n">user</span><span class="o">-</span><span class="n">ID</span><span class="p">}[,</span><span class="n">ceph</span><span class="o">.</span><span class="n">conf</span><span class="o">=</span><span class="p">{</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">conf</span><span class="o">.</span><span class="n">conf</span><span class="p">}],</span><span class="n">_netdev</span><span class="p">,</span><span class="n">defaults</span>  <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">none</span>    <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>  <span class="n">fuse</span><span class="o">.</span><span class="n">ceph</span> <span class="n">ceph</span><span class="o">.</span><span class="n">id</span><span class="o">=</span><span class="n">myuser</span><span class="p">,</span><span class="n">_netdev</span><span class="p">,</span><span class="n">defaults</span>  <span class="mi">0</span> <span class="mi">0</span>
+<span class="n">none</span>    <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>  <span class="n">fuse</span><span class="o">.</span><span class="n">ceph</span> <span class="n">ceph</span><span class="o">.</span><span class="n">id</span><span class="o">=</span><span class="n">myuser</span><span class="p">,</span><span class="n">ceph</span><span class="o">.</span><span class="n">conf</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">foo</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span><span class="n">_netdev</span><span class="p">,</span><span class="n">defaults</span>  <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Ensure you use the ID (e.g., <code class="docutils literal notranslate"><span class="pre">myuser</span></code>, not <code class="docutils literal notranslate"><span class="pre">client.myuser</span></code>). You can pass
+any valid <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code> option to the command line this way.</p>
+<p>To mount a subdirectory of the CephFS, add the following to <code class="docutils literal notranslate"><span class="pre">/etc/fstab</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">none</span>    <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>  <span class="n">fuse</span><span class="o">.</span><span class="n">ceph</span> <span class="n">ceph</span><span class="o">.</span><span class="n">id</span><span class="o">=</span><span class="n">myuser</span><span class="p">,</span><span class="n">ceph</span><span class="o">.</span><span class="n">client_mountpoint</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="nb">dir</span><span class="p">,</span><span class="n">_netdev</span><span class="p">,</span><span class="n">defaults</span>  <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ceph-fuse&#64;.service</span></code> and <code class="docutils literal notranslate"><span class="pre">ceph-fuse.target</span></code> systemd units are available.
+As usual, these unit files declare the default dependencies and recommended
+execution context for <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code>. After making the fstab entry shown above,
+run following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span><span class="o">@/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span><span class="o">.</span><span class="n">target</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span><span class="o">@-</span><span class="n">mnt</span><span class="o">-</span><span class="n">mycephfs</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../rados/operations/user-management.html#user-management"><span class="std std-ref">User Management</span></a> for details on CephX user management and <a class="reference external" href="../../man/8/ceph-fuse/#options">ceph-fuse</a>
+manual for more options it can take. For troubleshooting, see
+<a class="reference internal" href="troubleshooting.html#ceph-fuse-debugging"><span class="std std-ref">ceph-fuse debugging</span></a>.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mount-using-kernel-driver.html" class="btn btn-neutral float-left" title="Mount CephFS using Kernel Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ceph-dokan.html" class="btn btn-neutral float-right" title="Mount CephFS on Windows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

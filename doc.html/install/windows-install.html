@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installing Ceph on Windows &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installing Ceph on Windows</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/install/windows-install.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="installing-ceph-on-windows">
+<h1>Installing Ceph on Windows<a class="headerlink" href="#installing-ceph-on-windows" title="Link to this heading"></a></h1>
+<p>The Ceph client tools and libraries can be natively used on Windows. This avoids
+the need for additional layers such as iSCSI gateways or SMB shares,
+drastically improving the performance.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<section id="supported-platforms">
+<h3>Supported platforms<a class="headerlink" href="#supported-platforms" title="Link to this heading"></a></h3>
+<p>Windows Server 2019 and Windows Server 2016 are supported. Previous Windows
+Server versions, including Windows client versions such as Windows 10, might
+work but haven’t been tested.</p>
+<p>Windows Server 2016 does not provide Unix sockets, in which case some commands
+might be unavailable.</p>
+</section>
+<section id="secure-boot">
+<h3>Secure boot<a class="headerlink" href="#secure-boot" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">WNBD</span></code> driver hasn’t been signed by Microsoft, which means that Secure Boot
+must be disabled.</p>
+</section>
+<section id="dokany">
+<h3>Dokany<a class="headerlink" href="#dokany" title="Link to this heading"></a></h3>
+<p>In order to mount Ceph filesystems, <code class="docutils literal notranslate"><span class="pre">ceph-dokan</span></code> requires Dokany to be
+installed. You may fetch the installer as well as the source code from the
+Dokany GitHub repository: <a class="reference external" href="https://github.com/dokan-dev/dokany/releases">https://github.com/dokan-dev/dokany/releases</a></p>
+<p>Make sure to install Dokany 2.0.5 or later.</p>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">WNBD</span></code>, Dokany isn’t included in the Ceph MSI installer.</p>
+</section>
+</section>
+<section id="msi-installer">
+<h2>MSI installer<a class="headerlink" href="#msi-installer" title="Link to this heading"></a></h2>
+<p>Using the MSI installer is the recommended way of installing Ceph on Windows.
+It can be downloaded from here: <a class="reference external" href="https://cloudbase.it/ceph-for-windows/">https://cloudbase.it/ceph-for-windows/</a></p>
+<p>As mentioned earlier, the Ceph installer does not include Dokany, which has
+to be installed separately.</p>
+<p>A server reboot is required after uninstalling the driver, otherwise subsequent
+install attempts may fail.</p>
+<p>The following project allows building the MSI installer:
+<a class="reference external" href="https://github.com/cloudbase/ceph-windows-installer">https://github.com/cloudbase/ceph-windows-installer</a>. It can either use prebuilt
+Ceph and WNBD binaries or compile them from scratch.</p>
+</section>
+<section id="manual-installation">
+<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Link to this heading"></a></h2>
+<p>The following document describes the build process and manual installation:
+<a class="reference external" href="https://github.com/ceph/ceph/blob/master/README.windows.rst">https://github.com/ceph/ceph/blob/master/README.windows.rst</a></p>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Please check the <a class="reference external" href="../windows-basic-config">Windows configuration sample</a> to get started.</p>
+<p>You’ll also need a keyring file. The <a class="reference external" href="../../cephfs/mount-prerequisites">General CephFS Prerequisites</a> page provides a
+simple example, showing how a new CephX user can be created and how its secret
+key can be retrieved.</p>
+<p>For more details on CephX user management, see the <a class="reference external" href="../../cephfs/client-auth">Client Authentication</a>
+and <a class="reference internal" href="../rados/operations/user-management.html#user-management"><span class="std std-ref">User Management</span></a>.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="../../rbd/rbd-windows/">RBD Windows documentation</a></p></li>
+<li><p><a class="reference external" href="../../cephfs/ceph-dokan">CephFS Windows documentation</a></p></li>
+<li><p><a class="reference external" href="../windows-troubleshooting">Windows troubleshooting</a></p></li>
+</ul>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

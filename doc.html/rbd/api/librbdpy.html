@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librbd (Python) &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Ceph Object Gateway" href="../../radosgw/index.html" />
+    <link rel="prev" title="Ceph Block Device APIs" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rbd-operations.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rbd-integrations.html">Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Manpages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">APIs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">librbd (Python)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-creating-and-writing-to-an-image">Example: Creating and writing to an image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-rbd">API Reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Block Device APIs</a></li>
+      <li class="breadcrumb-item active">Librbd (Python)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rbd/api/librbdpy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="librbd-python">
+<span id="rbd-api-py"></span><h1>Librbd (Python)<a class="headerlink" href="#librbd-python" title="Link to this heading"></a></h1>
+<p>The <cite>rbd</cite> python module provides file-like access to RBD images.</p>
+<section id="example-creating-and-writing-to-an-image">
+<h2>Example: Creating and writing to an image<a class="headerlink" href="#example-creating-and-writing-to-an-image" title="Link to this heading"></a></h2>
+<p>To use <cite>rbd</cite>, you must first connect to RADOS and open an IO
+context:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cluster</span> <span class="o">=</span> <span class="n">rados</span><span class="o">.</span><span class="n">Rados</span><span class="p">(</span><span class="n">conffile</span><span class="o">=</span><span class="s1">&#39;my_ceph.conf&#39;</span><span class="p">)</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">ioctx</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">open_ioctx</span><span class="p">(</span><span class="s1">&#39;mypool&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you instantiate an :class:rbd.RBD object, which you use to create the
+image:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rbd_inst</span> <span class="o">=</span> <span class="n">rbd</span><span class="o">.</span><span class="n">RBD</span><span class="p">()</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># 4 GiB</span>
+<span class="n">rbd_inst</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ioctx</span><span class="p">,</span> <span class="s1">&#39;myimage&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To perform I/O on the image, you instantiate an :class:rbd.Image object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image</span> <span class="o">=</span> <span class="n">rbd</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">ioctx</span><span class="p">,</span> <span class="s1">&#39;myimage&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;foo&#39;</span> <span class="o">*</span> <span class="mi">200</span>
+<span class="n">image</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This writes ‘foo’ to the first 600 bytes of the image. Note that data
+cannot be :type:unicode - <cite>Librbd</cite> does not know how to deal with
+characters wider than a :c:type:char.</p>
+<p>In the end, you will want to close the image, the IO context and the connection to RADOS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">image</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">ioctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To be safe, each of these calls would need to be in a separate :finally
+block:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cluster</span> <span class="o">=</span> <span class="n">rados</span><span class="o">.</span><span class="n">Rados</span><span class="p">(</span><span class="n">conffile</span><span class="o">=</span><span class="s1">&#39;my_ceph_conf&#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="n">ioctx</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">open_ioctx</span><span class="p">(</span><span class="s1">&#39;my_pool&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rbd_inst</span> <span class="o">=</span> <span class="n">rbd</span><span class="o">.</span><span class="n">RBD</span><span class="p">()</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># 4 GiB</span>
+        <span class="n">rbd_inst</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ioctx</span><span class="p">,</span> <span class="s1">&#39;myimage&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">rbd</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">ioctx</span><span class="p">,</span> <span class="s1">&#39;myimage&#39;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;foo&#39;</span> <span class="o">*</span> <span class="mi">200</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">ioctx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This can be cumbersome, so the <code class="xref py py-class docutils literal notranslate"><span class="pre">Rados</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Ioctx</span></code>, and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Image</span></code> classes can be used as context managers that close/shutdown
+automatically (see <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0343/"><strong>PEP 343</strong></a>). Using them as context managers, the
+above example becomes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">rados</span><span class="o">.</span><span class="n">Rados</span><span class="p">(</span><span class="n">conffile</span><span class="o">=</span><span class="s1">&#39;my_ceph.conf&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cluster</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">cluster</span><span class="o">.</span><span class="n">open_ioctx</span><span class="p">(</span><span class="s1">&#39;mypool&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ioctx</span><span class="p">:</span>
+        <span class="n">rbd_inst</span> <span class="o">=</span> <span class="n">rbd</span><span class="o">.</span><span class="n">RBD</span><span class="p">()</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">1024</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># 4 GiB</span>
+        <span class="n">rbd_inst</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ioctx</span><span class="p">,</span> <span class="s1">&#39;myimage&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">rbd</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">ioctx</span><span class="p">,</span> <span class="s1">&#39;myimage&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">image</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;foo&#39;</span> <span class="o">*</span> <span class="mi">200</span>
+            <span class="n">image</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="module-rbd">
+<span id="api-reference"></span><h2>API Reference<a class="headerlink" href="#module-rbd" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Ceph Block Device APIs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../radosgw/index.html" class="btn btn-neutral float-right" title="Ceph Object Gateway" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

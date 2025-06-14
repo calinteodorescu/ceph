@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iSCSI Initiator for VMware ESX &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Monitoring Ceph iSCSI gateways" href="iscsi-monitoring.html" />
+    <link rel="prev" title="iSCSI Initiator for Microsoft Windows" href="iscsi-initiator-win.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-operations.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="rbd-integrations.html">Integrations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbd-ko.html">Kernel Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qemu-rbd.html">QEMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libvirt.html">libvirt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-nomad.html">Nomad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-openstack.html">OpenStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-cloudstack.html">CloudStack</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="iscsi-overview.html">LIO iSCSI Gateway</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="iscsi-requirements.html">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iscsi-targets.html">Configuring the iSCSI Target</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="iscsi-initiators.html">Configuring the iSCSI Initiators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iscsi-monitoring.html">Monitoring the iSCSI Gateways</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-windows.html">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html">Ceph NVMe-oF Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#high-availability-with-nvme-of-gateway-group">High Availability with NVMe-oF gateway group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#scaling-out-with-nvme-of-gateway">Scaling-out with NVMe-oF gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#nvme-of-gateway-discovery">NVMe-oF gateway Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="man/index.html">Manpages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="rbd-integrations.html">Ceph Block Device 3rd Party Integration</a></li>
+          <li class="breadcrumb-item"><a href="iscsi-overview.html">Ceph iSCSI Gateway</a></li>
+          <li class="breadcrumb-item"><a href="iscsi-initiators.html">Configuring the iSCSI Initiators</a></li>
+      <li class="breadcrumb-item active">iSCSI Initiator for VMware ESX</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rbd/iscsi-initiator-esx.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="iscsi-initiator-for-vmware-esx">
+<h1>iSCSI Initiator for VMware ESX<a class="headerlink" href="#iscsi-initiator-for-vmware-esx" title="Link to this heading"></a></h1>
+<p><strong>Prerequisite:</strong></p>
+<ul class="simple">
+<li><p>VMware ESX 6.5 or later using Virtual Machine compatibility 6.5 with VMFS 6.</p></li>
+</ul>
+<p><strong>iSCSI Discovery and Multipath Device Setup:</strong></p>
+<p>The following instructions will use the default vSphere web client and esxcli.</p>
+<ol class="arabic">
+<li><p>Enable Software iSCSI</p>
+<img alt="../_images/esx_web_client_storage_main.png" class="align-center" src="../_images/esx_web_client_storage_main.png" />
+<p>Click on “Storage” from “Navigator”, and select the “Adapters” tab.
+From there right click “Configure iSCSI”.</p>
+</li>
+<li><p>Set Initiator Name</p>
+<img alt="../_images/esx_config_iscsi_main.png" class="align-center" src="../_images/esx_config_iscsi_main.png" />
+<p>If the initiator name in the “Name &amp; alias” section is not the same name
+used when creating the client during gwcli setup or the initiator name used
+in the ansible client_connections client variable, then ssh to the ESX
+host and run the following esxcli commands to change the name.</p>
+<p>Get the adapter name for Software iSCSI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">esxcli</span> <span class="n">iscsi</span> <span class="n">adapter</span> <span class="nb">list</span>
+<span class="o">&gt;</span> <span class="n">Adapter</span>  <span class="n">Driver</span>     <span class="n">State</span>   <span class="n">UID</span>            <span class="n">Description</span>
+<span class="o">&gt;</span> <span class="o">-------</span>  <span class="o">---------</span>  <span class="o">------</span>  <span class="o">-------------</span>  <span class="o">----------------------</span>
+<span class="o">&gt;</span> <span class="n">vmhba64</span>  <span class="n">iscsi_vmk</span>  <span class="n">online</span>  <span class="n">iscsi</span><span class="o">.</span><span class="n">vmhba64</span>  <span class="n">iSCSI</span> <span class="n">Software</span> <span class="n">Adapter</span>
+</pre></div>
+</div>
+<p>In this example the software iSCSI adapter is vmhba64 and the initiator
+name is iqn.1994-05.com.redhat:rh7-client:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">esxcli</span> <span class="n">iscsi</span> <span class="n">adapter</span> <span class="nb">set</span> <span class="o">-</span><span class="n">A</span> <span class="n">vmhba64</span> <span class="o">-</span><span class="n">n</span> <span class="n">iqn</span><span class="mf">.1994</span><span class="o">-</span><span class="mf">05.</span><span class="n">com</span><span class="o">.</span><span class="n">redhat</span><span class="p">:</span><span class="n">rh7</span><span class="o">-</span><span class="n">client</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Setup CHAP</p>
+<img alt="../_images/esx_chap.png" class="align-center" src="../_images/esx_chap.png" />
+<p>Expand the CHAP authentication section, select “Do not use CHAP unless
+required by target” and enter the CHAP credentials used in the gwcli
+auth command or ansible client_connections credentials variable.</p>
+<p>The Mutual CHAP authentication section should have “Do not use CHAP”
+selected.</p>
+<p>Warning: There is a bug in the web client where the requested CHAP
+settings are not always used initially. On the iSCSI gateway kernel
+logs you will see the error:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">kernel</span><span class="p">:</span> <span class="n">CHAP</span> <span class="n">user</span> <span class="ow">or</span> <span class="n">password</span> <span class="ow">not</span> <span class="nb">set</span> <span class="k">for</span> <span class="n">Initiator</span> <span class="n">ACL</span>
+<span class="o">&gt;</span> <span class="n">kernel</span><span class="p">:</span> <span class="n">Security</span> <span class="n">negotiation</span> <span class="n">failed</span><span class="o">.</span>
+<span class="o">&gt;</span> <span class="n">kernel</span><span class="p">:</span> <span class="n">iSCSI</span> <span class="n">Login</span> <span class="n">negotiation</span> <span class="n">failed</span><span class="o">.</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>To workaround this set the CHAP settings with the esxcli command. Here
+authname is the username and secret is the password used in previous
+examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">esxcli</span> <span class="n">iscsi</span> <span class="n">adapter</span> <span class="n">auth</span> <span class="n">chap</span> <span class="nb">set</span> <span class="o">--</span><span class="n">direction</span><span class="o">=</span><span class="n">uni</span> <span class="o">--</span><span class="n">authname</span><span class="o">=</span><span class="n">myiscsiusername</span> <span class="o">--</span><span class="n">secret</span><span class="o">=</span><span class="n">myiscsipassword</span> <span class="o">--</span><span class="n">level</span><span class="o">=</span><span class="n">discouraged</span> <span class="o">-</span><span class="n">A</span> <span class="n">vmhba64</span>
+</pre></div>
+</div>
+</li>
+<li><p>Configure iSCSI Settings</p>
+<img alt="../_images/esx_iscsi_recov_timeout.png" class="align-center" src="../_images/esx_iscsi_recov_timeout.png" />
+<p>Expand Advanced settings and set the “RecoveryTimeout” to 25.</p>
+</li>
+<li><p>Set the discovery address</p>
+<img alt="../_images/esx_config_iscsi_main.png" class="align-center" src="../_images/esx_config_iscsi_main.png" />
+<p>In the Dynamic targets section, click “Add dynamic target” and under
+Addresses add one of the gateway IP addresses added during the iSCSI
+gateway setup stage in the gwcli section or an IP set in the ansible
+gateway_ip_list variable. Only one address needs to be added as the gateways
+have been setup so all the iSCSI portals are returned during discovery.</p>
+<p>Finally, click the “Save configuration” button. In the Devices tab, you
+should see the RBD image.</p>
+<p>The LUN should be automatically configured and using the ALUA SATP and
+MRU PSP. Other SATPs and PSPs must not be used. This can be verified with
+the esxcli command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">esxcli</span> <span class="n">storage</span> <span class="n">nmp</span> <span class="n">path</span> <span class="nb">list</span> <span class="o">-</span><span class="n">d</span> <span class="n">eui</span><span class="o">.</span><span class="n">your_devices_id</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iscsi-initiator-win.html" class="btn btn-neutral float-left" title="iSCSI Initiator for Microsoft Windows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iscsi-monitoring.html" class="btn btn-neutral float-right" title="Monitoring Ceph iSCSI gateways" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

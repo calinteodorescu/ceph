@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDS Config Reference &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ceph-mds -- ceph metadata server daemon" href="../man/8/ceph-mds.html" />
+    <link rel="prev" title="MDS Cache Configuration" href="cache-configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#administration">Administration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="createfs.html"> Create a CephFS file system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="administration.html"> Administrative commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multifs.html"> Creating Multiple File Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-remove-mds.html"> Provision/Add/Remove MDS(s)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#referring-to-mds-daemons">Referring to MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#managing-failover">Managing failover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-standby-replay">Configuring standby-replay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-mds-file-system-affinity">Configuring MDS file system affinity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-configuration.html"> MDS Cache Configuration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> MDS Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-mds.html"> Manual: ceph-mds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nfs.html"> Export over NFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-best-practices.html"> Application best practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs-volumes.html"> FS volume and subvolumes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quota.html"> CephFS Quotas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-messages.html"> Health messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html">Upgrading the MDS Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#upgrading-pre-firefly-file-systems-past-jewel">Upgrading pre-Firefly file systems past Jewel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-top.html"> CephFS Top Utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snap-schedule.html"> Scheduled Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html"> CephFS Snapshot Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="purge-queue.html"> Purge Queue</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">MDS Config Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/mds-config-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="mds-config-reference">
+<h1>MDS Config Reference<a class="headerlink" href="#mds-config-reference" title="Link to this heading"></a></h1>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_cache_mid">
+<span class="sig-name descname"><span class="pre">mds_cache_mid</span></span><a class="headerlink" href="#confval-mds_cache_mid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The insertion point for new items in the cache LRU (from the top).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.7</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_dir_max_commit_size">
+<span class="sig-name descname"><span class="pre">mds_dir_max_commit_size</span></span><a class="headerlink" href="#confval-mds_dir_max_commit_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum size of a directory update before Ceph breaks it into
+smaller transactions (MB).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_dir_max_entries">
+<span class="sig-name descname"><span class="pre">mds_dir_max_entries</span></span><a class="headerlink" href="#confval-mds_dir_max_entries" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of entries before any new entries are rejected with
+ENOSPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_decay_halflife">
+<span class="sig-name descname"><span class="pre">mds_decay_halflife</span></span><a class="headerlink" href="#confval-mds_decay_halflife" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>rate of decay for temperature counters on each directory for balancing</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_beacon_interval">
+<span class="sig-name descname"><span class="pre">mds_beacon_interval</span></span><a class="headerlink" href="#confval-mds_beacon_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>interval in seconds between MDS beacon messages sent to monitors</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_beacon_grace">
+<span class="sig-name descname"><span class="pre">mds_beacon_grace</span></span><a class="headerlink" href="#confval-mds_beacon_grace" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The interval without beacons before Ceph declares an MDS laggy (and
+possibly replace it).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">15.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_mds_blocklist_interval">
+<span class="sig-name descname"><span class="pre">mon_mds_blocklist_interval</span></span><a class="headerlink" href="#confval-mon_mds_blocklist_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The blocklist duration for failed MDSs in the OSD map. Note, this
+controls how long failed MDS daemons will stay in the OSDMap
+blocklist. It has no effect on how long something is blocklisted when
+the administrator blocklists it manually. For example, <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span>
+<span class="pre">blocklist</span> <span class="pre">add</span></code> will still use the default blocklist time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">day</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1_hr</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_reconnect_timeout">
+<span class="sig-name descname"><span class="pre">mds_reconnect_timeout</span></span><a class="headerlink" href="#confval-mds_reconnect_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>timeout in seconds to wait for clients to reconnect during MDS
+reconnect recovery state</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">45.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_tick_interval">
+<span class="sig-name descname"><span class="pre">mds_tick_interval</span></span><a class="headerlink" href="#confval-mds_tick_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How frequently the MDS performs internal periodic tasks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_dirstat_min_interval">
+<span class="sig-name descname"><span class="pre">mds_dirstat_min_interval</span></span><a class="headerlink" href="#confval-mds_dirstat_min_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum interval (in seconds) to try to avoid propagating
+recursive stats up the tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_scatter_nudge_interval">
+<span class="sig-name descname"><span class="pre">mds_scatter_nudge_interval</span></span><a class="headerlink" href="#confval-mds_scatter_nudge_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How quickly dirstat changes propagate up.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_client_prealloc_inos">
+<span class="sig-name descname"><span class="pre">mds_client_prealloc_inos</span></span><a class="headerlink" href="#confval-mds_client_prealloc_inos" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of inode numbers to preallocate per client session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_early_reply">
+<span class="sig-name descname"><span class="pre">mds_early_reply</span></span><a class="headerlink" href="#confval-mds_early_reply" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines whether the MDS should allow clients to see request results
+before they commit to the journal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_default_dir_hash">
+<span class="sig-name descname"><span class="pre">mds_default_dir_hash</span></span><a class="headerlink" href="#confval-mds_default_dir_hash" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The function to use for hashing files across directory fragments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_log_skip_corrupt_events">
+<span class="sig-name descname"><span class="pre">mds_log_skip_corrupt_events</span></span><a class="headerlink" href="#confval-mds_log_skip_corrupt_events" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines whether the MDS should try to skip corrupt journal events
+during journal replay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_sample_interval">
+<span class="sig-name descname"><span class="pre">mds_bal_sample_interval</span></span><a class="headerlink" href="#confval-mds_bal_sample_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Determines how frequently to sample directory temperature (for
+fragmentation decisions).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_replicate_threshold">
+<span class="sig-name descname"><span class="pre">mds_bal_replicate_threshold</span></span><a class="headerlink" href="#confval-mds_bal_replicate_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum temperature before Ceph attempts to replicate metadata to
+other nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">8000.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_unreplicate_threshold">
+<span class="sig-name descname"><span class="pre">mds_bal_unreplicate_threshold</span></span><a class="headerlink" href="#confval-mds_bal_unreplicate_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum temperature before Ceph stops replicating metadata to
+other nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_split_size">
+<span class="sig-name descname"><span class="pre">mds_bal_split_size</span></span><a class="headerlink" href="#confval-mds_bal_split_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum directory size before the MDS will split a directory
+fragment into smaller bits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_split_rd">
+<span class="sig-name descname"><span class="pre">mds_bal_split_rd</span></span><a class="headerlink" href="#confval-mds_bal_split_rd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum directory read temperature before Ceph splits a directory
+fragment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">25000.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_split_wr">
+<span class="sig-name descname"><span class="pre">mds_bal_split_wr</span></span><a class="headerlink" href="#confval-mds_bal_split_wr" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum directory write temperature before Ceph splits a directory
+fragment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10000.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_split_bits">
+<span class="sig-name descname"><span class="pre">mds_bal_split_bits</span></span><a class="headerlink" href="#confval-mds_bal_split_bits" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of bits by which to split a directory fragment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">24]</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_merge_size">
+<span class="sig-name descname"><span class="pre">mds_bal_merge_size</span></span><a class="headerlink" href="#confval-mds_bal_merge_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum directory size before Ceph tries to merge adjacent
+directory fragments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_interval">
+<span class="sig-name descname"><span class="pre">mds_bal_interval</span></span><a class="headerlink" href="#confval-mds_bal_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The frequency (in seconds) of workload exchanges between MDSs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_fragment_interval">
+<span class="sig-name descname"><span class="pre">mds_bal_fragment_interval</span></span><a class="headerlink" href="#confval-mds_bal_fragment_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The delay (in seconds) between a fragment being eligible for split or
+merge and executing the fragmentation change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_fragment_fast_factor">
+<span class="sig-name descname"><span class="pre">mds_bal_fragment_fast_factor</span></span><a class="headerlink" href="#confval-mds_bal_fragment_fast_factor" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The ratio by which frags may exceed the split size before a split is
+executed immediately (skipping the fragment interval)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_fragment_size_max">
+<span class="sig-name descname"><span class="pre">mds_bal_fragment_size_max</span></span><a class="headerlink" href="#confval-mds_bal_fragment_size_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum size of a fragment before any new entries are rejected
+with ENOSPC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_idle_threshold">
+<span class="sig-name descname"><span class="pre">mds_bal_idle_threshold</span></span><a class="headerlink" href="#confval-mds_bal_idle_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum temperature before Ceph migrates a subtree back to its
+parent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_max">
+<span class="sig-name descname"><span class="pre">mds_bal_max</span></span><a class="headerlink" href="#confval-mds_bal_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of iterations to run balancer before Ceph stops. (used for
+testing purposes only)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_max_until">
+<span class="sig-name descname"><span class="pre">mds_bal_max_until</span></span><a class="headerlink" href="#confval-mds_bal_max_until" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of seconds to run balancer before Ceph stops. (used for
+testing purposes only)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_mode">
+<span class="sig-name descname"><span class="pre">mds_bal_mode</span></span><a class="headerlink" href="#confval-mds_bal_mode" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The method for calculating MDS load.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> = Hybrid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> = Request rate and latency.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">2</span></code> = CPU load.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_min_rebalance">
+<span class="sig-name descname"><span class="pre">mds_bal_min_rebalance</span></span><a class="headerlink" href="#confval-mds_bal_min_rebalance" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum subtree temperature before Ceph migrates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_overload_epochs">
+<span class="sig-name descname"><span class="pre">mds_bal_overload_epochs</span></span><a class="headerlink" href="#confval-mds_bal_overload_epochs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of epochs the overload lasts before Ceph migrates, setting
+it to a higher value can avoid frequent migrations caused by load
+fluctuations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_min_start">
+<span class="sig-name descname"><span class="pre">mds_bal_min_start</span></span><a class="headerlink" href="#confval-mds_bal_min_start" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum subtree temperature before Ceph searches a subtree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.2</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_need_min">
+<span class="sig-name descname"><span class="pre">mds_bal_need_min</span></span><a class="headerlink" href="#confval-mds_bal_need_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum fraction of target subtree size to accept.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.8</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_need_max">
+<span class="sig-name descname"><span class="pre">mds_bal_need_max</span></span><a class="headerlink" href="#confval-mds_bal_need_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum fraction of target subtree size to accept.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.2</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_midchunk">
+<span class="sig-name descname"><span class="pre">mds_bal_midchunk</span></span><a class="headerlink" href="#confval-mds_bal_midchunk" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will migrate any subtree that is larger than this fraction of the
+target subtree size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.3</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_bal_minchunk">
+<span class="sig-name descname"><span class="pre">mds_bal_minchunk</span></span><a class="headerlink" href="#confval-mds_bal_minchunk" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will ignore any subtree that is smaller than this fraction of the
+target subtree size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.001</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_replay_interval">
+<span class="sig-name descname"><span class="pre">mds_replay_interval</span></span><a class="headerlink" href="#confval-mds_replay_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The journal poll interval when in standby-replay mode. (“hot standby”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_shutdown_check">
+<span class="sig-name descname"><span class="pre">mds_shutdown_check</span></span><a class="headerlink" href="#confval-mds_shutdown_check" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The interval for polling the cache during MDS shutdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_thrash_exports">
+<span class="sig-name descname"><span class="pre">mds_thrash_exports</span></span><a class="headerlink" href="#confval-mds_thrash_exports" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will randomly export subtrees between nodes (testing only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_thrash_fragments">
+<span class="sig-name descname"><span class="pre">mds_thrash_fragments</span></span><a class="headerlink" href="#confval-mds_thrash_fragments" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will randomly fragment or merge directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_dump_cache_on_map">
+<span class="sig-name descname"><span class="pre">mds_dump_cache_on_map</span></span><a class="headerlink" href="#confval-mds_dump_cache_on_map" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will dump the MDS cache contents to a file on each MDSMap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_dump_cache_after_rejoin">
+<span class="sig-name descname"><span class="pre">mds_dump_cache_after_rejoin</span></span><a class="headerlink" href="#confval-mds_dump_cache_after_rejoin" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will dump MDS cache contents to a file after rejoining the cache
+(during recovery).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_verify_scatter">
+<span class="sig-name descname"><span class="pre">mds_verify_scatter</span></span><a class="headerlink" href="#confval-mds_verify_scatter" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will assert that various scatter/gather invariants are <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_debug_scatterstat">
+<span class="sig-name descname"><span class="pre">mds_debug_scatterstat</span></span><a class="headerlink" href="#confval-mds_debug_scatterstat" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will assert that various recursive stat invariants are <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(for developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_debug_frag">
+<span class="sig-name descname"><span class="pre">mds_debug_frag</span></span><a class="headerlink" href="#confval-mds_debug_frag" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will verify directory fragmentation invariants when convenient
+(developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_debug_auth_pins">
+<span class="sig-name descname"><span class="pre">mds_debug_auth_pins</span></span><a class="headerlink" href="#confval-mds_debug_auth_pins" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The debug auth pin invariants (for developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_debug_subtrees">
+<span class="sig-name descname"><span class="pre">mds_debug_subtrees</span></span><a class="headerlink" href="#confval-mds_debug_subtrees" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The debug subtree invariants (for developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_kill_mdstable_at">
+<span class="sig-name descname"><span class="pre">mds_kill_mdstable_at</span></span><a class="headerlink" href="#confval-mds_kill_mdstable_at" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will inject MDS failure in MDSTable code (for developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_kill_export_at">
+<span class="sig-name descname"><span class="pre">mds_kill_export_at</span></span><a class="headerlink" href="#confval-mds_kill_export_at" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will inject MDS failure in the subtree export code (for
+developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_kill_import_at">
+<span class="sig-name descname"><span class="pre">mds_kill_import_at</span></span><a class="headerlink" href="#confval-mds_kill_import_at" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will inject MDS failure in the subtree import code (for
+developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_kill_link_at">
+<span class="sig-name descname"><span class="pre">mds_kill_link_at</span></span><a class="headerlink" href="#confval-mds_kill_link_at" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will inject MDS failure in hard link code (for developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_kill_rename_at">
+<span class="sig-name descname"><span class="pre">mds_kill_rename_at</span></span><a class="headerlink" href="#confval-mds_kill_rename_at" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will inject MDS failure in the rename code (for developers only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_inject_skip_replaying_inotable">
+<span class="sig-name descname"><span class="pre">mds_inject_skip_replaying_inotable</span></span><a class="headerlink" href="#confval-mds_inject_skip_replaying_inotable" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>MDS will skip replaying the inotable when replaying the journal logs.
+(for testing only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_kill_after_journal_logs_flushed">
+<span class="sig-name descname"><span class="pre">mds_kill_after_journal_logs_flushed</span></span><a class="headerlink" href="#confval-mds_kill_after_journal_logs_flushed" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The primary MDS will crash just after the mknod/openc journal logs are
+flushed to the pool. (for testing only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_wipe_sessions">
+<span class="sig-name descname"><span class="pre">mds_wipe_sessions</span></span><a class="headerlink" href="#confval-mds_wipe_sessions" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will delete all client sessions on startup (for testing only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_wipe_ino_prealloc">
+<span class="sig-name descname"><span class="pre">mds_wipe_ino_prealloc</span></span><a class="headerlink" href="#confval-mds_wipe_ino_prealloc" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will delete ino preallocation metadata on startup (for testing
+only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_skip_ino">
+<span class="sig-name descname"><span class="pre">mds_skip_ino</span></span><a class="headerlink" href="#confval-mds_skip_ino" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of inode numbers to skip on startup (for testing only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_min_caps_per_client">
+<span class="sig-name descname"><span class="pre">mds_min_caps_per_client</span></span><a class="headerlink" href="#confval-mds_min_caps_per_client" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>minimum number of capabilities a client may hold</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_symlink_recovery">
+<span class="sig-name descname"><span class="pre">mds_symlink_recovery</span></span><a class="headerlink" href="#confval-mds_symlink_recovery" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Stores symlink target on the first data object of symlink file. Allows
+recover of symlink using recovery tools.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_extraordinary_events_dump_interval">
+<span class="sig-name descname"><span class="pre">mds_extraordinary_events_dump_interval</span></span><a class="headerlink" href="#confval-mds_extraordinary_events_dump_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Interval in seconds for dumping the recent in-memory logs when there
+is an extra-ordinary event. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code> (disabled). The log
+level should be <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">10</span></code> and the gather level should be <code class="docutils literal notranslate"><span class="pre">&gt;=10</span></code> in
+debug_mds for enabling this option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">60]</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cache-configuration.html" class="btn btn-neutral float-left" title="MDS Cache Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../man/8/ceph-mds.html" class="btn btn-neutral float-right" title="ceph-mds -- ceph metadata server daemon" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

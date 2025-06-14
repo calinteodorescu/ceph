@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Container Service &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Monitoring Services" href="monitoring.html" />
+    <link rel="prev" title="iSCSI Service" href="iscsi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Cephadm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../compatibility.html">Compatibility and Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html">Using cephadm to Deploy a New Ceph Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adoption.html">Converting an existing cluster to cephadm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-management.html">Host Management</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Service Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mon.html">MON Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgr.html">MGR Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd.html">OSD Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rgw.html">RGW Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds.html">MDS Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nfs.html">NFS Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iscsi.html">iSCSI Service</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Custom Container Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snmp-gateway.html">SNMP Gateway Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tracing.html">Tracing Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smb.html">SMB Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgmt-gateway.html">Management Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oauth2-proxy.html">OAuth2 Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-status">Service Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#daemon-status">Daemon Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-specification">Service Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#daemon-placement">Daemon Placement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#extra-container-arguments">Extra Container Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#extra-entrypoint-arguments">Extra Entrypoint Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#custom-config-files">Custom Config Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#removing-a-service">Removing a Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#disabling-automatic-deployment-of-daemons">Disabling automatic deployment of daemons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../certmgr.html">Certificate Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../upgrade.html">Upgrading Ceph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations.html">Cephadm operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-setup.html">Client Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/cephadm/index.html">Cephadm Feature Planning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Cephadm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Service Management</a></li>
+      <li class="breadcrumb-item active">Custom Container Service</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/cephadm/services/custom-container.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="custom-container-service">
+<h1>Custom Container Service<a class="headerlink" href="#custom-container-service" title="Link to this heading"></a></h1>
+<p>The orchestrator enables custom containers to be deployed using a YAML file.
+A corresponding <a class="reference internal" href="index.html#orchestrator-cli-service-spec"><span class="std std-ref">Service Specification</span></a> must look like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker.io/library/foo:latest</span>
+<span class="w">  </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/foo</span>
+<span class="w">  </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">  </span><span class="nt">gid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">  </span><span class="nt">args</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;--net=host&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;--cpus=2&quot;</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8443</span>
+<span class="w">  </span><span class="nt">envs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SECRET=mypassword</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PORT=8080</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PUID=1000</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PGID=1000</span>
+<span class="w">  </span><span class="nt">volume_mounts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CONFIG_DIR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/foo</span>
+<span class="w">  </span><span class="nt">bind_mounts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;type=bind&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;source=lib/modules&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;destination=/lib/modules&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;ro=true&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">dirs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONFIG_DIR</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CONFIG_DIR/foo.conf</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refresh=true</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">username=xyz</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;port:</span><span class="nv"> </span><span class="s">1234&quot;</span>
+</pre></div>
+</div>
+<p>where the properties of a service specification are:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">service_id</span></code></dt><dd><p>A unique name of the service.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">image</span></code></dt><dd><p>The name of the Docker image.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">uid</span></code></dt><dd><p>The UID to use when creating directories and files in the host system.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">gid</span></code></dt><dd><p>The GID to use when creating directories and files in the host system.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">entrypoint</span></code></dt><dd><p>Overwrite the default ENTRYPOINT of the image.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">args</span></code></dt><dd><p>A list of additional Podman/Docker command line arguments.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ports</span></code></dt><dd><p>A list of TCP ports to open in the host firewall.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">envs</span></code></dt><dd><p>A list of environment variables.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">bind_mounts</span></code></dt><dd><p>When you use a bind mount, a file or directory on the host machine
+is mounted into the container. Relative <cite>source=…</cite> paths will be
+located below <cite>/var/lib/ceph/&lt;cluster-fsid&gt;/&lt;daemon-name&gt;</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">volume_mounts</span></code></dt><dd><p>When you use a volume mount, a new directory is created within
+Docker’s storage directory on the host machine, and Docker manages
+that directory’s contents. Relative source paths will be located below
+<cite>/var/lib/ceph/&lt;cluster-fsid&gt;/&lt;daemon-name&gt;</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">dirs</span></code></dt><dd><p>A list of directories that are created below
+<cite>/var/lib/ceph/&lt;cluster-fsid&gt;/&lt;daemon-name&gt;</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">files</span></code></dt><dd><p>A dictionary, where the key is the relative path of the file and the
+value the file content. The content must be double quoted when using
+a string. Use ‘\n’ for line breaks in that case. Otherwise define
+multi-line content as list of strings. The given files will be created
+below the directory <cite>/var/lib/ceph/&lt;cluster-fsid&gt;/&lt;daemon-name&gt;</cite>.
+The absolute path of the directory where the file will be created must
+exist. Use the <cite>dirs</cite> property to create them if necessary.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">init_containers</span></code></dt><dd><p>A list of “init container” definitions. An init container exists to
+run prepratory steps before the primary container starts. Init containers
+are optional. One or more container can be defined.
+Each definition can contain the following fields:</p>
+<ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">image</span></code></dt><dd><p>The name of the container image. If left unspecified, the init
+container will inherit the image value from the top level spec.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">entrypoint</span></code></dt><dd><p>Customize the default entrypoint of the image.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">entrypoint_args</span></code></dt><dd><p>Arguments that will be passed to the entrypoint. Behaves the same
+as the generic <code class="docutils literal notranslate"><span class="pre">extra_entrypoint_args</span></code> field.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">volume_mounts</span></code></dt><dd><p>Same as the Custom Container spec’s <code class="docutils literal notranslate"><span class="pre">volume_mounts</span></code> - selects what
+volumes will be mounted into the init container. If left unspecified,
+the init container will inherit the primary container’s value(s).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">envs</span></code></dt><dd><p>A list of environment variables.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">privileged</span></code></dt><dd><p>A boolean indicate if the container should run with privileges or not. If
+left unspecified, the init container will inherit the primary container’s
+value.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Example with init containers:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">container</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/example/foosystem:latest</span>
+<span class="w">  </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/foo</span>
+<span class="w">  </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">  </span><span class="nt">gid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8889</span>
+<span class="w">  </span><span class="nt">dirs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONFIG_DIR</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DATA_DIR</span>
+<span class="w">  </span><span class="nt">volume_mounts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CONFIG_DIR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/foo</span>
+<span class="w">    </span><span class="nt">DATA_DIR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/lib/foo</span>
+<span class="w">  </span><span class="nt">files</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">CONFIG_DIR/foo.conf</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_path=/var/lib/foo/db</span>
+<span class="w">  </span><span class="nt">init_containers</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/example/curly:howard</span>
+<span class="w">      </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bash</span>
+<span class="w">      </span><span class="nt">entrypoint_args</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">argument</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;-c&quot;</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">argument</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;[</span><span class="nv"> </span><span class="s">-f</span><span class="nv"> </span><span class="s">/var/lib/foo/db</span><span class="nv"> </span><span class="s">]</span><span class="nv"> </span><span class="s">||</span><span class="nv"> </span><span class="s">curl</span><span class="nv"> </span><span class="s">-o</span><span class="nv"> </span><span class="s">/var/lib/foo/sample.dat</span><span class="nv"> </span><span class="s">https://foo.example.com/samples/1.dat&quot;</span>
+<span class="w">      </span><span class="nt">volume_mounts</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">DATA_DIR</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/lib/foo</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/bin/foo-initialize-db</span>
+<span class="w">      </span><span class="nt">entrypoint_args</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;--option=threads=8&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/local/bin/import-sample-datasets.sh</span>
+<span class="w">      </span><span class="nt">entrypoint_args</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;/var/lib/foo/sample.dat&quot;</span>
+<span class="w">      </span><span class="nt">envs</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FOO_SOURCE_MISSING=ignore</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FOO_CLEANUP=yes</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Init containers are currently implemented as a step that runs
+before the service is started and is subject to start-up timeouts.
+The total run time of all init containers can not exceed 200 seconds
+or the service will fail to start.</p>
+</div>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iscsi.html" class="btn btn-neutral float-left" title="iSCSI Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="monitoring.html" class="btn btn-neutral float-right" title="Monitoring Services" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RGW Support for Multifactor Authentication &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sync Modules" href="sync-modules.html" />
+    <link rel="prev" title="RGW Dynamic Bucket Index Resharding" href="dynamicresharding.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Multi-factor Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multisite">Multisite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admin-commands">Admin commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-new-mfa-totp-token">Create a new MFA TOTP token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-mfa-totp-tokens">List MFA TOTP tokens</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-mfa-totp-token">Show MFA TOTP token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-mfa-totp-token">Delete MFA TOTP token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-mfa-totp-token">Check MFA TOTP token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#re-sync-mfa-totp-token">Re-sync MFA TOTP token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">RGW Support for Multifactor Authentication</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/mfa.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="rgw-support-for-multifactor-authentication">
+<span id="rgw-mfa"></span><h1>RGW Support for Multifactor Authentication<a class="headerlink" href="#rgw-support-for-multifactor-authentication" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Mimic.</span></p>
+</div>
+<p>The S3 multifactor authentication (MFA) feature allows
+users to require the use of one-time password when removing
+objects on certain buckets. The buckets need to be configured
+with versioning and MFA enabled which can be done through
+the S3 api.</p>
+<p>Time-based one time password tokens can be assigned to a user
+through radosgw-admin. Each token has a secret seed, and a serial
+id that is assigned to it. Tokens are added to the user, can
+be listed, removed, and can also be re-synchronized.</p>
+<section id="multisite">
+<h2>Multisite<a class="headerlink" href="#multisite" title="Link to this heading"></a></h2>
+<p>While the MFA IDs are set on the user’s metadata, the
+actual MFA one time password configuration resides in the local zone’s
+osds. Therefore, in a multi-site environment it is advisable to use
+different tokens for different zones.</p>
+</section>
+<section id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading"></a></h2>
+<p>-<code class="docutils literal notranslate"><span class="pre">TOTP</span></code>: Time-based One Time Password</p>
+<p>-<code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">serial</span></code>: a string that represents the ID of a TOTP token</p>
+<p>-<code class="docutils literal notranslate"><span class="pre">token</span> <span class="pre">seed</span></code>: the secret seed that is used to calculate the TOTP</p>
+<p>-<code class="docutils literal notranslate"><span class="pre">totp</span> <span class="pre">seconds</span></code>: the time resolution that is being used for TOTP generation</p>
+<p>-<code class="docutils literal notranslate"><span class="pre">totp</span> <span class="pre">window</span></code>: the number of TOTP tokens that are checked before and after the current token when validating token</p>
+<p>-<code class="docutils literal notranslate"><span class="pre">totp</span> <span class="pre">pin</span></code>: the valid value of a TOTP token at a certain time</p>
+</section>
+<section id="admin-commands">
+<h2>Admin commands<a class="headerlink" href="#admin-commands" title="Link to this heading"></a></h2>
+<section id="create-a-new-mfa-totp-token">
+<h3>Create a new MFA TOTP token<a class="headerlink" href="#create-a-new-mfa-totp-token" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin mfa create --uid=&lt;user-id&gt; \</span>
+                           <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">serial</span><span class="o">=&lt;</span><span class="n">serial</span><span class="o">&gt;</span> \
+                           <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">seed</span><span class="o">=&lt;</span><span class="n">seed</span><span class="o">&gt;</span> \
+                           <span class="p">[</span> <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">seed</span><span class="o">-</span><span class="nb">type</span><span class="o">=&lt;</span><span class="nb">hex</span><span class="o">|</span><span class="n">base32</span><span class="o">&gt;</span> <span class="p">]</span> \
+                           <span class="p">[</span> <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">seconds</span><span class="o">=&lt;</span><span class="n">num</span><span class="o">-</span><span class="n">seconds</span><span class="o">&gt;</span> <span class="p">]</span> \
+                           <span class="p">[</span> <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">window</span><span class="o">=&lt;</span><span class="n">twindow</span><span class="o">&gt;</span> <span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="list-mfa-totp-tokens">
+<h3>List MFA TOTP tokens<a class="headerlink" href="#list-mfa-totp-tokens" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin mfa list --uid=&lt;user-id&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="show-mfa-totp-token">
+<h3>Show MFA TOTP token<a class="headerlink" href="#show-mfa-totp-token" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin mfa get --uid=&lt;user-id&gt; --totp-serial=&lt;serial&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="delete-mfa-totp-token">
+<h3>Delete MFA TOTP token<a class="headerlink" href="#delete-mfa-totp-token" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin mfa remove --uid=&lt;user-id&gt; --totp-serial=&lt;serial&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="check-mfa-totp-token">
+<h3>Check MFA TOTP token<a class="headerlink" href="#check-mfa-totp-token" title="Link to this heading"></a></h3>
+<p>Test a TOTP token pin, needed for validating that TOTP functions correctly.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin mfa check --uid=&lt;user-id&gt; --totp-serial=&lt;serial&gt; \</span>
+                          <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">pin</span><span class="o">=&lt;</span><span class="n">pin</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="re-sync-mfa-totp-token">
+<h3>Re-sync MFA TOTP token<a class="headerlink" href="#re-sync-mfa-totp-token" title="Link to this heading"></a></h3>
+<p>In order to re-sync the TOTP token (in case of time skew). This requires
+feeding two consecutive pins: the previous pin, and the current pin.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin mfa resync --uid=&lt;user-id&gt; --totp-serial=&lt;serial&gt; \</span>
+                           <span class="o">--</span><span class="n">totp</span><span class="o">-</span><span class="n">pin</span><span class="o">=&lt;</span><span class="n">prev</span><span class="o">-</span><span class="n">pin</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">totp</span><span class="o">=</span><span class="n">pin</span><span class="o">=&lt;</span><span class="n">current</span><span class="o">-</span><span class="n">pin</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dynamicresharding.html" class="btn btn-neutral float-left" title="RGW Dynamic Bucket Index Resharding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sync-modules.html" class="btn btn-neutral float-right" title="Sync Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

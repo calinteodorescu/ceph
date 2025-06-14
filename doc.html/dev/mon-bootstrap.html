@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor bootstrap &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Monitor Elections" href="mon-elections.html" />
+    <link rel="prev" title="Messenger notes" href="messenger.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Monitor bootstrap</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logical-id">Logical id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#secret-keys">Secret keys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cluster-fsid">Cluster fsid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitor-address">Monitor address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#peers">Peers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cluster-creation">Cluster creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cluster-expansion">Cluster expansion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">Monitor bootstrap</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/mon-bootstrap.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="monitor-bootstrap">
+<h1>Monitor bootstrap<a class="headerlink" href="#monitor-bootstrap" title="Link to this heading"></a></h1>
+<p>Terminology:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cluster</span></code>: a set of monitors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quorum</span></code>: an active set of monitors consisting of a majority of the cluster</p></li>
+</ul>
+<p>In order to initialize a new monitor, it must always be fed:</p>
+<ol class="arabic simple">
+<li><p>a logical name</p></li>
+<li><p>secret keys</p></li>
+<li><p>a cluster fsid (uuid)</p></li>
+</ol>
+<p>In addition, a monitor needs to know two things:</p>
+<ol class="arabic simple">
+<li><p>what address to bind to</p></li>
+<li><p>who its peers are (if any)</p></li>
+</ol>
+<p>There are a range of ways to do both.</p>
+<section id="logical-id">
+<h2>Logical id<a class="headerlink" href="#logical-id" title="Link to this heading"></a></h2>
+<p>The logical id should be unique across the cluster.  It will be
+appended to <code class="docutils literal notranslate"><span class="pre">mon.</span></code> to logically describe the monitor in the Ceph
+cluster.  For example, if the logical id is <code class="docutils literal notranslate"><span class="pre">foo</span></code>, the monitor’s
+name will be <code class="docutils literal notranslate"><span class="pre">mon.foo</span></code>.</p>
+<p>For most users, there is no more than one monitor per host, which
+makes the short hostname logical choice.</p>
+</section>
+<section id="secret-keys">
+<h2>Secret keys<a class="headerlink" href="#secret-keys" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">mon.</span></code> secret key is stored a <code class="docutils literal notranslate"><span class="pre">keyring</span></code> file in the <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">data</span></code> directory.  It can be generated
+with a command like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">authtool</span> <span class="o">--</span><span class="n">create</span><span class="o">-</span><span class="n">keyring</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keyring</span> <span class="o">--</span><span class="n">gen</span><span class="o">-</span><span class="n">key</span> <span class="o">-</span><span class="n">n</span> <span class="n">mon</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>When creating a new monitor cluster, the keyring should also contain a <code class="docutils literal notranslate"><span class="pre">client.admin</span></code> key that can be used
+to administer the system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">authtool</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">keyring</span> <span class="o">--</span><span class="n">gen</span><span class="o">-</span><span class="n">key</span> <span class="o">-</span><span class="n">n</span> <span class="n">client</span><span class="o">.</span><span class="n">admin</span> <span class="o">--</span><span class="n">cap</span> <span class="n">mon</span> <span class="s1">&#39;allow *&#39;</span> <span class="o">--</span><span class="n">cap</span> <span class="n">osd</span> <span class="s1">&#39;allow *&#39;</span> <span class="o">--</span><span class="n">cap</span> <span class="n">mds</span> <span class="s1">&#39;allow&#39;</span>
+</pre></div>
+</div>
+<p>The resulting keyring is fed to <code class="docutils literal notranslate"><span class="pre">ceph-mon</span> <span class="pre">--mkfs</span></code> with the <code class="docutils literal notranslate"><span class="pre">--keyring</span> <span class="pre">&lt;keyring&gt;</span></code> command-line argument.</p>
+</section>
+<section id="cluster-fsid">
+<h2>Cluster fsid<a class="headerlink" href="#cluster-fsid" title="Link to this heading"></a></h2>
+<p>The cluster fsid is a normal uuid, like that generated by the <code class="docutils literal notranslate"><span class="pre">uuidgen</span></code> command.  It
+can be provided to the monitor in two ways:</p>
+<ol class="arabic simple">
+<li><p>via the <code class="docutils literal notranslate"><span class="pre">--fsid</span> <span class="pre">&lt;uuid&gt;</span></code> command-line argument (or config file option)</p></li>
+<li><p>via a monmap provided to the new monitor via the <code class="docutils literal notranslate"><span class="pre">--monmap</span> <span class="pre">&lt;path&gt;</span></code> command-line argument.</p></li>
+</ol>
+</section>
+<section id="monitor-address">
+<h2>Monitor address<a class="headerlink" href="#monitor-address" title="Link to this heading"></a></h2>
+<p>The monitor address can be provided in several ways.</p>
+<ol class="arabic simple">
+<li><p>via the <code class="docutils literal notranslate"><span class="pre">--public-addr</span> <span class="pre">&lt;ip[:port]&gt;</span></code> command-line option (or config file option)</p></li>
+<li><p>via the <code class="docutils literal notranslate"><span class="pre">--public-network</span> <span class="pre">&lt;cidr&gt;</span></code> command-line option (or config file option)</p></li>
+<li><p>via the monmap provided via <code class="docutils literal notranslate"><span class="pre">--monmap</span> <span class="pre">&lt;path&gt;</span></code>, if it includes a monitor with our name</p></li>
+<li><p>via the bootstrap monmap (provided via <code class="docutils literal notranslate"><span class="pre">--inject-monmap</span> <span class="pre">&lt;path&gt;</span></code> or generated from <code class="docutils literal notranslate"><span class="pre">--mon-host</span> <span class="pre">&lt;list&gt;</span></code>) if it includes a monitor with no name (<code class="docutils literal notranslate"><span class="pre">noname-&lt;something&gt;</span></code>) and an address configured on the local host.</p></li>
+</ol>
+</section>
+<section id="peers">
+<h2>Peers<a class="headerlink" href="#peers" title="Link to this heading"></a></h2>
+<p>The monitor peers are provided in several ways:</p>
+<ol class="arabic simple">
+<li><p>via the initial monmap, provided via <code class="docutils literal notranslate"><span class="pre">--monmap</span> <span class="pre">&lt;filename&gt;</span></code></p></li>
+<li><p>via the bootstrap monmap generated from <code class="docutils literal notranslate"><span class="pre">--mon-host</span> <span class="pre">&lt;list&gt;</span></code></p></li>
+<li><p>via the bootstrap monmap generated from <code class="docutils literal notranslate"><span class="pre">[mon.*]</span></code> sections with the deprecated <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">addr</span></code> options in the config file (note that this method is <em>not</em> recommended and does not support binding to both v1 and v2 protocol addresses)</p></li>
+<li><p>dynamically via the admin socket</p></li>
+</ol>
+<p>However, these methods are not completely interchangeable because of
+the complexity of creating a new monitor cluster without danger of
+races.</p>
+</section>
+<section id="cluster-creation">
+<h2>Cluster creation<a class="headerlink" href="#cluster-creation" title="Link to this heading"></a></h2>
+<p>There are three basic approaches to creating a cluster:</p>
+<ol class="arabic simple">
+<li><p>Create a new cluster by specifying the monitor names and addresses ahead of time.</p></li>
+<li><p>Create a new cluster by specifying the monitor names ahead of time, and dynamically setting the addresses as <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> daemons configure themselves.</p></li>
+<li><p>Create a new cluster by specifying the monitor addresses ahead of time.</p></li>
+</ol>
+<section id="names-and-addresses">
+<h3>Names and addresses<a class="headerlink" href="#names-and-addresses" title="Link to this heading"></a></h3>
+<p>Generate a monmap using <code class="docutils literal notranslate"><span class="pre">monmaptool</span></code> with the names and addresses of the initial
+monitors.  The generated monmap will also include a cluster fsid.  Feed that monmap
+to each monitor daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span> <span class="o">--</span><span class="n">mkfs</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">monmap</span> <span class="o">&lt;</span><span class="n">initial_monmap</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">&lt;</span><span class="n">initial_keyring</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>When the daemons start, they will know exactly who they and their peers are.</p>
+</section>
+<section id="addresses-only">
+<h3>Addresses only<a class="headerlink" href="#addresses-only" title="Link to this heading"></a></h3>
+<p>The initial monitor addresses can be specified with the <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">host</span></code> configuration value,
+either via a config file or the command-line argument.  This method has the advantage that
+a single global config file for the cluster can have a line like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mon</span> <span class="n">host</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">com</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">com</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>and will also serve to inform any ceph clients or daemons who the monitors are.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> daemons will need to be fed the initial keyring and cluster fsid to
+initialize themselves:</p>
+<blockquote>
+<div><p>ceph-mon --mkfs -i &lt;name&gt; --fsid &lt;uuid&gt; --keyring &lt;initial_keyring&gt;</p>
+</div></blockquote>
+<p>When the daemons first start up, they will share their names with each other and form a
+new cluster.</p>
+</section>
+<section id="names-only">
+<h3>Names only<a class="headerlink" href="#names-only" title="Link to this heading"></a></h3>
+<p>In dynamic “cloud” environments, the cluster creator may not (yet)
+know what the addresses of the monitors are going to be.  Instead,
+they may want machines to configure and start themselves in parallel
+and, as they come up, form a new cluster on their own.  The problem is
+that the monitor cluster relies on strict majorities to keep itself
+consistent, and in order to “create” a new cluster, it needs to know
+what the <em>initial</em> set of monitors will be.</p>
+<p>This can be done with the <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">initial</span> <span class="pre">members</span></code> config option, which
+should list the ids of the initial monitors that are allowed to create
+the cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mon</span> <span class="n">initial</span> <span class="n">members</span> <span class="o">=</span> <span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span>
+</pre></div>
+</div>
+<p>The monitors can then be initialized by providing the other pieces of
+information (the keyring, cluster fsid, and a way of determining
+their own address).  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span> <span class="o">--</span><span class="n">mkfs</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">mon</span><span class="o">-</span><span class="n">initial</span><span class="o">-</span><span class="n">hosts</span> <span class="s1">&#39;foo,bar,baz&#39;</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">&lt;</span><span class="n">initial_keyring</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">public</span><span class="o">-</span><span class="n">addr</span> <span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>When these daemons are started, they will know their own address, but
+not their peers.  They can learn those addresses via the admin socket:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">daemon</span> <span class="n">mon</span><span class="o">.&lt;</span><span class="nb">id</span><span class="o">&gt;</span> <span class="n">add_bootstrap_peer_hint</span> <span class="o">&lt;</span><span class="n">peer</span> <span class="n">ip</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Once they learn enough of their peers from the initial member set,
+they will be able to create the cluster.</p>
+</section>
+</section>
+<section id="cluster-expansion">
+<h2>Cluster expansion<a class="headerlink" href="#cluster-expansion" title="Link to this heading"></a></h2>
+<p>Cluster expansion is slightly less demanding than creation, because
+the creation of the initial quorum is not an issue and there is no
+worry about creating separately independent clusters.</p>
+<p>New nodes can be forced to join an existing cluster in two ways:</p>
+<ol class="arabic simple">
+<li><p>by providing no initial monitor peers addresses, and feeding them dynamically.</p></li>
+<li><p>by specifying the <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">initial</span> <span class="pre">members</span></code> config option to prevent the new nodes from forming a new, independent cluster, and feeding some existing monitors via any available method.</p></li>
+</ol>
+<section id="initially-peerless-expansion">
+<h3>Initially peerless expansion<a class="headerlink" href="#initially-peerless-expansion" title="Link to this heading"></a></h3>
+<p>Create a new monitor and give it no peer addresses other than its own.  For
+example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span> <span class="o">--</span><span class="n">mkfs</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">myid</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">fsid</span> <span class="o">&lt;</span><span class="n">fsid</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">&lt;</span><span class="n">mon</span> <span class="n">secret</span> <span class="n">key</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">public</span><span class="o">-</span><span class="n">addr</span> <span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Once the daemon starts, you can give it one or more peer addresses (preferably a bare IP address with no port; the mon will set the addr types and ports for you) to join with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">daemon</span> <span class="n">mon</span><span class="o">.&lt;</span><span class="nb">id</span><span class="o">&gt;</span> <span class="n">add_bootstrap_peer_hint</span> <span class="o">&lt;</span><span class="n">peer</span> <span class="n">ip</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Alternatively, you can explicitly specify the addrvec_t with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">daemon</span> <span class="n">mon</span><span class="o">.&lt;</span><span class="nb">id</span><span class="o">&gt;</span> <span class="n">add_bootstrap_peer_hintv</span> <span class="o">&lt;</span><span class="n">peer</span> <span class="n">addrvec</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For example,:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">daemon</span> <span class="n">mon</span><span class="o">.</span><span class="n">new</span> <span class="n">add_bootstrap_peer_hintv</span> <span class="n">v2</span><span class="p">:</span><span class="mf">1.2.3.4</span><span class="p">:</span><span class="mi">3300</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">1.2.3.4</span><span class="p">:</span><span class="mi">6789</span>
+</pre></div>
+</div>
+<p>This monitor will never participate in cluster creation; it can only
+join an existing cluster.</p>
+<p>Note that the address(es) specified should match exactly the addresses
+the new monitor is binding too.  If, for example, the new mon binds to
+only a v2 address but a v2 and v1 address are provided, there is some
+possibility of confusion in the mons.</p>
+</section>
+<section id="expanding-with-initial-members">
+<h3>Expanding with initial members<a class="headerlink" href="#expanding-with-initial-members" title="Link to this heading"></a></h3>
+<p>You can feed the new monitor some peer addresses initially and avoid badness by also
+setting <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">initial</span> <span class="pre">members</span></code>.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span> <span class="o">--</span><span class="n">mkfs</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">myid</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">fsid</span> <span class="o">&lt;</span><span class="n">fsid</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">&lt;</span><span class="n">mon</span> <span class="n">secret</span> <span class="n">key</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">public</span><span class="o">-</span><span class="n">addr</span> <span class="o">&lt;</span><span class="n">ip</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">mon</span><span class="o">-</span><span class="n">host</span> <span class="n">foo</span><span class="p">,</span><span class="n">bar</span><span class="p">,</span><span class="n">baz</span>
+</pre></div>
+</div>
+<p>When the daemon is started, <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">initial</span> <span class="pre">members</span></code> must be set via the command line or config file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span> <span class="o">-</span><span class="n">i</span> <span class="o">&lt;</span><span class="n">myid</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">mon</span><span class="o">-</span><span class="n">initial</span><span class="o">-</span><span class="n">members</span> <span class="n">foo</span><span class="p">,</span><span class="n">bar</span><span class="p">,</span><span class="n">baz</span>
+</pre></div>
+</div>
+<p>to prevent any risk of split-brain.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="messenger.html" class="btn btn-neutral float-left" title="Messenger notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mon-elections.html" class="btn btn-neutral float-right" title="Monitor Elections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

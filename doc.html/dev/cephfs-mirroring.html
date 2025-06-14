@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CephFS Mirroring &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CephFS Reclaim Interface" href="cephfs-reclaim.html" />
+    <link rel="prev" title="A Detailed Documentation on How to Set up Ceph Kerberos Authentication" href="ceph_krb_auth.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CephFS Mirroring</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-idea">Key Idea</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-users">Creating Users</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#starting-mirror-daemon">Starting Mirror Daemon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mirroring-design">Mirroring Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#snapshot-synchronization-order">Snapshot Synchronization Order</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#snapshot-incarnation">Snapshot Incarnation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interfaces">Interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mirroring-module-and-interface">Mirroring Module and Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bootstrap-peers">Bootstrap Peers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mirror-daemon-status">Mirror Daemon Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#re-adding-peers">Re-adding Peers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feature-status">Feature Status</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">CephFS Mirroring</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/cephfs-mirroring.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="cephfs-mirroring">
+<h1>CephFS Mirroring<a class="headerlink" href="#cephfs-mirroring" title="Link to this heading"></a></h1>
+<p>CephFS supports asynchronous replication of snapshots to a remote CephFS file
+system via <cite>cephfs-mirror</cite> tool. Snapshots are synchronized by mirroring
+snapshot data followed by creating a snapshot with the same name (for a given
+directory on the remote file system) as the snapshot being synchronized.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p>The primary (local) and secondary (remote) Ceph clusters version should be
+Pacific or later.</p>
+</section>
+<section id="key-idea">
+<h2>Key Idea<a class="headerlink" href="#key-idea" title="Link to this heading"></a></h2>
+<p>For a given snapshot pair in a directory, <cite>cephfs-mirror</cite> daemon will rely on
+<cite>CephFS Snapdiff Feature</cite> to identify changes in a directory tree. The diffs
+are applied to directory in the remote file system thereby only synchronizing
+files that have changed between two snapshots.</p>
+<p>Currently, snapshot data is synchronized by bulk copying to the remote
+filesystem.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Synchronizing hardlinks is not supported -- hardlinked files get
+synchronized as separate files.</p>
+</div>
+</section>
+<section id="creating-users">
+<h2>Creating Users<a class="headerlink" href="#creating-users" title="Link to this heading"></a></h2>
+<p>Start by creating a user (on the primary/local cluster) for the mirror daemon.
+This user requires write capability on the metadata pool to create RADOS
+objects (index objects) for watch/notify operation and read capability on the
+data pool(s).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>get-or-create<span class="w"> </span>client.mirror<span class="w"> </span>mon<span class="w"> </span><span class="s1">&#39;profile cephfs-mirror&#39;</span><span class="w"> </span>mds<span class="w"> </span><span class="s1">&#39;allow r&#39;</span><span class="w"> </span>osd<span class="w"> </span><span class="s1">&#39;allow rw tag cephfs metadata=*, allow r tag cephfs data=*&#39;</span><span class="w"> </span>mgr<span class="w"> </span><span class="s1">&#39;allow r&#39;</span></span>
+</pre></div></div><p>Create a user for each file system peer (on the secondary/remote cluster).
+This user needs to have full capabilities on the MDS (to take snapshots) and
+the OSDs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>authorize<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>client.mirror_remote<span class="w"> </span>/<span class="w"> </span>rwps</span>
+</pre></div></div><p>This user should be used (as part of peer specification) when adding a peer.</p>
+</section>
+<section id="starting-mirror-daemon">
+<h2>Starting Mirror Daemon<a class="headerlink" href="#starting-mirror-daemon" title="Link to this heading"></a></h2>
+<p>Spawn a mirror daemon by using <cite>systemctl(1)</cite> unit files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>cephfs-mirror@mirror</span>
+<span class="prompt2">systemctl<span class="w"> </span>start<span class="w"> </span>cephfs-mirror@mirror</span>
+</pre></div></div><p>Run the <cite>cephfs-mirror</cite> daemon in the foreground by running the following
+command with the <code class="docutils literal notranslate"><span class="pre">-f</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">cephfs-mirror<span class="w"> </span>--id<span class="w"> </span>mirror<span class="w"> </span>--cluster<span class="w"> </span>site-a<span class="w"> </span>-f</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The user specified here is <code class="docutils literal notranslate"><span class="pre">mirror</span></code>, as created in the <cite>Creating
+Users</cite> section.</p>
+</div>
+</section>
+<section id="mirroring-design">
+<h2>Mirroring Design<a class="headerlink" href="#mirroring-design" title="Link to this heading"></a></h2>
+<p>CephFS supports asynchronous replication of snapshots to a remote CephFS file
+system via the <cite>cephfs-mirror</cite> tool. For a given directory, snapshots are
+synchronized by transferring snapshot data to the remote file system and
+by creating a snapshot with the same name as the snapshot being synchronized.</p>
+</section>
+<section id="snapshot-synchronization-order">
+<h2>Snapshot Synchronization Order<a class="headerlink" href="#snapshot-synchronization-order" title="Link to this heading"></a></h2>
+<p>Although the order in which snapshots get chosen for synchronization does not
+matter, snapshots are picked based on creation order (using snap-id).</p>
+</section>
+<section id="snapshot-incarnation">
+<h2>Snapshot Incarnation<a class="headerlink" href="#snapshot-incarnation" title="Link to this heading"></a></h2>
+<p>A snapshot may be deleted and recreated (with the same name) with different
+contents.  An “old” snapshot could have been synchronized (earlier) and the
+recreation of the snapshot could have been done when mirroring was disabled.
+Using snapshot names to infer the point-of-continuation would result in the
+“new” snapshot (incarnation) never getting picked up for synchronization.</p>
+<p>Snapshots on the secondary file system stores the snap-id of the snapshot it
+was synchronized from. This metadata is stored in <cite>SnapInfo</cite> structure on the
+MDS.</p>
+</section>
+<section id="interfaces">
+<h2>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading"></a></h2>
+<p>The <cite>mirroring</cite> module (a Manager plugin) provides interfaces for managing
+directory snapshot mirroring. Manager interfaces are (mostly) wrappers around
+monitor commands for managing file system mirroring and are the recommended
+control interface.</p>
+</section>
+<section id="mirroring-module-and-interface">
+<h2>Mirroring Module and Interface<a class="headerlink" href="#mirroring-module-and-interface" title="Link to this heading"></a></h2>
+<p>The mirroring module provides an interface for managing directory snapshot
+mirroring. The module is implemented as a Ceph Manager plugin. The mirroring
+module does not manage the spawning of (and terminating of) the mirror
+daemons. <cite>systemctl(1)</cite> is the preferred way to start and stop mirror daemons.
+In the future, mirror daemons will be deployed and managed by <cite>cephadm</cite>
+(Tracker: <a class="reference external" href="http://tracker.ceph.com/issues/47261">http://tracker.ceph.com/issues/47261</a>).</p>
+<p>The manager module is responsible for assigning directories to mirror daemons
+for synchronization. Multiple mirror daemons can be spawned to achieve
+concurrency in directory snapshot synchronization. When mirror daemons are
+spawned (or terminated), the mirroring module discovers the modified set of
+mirror daemons and rebalances the directory assignment amongst the new set
+thus providing high-availability.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Configurations that have multiple mirror daemons are currently
+untested. Only a single mirror daemon is recommended.</p>
+</div>
+<p>The mirroring module is disabled by default. To enable mirroring, run the
+following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mgr<span class="w"> </span>module<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>mirroring</span>
+</pre></div></div><p>The mirroring module provides a family of commands for controlling the
+mirroring of directory snapshots. To add or remove directories, mirroring
+must be enabled for a given file system. To enable mirroring, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;fs_name&gt;</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The mirroring-module commands use the <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">snapshot</span> <span class="pre">mirror</span></code> prefix
+as distinct from the monitor commands, which use the <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">mirror</span></code> prefix.
+Make sure to use module (that is, <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">snapshot</span> <span class="pre">mirror</span></code>) commands.</p>
+</div>
+<p>To disable mirroring, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>disable<span class="w"> </span>&lt;fs_name&gt;</span>
+</pre></div></div><p>After mirroring has been enabled, add a peer to which directory snapshots will
+be mirrored. Peers follow the <code class="docutils literal notranslate"><span class="pre">&lt;client&gt;&#64;&lt;cluster&gt;</span></code> specification and get
+assigned a unique-id (UUID) when added. See the <cite>Creating Users</cite> section for
+information on how to create Ceph users for mirroring.</p>
+<p>To add a peer, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_add<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>&lt;remote_cluster_spec&gt;<span class="w"> </span><span class="o">[</span>&lt;remote_fs_name&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>&lt;remote_mon_host&gt;<span class="o">]</span><span class="w"> </span><span class="o">[</span>&lt;cephx_key&gt;<span class="o">]</span></span>
+</pre></div></div><p><code class="docutils literal notranslate"><span class="pre">&lt;remote_fs_name&gt;</span></code> is optional, and defaults to <code class="docutils literal notranslate"><span class="pre">&lt;fs_name&gt;</span></code> (on the remote
+cluster).</p>
+<p>This requires that the remote-cluster Ceph configuration and the user keyring
+are available in the primary cluster. See the <cite>Bootstrap Peers</cite> section for
+more information. The <code class="docutils literal notranslate"><span class="pre">peer_add</span></code> subcommand also supports passing the remote
+cluster’s monitor address and user key. However, bootstrapping a peer is the
+recommended way to add a peer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only a single peer is supported right now.</p>
+</div>
+<p>To remove a peer, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_remove<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>&lt;peer_uuid&gt;</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See the <cite>Mirror Daemon Status</cite> section on how to figure out Peer
+UUID.</p>
+</div>
+<p>To list the file system mirror peers, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_list<span class="w"> </span>&lt;fs_name&gt;</span>
+</pre></div></div><p>To configure a directory for mirroring, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>add<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>&lt;path&gt;</span>
+</pre></div></div><p>To stop a directory from mirroring snapshots, run a command of the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>remove<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>&lt;path&gt;</span>
+</pre></div></div><p>Only absolute directory paths are allowed. Also, paths are normalized by the
+mirroring module. This means that <code class="docutils literal notranslate"><span class="pre">/a/b/../b</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">/a/b</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">mkdir<span class="w"> </span>-p<span class="w"> </span>/d0/d1/d2</span>
+<span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>add<span class="w"> </span>cephfs<span class="w"> </span>/d0/d1/d2<span class="w"> </span><span class="o">{}</span></span>
+<span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>add<span class="w"> </span>cephfs<span class="w"> </span>/d0/d1/../d1/d2</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">EEXIST</span><span class="p">:</span> <span class="n">directory</span> <span class="o">/</span><span class="n">d0</span><span class="o">/</span><span class="n">d1</span><span class="o">/</span><span class="n">d2</span> <span class="ow">is</span> <span class="n">already</span> <span class="n">tracked</span>
+</pre></div>
+</div>
+<p>After a directory is added for mirroring, its subdirectory or ancestor
+directories are not allowed to be added for mirroring:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>add<span class="w"> </span>cephfs<span class="w"> </span>/d0/d1</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">EINVAL</span><span class="p">:</span> <span class="o">/</span><span class="n">d0</span><span class="o">/</span><span class="n">d1</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">ancestor</span> <span class="n">of</span> <span class="n">tracked</span> <span class="n">path</span> <span class="o">/</span><span class="n">d0</span><span class="o">/</span><span class="n">d1</span><span class="o">/</span><span class="n">d2</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>add<span class="w"> </span>cephfs<span class="w"> </span>/d0/d1/d2/d3</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">EINVAL</span><span class="p">:</span> <span class="o">/</span><span class="n">d0</span><span class="o">/</span><span class="n">d1</span><span class="o">/</span><span class="n">d2</span><span class="o">/</span><span class="n">d3</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">subtree</span> <span class="n">of</span> <span class="n">tracked</span> <span class="n">path</span> <span class="o">/</span><span class="n">d0</span><span class="o">/</span><span class="n">d1</span><span class="o">/</span><span class="n">d2</span>
+</pre></div>
+</div>
+<p>Commands for checking directory mapping (to mirror daemons) and directory
+distribution are detailed in the <cite>Mirror Daemon Status</cite> section.</p>
+</section>
+<section id="bootstrap-peers">
+<h2>Bootstrap Peers<a class="headerlink" href="#bootstrap-peers" title="Link to this heading"></a></h2>
+<p>Adding a peer (via <code class="docutils literal notranslate"><span class="pre">peer_add</span></code>) requires that the peer cluster configuration
+and the user keyring be available in the primary cluster (Manager host and
+hosts running the mirror daemon). This requirement can be avoided by
+bootstrapping and importing a peer token. Peer bootstraping involves creating a
+bootstrap token on the peer cluster by running a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_bootstrap<span class="w"> </span>create<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>&lt;client_entity&gt;<span class="w"> </span>&lt;site-name&gt;</span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_bootstrap<span class="w"> </span>create<span class="w"> </span>backup_fs<span class="w"> </span>client.mirror_remote<span class="w"> </span>site-remote</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJmc2lkIjogIjBkZjE3MjE3LWRmY2QtNDAzMC05MDc5LTM2Nzk4NTVkNDJlZiIsICJmaWxlc3lzdGVtIjogImJhY2t1cF9mcyIsICJ1c2VyIjogImNsaWVudC5taXJyb3JfcGVlcl9ib290c3RyYXAiLCAic2l0ZV9uYW1lIjogInNpdGUtcmVtb3RlIiwgImtleSI6ICJBUUFhcDBCZ0xtRmpOeEFBVnNyZXozai9YYUV0T2UrbUJEZlJDZz09IiwgIm1vbl9ob3N0IjogIlt2MjoxOTIuMTY4LjAuNTo0MDkxOCx2MToxOTIuMTY4LjAuNTo0MDkxOV0ifQ==&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">site-name</span></code> refers to a user-defined string to identify the remote
+filesystem. In the context of the <code class="docutils literal notranslate"><span class="pre">peer_add</span></code> interface, <code class="docutils literal notranslate"><span class="pre">site-name</span></code> is the
+passed in the <code class="docutils literal notranslate"><span class="pre">cluster</span></code> name from <code class="docutils literal notranslate"><span class="pre">remote_cluster_spec</span></code>.</p>
+<p>Import the bootstrap token in the primary cluster by running a command of the
+following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_bootstrap<span class="w"> </span>import<span class="w"> </span>&lt;fs_name&gt;<span class="w"> </span>&lt;token&gt;</span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>peer_bootstrap<span class="w"> </span>import<span class="w"> </span>cephfs<span class="w"> </span><span class="nv">eyJmc2lkIjogIjBkZjE3MjE3LWRmY2QtNDAzMC05MDc5LTM2Nzk4NTVkNDJlZiIsICJmaWxlc3lzdGVtIjogImJhY2t1cF9mcyIsICJ1c2VyIjogImNsaWVudC5taXJyb3JfcGVlcl9ib290c3RyYXAiLCAic2l0ZV9uYW1lIjogInNpdGUtcmVtb3RlIiwgImtleSI6ICJBUUFhcDBCZ0xtRmpOeEFBVnNyZXozai9YYUV0T2UrbUJEZlJDZz09IiwgIm1vbl9ob3N0IjogIlt2MjoxOTIuMTY4LjAuNTo0MDkxOCx2MToxOTIuMTY4LjAuNTo0MDkxOV0ifQ</span><span class="o">==</span></span>
+</pre></div></div></section>
+<section id="mirror-daemon-status">
+<h2>Mirror Daemon Status<a class="headerlink" href="#mirror-daemon-status" title="Link to this heading"></a></h2>
+<p>Mirror daemons are asynchronously notified about changes in
+file-system-mirroring status and peer updates.</p>
+<p>The CephFS mirroring module provides the <code class="docutils literal notranslate"><span class="pre">mirror</span> <span class="pre">daemon</span> <span class="pre">status</span></code> interface for
+checking the status of the mirror daemon. Run the following command to check
+the status of the mirror daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>daemon<span class="w"> </span>status</span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>daemon<span class="w"> </span>status<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;daemon_id&quot;</span><span class="p">:</span> <span class="mi">284167</span><span class="p">,</span>
+    <span class="s2">&quot;filesystems&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s2">&quot;filesystem_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;directory_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;peers&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;02117353-8cd1-44db-976b-eb20609aa160&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;remote&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;client_name&quot;</span><span class="p">:</span> <span class="s2">&quot;client.mirror_remote&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;cluster_name&quot;</span><span class="p">:</span> <span class="s2">&quot;ceph&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;fs_name&quot;</span><span class="p">:</span> <span class="s2">&quot;backup_fs&quot;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;stats&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;failure_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+              <span class="s2">&quot;recovery_count&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>One entry per mirror-daemon instance is displayed, along with information
+including configured peers and basic statistics. For more detailed statistics,
+use the admin socket interface as detailed below.</p>
+<p>CephFS mirror daemons provide admin socket commands for querying mirror status.
+To list the available commands for <code class="docutils literal notranslate"><span class="pre">mirror</span> <span class="pre">status</span></code>, run the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>--admin-daemon<span class="w"> </span>/path/to/mirror/daemon/admin/socket<span class="w"> </span><span class="nb">help</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">....</span>
+    <span class="o">....</span>
+    <span class="s2">&quot;fs mirror status cephfs@360&quot;</span><span class="p">:</span> <span class="s2">&quot;get filesystem mirror status&quot;</span><span class="p">,</span>
+    <span class="o">....</span>
+    <span class="o">....</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Commands that have the <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">mirror</span> <span class="pre">status</span></code> prefix provide mirror status for
+mirror-enabled file systems. Note that <code class="docutils literal notranslate"><span class="pre">cephfs&#64;360</span></code> has the format
+<code class="docutils literal notranslate"><span class="pre">filesystem-name&#64;filesystem-id</span></code>. This format is required because mirror
+daemons are asynchronously notified of file-system mirror status (A file
+system can be deleted and recreated with the same name).</p>
+<p>Currently (May 2025), the command provides minimal information regarding mirror
+status:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>--admin-daemon<span class="w"> </span>/var/run/ceph/cephfs-mirror.asok<span class="w"> </span>fs<span class="w"> </span>mirror<span class="w"> </span>status<span class="w"> </span>cephfs@360</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;rados_inst&quot;</span><span class="p">:</span> <span class="s2">&quot;192.168.0.5:0/1476644347&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;peers&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;a2dc7784-e7a1-4723-b103-03ee8d8768f8&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;remote&quot;</span><span class="p">:</span> <span class="p">{</span>
+              <span class="s2">&quot;client_name&quot;</span><span class="p">:</span> <span class="s2">&quot;client.mirror_remote&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;cluster_name&quot;</span><span class="p">:</span> <span class="s2">&quot;site-a&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;fs_name&quot;</span><span class="p">:</span> <span class="s2">&quot;backup_fs&quot;</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;snap_dirs&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;dir_count&quot;</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Peers</span></code> section in the command output above shows the peer information
+such as unique peer-id (UUID) and specification. The peer-id is required to
+remove an existing peer as mentioned in the <cite>Mirror Module and Interface</cite>
+section.</p>
+<p>Commands with the <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">mirror</span> <span class="pre">peer</span> <span class="pre">status</span></code> prefix return peer synchronization
+status. Commands of this kind take the form <code class="docutils literal notranslate"><span class="pre">filesystem-name&#64;filesystem-id</span> <span class="pre">peer-uuid</span></code>, as in the following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>--admin-daemon<span class="w"> </span>/var/run/ceph/cephfs-mirror.asok<span class="w"> </span>fs<span class="w"> </span>mirror<span class="w"> </span>peer<span class="w"> </span>status<span class="w"> </span>cephfs@360<span class="w"> </span>a2dc7784-e7a1-4723-b103-03ee8d8768f8</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;/d0&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;last_synced_snap&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+          <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;snap1&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;sync_duration&quot;</span><span class="p">:</span> <span class="mf">0.079997898999999997</span><span class="p">,</span>
+          <span class="s2">&quot;sync_time_stamp&quot;</span><span class="p">:</span> <span class="s2">&quot;274900.558797s&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;snaps_synced&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_deleted&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_renamed&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Synchronization stats such as <code class="docutils literal notranslate"><span class="pre">snaps_synced</span></code>, <code class="docutils literal notranslate"><span class="pre">snaps_deleted</span></code> and
+<code class="docutils literal notranslate"><span class="pre">snaps_renamed</span></code> are reset when the daemon is restarted or (when multiple
+mirror daemons are deployed), when a directory is reassigned to another mirror
+daemon.</p>
+<p>A directory can be in one of the following states:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- `idle`: The directory is currently not being synchronized
+- `syncing`: The directory is currently being synchronized
+- `failed`: The directory has hit upper limit of consecutive failures
+</pre></div>
+</div>
+<p>When a directory hits a configured number of consecutive synchronization
+failures, the mirror daemon marks it as <code class="docutils literal notranslate"><span class="pre">failed</span></code>. Synchronization for these
+directories is retried. By default, the number of consecutive failures before a
+directory is marked as failed is controlled by the
+<code class="docutils literal notranslate"><span class="pre">cephfs_mirror_max_consecutive_failures_per_directory</span></code> configuration option
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>). The retry interval for failed directories is controlled by
+the <code class="docutils literal notranslate"><span class="pre">cephfs_mirror_retry_failed_directories_interval</span></code> configuration option
+(default: <code class="docutils literal notranslate"><span class="pre">60s</span></code>).</p>
+<p>For example, adding a regular file for synchronization results in a <code class="docutils literal notranslate"><span class="pre">failed</span></code>
+status:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>add<span class="w"> </span>cephfs<span class="w"> </span>/f0</span>
+<span class="prompt2">ceph<span class="w"> </span>--admin-daemon<span class="w"> </span>/var/run/ceph/cephfs-mirror.asok<span class="w"> </span>fs<span class="w"> </span>mirror<span class="w"> </span>peer<span class="w"> </span>status<span class="w"> </span>cephfs@360<span class="w"> </span>a2dc7784-e7a1-4723-b103-03ee8d8768f8</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;/d0&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;idle&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;last_synced_snap&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+          <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;snap1&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;sync_duration&quot;</span><span class="p">:</span> <span class="mf">0.079997898999999997</span><span class="p">,</span>
+          <span class="s2">&quot;sync_time_stamp&quot;</span><span class="p">:</span> <span class="s2">&quot;274900.558797s&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;snaps_synced&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_deleted&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_renamed&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;/f0&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;failed&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_synced&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_deleted&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="s2">&quot;snaps_renamed&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This allows a user to add a non-existent directory for synchronization. The
+mirror daemon marks the directory as failed and retries (less frequently).
+When the directory comes into existence, the mirror daemons notice the
+successful snapshot synchronization and unmark the failed state.</p>
+<p>When mirroring is disabled, the <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">mirror</span> <span class="pre">status</span></code> command for the file
+system will not show up in command help.</p>
+<p>The mirroring module provides a couple of commands to display directory mapping
+and distribution information. To check which mirror daemon a directory has been
+mapped to use, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>dirmap<span class="w"> </span>cephfs<span class="w"> </span>/d0/d1/d2</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;404148&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;last_shuffled&quot;</span><span class="p">:</span> <span class="mf">1601284516.10986</span><span class="p">,</span>
+  <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;mapped&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">instance_id</span></code> is the RADOS instance-id associated with a mirror
+daemon.</p>
+</div>
+<p>Other information such as <code class="docutils literal notranslate"><span class="pre">state</span></code> and <code class="docutils literal notranslate"><span class="pre">last_shuffled</span></code> are interesting when
+running multiple mirror daemons.</p>
+<p>If no mirror daemons are running, the same command shows the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>snapshot<span class="w"> </span>mirror<span class="w"> </span>dirmap<span class="w"> </span>cephfs<span class="w"> </span>/d0/d1/d2</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="s2">&quot;no mirror daemons running&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;stalled&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This signifies that no mirror daemons are running and that mirroring is
+stalled.</p>
+</section>
+<section id="re-adding-peers">
+<h2>Re-adding Peers<a class="headerlink" href="#re-adding-peers" title="Link to this heading"></a></h2>
+<p>When re-adding (reassigning) a peer to a file system in another cluster, ensure
+that all mirror daemons have stopped synchronizing with the peer. This can be
+checked via the  <code class="docutils literal notranslate"><span class="pre">fs</span> <span class="pre">mirror</span> <span class="pre">status</span></code> admin socket command (the <code class="docutils literal notranslate"><span class="pre">Peer</span> <span class="pre">UUID</span></code>
+should not show up in the command output). We recommend purging
+synchronized directories from the peer before re-adding them to another file
+system (especially those directories which might exist in the new primary file
+system). This is not required if you re-add a peer to the same primary file
+system it was synchronized from before.</p>
+</section>
+<section id="feature-status">
+<h2>Feature Status<a class="headerlink" href="#feature-status" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">cephfs-mirror</span></code> daemon is built by default. It follows the
+<code class="docutils literal notranslate"><span class="pre">WITH_CEPHFS</span></code> CMake rule).</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ceph_krb_auth.html" class="btn btn-neutral float-left" title="A Detailed Documentation on How to Set up Ceph Kerberos Authentication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cephfs-reclaim.html" class="btn btn-neutral float-right" title="CephFS Reclaim Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

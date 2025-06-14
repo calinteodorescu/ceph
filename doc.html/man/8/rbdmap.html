@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbdmap -- map RBD devices at boot time &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ceph-rbdnamer -- udev helper to name RBD devices" href="ceph-rbdnamer.html" />
+    <link rel="prev" title="rbd-ggate -- map rbd images via FreeBSD GEOM Gate" href="rbd-ggate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../rbd/rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rbd/rbd-operations.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rbd/rbd-integrations.html">Integrations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../rbd/man/index.html">Manpages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbd.html">rbd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-fuse.html">rbd-fuse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-nbd.html">rbd-nbd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-ggate.html">rbd-ggate</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">rbd-map</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#availability">Availability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-rbdnamer.html">ceph-rbdnamer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-replay-prep.html">rbd-replay-prep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-replay.html">rbd-replay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-replay-many.html">rbd-replay-many</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../rbd/api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../rbd/index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="../../rbd/man/index.html">Ceph Block Device Manpages</a></li>
+      <li class="breadcrumb-item active">rbdmap -- map RBD devices at boot time</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/man/8/rbdmap.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="rbdmap-map-rbd-devices-at-boot-time">
+<h1>rbdmap -- map RBD devices at boot time<a class="headerlink" href="#rbdmap-map-rbd-devices-at-boot-time" title="Link to this heading"></a></h1>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line"><strong>rbdmap map</strong></div>
+<div class="line"><strong>rbdmap unmap</strong></div>
+</div>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p><strong>rbdmap</strong> is a shell script that automates <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">unmap</span></code>
+operations on one or more RBD (RADOS Block Device) images. While the script can be
+run manually by the system administrator at any time, the principal use case is
+automatic mapping/mounting of RBD images at boot time (and unmounting/unmapping
+at shutdown), as triggered by the init system (a systemd unit file,
+<code class="docutils literal notranslate"><span class="pre">rbdmap.service</span></code> is included with the ceph-common package for this purpose).</p>
+<p>The script takes a single argument, which can be either “map” or “unmap”.
+In either case, the script parses a configuration file (defaults to <code class="docutils literal notranslate"><span class="pre">/etc/ceph/rbdmap</span></code>,
+but can be overridden via an environment variable <code class="docutils literal notranslate"><span class="pre">RBDMAPFILE</span></code>). Each line
+of the configuration file corresponds to an RBD image which is to be mapped, or
+unmapped.</p>
+<p>The configuration file format is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IMAGESPEC</span> <span class="n">RBDOPTS</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">IMAGESPEC</span></code> should be specified as <code class="docutils literal notranslate"><span class="pre">POOLNAME/IMAGENAME</span></code> (the pool
+name, a forward slash, and the image name), or merely <code class="docutils literal notranslate"><span class="pre">IMAGENAME</span></code>, in which
+case the <code class="docutils literal notranslate"><span class="pre">POOLNAME</span></code> defaults to “rbd”. <code class="docutils literal notranslate"><span class="pre">RBDOPTS</span></code> is an optional list of
+parameters to be passed to the underlying <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">map</span></code> command. These parameters
+and their values should be specified as a comma-separated string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PARAM1</span><span class="o">=</span><span class="n">VAL1</span><span class="p">,</span><span class="n">PARAM2</span><span class="o">=</span><span class="n">VAL2</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="n">PARAMN</span><span class="o">=</span><span class="n">VALN</span>
+</pre></div>
+</div>
+<p>This will cause the script to issue an <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">map</span></code> command like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rbd</span> <span class="nb">map</span> <span class="n">POOLNAME</span><span class="o">/</span><span class="n">IMAGENAME</span> <span class="o">--</span><span class="n">PARAM1</span> <span class="n">VAL1</span> <span class="o">--</span><span class="n">PARAM2</span> <span class="n">VAL2</span>
+</pre></div>
+</div>
+<p>(See the <code class="docutils literal notranslate"><span class="pre">rbd</span></code> manpage for a full list of possible options.)
+For parameters and values which contain commas or equality signs, a simple
+apostrophe can be used to prevent replacing them.</p>
+<p>When run as <code class="docutils literal notranslate"><span class="pre">rbdmap</span> <span class="pre">map</span></code>, the script parses the configuration file, and for
+each RBD image specified attempts to first map the image (using the <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">map</span></code>
+command) and, second, to mount the image.</p>
+<p>When run as <code class="docutils literal notranslate"><span class="pre">rbdmap</span> <span class="pre">unmap</span></code>, images listed in the configuration file will
+be unmounted and unmapped.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rbdmap</span> <span class="pre">unmap-all</span></code> attempts to unmount and subsequently unmap all currently
+mapped RBD images, regardless of whether or not they are listed in the
+configuration file.</p>
+<p>If successful, the <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">map</span></code> operation maps the image to a <code class="docutils literal notranslate"><span class="pre">/dev/rbdX</span></code>
+device, at which point a udev rule is triggered to create a friendly device
+name symlink, <code class="docutils literal notranslate"><span class="pre">/dev/rbd/POOLNAME/IMAGENAME</span></code>, pointing to the real mapped
+device.</p>
+<p>In order for mounting/unmounting to succeed, the friendly device name must
+have a corresponding entry in <code class="docutils literal notranslate"><span class="pre">/etc/fstab</span></code>.</p>
+<p>When writing <code class="docutils literal notranslate"><span class="pre">/etc/fstab</span></code> entries for RBD images, it’s a good idea to specify
+the “noauto” (or “nofail”) mount option. This prevents the init system from
+trying to mount the device too early - before the device in question even
+exists. (Since <code class="docutils literal notranslate"><span class="pre">rbdmap.service</span></code>
+executes a shell script, it is typically triggered quite late in the boot
+sequence.)</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>Example <code class="docutils literal notranslate"><span class="pre">/etc/ceph/rbdmap</span></code> for three RBD images called “bar1”, “bar2” and “bar3”,
+which are in pool “foopool”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foopool</span><span class="o">/</span><span class="n">bar1</span>    <span class="nb">id</span><span class="o">=</span><span class="n">admin</span><span class="p">,</span><span class="n">keyring</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span>
+<span class="n">foopool</span><span class="o">/</span><span class="n">bar2</span>    <span class="nb">id</span><span class="o">=</span><span class="n">admin</span><span class="p">,</span><span class="n">keyring</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span>
+<span class="n">foopool</span><span class="o">/</span><span class="n">bar3</span>    <span class="nb">id</span><span class="o">=</span><span class="n">admin</span><span class="p">,</span><span class="n">keyring</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="s1">&#39;lock_on_read,queue_depth=1024&#39;</span>
+</pre></div>
+</div>
+<p>Each line in the file contains two strings: the image spec and the options to
+be passed to <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">map</span></code>. These two lines get transformed into the following
+commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rbd</span> <span class="nb">map</span> <span class="n">foopool</span><span class="o">/</span><span class="n">bar1</span> <span class="o">--</span><span class="nb">id</span> <span class="n">admin</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span>
+<span class="n">rbd</span> <span class="nb">map</span> <span class="n">foopool</span><span class="o">/</span><span class="n">bar2</span> <span class="o">--</span><span class="nb">id</span> <span class="n">admin</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span>
+<span class="n">rbd</span> <span class="nb">map</span> <span class="n">foopool</span><span class="o">/</span><span class="n">bar2</span> <span class="o">--</span><span class="nb">id</span> <span class="n">admin</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span> <span class="o">--</span><span class="n">options</span> <span class="n">lock_on_read</span><span class="p">,</span><span class="n">queue_depth</span><span class="o">=</span><span class="mi">1024</span>
+</pre></div>
+</div>
+<p>If the images had XFS file systems on them, the corresponding <code class="docutils literal notranslate"><span class="pre">/etc/fstab</span></code>
+entries might look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rbd</span><span class="o">/</span><span class="n">foopool</span><span class="o">/</span><span class="n">bar1</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">bar1</span> <span class="n">xfs</span> <span class="n">noauto</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rbd</span><span class="o">/</span><span class="n">foopool</span><span class="o">/</span><span class="n">bar2</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">bar2</span> <span class="n">xfs</span> <span class="n">noauto</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rbd</span><span class="o">/</span><span class="n">foopool</span><span class="o">/</span><span class="n">bar3</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">bar3</span> <span class="n">xfs</span> <span class="n">noauto</span> <span class="mi">0</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>After creating the images and populating the <code class="docutils literal notranslate"><span class="pre">/etc/ceph/rbdmap</span></code> file, making
+the images get automatically mapped and mounted at boot is just a matter of
+enabling that unit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">rbdmap</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</section>
+<section id="options">
+<h2>Options<a class="headerlink" href="#options" title="Link to this heading"></a></h2>
+<p>None</p>
+</section>
+<section id="availability">
+<h2>Availability<a class="headerlink" href="#availability" title="Link to this heading"></a></h2>
+<p><strong>rbdmap</strong> is part of Ceph, a massively scalable, open-source, distributed
+storage system. Please refer to the Ceph documentation at
+<a class="reference external" href="https://docs.ceph.com">https://docs.ceph.com</a> for more information.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="rbd.html"><span class="doc">rbd</span></a>(8),</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rbd-ggate.html" class="btn btn-neutral float-left" title="rbd-ggate -- map rbd images via FreeBSD GEOM Gate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ceph-rbdnamer.html" class="btn btn-neutral float-right" title="ceph-rbdnamer -- udev helper to name RBD devices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

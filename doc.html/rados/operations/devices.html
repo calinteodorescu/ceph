@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Device Management &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="BlueStore Migration" href="bluestore-migration.html" />
+    <link rel="prev" title="Adding/Removing Monitors" href="add-or-rm-mons.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Device Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-tracking">Device tracking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#identifying-physical-devices">Identifying physical devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enabling-monitoring">Enabling monitoring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scraping">Scraping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#failure-prediction">Failure prediction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-alerts">Health alerts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-migration">Automatic Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Device Management</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/devices.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="device-management">
+<span id="devices"></span><h1>Device Management<a class="headerlink" href="#device-management" title="Link to this heading"></a></h1>
+<p>Device management allows Ceph to address hardware failure. Ceph tracks hardware
+storage devices (HDDs, SSDs) to see which devices are managed by which daemons.
+Ceph also collects health metrics about these devices. By doing so, Ceph can
+provide tools that predict hardware failure and can automatically respond to
+hardware failure.</p>
+<section id="device-tracking">
+<h2>Device tracking<a class="headerlink" href="#device-tracking" title="Link to this heading"></a></h2>
+<p>To see a list of the storage devices that are in use, run the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>ls</span>
+</pre></div></div><p>Alternatively, to list devices by daemon or by host, run a command of one of
+the following forms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>ls-by-daemon<span class="w"> </span>&lt;daemon&gt;</span>
+<span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>ls-by-host<span class="w"> </span>&lt;host&gt;</span>
+</pre></div></div><p>To see information about the location of an specific device and about how the
+device is being consumed, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>info<span class="w"> </span>&lt;devid&gt;</span>
+</pre></div></div></section>
+<section id="identifying-physical-devices">
+<h2>Identifying physical devices<a class="headerlink" href="#identifying-physical-devices" title="Link to this heading"></a></h2>
+<p>To make the replacement of failed disks easier and less error-prone, you can
+(in some cases) “blink” the drive’s LEDs on hardware enclosures by running a
+command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="n">light</span> <span class="n">on</span><span class="o">|</span><span class="n">off</span> <span class="o">&lt;</span><span class="n">devid</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">ident</span><span class="o">|</span><span class="n">fault</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">force</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using this command to blink the lights might not work. Whether it
+works will depend upon such factors as your kernel revision, your SES
+firmware, or the setup of your HBA.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;devid&gt;</span></code> parameter is the device identification. To retrieve this
+information, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>ls</span>
+</pre></div></div><p>The <code class="docutils literal notranslate"><span class="pre">[ident|fault]</span></code> parameter determines which kind of light will blink.  By
+default, the <cite>identification</cite> light is used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This command works only if the Cephadm or the Rook <a class="reference external" href="https://docs.ceph.com/docs/master/mgr/orchestrator/#orchestrator-cli-module">orchestrator</a>
+module is enabled.  To see which orchestrator module is enabled, run the
+following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>orch<span class="w"> </span>status</span>
+</pre></div></div></div>
+<p>The command that makes the drive’s LEDs blink is <cite>lsmcli</cite>. To customize this
+command, configure it via a Jinja2 template by running commands of the
+following forms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">config</span><span class="o">-</span><span class="n">key</span> <span class="nb">set</span> <span class="n">mgr</span><span class="o">/</span><span class="n">cephadm</span><span class="o">/</span><span class="n">blink_device_light_cmd</span> <span class="s2">&quot;&lt;template&gt;&quot;</span>
+<span class="n">ceph</span> <span class="n">config</span><span class="o">-</span><span class="n">key</span> <span class="nb">set</span> <span class="n">mgr</span><span class="o">/</span><span class="n">cephadm</span><span class="o">/&lt;</span><span class="n">host</span><span class="o">&gt;/</span><span class="n">blink_device_light_cmd</span> <span class="s2">&quot;lsmcli local-disk-{{ ident_fault }}-led-{{&#39;on&#39; if on else &#39;off&#39;}} --path &#39;{{ path or dev }}&#39;&quot;</span>
+</pre></div>
+</div>
+<p>The following arguments can be used to customize the Jinja2 template:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">on</span></code></dt><dd><p>A boolean value.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ident_fault</span></code></dt><dd><p>A string that contains <cite>ident</cite> or <cite>fault</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">dev</span></code></dt><dd><p>A string that contains the device ID: for example, <cite>SanDisk_X400_M.2_2280_512GB_162924424784</cite>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">path</span></code></dt><dd><p>A string that contains the device path: for example, <cite>/dev/sda</cite>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="enabling-monitoring">
+<span id="id1"></span><h2>Enabling monitoring<a class="headerlink" href="#enabling-monitoring" title="Link to this heading"></a></h2>
+<p>Ceph can also monitor the health metrics associated with your device. For
+example, SATA drives implement a standard called SMART that provides a wide
+range of internal metrics about the device’s usage and health (for example: the
+number of hours powered on, the number of power cycles, the number of
+unrecoverable read errors). Other device types such as SAS and NVMe present a
+similar set of metrics (via slightly different standards).  All of these
+metrics can be collected by Ceph via the <code class="docutils literal notranslate"><span class="pre">smartctl</span></code> tool.</p>
+<p>You can enable or disable health monitoring by running one of the following
+commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>monitoring<span class="w"> </span>on</span>
+<span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>monitoring<span class="w"> </span>off</span>
+</pre></div></div></section>
+<section id="scraping">
+<h2>Scraping<a class="headerlink" href="#scraping" title="Link to this heading"></a></h2>
+<p>If monitoring is enabled, device metrics will be scraped automatically at
+regular intervals. To configure that interval, run a command of the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/devicehealth/scrape_frequency<span class="w"> </span>&lt;seconds&gt;</span>
+</pre></div></div><p>By default, device metrics are scraped once every 24 hours.</p>
+<p>To manually scrape all devices, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>scrape-health-metrics</span>
+</pre></div></div><p>To scrape a single device, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>scrape-health-metrics<span class="w"> </span>&lt;device-id&gt;</span>
+</pre></div></div><p>To scrape a single daemon’s devices, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>scrape-daemon-health-metrics<span class="w"> </span>&lt;who&gt;</span>
+</pre></div></div><p>To retrieve the stored health metrics for a device (optionally for a specific
+timestamp),  run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>get-health-metrics<span class="w"> </span>&lt;devid&gt;<span class="w"> </span><span class="o">[</span>sample-timestamp<span class="o">]</span></span>
+</pre></div></div></section>
+<section id="failure-prediction">
+<h2>Failure prediction<a class="headerlink" href="#failure-prediction" title="Link to this heading"></a></h2>
+<p>Ceph can predict drive life expectancy and device failures by analyzing the
+health metrics that it collects. The prediction modes are as follows:</p>
+<ul class="simple">
+<li><p><em>none</em>: disable device failure prediction.</p></li>
+<li><p><em>local</em>: use a pre-trained prediction model from the <code class="docutils literal notranslate"><span class="pre">ceph-mgr</span></code> daemon.</p></li>
+</ul>
+<p>To configure the prediction mode, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>global<span class="w"> </span>device_failure_prediction_mode<span class="w"> </span>&lt;mode&gt;</span>
+</pre></div></div><p>Under normal conditions, failure prediction runs periodically in the
+background.  For this reason, life expectancy values might be populated only
+after a significant amount of time has passed.  The life expectancy of all
+devices is displayed in the output of the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>ls</span>
+</pre></div></div><p>To see the metadata of a specific device, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>info<span class="w"> </span>&lt;devid&gt;</span>
+</pre></div></div><p>To explicitly force prediction of a specific device’s life expectancy, run a
+command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>predict-life-expectancy<span class="w"> </span>&lt;devid&gt;</span>
+</pre></div></div><p>In addition to Ceph’s internal device failure prediction, you might have an
+external source of information about device failures. To inform Ceph of a
+specific device’s life expectancy, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>set-life-expectancy<span class="w"> </span>&lt;devid&gt;<span class="w"> </span>&lt;from&gt;<span class="w"> </span><span class="o">[</span>&lt;to&gt;<span class="o">]</span></span>
+</pre></div></div><p>Life expectancies are expressed as a time interval. This means that the
+uncertainty of the life expectancy can be expressed in the form of a range of
+time, and perhaps a wide range of time. The interval’s end can be left
+unspecified.</p>
+</section>
+<section id="health-alerts">
+<h2>Health alerts<a class="headerlink" href="#health-alerts" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">mgr/devicehealth/warn_threshold</span></code> configuration option controls the
+health check for an expected device failure. If the device is expected to fail
+within the specified time interval, an alert is raised.</p>
+<p>To check the stored life expectancy of all devices and generate any appropriate
+health alert, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>device<span class="w"> </span>check-health</span>
+</pre></div></div></section>
+<section id="automatic-migration">
+<h2>Automatic Migration<a class="headerlink" href="#automatic-migration" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">mgr/devicehealth/self_heal</span></code> option (enabled by default) automatically
+migrates data away from devices that are expected to fail soon. If this option
+is enabled, the module marks such devices <code class="docutils literal notranslate"><span class="pre">out</span></code> so that automatic migration
+will occur.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mon_osd_min_up_ratio</span></code> configuration option can help prevent
+this process from cascading to total failure. If the “self heal” module
+marks <code class="docutils literal notranslate"><span class="pre">out</span></code> so many OSDs that the ratio value of <code class="docutils literal notranslate"><span class="pre">mon_osd_min_up_ratio</span></code>
+is exceeded, then the cluster raises the <code class="docutils literal notranslate"><span class="pre">DEVICE_HEALTH_TOOMANY</span></code> health
+check. For instructions on what to do in this situation, see
+<a class="reference internal" href="health-checks.html#rados-health-checks-device-health-toomany"><span class="std std-ref">DEVICE_HEALTH_TOOMANY</span></a>.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">mgr/devicehealth/mark_out_threshold</span></code> configuration option specifies the
+time interval for automatic migration. If a device is expected to fail within
+the specified time interval, it will be automatically marked <code class="docutils literal notranslate"><span class="pre">out</span></code>.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="add-or-rm-mons.html" class="btn btn-neutral float-left" title="Adding/Removing Monitors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bluestore-migration.html" class="btn btn-neutral float-right" title="BlueStore Migration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

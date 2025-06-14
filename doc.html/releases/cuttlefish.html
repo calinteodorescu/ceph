@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuttlefish &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bobtail" href="bobtail.html" />
+    <link rel="prev" title="Dumpling" href="dumpling.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Releases (index)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#active-releases">Active Releases</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#archived-releases">Archived Releases</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="quincy.html">Quincy (v17.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pacific.html">Pacific (v16.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="octopus.html">Octopus (v15.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nautilus.html">Nautilus (v14.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mimic.html">Mimic (v13.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="luminous.html">Luminous (v12.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kraken.html">Kraken (v11.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jewel.html">Jewel (v10.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="infernalis.html">Infernalis (v9.2.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hammer.html">Hammer (v0.94.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="giant.html">Giant (v0.87.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firefly.html">Firefly (v0.80.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="emperor.html">Emperor (v0.72.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dumpling.html">Dumpling (v0.67.*)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cuttlefish (v0.61.*)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-9-cuttlefish">v0.61.9 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-8-cuttlefish">v0.61.8 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-7-cuttlefish">v0.61.7 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-6-cuttlefish">v0.61.6 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-5-cuttlefish">v0.61.5 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-4-cuttlefish">v0.61.4 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-3-cuttlefish">v0.61.3 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-2-cuttlefish">v0.61.2 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-1-cuttlefish">v0.61.1 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-61-cuttlefish">v0.61 “Cuttlefish”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-60">v0.60</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-59">v0.59</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-58">v0.58</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v0-57">v0.57</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bobtail.html">Bobtail (v0.56.*)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="argonaut.html">Argonaut (v0.48.*)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#release-timeline">Release timeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Releases (index)</a></li>
+      <li class="breadcrumb-item active">Cuttlefish</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/releases/cuttlefish.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="cuttlefish">
+<h1>Cuttlefish<a class="headerlink" href="#cuttlefish" title="Link to this heading"></a></h1>
+<p>Cuttlefish is the 3rd stable release of Ceph. It is named after a type
+of cephalopod (order Sepiida) characterized by a unique internal shell, the
+cuttlebone, which is used for control of buoyancy.</p>
+<section id="v0-61-9-cuttlefish">
+<h2>v0.61.9 “Cuttlefish”<a class="headerlink" href="#v0-61-9-cuttlefish" title="Link to this heading"></a></h2>
+<p>This point release resolves several low to medium-impact bugs across
+the code base, and fixes a performance problem (CPU utilization) with
+radosgw.  We recommend that all production cuttlefish users upgrade.</p>
+<section id="notable-changes">
+<h3>Notable Changes<a class="headerlink" href="#notable-changes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>ceph, ceph-authtool: fix help (Danny Al-Gaaf)</p></li>
+<li><p>ceph-disk: partprobe after creating journal partition</p></li>
+<li><p>ceph-disk: specific fs type when mounting (Alfredo Deza)</p></li>
+<li><p>ceph-fuse: fix bug when compiled against old versions</p></li>
+<li><p>ceph-fuse: fix use-after-free in caching code (Yan, Zheng)</p></li>
+<li><p>ceph-fuse: misc caching bugs</p></li>
+<li><p>ceph.spec: remove incorrect mod_fcgi dependency (Gary Lowell)</p></li>
+<li><p>crush: fix name caching</p></li>
+<li><p>librbd: fix bug when unpausing cluster (Josh Durgin)</p></li>
+<li><p>mds: fix LAZYIO lock hang</p></li>
+<li><p>mds: fix bug in file size recovery (after client crash)</p></li>
+<li><p>mon: fix paxos recovery corner case</p></li>
+<li><p>osd: fix exponential backoff for slow request warnings (Loic Dachary)</p></li>
+<li><p>osd: fix readdir_r usage</p></li>
+<li><p>osd: fix startup for long-stopped OSDs</p></li>
+<li><p>rgw: avoid std::list::size() to avoid wasting CPU cycles (Yehuda Sadeh)</p></li>
+<li><p>rgw: drain pending requests during write (fixes data safety issue) (Yehuda Sadeh)</p></li>
+<li><p>rgw: fix authenticated users group ACL check (Yehuda Sadeh)</p></li>
+<li><p>rgw: fix bug in POST (Yehuda Sadeh)</p></li>
+<li><p>rgw: fix sysvinit script ‘status’ command, return value (Danny Al-Gaaf)</p></li>
+<li><p>rgw: reduce default log level (Yehuda Sadeh)</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/12c313071bbc3d46c28d89bbe8e7d0b7/v0.61.9.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-8-cuttlefish">
+<h2>v0.61.8 “Cuttlefish”<a class="headerlink" href="#v0-61-8-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release includes a number of important issues, including rare
+race conditions in the OSD, a few monitor bugs, and fixes for RBD
+flush behavior.  We recommend that production users upgrade at their
+convenience.</p>
+<section id="id1">
+<h3>Notable Changes<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>librados: fix async aio completion wakeup</p></li>
+<li><p>librados: fix aio completion locking</p></li>
+<li><p>librados: fix rare deadlock during shutdown</p></li>
+<li><p>osd: fix race when queueing recovery operations</p></li>
+<li><p>osd: fix possible race during recovery</p></li>
+<li><p>osd: optionally preload rados classes on startup (disabled by default)</p></li>
+<li><p>osd: fix journal replay corner condition</p></li>
+<li><p>osd: limit size of peering work queue batch (to speed up peering)</p></li>
+<li><p>mon: fix paxos recovery corner case</p></li>
+<li><p>mon: fix rare hang when monmap updates during an election</p></li>
+<li><p>mon: make ‘osd pool mksnap …’ avoid exposing uncommitted state</p></li>
+<li><p>mon: make ‘osd pool rmsnap …’ not racy, avoid exposing uncommitted state</p></li>
+<li><p>mon: fix bug during mon cluster expansion</p></li>
+<li><p>rgw: fix crash during multi delete operation</p></li>
+<li><p>msgr: fix race conditions during osd network reinitialization</p></li>
+<li><p>ceph-disk: apply mount options when remounting</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/9af931cabcd8e9f0ab6aec57f42a9527/v0.61.8.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-7-cuttlefish">
+<h2>v0.61.7 “Cuttlefish”<a class="headerlink" href="#v0-61-7-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release fixes another regression preventing monitors to start after
+undergoing certain upgrade sequences, as well as some corner cases with
+Paxos and support for unusual device names in ceph-disk/ceph-deploy.</p>
+<section id="id2">
+<h3>Notable Changes<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mon: fix regression in latest full osdmap retrieval</p></li>
+<li><p>mon: fix a long-standing bug in a paxos corner case</p></li>
+<li><p>ceph-disk: improved support for unusual device names (e.g., /dev/cciss/c0d0)</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/6cec1ba8ecbc7bee664cb3b39be3a57e/v0.61.7.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-6-cuttlefish">
+<h2>v0.61.6 “Cuttlefish”<a class="headerlink" href="#v0-61-6-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release fixes a regression in v0.61.5 that could prevent monitors
+from restarting.  This affects any cluster that was upgraded from a
+previous version of Ceph (and not freshly created with v0.61.5).</p>
+<p>All users are strongly recommended to upgrade.</p>
+<section id="id3">
+<h3>Notable Changes<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mon: record latest full osdmap</p></li>
+<li><p>mon: work around previous bug in which latest full osdmap is not recorded</p></li>
+<li><p>mon: avoid scrub while updating</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/6fd08a163481d926c85af8b169f61b20/v0.61.6.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-5-cuttlefish">
+<h2>v0.61.5 “Cuttlefish”<a class="headerlink" href="#v0-61-5-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release most improves stability of the monitor and fixes a few
+bugs with the ceph-disk utility (used by ceph-deploy).  We recommend
+that all v0.61.x users upgrade.</p>
+<section id="upgrading">
+<h3>Upgrading<a class="headerlink" href="#upgrading" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>This release fixes a 32-bit vs 64-bit arithmetic bug with the
+feature bits.  An unfortunate consequence of the fix is that 0.61.4
+(or earlier) ceph-mon daemons can’t form a quorum with 0.61.5 (or
+later) monitors.  To avoid the possibility of service disruption, we
+recommend you upgrade all monitors at once.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Notable Changes<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mon: misc sync improvements (faster, more reliable, better tuning)</p></li>
+<li><p>mon: enable leveldb cache by default (big performance improvement)</p></li>
+<li><p>mon: new scrub feature (primarily for diagnostic, testing purposes)</p></li>
+<li><p>mon: fix occasional leveldb assertion on startup</p></li>
+<li><p>mon: prevent reads until initial state is committed</p></li>
+<li><p>mon: improved logic for trimming old osdmaps</p></li>
+<li><p>mon: fix pick_addresses bug when expanding mon cluster</p></li>
+<li><p>mon: several small paxos fixes, improvements</p></li>
+<li><p>mon: fix bug osdmap trim behavior</p></li>
+<li><p>osd: fix several bugs with PG stat reporting</p></li>
+<li><p>osd: limit number of maps shared with peers (which could cause domino failures)</p></li>
+<li><p>rgw: fix radosgw-admin buckets list (for all buckets)</p></li>
+<li><p>mds: fix occasional client failure to reconnect</p></li>
+<li><p>mds: fix bad list traversal after unlink</p></li>
+<li><p>mds: fix underwater dentry cleanup (occasional crash after mds restart)</p></li>
+<li><p>libcephfs, ceph-fuse: fix occasional hangs on umount</p></li>
+<li><p>libcephfs, ceph-fuse: fix old bug with O_LAZY vs O_NOATIME confusion</p></li>
+<li><p>ceph-disk: more robust journal device detection on RHEL/CentOS</p></li>
+<li><p>ceph-disk: better, simpler locking</p></li>
+<li><p>ceph-disk: do not inadvertantely mount over existing osd mounts</p></li>
+<li><p>ceph-disk: better handling for unusual device names</p></li>
+<li><p>sysvinit, upstart: handle symlinks in /var/lib/ceph/*</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/775897df493600f42c21fa9e0ccd0e86/v0.61.5.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-4-cuttlefish">
+<h2>v0.61.4 “Cuttlefish”<a class="headerlink" href="#v0-61-4-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release resolves a possible data corruption on power-cycle when
+using XFS, a few outstanding problems with monitor sync, several
+problems with ceph-disk and ceph-deploy operation, and a problem with
+OSD memory usage during scrub.</p>
+<section id="id5">
+<h3>Upgrading<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>No issues.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Notable Changes<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mon: fix daemon exit behavior when error is encountered on startup</p></li>
+<li><p>mon: more robust sync behavior</p></li>
+<li><p>osd: do not use sync_file_range(2), posix_fadvise(…DONTNEED) (can cause data corruption on power loss on XFS)</p></li>
+<li><p>osd: avoid unnecessary log rewrite (improves peering speed)</p></li>
+<li><p>osd: fix scrub efficiency bug (problematic on old clusters)</p></li>
+<li><p>rgw: fix listing objects that start with underscore</p></li>
+<li><p>rgw: fix deep URI resource, CORS bugs</p></li>
+<li><p>librados python binding: fix truncate on 32-bit architectures</p></li>
+<li><p>ceph-disk: fix udev rules</p></li>
+<li><p>rpm: install sysvinit script on package install</p></li>
+<li><p>ceph-disk: fix OSD start on machine reboot on Debian wheezy</p></li>
+<li><p>ceph-disk: activate OSD when journal device appears second</p></li>
+<li><p>ceph-disk: fix various bugs on RHEL/CentOS 6.3</p></li>
+<li><p>ceph-disk: add ‘zap’ command</p></li>
+<li><p>ceph-disk: add ‘[un]suppress-activate’ command for preparing spare disks</p></li>
+<li><p>upstart: start on runlevel [2345] (instead of after the first network interface starts)</p></li>
+<li><p>ceph-fuse, libcephfs: handle mds session reset during session open</p></li>
+<li><p>ceph-fuse, libcephfs: fix two capability revocation bugs</p></li>
+<li><p>ceph-fuse: fix thread creation on startup</p></li>
+<li><p>all daemons: create /var/run/ceph directory on startup if missing</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/98e299052b09924f377099f54095fdf2/v0.61.4.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-3-cuttlefish">
+<h2>v0.61.3 “Cuttlefish”<a class="headerlink" href="#v0-61-3-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release resolves a number of problems with the monitors and leveldb that users have
+been seeing.  Please upgrade.</p>
+<section id="id7">
+<h3>Upgrading<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>There is one known problem with mon upgrades from bobtail.  If the
+ceph-mon conversion on startup is aborted or fails for some reason, we
+do not correctly error out, but instead continue with (in certain cases)
+odd results.  Please be careful if you have to restart the mons during
+the upgrade.  A 0.61.4 release with a fix will be out shortly.</p></li>
+<li><p>In the meantime, for current cuttlefish users, v0.61.3 is safe to use.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Notable Changes<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mon: paxos state trimming fix (resolves runaway disk usage)</p></li>
+<li><p>mon: finer-grained compaction on trim</p></li>
+<li><p>mon: discard messages from disconnected clients (lowers load)</p></li>
+<li><p>mon: leveldb compaction and other stats available via admin socket</p></li>
+<li><p>mon: async compaction (lower overhead)</p></li>
+<li><p>mon: fix bug incorrectly marking osds down with insufficient failure reports</p></li>
+<li><p>osd: fixed small bug in pg request map</p></li>
+<li><p>osd: avoid rewriting pg info on every osdmap</p></li>
+<li><p>osd: avoid internal heartbeta timeouts when scrubbing very large objects</p></li>
+<li><p>osd: fix narrow race with journal replay</p></li>
+<li><p>mon: fixed narrow pg split race</p></li>
+<li><p>rgw: fix leaked space when copying object</p></li>
+<li><p>rgw: fix iteration over large/untrimmed usage logs</p></li>
+<li><p>rgw: fix locking issue with ops log socket</p></li>
+<li><p>rgw: require matching version of librados</p></li>
+<li><p>librbd: make image creation defaults configurable (e.g., create format 2 images via qemu-img)</p></li>
+<li><p>fix units in ‘ceph df’ output</p></li>
+<li><p>debian: fix prerm/postinst hooks to start/stop daemons appropriately</p></li>
+<li><p>upstart: allow uppercase daemons names (and thus hostnames)</p></li>
+<li><p>sysvinit: fix enumeration of local daemons by type</p></li>
+<li><p>sysvinit: fix osd weight calcuation when using -a</p></li>
+<li><p>fix build on unsigned char platforms (e.g., arm)</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/b78e0c71dad0e767761c652db5e439cc/v0.61.3.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-2-cuttlefish">
+<h2>v0.61.2 “Cuttlefish”<a class="headerlink" href="#v0-61-2-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release disables a monitor debug log that consumes disk space and
+fixes a bug when upgrade some monitors from bobtail to cuttlefish.</p>
+<section id="id9">
+<h3>Notable Changes<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>mon: fix conversion of stores with duplicated GV values</p></li>
+<li><p>mon: disable ‘mon debug dump transactions’ by default</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/eb599913307de27de0ed32380445833d/v0.61.2.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-1-cuttlefish">
+<h2>v0.61.1 “Cuttlefish”<a class="headerlink" href="#v0-61-1-cuttlefish" title="Link to this heading"></a></h2>
+<p>This release fixes a problem when upgrading a bobtail cluster that had
+snapshots to cuttlefish.</p>
+<section id="id10">
+<h3>Notable Changes<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>osd: handle upgrade when legacy snap collections are present; repair from previous failed restart</p></li>
+<li><p>ceph-create-keys: fix race with ceph-mon startup (which broke ‘ceph-deploy gatherkeys …’)</p></li>
+<li><p>ceph-create-keys: gracefully handle bad response from ceph-osd</p></li>
+<li><p>sysvinit: do not assume default osd_data when automatically weighting OSD</p></li>
+<li><p>osd: avoid crash from ill-behaved classes using getomapvals</p></li>
+<li><p>debian: fix squeeze dependency</p></li>
+<li><p>mon: debug options to log or dump leveldb transactions</p></li>
+</ul>
+<p>For more detailed information, see <a class="reference download internal" download="" href="../_downloads/d0a4e8c9d85f936f2db133b4588fedad/v0.61.1.txt"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">complete</span> <span class="pre">changelog</span></code></a>.</p>
+</section>
+</section>
+<section id="v0-61-cuttlefish">
+<h2>v0.61 “Cuttlefish”<a class="headerlink" href="#v0-61-cuttlefish" title="Link to this heading"></a></h2>
+<section id="upgrading-from-v0-60">
+<h3>Upgrading from v0.60<a class="headerlink" href="#upgrading-from-v0-60" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The ceph-deploy tool is now the preferred method of provisioning
+new clusters.  For existing clusters created via mkcephfs that
+would like to transition to the new tool, there is a migration
+path, documented at <a class="reference external" href="../rados/deployment/ceph-deploy-transition">Transitioning to ceph-deploy</a>.</p></li>
+<li><p>The sysvinit script (/etc/init.d/ceph) will now verify (and, if
+necessary, update) the OSD’s position in the CRUSH map on startup.
+(The upstart script has always worked this way.) By default, this
+ensures that the OSD is under a ‘host’ with a name that matches the
+hostname (<code class="docutils literal notranslate"><span class="pre">hostname</span> <span class="pre">-s</span></code>).  Legacy clusters create with mkcephfs do
+this by default, so this should not cause any problems, but legacy
+clusters with customized CRUSH maps with an alternate structure
+should set <code class="docutils literal notranslate"><span class="pre">osd</span> <span class="pre">crush</span> <span class="pre">update</span> <span class="pre">on</span> <span class="pre">start</span> <span class="pre">=</span> <span class="pre">false</span></code>.</p></li>
+<li><p>radosgw-admin now uses the term zone instead of cluster to describe
+each instance of the radosgw data store (and corresponding
+collection of radosgw daemons).  The usage for the radosgw-admin
+command and the ‘rgw zone root pool’ config options have changed
+accordingly.</p></li>
+<li><p>rbd progress indicators now go to standard error instead of standard
+out.  (You can disable progress with --no-progress.)</p></li>
+<li><p>The ‘rbd resize …’ command now requires the --allow-shrink option
+when resizing to a smaller size.  Expanding images to a larger size
+is unchanged.</p></li>
+<li><p>Please review the changes going back to 0.56.4 if you are upgrading
+all the way from bobtail.</p></li>
+<li><p>The old ‘ceph stop_cluster’ command has been removed.</p></li>
+<li><p>The sysvinit script now uses the ceph.conf file on the remote host
+when starting remote daemons via the ‘-a’ option.  Note that if ‘-a’
+is used in conjunction with ‘-c path’, the path must also be present
+on the remote host (it is not copied to a temporary file, as it was
+previously).</p></li>
+</ul>
+</section>
+<section id="upgrading-from-v0-56-4-bobtail">
+<h3>Upgrading from v0.56.4 “Bobtail”<a class="headerlink" href="#upgrading-from-v0-56-4-bobtail" title="Link to this heading"></a></h3>
+<p>Please see <a class="reference external" href="../install/upgrading-ceph/#upgrading-from-bobtail-to-cuttlefish">Upgrading from Bobtail to Cuttlefish</a> for details.</p>
+<ul class="simple">
+<li><p>The ceph-deploy tool is now the preferred method of provisioning
+new clusters.  For existing clusters created via mkcephfs that
+would like to transition to the new tool, there is a migration
+path, documented at <a class="reference external" href="../rados/deployment/ceph-deploy-transition">Transitioning to ceph-deploy</a>.</p></li>
+</ul>
+<ul class="simple">
+<li><p>The sysvinit script (/etc/init.d/ceph) will now verify (and, if
+necessary, update) the OSD’s position in the CRUSH map on startup.
+(The upstart script has always worked this way.) By default, this
+ensures that the OSD is under a ‘host’ with a name that matches the
+hostname (<code class="docutils literal notranslate"><span class="pre">hostname</span> <span class="pre">-s</span></code>).  Legacy clusters create with mkcephfs do
+this by default, so this should not cause any problems, but legacy
+clusters with customized CRUSH maps with an alternate structure
+should set <code class="docutils literal notranslate"><span class="pre">osd</span> <span class="pre">crush</span> <span class="pre">update</span> <span class="pre">on</span> <span class="pre">start</span> <span class="pre">=</span> <span class="pre">false</span></code>.</p></li>
+<li><p>radosgw-admin now uses the term zone instead of cluster to describe
+each instance of the radosgw data store (and corresponding
+collection of radosgw daemons).  The usage for the radosgw-admin
+command and the ‘rgw zone root pool’ config options have changed
+accordingly.</p></li>
+<li><p>rbd progress indicators now go to standard error instead of standard
+out.  (You can disable progress with --no-progress.)</p></li>
+<li><p>The ‘rbd resize …’ command now requires the --allow-shrink option
+when resizing to a smaller size.  Expanding images to a larger size
+is unchanged.</p></li>
+<li><p>Please review the changes going back to 0.56.4 if you are upgrading
+all the way from bobtail.</p></li>
+<li><p>The old ‘ceph stop_cluster’ command has been removed.</p></li>
+<li><p>The sysvinit script now uses the ceph.conf file on the remote host
+when starting remote daemons via the ‘-a’ option.  Note that if ‘-a’
+is used in conjunction with ‘-c path’, the path must also be present
+on the remote host (it is not copied to a temporary file, as it was
+previously).</p></li>
+<li><p>The monitor is using a completely new storage strategy and
+intra-cluster protocol.  This means that cuttlefish and bobtail
+monitors do not talk to each other.  When you upgrade each one, it
+will convert its local data store to the new format.  Once you
+upgrade a majority, the quorum will be formed using the new protocol
+and the old monitors will be blocked out until they too get
+upgraded.  For this reason, we recommend not running a mixed-version
+cluster for very long.</p></li>
+<li><p>ceph-mon now requires the creation of its data directory prior to
+--mkfs, similarly to what happens on ceph-osd.  This directory is no
+longer automatically created, and custom scripts should be adjusted to
+reflect just that.</p></li>
+<li><p>The monitor now enforces that MDS names be unique.  If you have
+multiple daemons start with the same id (e.g., <code class="docutils literal notranslate"><span class="pre">mds.a</span></code>) the
+second one will implicitly mark the first as failed.  This makes
+things less confusing and makes a daemon restart faster (we no
+longer wait for the stopped daemon to time out) but existing
+multi-mds configurations may need to be adjusted accordingly to give
+daemons unique names.</p></li>
+<li><p>The ‘ceph osd pool delete &lt;poolname&gt;’ and ‘rados rmpool &lt;poolname&gt;’
+now have safety interlocks with loud warnings that make you confirm
+pool removal.  Any scripts currently rely on these functions zapping
+data without confirmation need to be adjusted accordingly.</p></li>
+</ul>
+</section>
+<section id="notable-changes-from-v0-60">
+<h3>Notable Changes from v0.60<a class="headerlink" href="#notable-changes-from-v0-60" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>rbd: incremental backups</p></li>
+<li><p>rbd: only set STRIPINGV2 feature if striping parameters are incompatible with old versions</p></li>
+<li><p>rbd: require --allow-shrink for resizing images down</p></li>
+<li><p>librbd: many bug fixes</p></li>
+<li><p>rgw: management REST API</p></li>
+<li><p>rgw: fix object corruption on COPY to self</p></li>
+<li><p>rgw: new sysvinit script for rpm-based systems</p></li>
+<li><p>rgw: allow buckets with ‘_’</p></li>
+<li><p>rgw: CORS support</p></li>
+<li><p>mon: many fixes</p></li>
+<li><p>mon: improved trimming behavior</p></li>
+<li><p>mon: fix data conversion/upgrade problem (from bobtail)</p></li>
+<li><p>mon: ability to tune leveldb</p></li>
+<li><p>mon: config-keys service to store arbitrary data on monitor</p></li>
+<li><p>mon: ‘osd crush add|link|unlink|add-bucket …’ commands</p></li>
+<li><p>mon: trigger leveldb compaction on trim</p></li>
+<li><p>osd: per-rados pool quotas (objects, bytes)</p></li>
+<li><p>osd: tool to export, import, and delete PGs from an individual OSD data store</p></li>
+<li><p>osd: notify mon on clean shutdown to avoid IO stall</p></li>
+<li><p>osd: improved detection of corrupted journals</p></li>
+<li><p>osd: ability to tune leveldb</p></li>
+<li><p>osd: improve client request throttling</p></li>
+<li><p>osd, librados: fixes to the LIST_SNAPS operation</p></li>
+<li><p>osd: improvements to scrub error repair</p></li>
+<li><p>osd: better prevention of wedging OSDs with ENOSPC</p></li>
+<li><p>osd: many small fixes</p></li>
+<li><p>mds: fix xattr handling on root inode</p></li>
+<li><p>mds: fixed bugs in journal replay</p></li>
+<li><p>mds: many fixes</p></li>
+<li><p>librados: clean up snapshot constant definitions</p></li>
+<li><p>libcephfs: calls to query CRUSH topology (used by Hadoop)</p></li>
+<li><p>ceph-fuse, libcephfs: misc fixes to mds session management</p></li>
+<li><p>ceph-fuse: disabled cache invalidation (again) due to potential deadlock with kernel</p></li>
+<li><p>sysvinit: try to start all daemons despite early failures</p></li>
+<li><p>ceph-disk: new ‘list’ command</p></li>
+<li><p>ceph-disk: hotplug fixes for RHEL/CentOS</p></li>
+<li><p>ceph-disk: fix creation of OSD data partitions on &gt;2TB disks</p></li>
+<li><p>osd: fix udev rules for RHEL/CentOS systems</p></li>
+<li><p>fix daemon logging during initial startup</p></li>
+</ul>
+</section>
+<section id="notable-changes-from-v0-56-bobtail">
+<h3>Notable changes from v0.56 “Bobtail”<a class="headerlink" href="#notable-changes-from-v0-56-bobtail" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>always use installed system leveldb (Gary Lowell)</p></li>
+<li><p>auth: ability to require new cephx signatures on messages (still off by default)</p></li>
+<li><p>buffer unit testing (Loic Dachary)</p></li>
+<li><p>ceph tool: some CLI interface cleanups</p></li>
+<li><p>ceph-disk: improve multicluster support, error handling (Sage Weil)</p></li>
+<li><p>ceph-disk: support for dm-crypt (Alexandre Marangone)</p></li>
+<li><p>ceph-disk: support for sysvinit, directories or partitions (not full disks)</p></li>
+<li><p>ceph-disk: fix mkfs args on old distros (Alexandre Marangone)</p></li>
+<li><p>ceph-disk: fix creation of OSD data partitions on &gt;2TB disks</p></li>
+<li><p>ceph-disk: hotplug fixes for RHEL/CentOS</p></li>
+<li><p>ceph-disk: new ‘list’ command</p></li>
+<li><p>ceph-fuse, libcephfs: misc fixes to mds session management</p></li>
+<li><p>ceph-fuse: disabled cache invalidation (again) due to potential deadlock with kernel</p></li>
+<li><p>ceph-fuse: enable kernel cache invalidation (Sam Lang)</p></li>
+<li><p>ceph-fuse: fix statfs(2) reporting</p></li>
+<li><p>ceph-fuse: session handling cleanup, bug fixes (Sage Weil)</p></li>
+<li><p>crush: ability to create, remove rules via CLI</p></li>
+<li><p>crush: update weights for all instances of an item, not just the first (Sage Weil)</p></li>
+<li><p>fix daemon logging during initial startup</p></li>
+<li><p>fixed log rotation (Gary Lowell)</p></li>
+<li><p>init-ceph, mkcephfs: close a few security holes with -a  (Sage Weil)</p></li>
+<li><p>libcephfs: calls to query CRUSH topology (used by Hadoop)</p></li>
+<li><p>libcephfs: many fixes, cleanups with the Java bindings</p></li>
+<li><p>libcephfs: new topo API requests for Hadoop (Noah Watkins)</p></li>
+<li><p>librados: clean up snapshot constant definitions</p></li>
+<li><p>librados: fix linger bugs (Josh Durgin)</p></li>
+<li><p>librbd: fixed flatten deadlock (Josh Durgin)</p></li>
+<li><p>librbd: fixed some locking issues with flatten (Josh Durgin)</p></li>
+<li><p>librbd: many bug fixes</p></li>
+<li><p>librbd: optionally wait for flush before enabling writeback (Josh Durgin)</p></li>
+<li><p>many many cleanups (Danny Al-Gaaf)</p></li>
+<li><p>mds, ceph-fuse: fix bugs with replayed requests after MDS restart (Sage Weil)</p></li>
+<li><p>mds, ceph-fuse: manage layouts via xattrs</p></li>
+<li><p>mds: allow xattrs on root</p></li>
+<li><p>mds: fast failover between MDSs (enforce unique mds names)</p></li>
+<li><p>mds: fix xattr handling on root inode</p></li>
+<li><p>mds: fixed bugs in journal replay</p></li>
+<li><p>mds: improve session cleanup (Sage Weil)</p></li>
+<li><p>mds: many fixes (Yan Zheng)</p></li>
+<li><p>mds: misc bug fixes with clustered MDSs and failure recovery</p></li>
+<li><p>mds: misc bug fixes with readdir</p></li>
+<li><p>mds: new encoding for all data types (to allow forward/backward compatibility) (Greg Farnum)</p></li>
+<li><p>mds: store and update backpointers/traces on directory, file objects (Sam Lang)</p></li>
+<li><p>mon: ‘osd crush add|link|unlink|add-bucket …’ commands</p></li>
+<li><p>mon: ability to tune leveldb</p></li>
+<li><p>mon: approximate recovery, IO workload stats</p></li>
+<li><p>mon: avoid marking entire CRUSH subtrees out (e.g., if an entire rack goes offline)</p></li>
+<li><p>mon: config-keys service to store arbitrary data on monitor</p></li>
+<li><p>mon: easy adjustment of crush tunables via ‘ceph osd crush tunables …’</p></li>
+<li><p>mon: easy creation of crush rules vai ‘ceph osd rule …’</p></li>
+<li><p>mon: fix data conversion/upgrade problem (from bobtail)</p></li>
+<li><p>mon: improved trimming behavior</p></li>
+<li><p>mon: many fixes</p></li>
+<li><p>mon: new ‘ceph df [detail]’ command</p></li>
+<li><p>mon: new checks for identifying and reporting clock drift</p></li>
+<li><p>mon: rearchitected to utilize single instance of paxos and a key/value store (Joao Luis)</p></li>
+<li><p>mon: safety check for pool deletion</p></li>
+<li><p>mon: shut down safely if disk approaches full (Joao Luis)</p></li>
+<li><p>mon: trigger leveldb compaction on trim</p></li>
+<li><p>msgr: fix comparison of IPv6 addresses (fixes monitor bringup via ceph-deploy, chef)</p></li>
+<li><p>msgr: fixed race in connection reset</p></li>
+<li><p>msgr: optionally tune TCP buffer size to avoid throughput collapse (Jim Schutt)</p></li>
+<li><p>much code cleanup and optimization (Danny Al-Gaaf)</p></li>
+<li><p>osd, librados: ability to list watchers (David Zafman)</p></li>
+<li><p>osd, librados: fixes to the LIST_SNAPS operation</p></li>
+<li><p>osd, librados: new listsnaps command (David Zafman)</p></li>
+<li><p>osd: a few journaling bug fixes</p></li>
+<li><p>osd: ability to tune leveldb</p></li>
+<li><p>osd: add ‘noscrub’, ‘nodeepscrub’ osdmap flags (David Zafman)</p></li>
+<li><p>osd: better prevention of wedging OSDs with ENOSPC</p></li>
+<li><p>osd: ceph-filestore-dump tool for debugging</p></li>
+<li><p>osd: connection handling bug fixes</p></li>
+<li><p>osd: deep-scrub omap keys/values</p></li>
+<li><p>osd: default to libaio for the journal (some performance boost)</p></li>
+<li><p>osd: fix hang in ‘journal aio = true’ mode (Sage Weil)</p></li>
+<li><p>osd: fix pg log trimming (avoids memory bloat on degraded clusters)</p></li>
+<li><p>osd: fix udev rules for RHEL/CentOS systems</p></li>
+<li><p>osd: fixed bug in journal checksums (Sam Just)</p></li>
+<li><p>osd: improved client request throttling</p></li>
+<li><p>osd: improved handling when disk fills up (David Zafman)</p></li>
+<li><p>osd: improved journal corruption detection (Sam Just)</p></li>
+<li><p>osd: improved detection of corrupted journals</p></li>
+<li><p>osd: improvements to scrub error repair</p></li>
+<li><p>osd: make tracking of object snapshot metadata more efficient (Sam Just)</p></li>
+<li><p>osd: many small fixes</p></li>
+<li><p>osd: misc fixes to PG split (Sam Just)</p></li>
+<li><p>osd: move pg info, log into leveldb (== better performance) (David Zafman)</p></li>
+<li><p>osd: notify mon on clean shutdown to avoid IO stall</p></li>
+<li><p>osd: per-rados pool quotas (objects, bytes)</p></li>
+<li><p>osd: refactored watch/notify infrastructure (fixes protocol, removes many bugs) (Sam Just)</p></li>
+<li><p>osd: support for improved hashing of PGs across OSDs via HASHPSPOOL pool flag and feature</p></li>
+<li><p>osd: tool to export, import, and delete PGs from an individual OSD data store</p></li>
+<li><p>osd: trim log more aggressively, avoid appearance of leak memory</p></li>
+<li><p>osd: validate snap collections on startup</p></li>
+<li><p>osd: verify snap collections on startup (Sam Just)</p></li>
+<li><p>radosgw: ACL grants in headers (Caleb Miles)</p></li>
+<li><p>radosgw: ability to listen to fastcgi via a port (Guilhem Lettron)</p></li>
+<li><p>radosgw: fix object copy onto self (Yehuda Sadeh)</p></li>
+<li><p>radosgw: misc fixes</p></li>
+<li><p>rbd-fuse: new tool, package</p></li>
+<li><p>rbd: avoid FIEMAP when importing from file (it can be buggy)</p></li>
+<li><p>rbd: incremental backups</p></li>
+<li><p>rbd: only set STRIPINGV2 feature if striping parameters are incompatible with old versions</p></li>
+<li><p>rbd: require --allow-shrink for resizing images down</p></li>
+<li><p>rbd: udevadm settle on map/unmap to avoid various races (Dan Mick)</p></li>
+<li><p>rbd: wait for udev to settle in strategic places (avoid spurious errors, failures)</p></li>
+<li><p>rgw: CORS support</p></li>
+<li><p>rgw: allow buckets with ‘_’</p></li>
+<li><p>rgw: fix Content-Length on 32-bit machines (Jan Harkes)</p></li>
+<li><p>rgw: fix log rotation</p></li>
+<li><p>rgw: fix object corruption on COPY to self</p></li>
+<li><p>rgw: fixed &gt;4MB range requests (Jan Harkes)</p></li>
+<li><p>rgw: new sysvinit script for rpm-based systems</p></li>
+<li><p>rpm/deb: do not remove /var/lib/ceph on purge (v0.59 was the only release to do so)</p></li>
+<li><p>sysvinit: try to start all daemons despite early failures</p></li>
+<li><p>upstart: automatically set osd weight based on df (Guilhem Lettron)</p></li>
+<li><p>use less memory for logging by default</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-60">
+<h2>v0.60<a class="headerlink" href="#v0-60" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3>Upgrading<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Please note that the recently added librados ‘list_snaps’ function
+call is in a state of flux and is changing slightly in v0.61.  You
+are advised not to make use of it in v0.59 or v0.60.</p></li>
+</ul>
+</section>
+<section id="id12">
+<h3>Notable Changes<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>osd: make tracking of object snapshot metadata more efficient (Sam Just)</p></li>
+<li><p>osd: misc fixes to PG split (Sam Just)</p></li>
+<li><p>osd: improve journal corruption detection (Sam Just)</p></li>
+<li><p>osd: improve handling when disk fills up (David Zafman)</p></li>
+<li><p>osd: add ‘noscrub’, ‘nodeepscrub’ osdmap flags (David Zafman)</p></li>
+<li><p>osd: fix hang in ‘journal aio = true’ mode (Sage Weil)</p></li>
+<li><p>ceph-disk-prepare: fix mkfs args on old distros (Alexandre Marangone)</p></li>
+<li><p>ceph-disk-activate: improve multicluster support, error handling (Sage Weil)</p></li>
+<li><p>librbd: optionally wait for flush before enabling writeback (Josh Durgin)</p></li>
+<li><p>crush: update weights for all instances of an item, not just the first (Sage Weil)</p></li>
+<li><p>mon: shut down safely if disk approaches full (Joao Luis)</p></li>
+<li><p>rgw: fix Content-Length on 32-bit machines (Jan Harkes)</p></li>
+<li><p>mds: store and update backpointers/traces on directory, file objects (Sam Lang)</p></li>
+<li><p>mds: improve session cleanup (Sage Weil)</p></li>
+<li><p>mds, ceph-fuse: fix bugs with replayed requests after MDS restart (Sage Weil)</p></li>
+<li><p>ceph-fuse: enable kernel cache invalidation (Sam Lang)</p></li>
+<li><p>libcephfs: new topo API requests for Hadoop (Noah Watkins)</p></li>
+<li><p>ceph-fuse: session handling cleanup, bug fixes (Sage Weil)</p></li>
+<li><p>much code cleanup and optimization (Danny Al-Gaaf)</p></li>
+<li><p>use less memory for logging by default</p></li>
+<li><p>upstart: automatically set osd weight based on df (Guilhem Lettron)</p></li>
+<li><p>init-ceph, mkcephfs: close a few security holes with -a  (Sage Weil)</p></li>
+<li><p>rpm/deb: do not remove /var/lib/ceph on purge (v0.59 was the only release to do so)</p></li>
+</ul>
+</section>
+</section>
+<section id="v0-59">
+<h2>v0.59<a class="headerlink" href="#v0-59" title="Link to this heading"></a></h2>
+<section id="id13">
+<h3>Upgrading<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The monitor is using a completely new storage strategy and
+intra-cluster protocol.  This means that v0.59 and pre-v0.59
+monitors do not talk to each other.  When you upgrade each one, it
+will convert its local data store to the new format.  Once you
+upgrade a majority, the quorum will be formed using the new protocol
+and the old monitors will be blocked out until they too get
+upgraded.  For this reason, we recommend not running a mixed-version
+cluster for very long.</p></li>
+<li><p>ceph-mon now requires the creation of its data directory prior to
+--mkfs, similarly to what happens on ceph-osd.  This directory is no
+longer automatically created, and custom scripts should be adjusted to
+reflect just that.</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>Notable Changes<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>mon: rearchitected to utilize single instance of paxos and a key/value store (Joao Luis)</p></li>
+<li><p>mon: new ‘ceph df [detail]’ command</p></li>
+<li><p>osd: support for improved hashing of PGs across OSDs via HASHPSPOOL pool flag and feature</p></li>
+<li><p>osd: refactored watch/notify infrastructure (fixes protocol, removes many bugs) (Sam Just)</p></li>
+<li><p>osd, librados: ability to list watchers (David Zafman)</p></li>
+<li><p>osd, librados: new listsnaps command (David Zafman)</p></li>
+<li><p>osd: trim log more aggressively, avoid appearance of leak memory</p></li>
+<li><p>osd: misc split fixes</p></li>
+<li><p>osd: a few journaling bug fixes</p></li>
+<li><p>osd: connection handling bug fixes</p></li>
+<li><p>rbd: avoid FIEMAP when importing from file (it can be buggy)</p></li>
+<li><p>librados: fix linger bugs (Josh Durgin)</p></li>
+<li><p>librbd: fixed flatten deadlock (Josh Durgin)</p></li>
+<li><p>rgw: fixed &gt;4MB range requests (Jan Harkes)</p></li>
+<li><p>rgw: fix log rotation</p></li>
+<li><p>mds: allow xattrs on root</p></li>
+<li><p>ceph-fuse: fix statfs(2) reporting</p></li>
+<li><p>msgr: optionally tune TCP buffer size to avoid throughput collapse (Jim Schutt)</p></li>
+<li><p>consume less memory for logging by default</p></li>
+<li><p>always use system leveldb (Gary Lowell)</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="v0-58">
+<h2>v0.58<a class="headerlink" href="#v0-58" title="Link to this heading"></a></h2>
+<section id="id15">
+<h3>Upgrading<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The monitor now enforces that MDS names be unique.  If you have
+multiple daemons start with the same id (e.g., <code class="docutils literal notranslate"><span class="pre">mds.a</span></code>) the
+second one will implicitly mark the first as failed.  This makes
+things less confusing and makes a daemon restart faster (we no
+longer wait for the stopped daemon to time out) but existing
+multi-mds configurations may need to be adjusted accordingly to give
+daemons unique names.</p></li>
+</ul>
+</section>
+<section id="id16">
+<h3>Notable Changes<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>librbd: fixed some locking issues with flatten (Josh Durgin)</p></li>
+<li><p>rbd: udevadm settle on map/unmap to avoid various races (Dan Mick)</p></li>
+<li><p>osd: move pg info, log into leveldb (== better performance) (David Zafman)</p></li>
+<li><p>osd: fix pg log trimming (avoids memory bloat on degraded clusters)</p></li>
+<li><p>osd: fixed bug in journal checksums (Sam Just)</p></li>
+<li><p>osd: verify snap collections on startup (Sam Just)</p></li>
+<li><p>ceph-disk-prepare/activate: support for dm-crypt (Alexandre Marangone)</p></li>
+<li><p>ceph-disk-prepare/activate: support for sysvinit, directories or partitions (not full disks)</p></li>
+<li><p>msgr: fixed race in connection reset</p></li>
+<li><p>msgr: fix comparison of IPv6 addresses (fixes monitor bringup via ceph-deploy, chef)</p></li>
+<li><p>radosgw: fix object copy onto self (Yehuda Sadeh)</p></li>
+<li><p>radosgw: ACL grants in headers (Caleb Miles)</p></li>
+<li><p>radosgw: ability to listen to fastcgi via a port (Guilhem Lettron)</p></li>
+<li><p>mds: new encoding for all data types (to allow forward/backward compatibility) (Greg Farnum)</p></li>
+<li><p>mds: fast failover between MDSs (enforce unique mds names)</p></li>
+<li><p>crush: ability to create, remove rules via CLI</p></li>
+<li><p>many many cleanups (Danny Al-Gaaf)</p></li>
+<li><p>buffer unit testing (Loic Dachary)</p></li>
+<li><p>fixed log rotation (Gary Lowell)</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="v0-57">
+<h2>v0.57<a class="headerlink" href="#v0-57" title="Link to this heading"></a></h2>
+<p>This development release has a lot of additional functionality
+accumulated over the last couple months.  Most of the bug fixes (with
+the notable exception of the MDS related work) has already been
+backported to v0.56.x, and is not mentioned here.</p>
+<section id="id17">
+<h3>Upgrading<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>The ‘ceph osd pool delete &lt;poolname&gt;’ and ‘rados rmpool &lt;poolname&gt;’
+now have safety interlocks with loud warnings that make you confirm
+pool removal.  Any scripts currently rely on these functions zapping
+data without confirmation need to be adjusted accordingly.</p></li>
+</ul>
+</section>
+<section id="id18">
+<h3>Notable Changes<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>osd: default to libaio for the journal (some performance boost)</p></li>
+<li><p>osd: validate snap collections on startup</p></li>
+<li><p>osd: ceph-filestore-dump tool for debugging</p></li>
+<li><p>osd: deep-scrub omap keys/values</p></li>
+<li><p>ceph tool: some CLI interface cleanups</p></li>
+<li><p>mon: easy adjustment of crush tunables via ‘ceph osd crush tunables …’</p></li>
+<li><p>mon: easy creation of crush rules vai ‘ceph osd rule …’</p></li>
+<li><p>mon: approximate recovery, IO workload stats</p></li>
+<li><p>mon: avoid marking entire CRUSH subtrees out (e.g., if an entire rack goes offline)</p></li>
+<li><p>mon: safety check for pool deletion</p></li>
+<li><p>mon: new checks for identifying and reporting clock drift</p></li>
+<li><p>radosgw: misc fixes</p></li>
+<li><p>rbd: wait for udev to settle in strategic places (avoid spurious errors, failures)</p></li>
+<li><p>rbd-fuse: new tool, package</p></li>
+<li><p>mds, ceph-fuse: manage layouts via xattrs</p></li>
+<li><p>mds: misc bug fixes with clustered MDSs and failure recovery</p></li>
+<li><p>mds: misc bug fixes with readdir</p></li>
+<li><p>libcephfs: many fixes, cleanups with the Java bindings</p></li>
+<li><p>auth: ability to require new cephx signatures on messages (still off by default)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dumpling.html" class="btn btn-neutral float-left" title="Dumpling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bobtail.html" class="btn btn-neutral float-right" title="Bobtail" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

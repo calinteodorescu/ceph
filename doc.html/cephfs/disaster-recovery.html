@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disaster recovery &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cephfs-journal-tool" href="cephfs-journal-tool.html" />
+    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="eviction.html"> Client eviction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scrub.html"> Scrubbing the File System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="full.html"> Handling full file systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="disaster-recovery-experts.html"> Metadata repair</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting.html"> Troubleshooting</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Disaster recovery</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metadata-damage-and-repair">Metadata damage and repair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-pool-damage-files-affected-by-lost-data-pgs">Data pool damage (files affected by lost data PGs)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-journal-tool.html"> cephfs-journal-tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recover-fs-after-mon-store-loss.html"> Recovering file system after monitor store loss</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">Disaster recovery</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/disaster-recovery.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="disaster-recovery">
+<span id="cephfs-disaster-recovery"></span><h1>Disaster recovery<a class="headerlink" href="#disaster-recovery" title="Link to this heading"></a></h1>
+<section id="metadata-damage-and-repair">
+<h2>Metadata damage and repair<a class="headerlink" href="#metadata-damage-and-repair" title="Link to this heading"></a></h2>
+<p>If a file system has inconsistent or missing metadata, it is considered
+<em>damaged</em>.  You may find out about damage from a health message, or in some
+unfortunate cases from an assertion in a running MDS daemon.</p>
+<p>Metadata damage can result either from data loss in the underlying RADOS
+layer (e.g. multiple disk failures that lose all copies of a PG), or from
+software bugs.</p>
+<p>CephFS includes some tools that may be able to recover a damaged file system,
+but to use them safely requires a solid understanding of CephFS internals.
+The documentation for these potentially dangerous operations is on a
+separate page: <a class="reference internal" href="disaster-recovery-experts.html#disaster-recovery-experts"><span class="std std-ref">Advanced: Metadata repair tools</span></a>.</p>
+</section>
+<section id="data-pool-damage-files-affected-by-lost-data-pgs">
+<h2>Data pool damage (files affected by lost data PGs)<a class="headerlink" href="#data-pool-damage-files-affected-by-lost-data-pgs" title="Link to this heading"></a></h2>
+<p>If a PG is lost in a <em>data</em> pool, then the file system will continue
+to operate normally, but some parts of some files will simply
+be missing (reads will return zeros).</p>
+<p>Losing a data PG may affect many files.  Files are split into many objects,
+so identifying which files are affected by loss of particular PGs requires
+a full scan over all object IDs that may exist within the size of a file.
+This type of scan may be useful for identifying which files require
+restoring from a backup.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>This command does not repair any metadata, so when restoring files in
+this case you must <em>remove</em> the damaged file, and replace it in order
+to have a fresh inode.  Do not overwrite damaged files in place.</p>
+</div>
+<p>If you know that objects have been lost from PGs, use the <code class="docutils literal notranslate"><span class="pre">pg_files</span></code>
+subcommand to scan for files that may have been damaged as a result:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cephfs</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">scan</span> <span class="n">pg_files</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pg</span> <span class="nb">id</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">pg</span> <span class="nb">id</span><span class="o">&gt;...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For example, if you have lost data from PGs 1.4 and 4.5, and you would like
+to know which files under /home/bob might have been damaged:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cephfs</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">scan</span> <span class="n">pg_files</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">bob</span> <span class="mf">1.4</span> <span class="mf">4.5</span>
+</pre></div>
+</div>
+<p>The output will be a list of paths to potentially damaged files, one
+per line.</p>
+<p>Note that this command acts as a normal CephFS client to find all the
+files in the file system and read their layouts, so the MDS must be
+up and running.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting.html" class="btn btn-neutral float-left" title="Troubleshooting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cephfs-journal-tool.html" class="btn btn-neutral float-right" title="cephfs-journal-tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

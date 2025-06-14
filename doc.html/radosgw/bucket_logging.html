@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bucket Logging &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ceph Manager Daemon" href="../mgr/index.html" />
+    <link rel="prev" title="UADK Acceleration for Compression" href="uadk-accel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bucket Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#logging-reliability">Logging Reliability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#standard">Standard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#journal">Journal</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#bucket-logging-policy">Bucket Logging Policy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bucket-logging-quota">Bucket Logging Quota</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bucket-logging-rest-api">Bucket Logging REST API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-objects-key-format">Log Objects Key Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#simple">Simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#partitioned">Partitioned</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Journal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Standard</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">Bucket Logging</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/bucket_logging.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="bucket-logging">
+<h1><a class="toc-backref" href="#id3" role="doc-backlink">Bucket Logging</a><a class="headerlink" href="#bucket-logging" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version T.</span></p>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#bucket-logging" id="id3">Bucket Logging</a></p>
+<ul>
+<li><p><a class="reference internal" href="#logging-reliability" id="id4">Logging Reliability</a></p>
+<ul>
+<li><p><a class="reference internal" href="#standard" id="id5">Standard</a></p></li>
+<li><p><a class="reference internal" href="#journal" id="id6">Journal</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#bucket-logging-policy" id="id7">Bucket Logging Policy</a></p></li>
+<li><p><a class="reference internal" href="#bucket-logging-quota" id="id8">Bucket Logging Quota</a></p></li>
+<li><p><a class="reference internal" href="#bucket-logging-rest-api" id="id9">Bucket Logging REST API</a></p></li>
+<li><p><a class="reference internal" href="#log-objects-key-format" id="id10">Log Objects Key Format</a></p>
+<ul>
+<li><p><a class="reference internal" href="#simple" id="id11">Simple</a></p></li>
+<li><p><a class="reference internal" href="#partitioned" id="id12">Partitioned</a></p>
+<ul>
+<li><p><a class="reference internal" href="#log-records" id="id13">Log Records</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id1" id="id14">Journal</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id15">Standard</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>Bucket logging provides a mechanism for logging all access to a bucket. The
+log data can be used to monitor bucket activity, detect unauthorized
+access, get insights into the bucket usage and use the logs as a journal for bucket changes.
+The log records are stored in objects in a separate bucket and can be analyzed later.
+Logging configuration is done at the bucket level and can be enabled or disabled at any time.
+The log bucket can accumulate logs from multiple buckets. It is recommended to configured
+a different “prefix” for each bucket, so that the logs of different buckets will be stored
+in different objects in the log bucket.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The log bucket must be created before enabling logging on a bucket</p></li>
+<li><p>The log bucket cannot be the same as the bucket being logged</p></li>
+<li><p>The log bucket cannot have logging enabled on it</p></li>
+<li><p>The log bucket cannot have any encryption set on in (including SSE-S3 with AES-256)</p></li>
+<li><p>The log bucket cannot have any compression set on it</p></li>
+<li><p>The log bucket must not have RequestPayer enabled</p></li>
+<li><p>Source and log bucket must be in the same zonegroup</p></li>
+<li><p>Source and log buckets may belong to different accounts (with proper bucket policy set)</p></li>
+<li><p>The log bucket may have object lock enabled with default retention period</p></li>
+<li><p>The 16 bit unique ID part of the log object name is an incrementing counter, or a random,
+alphanumeric string if the counter is not available</p></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<section id="logging-reliability">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Logging Reliability</a><a class="headerlink" href="#logging-reliability" title="Link to this heading"></a></h2>
+<p>For performance reasons, even though the log records are written to persistent storage, the log object will
+appear in the log bucket only after some configurable amount of time (or if the maximum object size of 128MB is reached).
+This time (in seconds) could be set per source bucket via a Ceph extension to the REST API,
+or globally via the <cite>rgw_bucket_logging_obj_roll_time</cite> configuration option. If not set, the default time is 5 minutes.
+Adding a log object to the log bucket is done “lazily”, meaning, that if no more records are written to the object, it may
+remain outside of the log bucket even after the configured time has passed.
+To counter that, you can flush all logging objects on a given source bucket to log them,
+regardless if enough time passed or if no more records are written to the object.
+Flushing will happen automatically when logging is disabled on a bucket, its logging configuration is changed, or the bucket is deleted.</p>
+<section id="standard">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Standard</a><a class="headerlink" href="#standard" title="Link to this heading"></a></h3>
+<p>If logging type is set to “Standard” (the default) the log records are written to the log bucket after the bucket operation is completed.
+This means that there are the logging operation may fail, with no indication to he client.</p>
+</section>
+<section id="journal">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Journal</a><a class="headerlink" href="#journal" title="Link to this heading"></a></h3>
+<p>If logging type is set to “Journal”, the records are written to the log bucket before the bucket operation is completed.
+This means that if the logging action fails, the operation will not be executed, and an error will be returned to the client
+Some exceptions exists to that rule, the “Fails Operation” columns in the table below indicate by “No” which operations will not fail even if logging failed.
+Journal mode supports filtering out records based on matches of the prefixes and suffixes of the logged object keys. Regular-expression matching can also be used on these to create filters.
+Note that it may happen that the log records were successfully written, but the bucket operation failed, since the logs are written.</p>
+<p>The following operation are supported in journal mode:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
+<th class="head"><p>Operation Name</p></th>
+<th class="head"><p>Fails Operation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PutObject</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.PUT.OBJECT</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DeleteObject</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.DELETE.OBJECT</span></code></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DeleteObjects</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.POST.DELETE_MULTI_OBJECT</span></code></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CompleteMultipartUpload</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.POST.UPLOAD</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CopyObject</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.PUT.OBJECT</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PutObjectAcl</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.PUT.ACL</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PutObjectLegalHold</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.PUT.LEGAL_HOLD</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PutObjectRetention</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.PUT.RETENTION</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PutObjectTagging</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.PUT.OBJECT_TAGGING</span></code></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DeleteObjectTagging</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">REST.DELETE.OBJECT_TAGGING</span></code></p></td>
+<td><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="bucket-logging-policy">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Bucket Logging Policy</a><a class="headerlink" href="#bucket-logging-policy" title="Link to this heading"></a></h2>
+<p>On the source bucket, only its owner is allowed to enable or disable bucket logging.
+For a bucket to be used as a log bucket, it must have bucket policy that allows that (even if the source bucket and the log bucket are owned by the same user or account).
+The bucket policy must allow the <cite>s3:PutObject</cite> action for the log bucket, to be perfomed by the <cite>logging.s3.amazonaws.com</cite> service principal.
+It should also specify the source bucket and account that are expected to write logs to it. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;Version&quot;</span><span class="p">:</span> <span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Statement&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;Sid&quot;</span><span class="p">:</span> <span class="s2">&quot;AllowLoggingFromSourceBucket&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Effect&quot;</span><span class="p">:</span> <span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Principal&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Service&quot;</span><span class="p">:</span> <span class="s2">&quot;logging.s3.amazonaws.com&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Resource&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:s3:::log-bucket-name/prefix*&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Condition&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;StringEquals&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;aws:SourceAccount&quot;</span><span class="p">:</span> <span class="s2">&quot;source-account-id&quot;</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;ArnLike&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s2">&quot;aws:SourceArn&quot;</span><span class="p">:</span> <span class="s2">&quot;arn:aws:s3:::source-bucket-name&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="bucket-logging-quota">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Bucket Logging Quota</a><a class="headerlink" href="#bucket-logging-quota" title="Link to this heading"></a></h2>
+<p>Bucket and user quota are applied on the log bucket. Quota is checked every time a log record is written,
+and updated when the log object is added to the log bucket. In “Journal” mode, if the quota is exceeded, the logging operation will fail
+and as a result the bucket operation will also fail. In “Standard” mode, the logging operation will be skipped, but the bucket operation will continue.</p>
+</section>
+<section id="bucket-logging-rest-api">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Bucket Logging REST API</a><a class="headerlink" href="#bucket-logging-rest-api" title="Link to this heading"></a></h2>
+<p>Detailed under: <a class="reference external" href="../s3/bucketops">Bucket Operations</a>.</p>
+</section>
+<section id="log-objects-key-format">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Log Objects Key Format</a><a class="headerlink" href="#log-objects-key-format" title="Link to this heading"></a></h2>
+<section id="simple">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Simple</a><a class="headerlink" href="#simple" title="Link to this heading"></a></h3>
+<p>has the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">prefix</span><span class="o">&gt;&lt;</span><span class="n">year</span><span class="o">-</span><span class="n">month</span><span class="o">-</span><span class="n">day</span><span class="o">-</span><span class="n">hour</span><span class="o">-</span><span class="n">minute</span><span class="o">-</span><span class="n">second</span><span class="o">&gt;-&lt;</span><span class="mi">16</span> <span class="nb">bytes</span> <span class="n">unique</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fish</span><span class="o">/</span><span class="mi">2024</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">40</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="n">TI9ROKN05DD4HPQF</span>
+</pre></div>
+</div>
+</section>
+<section id="partitioned">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Partitioned</a><a class="headerlink" href="#partitioned" title="Link to this heading"></a></h3>
+<p>has the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">prefix</span><span class="o">&gt;&lt;</span><span class="n">bucket</span> <span class="n">owner</span><span class="o">&gt;/&lt;</span><span class="n">source</span> <span class="n">region</span><span class="o">&gt;/</span><span class="p">[</span><span class="n">tenant</span><span class="p">:]</span><span class="o">&lt;</span><span class="n">bucket</span> <span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">year</span><span class="o">&gt;/&lt;</span><span class="n">month</span><span class="o">&gt;/&lt;</span><span class="n">day</span><span class="o">&gt;/&lt;</span><span class="n">year</span><span class="o">-</span><span class="n">month</span><span class="o">-</span><span class="n">day</span><span class="o">-</span><span class="n">hour</span><span class="o">-</span><span class="n">minute</span><span class="o">-</span><span class="n">second</span><span class="o">&gt;-&lt;</span><span class="mi">16</span> <span class="nb">bytes</span> <span class="n">unique</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fish</span><span class="o">/</span><span class="n">testid</span><span class="o">//</span><span class="nb">all</span><span class="o">-</span><span class="n">log</span><span class="o">/</span><span class="mi">2024</span><span class="o">/</span><span class="mi">08</span><span class="o">/</span><span class="mi">06</span><span class="o">/</span><span class="mi">2024</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">18</span><span class="o">-</span><span class="mi">0000000000000002</span>
+</pre></div>
+</div>
+<section id="log-records">
+<h4><a class="toc-backref" href="#id13" role="doc-backlink">Log Records</a><a class="headerlink" href="#log-records" title="Link to this heading"></a></h4>
+<p>The log records are space separated string columns and have the following possible formats:</p>
+</section>
+</section>
+<section id="id1">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Journal</a><a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>minimum amount of data used for journaling bucket changes (this is a Ceph extension).</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>bucket owner (or dash if empty)</p></li>
+<li><p>bucket name (or dash if empty). in the format: <code class="docutils literal notranslate"><span class="pre">[tenant:]&lt;bucket</span> <span class="pre">name&gt;</span></code></p></li>
+<li><p>time in the following format: <code class="docutils literal notranslate"><span class="pre">[day/month/year:hour:minute:second</span> <span class="pre">timezone]</span></code></p></li>
+<li><p>object key (or dash if empty)</p></li>
+<li><p>operation in the following format: <code class="docutils literal notranslate"><span class="pre">WEBSITE/REST.&lt;HTTP</span> <span class="pre">method&gt;.&lt;resource&gt;</span></code></p></li>
+<li><p>object size (or dash if empty)</p></li>
+<li><p>version id (dash if empty or question mark if unknown)</p></li>
+<li><p>eTag</p></li>
+</ul>
+</div></blockquote>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">testid</span> <span class="n">fish</span> <span class="p">[</span><span class="mi">06</span><span class="o">/</span><span class="n">Aug</span><span class="o">/</span><span class="mi">2024</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">09</span> <span class="o">+</span><span class="mi">0000</span><span class="p">]</span> <span class="n">myfile</span> <span class="o">-</span> <span class="n">REST</span><span class="o">.</span><span class="n">PUT</span><span class="o">.</span><span class="n">OBJECT</span> <span class="mi">4</span><span class="n">cfdfc1f58e762d3e116787cb92fac60</span>
+<span class="n">testid</span> <span class="n">fish</span> <span class="p">[</span><span class="mi">06</span><span class="o">/</span><span class="n">Aug</span><span class="o">/</span><span class="mi">2024</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">28</span> <span class="o">+</span><span class="mi">0000</span><span class="p">]</span> <span class="n">myfile</span> <span class="n">REST</span><span class="o">.</span><span class="n">DELETE</span><span class="o">.</span><span class="n">OBJECT</span> <span class="mi">4</span><span class="n">cfdfc1f58e762d3e116787cb92fac60</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Standard</a><a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>based on <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/LogFormat.html">AWS Logging Record Format</a>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>bucket owner (or dash if empty)</p></li>
+<li><p>bucket name (or dash if empty) in the format: <code class="docutils literal notranslate"><span class="pre">[tenant:]&lt;bucket</span> <span class="pre">name&gt;</span></code></p></li>
+<li><p>time in the following format: <code class="docutils literal notranslate"><span class="pre">[day/month/year:hour:minute:second</span> <span class="pre">timezone]</span></code> where “timezone” is in UTC offset</p></li>
+<li><p>client IP address (or dash if empty)</p></li>
+<li><p>user or account (or dash if empty)</p></li>
+<li><p>request ID</p></li>
+<li><p>operation in the following format: <code class="docutils literal notranslate"><span class="pre">WEBSITE/REST.&lt;HTTP</span> <span class="pre">method&gt;.&lt;resource&gt;</span></code></p></li>
+<li><p>object key (or dash if empty)</p></li>
+<li><p>request URI in the following format: <code class="docutils literal notranslate"><span class="pre">&quot;&lt;HTTP</span> <span class="pre">method&gt;</span> <span class="pre">&lt;URI&gt;</span> <span class="pre">&lt;HTTP</span> <span class="pre">version&gt;&quot;</span></code></p></li>
+<li><p>HTTP status (or dash if zero). Note that in most cases log is written before the status is known</p></li>
+<li><p>error code (or dash if empty)</p></li>
+<li><p>bytes sent (or dash if zero)</p></li>
+<li><p>object size (or dash if zero)</p></li>
+<li><p>total time (not supported, always a dash)</p></li>
+<li><p>turnaround time in milliseconds</p></li>
+<li><p>referer (or dash if empty)</p></li>
+<li><p>user agent (or dash if empty) inside double quotes</p></li>
+<li><p>version id (or dash if empty)</p></li>
+<li><p>host id taken from “x-amz-id-2” (or dash if empty)</p></li>
+<li><p>signature version (or dash if empty)</p></li>
+<li><p>cipher suite (or dash if empty)</p></li>
+<li><p>authentication type (or dash if empty)</p></li>
+<li><p>host header (or dash if empty)</p></li>
+<li><p>TLS version (or dash if empty)</p></li>
+<li><p>access point ARN (not supported, always a dash)</p></li>
+<li><p>ACL flag (“Yes” if the request is an ACL operation, otherwise dash)</p></li>
+</ul>
+</div></blockquote>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">testid</span> <span class="n">fish</span> <span class="p">[</span><span class="mi">06</span><span class="o">/</span><span class="n">Aug</span><span class="o">/</span><span class="mi">2024</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">25</span> <span class="o">+</span><span class="mi">0000</span><span class="p">]</span> <span class="o">-</span> <span class="n">testid</span> <span class="mf">9e369</span><span class="n">a15</span><span class="o">-</span><span class="mi">5</span><span class="n">f43</span><span class="o">-</span><span class="mi">4</span><span class="n">f07</span><span class="o">-</span><span class="n">b638</span><span class="o">-</span><span class="n">de920b22f91b</span><span class="mf">.4179.15085270386962380710</span> <span class="n">REST</span><span class="o">.</span><span class="n">PUT</span><span class="o">.</span><span class="n">OBJECT</span> <span class="n">myfile</span> <span class="s2">&quot;PUT /fish/myfile HTTP/1.1&quot;</span> <span class="mi">200</span> <span class="o">-</span> <span class="mi">512</span> <span class="mi">512</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="n">localhost</span> <span class="o">-</span> <span class="o">-</span>
+<span class="n">testid</span> <span class="n">fish</span> <span class="p">[</span><span class="mi">06</span><span class="o">/</span><span class="n">Aug</span><span class="o">/</span><span class="mi">2024</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">51</span> <span class="o">+</span><span class="mi">0000</span><span class="p">]</span> <span class="o">-</span> <span class="n">testid</span> <span class="mf">9e369</span><span class="n">a15</span><span class="o">-</span><span class="mi">5</span><span class="n">f43</span><span class="o">-</span><span class="mi">4</span><span class="n">f07</span><span class="o">-</span><span class="n">b638</span><span class="o">-</span><span class="n">de920b22f91b</span><span class="mf">.4179.7046073853138417766</span> <span class="n">REST</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">OBJECT</span> <span class="n">myfile</span> <span class="s2">&quot;GET /fish/myfile HTTP/1.1&quot;</span> <span class="mi">200</span> <span class="o">-</span> <span class="o">-</span> <span class="mi">512</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="n">localhost</span> <span class="o">-</span> <span class="o">-</span>
+<span class="n">testid</span> <span class="n">fish</span> <span class="p">[</span><span class="mi">06</span><span class="o">/</span><span class="n">Aug</span><span class="o">/</span><span class="mi">2024</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">56</span> <span class="o">+</span><span class="mi">0000</span><span class="p">]</span> <span class="o">-</span> <span class="n">testid</span> <span class="mf">9e369</span><span class="n">a15</span><span class="o">-</span><span class="mi">5</span><span class="n">f43</span><span class="o">-</span><span class="mi">4</span><span class="n">f07</span><span class="o">-</span><span class="n">b638</span><span class="o">-</span><span class="n">de920b22f91b</span><span class="mf">.4179.10723158448701085570</span> <span class="n">REST</span><span class="o">.</span><span class="n">DELETE</span><span class="o">.</span><span class="n">OBJECT</span> <span class="n">myfile</span> <span class="s2">&quot;DELETE /fish/myfile1 HTTP/1.1&quot;</span> <span class="mi">200</span> <span class="o">-</span> <span class="o">-</span> <span class="mi">512</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="n">localhost</span> <span class="o">-</span> <span class="o">-</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uadk-accel.html" class="btn btn-neutral float-left" title="UADK Acceleration for Compression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mgr/index.html" class="btn btn-neutral float-right" title="Ceph Manager Daemon" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

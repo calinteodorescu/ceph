@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common Entities &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Authentication and ACLs" href="authentication.html" />
+    <link rel="prev" title="Ceph Object Gateway S3 API" href="../s3.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../account.html">User Accounts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../s3.html">S3 API</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../s3.html#api">API</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Common</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serviceops.html">Service Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bucketops.html">Bucket Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="objectops.html">Object Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cpp.html">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="csharp.html">C#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="java.html">Java</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perl.html">Perl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="php.html">PHP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python.html">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ruby.html">Ruby AWS::SDK Examples (aws-sdk gem ~&gt;2)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ruby.html#ruby-aws-s3-examples-aws-s3-gem">Ruby AWS::S3 Examples (aws-s3 gem)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html#features-support">Features Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html#unsupported-header-fields">Unsupported Header Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Object Gateway</a></li>
+          <li class="breadcrumb-item"><a href="../s3.html">Ceph Object Gateway S3 API</a></li>
+      <li class="breadcrumb-item active">Common Entities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/radosgw/s3/commons.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="common-entities">
+<h1>Common Entities<a class="headerlink" href="#common-entities" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="bucket-and-host-name">
+<h2>Bucket and Host Name<a class="headerlink" href="#bucket-and-host-name" title="Link to this heading"></a></h2>
+<p>There are two different modes of accessing buckets: path-style and virtual-hosted-style.
+Path-style requests identify the bucket as the top-level directory of the request’s path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GET</span> <span class="o">/</span><span class="n">mybucket</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+<span class="n">Host</span><span class="p">:</span> <span class="n">cname</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Most S3 clients default to virtual-hosted-style access, where the bucket name is instead
+indicated as part of the fully-qualified domain name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GET</span> <span class="o">/</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+<span class="n">Host</span><span class="p">:</span> <span class="n">mybucket</span><span class="o">.</span><span class="n">cname</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Path-style access is deprecated by AWS. See the <a class="reference external" href="https://aws.amazon.com/blogs/aws/amazon-s3-path-deprecation-plan-the-rest-of-the-story/">Amazon S3 Path Deprecation
+Plan</a> for more information.</p>
+<p>To configure virtual hosted buckets, you can either set <code class="docutils literal notranslate"><span class="pre">rgw_dns_name</span> <span class="pre">=</span>
+<span class="pre">cname.domain.com</span></code> in <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> or add <code class="docutils literal notranslate"><span class="pre">cname.domain.com</span></code> to the list of
+<code class="docutils literal notranslate"><span class="pre">hostnames</span></code> in your zonegroup configuration. See <a class="reference internal" href="../multisite.html#multisite"><span class="std std-ref">Ceph Object Gateway -
+Multisite Configuration</span></a> for more on zonegroups.</p>
+<p>Here is an example of a <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span></code> comamnd that sets <code class="docutils literal notranslate"><span class="pre">rgw_dns_name</span></code>
+to <code class="docutils literal notranslate"><span class="pre">cname.domain.com</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>client.rgw.&lt;ceph<span class="w"> </span>authx<span class="w"> </span>client<span class="w"> </span><span class="k">for</span><span class="w"> </span>rgw&gt;<span class="w"> </span>rgw_dns_name<span class="w"> </span>cname.domain.dom</span>
+</pre></div></div><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can define multiple hostnames directly with the
+<a class="reference internal" href="../config-ref.html#confval-rgw_dns_name"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dns_name</span></code></a> parameter.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When SSL is enabled, the certificates must use a wildcard in the
+domain name in order to match the bucket subdomains.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When Ceph Object Gateways are behind a proxy, use the proxy’s DNS
+name instead. Then you can use <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">client.rgw</span></code> to set the DNS
+name for all instances.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The static website view for the <cite>s3website</cite> API must be served under
+a different domain name. This is configured separately from
+<a class="reference internal" href="../config-ref.html#confval-rgw_dns_name"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dns_name</span></code></a>, in <code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dns_s3website_name</span></code>.</p>
+</div>
+</section>
+<section id="common-request-headers">
+<h2>Common Request Headers<a class="headerlink" href="#common-request-headers" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Request Header</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CONTENT_LENGTH</span></code></p></td>
+<td><p>Length of the request body.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DATE</span></code></p></td>
+<td><p>Request time and date (in UTC).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HOST</span></code></p></td>
+<td><p>The name of the host server.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">AUTHORIZATION</span></code></p></td>
+<td><p>Authorization token.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="common-response-status">
+<h2>Common Response Status<a class="headerlink" href="#common-response-status" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>HTTP Status</p></th>
+<th class="head"><p>Response Code</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p></td>
+<td><p>Continue</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">200</span></code></p></td>
+<td><p>Success</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">201</span></code></p></td>
+<td><p>Created</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">202</span></code></p></td>
+<td><p>Accepted</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">204</span></code></p></td>
+<td><p>NoContent</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">206</span></code></p></td>
+<td><p>Partial content</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">304</span></code></p></td>
+<td><p>NotModified</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>InvalidArgument</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>InvalidDigest</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>BadDigest</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>InvalidBucketName</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>InvalidObjectName</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>UnresolvableGrantByEmailAddress</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>InvalidPart</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>InvalidPartOrder</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>RequestTimeout</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">400</span></code></p></td>
+<td><p>EntityTooLarge</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">403</span></code></p></td>
+<td><p>AccessDenied</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">403</span></code></p></td>
+<td><p>UserSuspended</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">403</span></code></p></td>
+<td><p>RequestTimeTooSkewed</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">404</span></code></p></td>
+<td><p>NoSuchKey</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">404</span></code></p></td>
+<td><p>NoSuchBucket</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">404</span></code></p></td>
+<td><p>NoSuchUpload</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">405</span></code></p></td>
+<td><p>MethodNotAllowed</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">408</span></code></p></td>
+<td><p>RequestTimeout</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">409</span></code></p></td>
+<td><p>BucketAlreadyExists</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">409</span></code></p></td>
+<td><p>BucketNotEmpty</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">411</span></code></p></td>
+<td><p>MissingContentLength</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">412</span></code></p></td>
+<td><p>PreconditionFailed</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">416</span></code></p></td>
+<td><p>InvalidRange</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">422</span></code></p></td>
+<td><p>UnprocessableEntity</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p></td>
+<td><p>InternalError</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../s3.html" class="btn btn-neutral float-left" title="Ceph Object Gateway S3 API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="authentication.html" class="btn btn-neutral float-right" title="Authentication and ACLs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

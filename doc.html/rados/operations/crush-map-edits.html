@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manually editing the CRUSH Map &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Stretch Clusters" href="stretch-mode.html" />
+    <link rel="prev" title="CRUSH Maps" href="crush-map.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Manually editing the CRUSH Map</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getcrushmap">Get the CRUSH Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#decompile-the-crush-map">Decompile the CRUSH Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recompile-the-crush-map">Recompile the CRUSH Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setcrushmap">Set the CRUSH Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sections">Sections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crush-map-devices">CRUSH-Map Devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crush-map-bucket-types">CRUSH-Map Bucket Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crush-map-bucket-hierarchy">CRUSH-Map Bucket Hierarchy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crush-map-rules">CRUSH Map Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migrating-from-a-legacy-ssd-rule-to-device-classes">Migrating from a legacy SSD rule to device classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compare-flag"><code class="docutils literal notranslate"><span class="pre">--compare</span></code> flag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manually-tuning-crush">Manually Tuning CRUSH</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#legacy-values">Legacy values</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Manually editing the CRUSH Map</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/crush-map-edits.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="manually-editing-the-crush-map">
+<h1>Manually editing the CRUSH Map<a class="headerlink" href="#manually-editing-the-crush-map" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Manually editing the CRUSH map is an advanced administrator
+operation. For the majority of installations, CRUSH changes can be
+implemented via the Ceph CLI and do not require manual CRUSH map edits. If
+you have identified a use case where manual edits <em>are</em> necessary with a
+recent Ceph release, consider contacting the Ceph developers at <a class="reference external" href="mailto:dev&#37;&#52;&#48;ceph&#46;io">dev<span>&#64;</span>ceph<span>&#46;</span>io</a>
+so that future versions of Ceph do not have this problem.</p>
+</div>
+<p>To edit an existing CRUSH map, carry out the following procedure:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="#getcrushmap">Get the CRUSH map</a>.</p></li>
+<li><p><a class="reference external" href="#decompilecrushmap">Decompile</a> the CRUSH map.</p></li>
+<li><p>Edit at least one of the following sections: <a class="reference external" href="#crushmapdevices">Devices</a>, <a class="reference external" href="#crushmapbuckets">Buckets</a>, and
+<a class="reference external" href="#crushmaprules">Rules</a>. Use a text editor for this task.</p></li>
+<li><p><a class="reference external" href="#compilecrushmap">Recompile</a> the CRUSH map.</p></li>
+<li><p><a class="reference external" href="#setcrushmap">Set the CRUSH map</a>.</p></li>
+</ol>
+<p>For details on setting the CRUSH map rule for a specific pool, see <a class="reference external" href="../pools#setpoolvalues">Set Pool
+Values</a>.</p>
+<section id="getcrushmap">
+<span id="id1"></span><h2>Get the CRUSH Map<a class="headerlink" href="#getcrushmap" title="Link to this heading"></a></h2>
+<p>To get the CRUSH map for your cluster, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>getcrushmap<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>compiled-crushmap-filename<span class="o">}</span></span>
+</pre></div></div><p>Ceph outputs (<code class="docutils literal notranslate"><span class="pre">-o</span></code>) a compiled CRUSH map to the filename that you have
+specified. Because the CRUSH map is in a compiled form, you must first
+decompile it before you can edit it.</p>
+</section>
+<section id="decompile-the-crush-map">
+<span id="decompilecrushmap"></span><h2>Decompile the CRUSH Map<a class="headerlink" href="#decompile-the-crush-map" title="Link to this heading"></a></h2>
+<p>To decompile the CRUSH map, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>-d<span class="w"> </span><span class="o">{</span>compiled-crushmap-filename<span class="o">}</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>decompiled-crushmap-filename<span class="o">}</span></span>
+</pre></div></div></section>
+<section id="recompile-the-crush-map">
+<span id="compilecrushmap"></span><h2>Recompile the CRUSH Map<a class="headerlink" href="#recompile-the-crush-map" title="Link to this heading"></a></h2>
+<p>To compile the CRUSH map, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>-c<span class="w"> </span><span class="o">{</span>decompiled-crushmap-filename<span class="o">}</span><span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>compiled-crushmap-filename<span class="o">}</span></span>
+</pre></div></div></section>
+<section id="setcrushmap">
+<span id="id2"></span><h2>Set the CRUSH Map<a class="headerlink" href="#setcrushmap" title="Link to this heading"></a></h2>
+<p>To set the CRUSH map for your cluster, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>setcrushmap<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>compiled-crushmap-filename<span class="o">}</span></span>
+</pre></div></div><p>Ceph loads (<code class="docutils literal notranslate"><span class="pre">-i</span></code>) a compiled CRUSH map from the filename that you have
+specified.</p>
+</section>
+<section id="sections">
+<h2>Sections<a class="headerlink" href="#sections" title="Link to this heading"></a></h2>
+<p>A CRUSH map has six main sections:</p>
+<ol class="arabic simple">
+<li><p><strong>tunables:</strong> The preamble at the top of the map describes any <em>tunables</em>
+that are not a part of legacy CRUSH behavior. These tunables correct for old
+bugs, optimizations, or other changes that have been made over the years to
+improve CRUSH’s behavior.</p></li>
+<li><p><strong>devices:</strong> Devices are individual OSDs that store data.</p></li>
+<li><p><strong>types</strong>: Bucket <code class="docutils literal notranslate"><span class="pre">types</span></code> define the types of buckets that are used in
+your CRUSH hierarchy.</p></li>
+<li><p><strong>buckets:</strong> Buckets consist of a hierarchical aggregation of storage
+locations (for example, rows, racks, chassis, hosts) and their assigned
+weights. After the bucket <code class="docutils literal notranslate"><span class="pre">types</span></code> have been defined, the CRUSH map defines
+each node in the hierarchy, its type, and which devices or other nodes it
+contains.</p></li>
+<li><p><strong>rules:</strong> Rules define policy about how data is distributed across
+devices in the hierarchy.</p></li>
+<li><p><strong>choose_args:</strong> <code class="docutils literal notranslate"><span class="pre">choose_args</span></code> are alternative weights associated with
+the hierarchy that have been adjusted in order to optimize data placement. A
+single <code class="docutils literal notranslate"><span class="pre">choose_args</span></code> map can be used for the entire cluster, or a number
+of <code class="docutils literal notranslate"><span class="pre">choose_args</span></code> maps can be created such that each map is crafted for a
+particular pool.</p></li>
+</ol>
+</section>
+<section id="crush-map-devices">
+<span id="crushmapdevices"></span><h2>CRUSH-Map Devices<a class="headerlink" href="#crush-map-devices" title="Link to this heading"></a></h2>
+<p>Devices are individual OSDs that store data. In this section, there is usually
+one device defined for each OSD daemon in your cluster. Devices are identified
+by an <code class="docutils literal notranslate"><span class="pre">id</span></code> (a non-negative integer) and a <code class="docutils literal notranslate"><span class="pre">name</span></code> (usually <code class="docutils literal notranslate"><span class="pre">osd.N</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">N</span></code> is the device’s <code class="docutils literal notranslate"><span class="pre">id</span></code>).</p>
+<p id="crush-map-device-class">A device can also have a <em>device class</em> associated with it: for example,
+<code class="docutils literal notranslate"><span class="pre">hdd</span></code> or <code class="docutils literal notranslate"><span class="pre">ssd</span></code>. Device classes make it possible for devices to be targeted
+by CRUSH rules. This means that device classes allow CRUSH rules to select only
+OSDs that match certain characteristics. For example, you might want an RBD
+pool associated only with SSDs and a different RBD pool associated only with
+HDDs.</p>
+<p>To see a list of devices, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>device<span class="w"> </span>ls</span>
+</pre></div></div><p>The output of this command takes the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>device {num} {osd.name} [class {class}]
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>device<span class="w"> </span>ls</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">device</span> <span class="mi">0</span> <span class="n">osd</span><span class="mf">.0</span> <span class="k">class</span><span class="w"> </span><span class="nc">ssd</span>
+<span class="n">device</span> <span class="mi">1</span> <span class="n">osd</span><span class="mf">.1</span> <span class="k">class</span><span class="w"> </span><span class="nc">hdd</span>
+<span class="n">device</span> <span class="mi">2</span> <span class="n">osd</span><span class="mf">.2</span>
+<span class="n">device</span> <span class="mi">3</span> <span class="n">osd</span><span class="mf">.3</span>
+</pre></div>
+</div>
+<p>In most cases, each device maps to a corresponding <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon. This
+daemon might map to a single storage device, a pair of devices (for example,
+one for data and one for a journal or metadata), or in some cases a small RAID
+device or a partition of a larger storage device.</p>
+</section>
+<section id="crush-map-bucket-types">
+<h2>CRUSH-Map Bucket Types<a class="headerlink" href="#crush-map-bucket-types" title="Link to this heading"></a></h2>
+<p>The second list in the CRUSH map defines ‘bucket’ types. Buckets facilitate a
+hierarchy of nodes and leaves. Node buckets (also known as non-leaf buckets)
+typically represent physical locations in a hierarchy. Nodes aggregate other
+nodes or leaves. Leaf buckets represent <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemons and their
+corresponding storage media.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>In the context of CRUSH, the term “bucket” is used to refer to
+a node in the hierarchy (that is, to a location or a piece of physical
+hardware). In the context of RADOS Gateway APIs, however, the term
+“bucket” has a different meaning.</p>
+</div>
+<p>To add a bucket type to the CRUSH map, create a new line under the list of
+bucket types. Enter <code class="docutils literal notranslate"><span class="pre">type</span></code> followed by a unique numeric ID and a bucket name.
+By convention, there is exactly one leaf bucket type and it is <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">0</span></code>;
+however, you may give the leaf bucket any name you like (for example: <code class="docutils literal notranslate"><span class="pre">osd</span></code>,
+<code class="docutils literal notranslate"><span class="pre">disk</span></code>, <code class="docutils literal notranslate"><span class="pre">drive</span></code>, <code class="docutils literal notranslate"><span class="pre">storage</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># types</span>
+<span class="nb">type</span> <span class="p">{</span><span class="n">num</span><span class="p">}</span> <span class="p">{</span><span class="n">bucket</span><span class="o">-</span><span class="n">name</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># types</span>
+<span class="nb">type</span> <span class="mi">0</span> <span class="n">osd</span>
+<span class="nb">type</span> <span class="mi">1</span> <span class="n">host</span>
+<span class="nb">type</span> <span class="mi">2</span> <span class="n">chassis</span>
+<span class="nb">type</span> <span class="mi">3</span> <span class="n">rack</span>
+<span class="nb">type</span> <span class="mi">4</span> <span class="n">row</span>
+<span class="nb">type</span> <span class="mi">5</span> <span class="n">pdu</span>
+<span class="nb">type</span> <span class="mi">6</span> <span class="n">pod</span>
+<span class="nb">type</span> <span class="mi">7</span> <span class="n">room</span>
+<span class="nb">type</span> <span class="mi">8</span> <span class="n">datacenter</span>
+<span class="nb">type</span> <span class="mi">9</span> <span class="n">zone</span>
+<span class="nb">type</span> <span class="mi">10</span> <span class="n">region</span>
+<span class="nb">type</span> <span class="mi">11</span> <span class="n">root</span>
+</pre></div>
+</div>
+</section>
+<section id="crush-map-bucket-hierarchy">
+<span id="crushmapbuckets"></span><h2>CRUSH-Map Bucket Hierarchy<a class="headerlink" href="#crush-map-bucket-hierarchy" title="Link to this heading"></a></h2>
+<p>The CRUSH algorithm distributes data objects among storage devices according to
+a per-device weight value, approximating a uniform probability distribution.
+CRUSH distributes objects and their replicas according to the hierarchical
+cluster map you define. The CRUSH map represents the available storage devices
+and the logical elements that contain them.</p>
+<p>To map placement groups (PGs) to OSDs across failure domains, a CRUSH map
+defines a hierarchical list of bucket types under <code class="docutils literal notranslate"><span class="pre">#types</span></code> in the generated
+CRUSH map. The purpose of creating a bucket hierarchy is to segregate the leaf
+nodes according to their failure domains (for example: hosts, chassis, racks,
+power distribution units, pods, rows, rooms, and data centers). With the
+exception of the leaf nodes that represent OSDs, the hierarchy is arbitrary and
+you may define it according to your own needs.</p>
+<p>We recommend adapting your CRUSH map to your preferred hardware-naming
+conventions and using bucket names that clearly reflect the physical
+hardware. Clear naming practice can make it easier to administer the cluster
+and easier to troubleshoot problems when OSDs malfunction (or other hardware
+malfunctions) and the administrator needs access to physical hardware.</p>
+<p>In the following example, the CRUSH hierarchy has <code class="docutils literal notranslate"><span class="pre">osd</span></code> leaf buckets
+and two node-level buckets at the <code class="docutils literal notranslate"><span class="pre">host</span></code> level that are in turn children
+of a <code class="docutils literal notranslate"><span class="pre">rack</span></code> bucket :</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The higher type-number <code class="docutils literal notranslate"><span class="pre">rack</span></code> bucket aggregates the
+lower type-number <code class="docutils literal notranslate"><span class="pre">host</span></code> buckets, which in turn aggregate the basal
+type 0 <code class="docutils literal notranslate"><span class="pre">osd</span></code> buckets.</p>
+</div>
+<p>Because leaf nodes reflect storage devices that have already been declared
+under the <code class="docutils literal notranslate"><span class="pre">#devices</span></code> list at the beginning of the CRUSH map, there is no need
+to declare them as bucket instances. The second-lowest bucket type in your
+hierarchy is typically used to aggregate the devices: usually
+the server that houses the storage drives.
+In high-density environments, it is common to have multiple hosts
+or nodes in a single chassis: blades or twins. It
+is important to anticipate the potential consequences of chassis failure. For
+example, during the replacement of a chassis in case of a node failure,
+all of the
+chassis’s hosts and their associated OSDs will be in the <code class="docutils literal notranslate"><span class="pre">down</span></code>
+state and thus unavailable.  It is important to avoid placing multiple replicas
+or shards of data within a single such chassis, which in this case is
+a <em>failure domain</em>.</p>
+<p>To declare a bucket instance, do the following: specify its type, give it a
+unique name (an alphanumeric string), assign it a unique ID expressed as a
+negative integer (this is optional), assign it a weight relative to the total
+capacity and capability of the item(s) in the bucket, assign it a bucket
+algorithm (usually <code class="docutils literal notranslate"><span class="pre">straw2</span></code>), and specify the bucket algorithm’s hash
+(usually <code class="docutils literal notranslate"><span class="pre">0</span></code>, a setting that reflects the hash algorithm <code class="docutils literal notranslate"><span class="pre">rjenkins1</span></code>). A
+bucket may have one or more items. The items may consist of node buckets or
+leaves. Items may have a weight that reflects the relative weight of the item.</p>
+<p>To declare a node bucket, use the following syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">bucket</span><span class="o">-</span><span class="nb">type</span><span class="p">]</span> <span class="p">[</span><span class="n">bucket</span><span class="o">-</span><span class="n">name</span><span class="p">]</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="p">[</span><span class="n">a</span> <span class="n">unique</span> <span class="n">negative</span> <span class="n">numeric</span> <span class="n">ID</span><span class="p">]</span>
+    <span class="n">weight</span> <span class="p">[</span><span class="n">the</span> <span class="n">relative</span> <span class="n">capacity</span><span class="o">/</span><span class="n">capability</span> <span class="n">of</span> <span class="n">the</span> <span class="n">item</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span>
+    <span class="n">alg</span> <span class="p">[</span><span class="n">the</span> <span class="n">bucket</span> <span class="nb">type</span><span class="p">:</span> <span class="n">uniform</span> <span class="o">|</span> <span class="nb">list</span> <span class="o">|</span> <span class="n">tree</span> <span class="o">|</span> <span class="n">straw</span> <span class="o">|</span> <span class="n">straw2</span> <span class="p">]</span>
+    <span class="nb">hash</span> <span class="p">[</span><span class="n">the</span> <span class="nb">hash</span> <span class="nb">type</span><span class="p">:</span> <span class="mi">0</span> <span class="n">by</span> <span class="n">default</span><span class="p">]</span>
+    <span class="n">item</span> <span class="p">[</span><span class="n">item</span><span class="o">-</span><span class="n">name</span><span class="p">]</span> <span class="n">weight</span> <span class="p">[</span><span class="n">weight</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For example, in the above diagram, two host buckets (referred to in the
+declaration below as <code class="docutils literal notranslate"><span class="pre">node1</span></code> and <code class="docutils literal notranslate"><span class="pre">node2</span></code>) and one rack bucket (referred to
+in the declaration below as <code class="docutils literal notranslate"><span class="pre">rack1</span></code>) are defined. The OSDs are declared as
+items within the host buckets:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">host</span> <span class="n">node1</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.0</span> <span class="n">weight</span> <span class="mf">1.00</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.1</span> <span class="n">weight</span> <span class="mf">1.00</span>
+<span class="p">}</span>
+
+<span class="n">host</span> <span class="n">node2</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">2</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.2</span> <span class="n">weight</span> <span class="mf">1.00</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.3</span> <span class="n">weight</span> <span class="mf">1.00</span>
+<span class="p">}</span>
+
+<span class="n">rack</span> <span class="n">rack1</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">3</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>
+    <span class="n">item</span> <span class="n">node1</span> <span class="n">weight</span> <span class="mf">2.00</span>
+    <span class="n">item</span> <span class="n">node2</span> <span class="n">weight</span> <span class="mf">2.00</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this example, the rack bucket does not contain any OSDs. Instead,
+it contains lower-level host buckets and includes the sum of their weight in
+the item entry.</p>
+</div>
+<aside class="topic">
+<p class="topic-title">Bucket Types</p>
+<p>Ceph supports five bucket types. Each bucket type provides a balance between
+performance and reorganization efficiency, and each is different from the
+others. If you are unsure of which bucket type to use, use the <code class="docutils literal notranslate"><span class="pre">straw2</span></code>
+bucket. For a more technical discussion of bucket types than is offered
+here, see <strong>Section 3.4</strong> of <a class="reference external" href="https://ceph.io/assets/pdfs/weil-crush-sc06.pdf">CRUSH - Controlled, Scalable, Decentralized
+Placement of Replicated Data</a>.</p>
+<p>The bucket types are as follows:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p><strong>uniform</strong>: Uniform buckets aggregate devices that have <strong>exactly</strong>
+the same weight. For example, when hardware is commissioned or
+decommissioned, it is often done in sets of machines that have exactly
+the same physical configuration (this can be the case, for example,
+after bulk purchases). When storage devices have exactly the same
+weight, you may use the <code class="docutils literal notranslate"><span class="pre">uniform</span></code> bucket type, which allows CRUSH to
+map replicas into uniform buckets in constant time. If your devices have
+non-uniform weights, you should not use the uniform bucket algorithm.</p></li>
+<li><p><strong>list</strong>: List buckets aggregate their content as linked lists. The
+behavior of list buckets is governed by the <abbr title="Replication Under Scalable Hashing">RUSH</abbr><sub>P</sub> algorithm. In the behavior of this
+bucket type, an object is either relocated to the newest device in
+accordance with an appropriate probability, or it remains on the older
+devices as before. This results in optimal data migration when items are
+added to the bucket. The removal of items from the middle or the tail of
+the list, however, can result in a significant amount of unnecessary
+data movement. This means that list buckets are most suitable for
+circumstances in which they <strong>never shrink or very rarely shrink</strong>.</p></li>
+<li><p><strong>tree</strong>: Tree buckets use a binary search tree. They are more efficient
+at dealing with buckets that contain many items than are list buckets.
+The behavior of tree buckets is governed by the <abbr title="Replication Under Scalable Hashing">RUSH</abbr><sub>R</sub> algorithm. Tree buckets reduce the
+placement time to 0(log<sub>n</sub>). This means that tree buckets are
+suitable for managing large sets of devices or nested buckets.</p></li>
+<li><p><strong>straw</strong>: Straw buckets allow all items in the bucket to “compete”
+against each other for replica placement through a process analogous to
+drawing straws. This is different from the behavior of list buckets and
+tree buckets, which use a divide-and-conquer strategy that either gives
+certain items precedence (for example, those at the beginning of a list)
+or obviates the need to consider entire subtrees of items. Such an
+approach improves the performance of the replica placement process, but
+can also introduce suboptimal reorganization behavior when the contents
+of a bucket change due an addition, a removal, or the re-weighting of an
+item.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>straw2</strong>: Straw2 buckets improve on Straw by correctly avoiding
+any data movement between items when neighbor weights change. For
+example, if the weight of a given item changes (including during the
+operations of adding it to the cluster or removing it from the
+cluster), there will be data movement to or from only that item.
+Neighbor weights are not taken into account.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</aside>
+<aside class="topic">
+<p class="topic-title">Hash</p>
+<p>Each bucket uses a hash algorithm. As of Reef, Ceph supports the
+<code class="docutils literal notranslate"><span class="pre">rjenkins1</span></code> algorithm. To select <code class="docutils literal notranslate"><span class="pre">rjenkins1</span></code> as the hash algorithm,
+enter <code class="docutils literal notranslate"><span class="pre">0</span></code> as your hash setting.</p>
+</aside>
+<aside class="topic" id="weightingbucketitems">
+<p class="topic-title">Weighting Bucket Items</p>
+<p>Ceph expresses bucket weights as doubles, which allows for fine-grained
+weighting. A weight is the relative difference between device capacities. We
+recommend using <code class="docutils literal notranslate"><span class="pre">1.00</span></code> as the relative weight for a 1 TB storage device.
+In such a scenario, a weight of <code class="docutils literal notranslate"><span class="pre">0.50</span></code> would represent approximately 500
+GB, and a weight of <code class="docutils literal notranslate"><span class="pre">3.00</span></code> would represent approximately 3 TB. Buckets
+higher in the CRUSH hierarchy have a weight that is the sum of the weight of
+the leaf items aggregated by the bucket.</p>
+</aside>
+</section>
+<section id="crush-map-rules">
+<span id="crushmaprules"></span><h2>CRUSH Map Rules<a class="headerlink" href="#crush-map-rules" title="Link to this heading"></a></h2>
+<p>CRUSH maps have rules that include data placement for a pool: these are
+called “CRUSH rules”. The default CRUSH map has one rule for each pool. If you
+are running a large cluster, you might create many pools and each of those
+pools might have its own non-default CRUSH rule.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In most cases, there is no need to modify the default rule. When a
+new pool is created, by default the rule will be set to the value <code class="docutils literal notranslate"><span class="pre">0</span></code>
+(which indicates the default CRUSH rule, which has the numeric ID <code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
+</div>
+<p>CRUSH rules define policy that governs how data is distributed across the devices in
+the hierarchy. The rules define placement as well as replication strategies or
+distribution policies that allow you to specify exactly how CRUSH places data
+replicas. For example, you might create one rule selecting a pair of targets for
+two-way mirroring, another rule for selecting three targets in two different data
+centers for three-way replication, and yet another rule for erasure coding across
+six storage devices. For a detailed discussion of CRUSH rules, see <strong>Section 3.2</strong>
+of <a class="reference external" href="https://ceph.io/assets/pdfs/weil-crush-sc06.pdf">CRUSH - Controlled, Scalable, Decentralized Placement of Replicated Data</a>.</p>
+<p>A normal CRUSH rule takes the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rule &lt;rulename&gt; {
+
+    id [a unique integer ID]
+    type [replicated|erasure]
+    step take &lt;bucket-name&gt; [class &lt;device-class&gt;]
+    step [choose|chooseleaf] [firstn|indep] &lt;N&gt; type &lt;bucket-type&gt;
+    step emit
+}
+</pre></div>
+</div>
+<p>CRUSH MSR (Multi-Step Retry) rules are a distinct type of CRUSH rule which
+supports retrying steps and provides better support for configurations that
+require multiple OSDs within each failure domain. MSR rules take the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rule &lt;rulename&gt; {
+
+    id [a unique integer ID]
+    type [msr_indep|msr_firstn]
+    step take &lt;bucket-name&gt; [class &lt;device-class&gt;]
+    step choosemsr &lt;N&gt; type &lt;bucket-type&gt;
+    step emit
+}
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">id</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A unique integer that identifies the rule.</p>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>A component of the rule mask.</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Denotes the type of replication strategy to be enforced by the
+rule.  msr_firstn and msr_indep are a distinct descent algorithm
+which supports retrying steps within the rule and therefore
+multiple OSDs per failure domain.</p>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>A component of the rule mask.</p>
+</dd>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">replicated</span></code></p>
+</dd>
+<dt class="field-even">Valid Values<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">replicated</span></code>, <code class="docutils literal notranslate"><span class="pre">erasure</span></code>, <code class="docutils literal notranslate"><span class="pre">msr_firstn</span></code>, <code class="docutils literal notranslate"><span class="pre">msr_indep</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">take</span> <span class="pre">&lt;bucket-name&gt;</span> <span class="pre">[class</span> <span class="pre">&lt;device-class&gt;]</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Takes a bucket name and iterates down the tree. If
+the <code class="docutils literal notranslate"><span class="pre">device-class</span></code> argument is specified, the argument must
+match a class assigned to OSDs within the cluster. Only
+devices belonging to the class are included.</p>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>A component of the rule.</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Yes</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">take</span> <span class="pre">data</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choose</span> <span class="pre">firstn</span> <span class="pre">{num}</span> <span class="pre">type</span> <span class="pre">{bucket-type}</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Selects <code class="docutils literal notranslate"><span class="pre">num</span></code> buckets of the given type from within the
+current bucket. <code class="docutils literal notranslate"><span class="pre">{num}</span></code> is usually the number of replicas in
+the pool (in other words, the pool size).</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">{num}</span> <span class="pre">==</span> <span class="pre">0</span></code>, choose <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span></code> buckets (as many buckets as are available).</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span> <span class="pre">&gt;</span> <span class="pre">{num}</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, choose that many buckets.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">{num}</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>, choose <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span> <span class="pre">-</span> <span class="pre">{num}</span></code> buckets.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>A component of the rule.</p>
+</dd>
+<dt class="field-odd">Prerequisite<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Follows <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">take</span></code> or <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choose</span></code>.</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choose</span> <span class="pre">firstn</span> <span class="pre">1</span> <span class="pre">type</span> <span class="pre">row</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">chooseleaf</span> <span class="pre">firstn</span> <span class="pre">{num}</span> <span class="pre">type</span> <span class="pre">{bucket-type}</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Selects a set of buckets of the given type and chooses a leaf
+node (that is, an OSD) from the subtree of each bucket in that set of buckets. The
+number of buckets in the set is usually the number of replicas in
+the pool (in other words, the pool size).</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">{num}</span> <span class="pre">==</span> <span class="pre">0</span></code>, choose <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span></code> buckets (as many buckets as are available).</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span> <span class="pre">&gt;</span> <span class="pre">{num}</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, choose that many buckets.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">{num}</span> <span class="pre">&lt;</span> <span class="pre">0</span></code>, choose <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span> <span class="pre">-</span> <span class="pre">{num}</span></code> buckets.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>A component of the rule. Using <code class="docutils literal notranslate"><span class="pre">chooseleaf</span></code> obviates the need to select a device in a separate step.</p>
+</dd>
+<dt class="field-odd">Prerequisite<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Follows <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">take</span></code> or <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choose</span></code>.</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">chooseleaf</span> <span class="pre">firstn</span> <span class="pre">0</span> <span class="pre">type</span> <span class="pre">row</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">emit</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Outputs the current value on the top of the stack and empties
+the stack. Typically used
+at the end of a rule, but may also be used to choose from different
+trees in the same rule.</p>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>A component of the rule.</p>
+</dd>
+<dt class="field-odd">Prerequisite<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Follows <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choose</span></code>.</p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">emit</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>A single CRUSH rule can be assigned to multiple pools, but
+a single pool cannot have multiple CRUSH rules.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">firstn</span></code> or <code class="docutils literal notranslate"><span class="pre">indep</span></code></p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Determines which replacement strategy CRUSH uses when items (OSDs)
+are marked <code class="docutils literal notranslate"><span class="pre">down</span></code> in the CRUSH map. When this rule is used
+with replicated pools, <code class="docutils literal notranslate"><span class="pre">firstn</span></code> is used. When this rule is
+used with erasure-coded pools, <code class="docutils literal notranslate"><span class="pre">indep</span></code> is used.</p>
+<p>Suppose that a PG is stored on OSDs 1, 2, 3, 4, and 5 and then
+OSD 3 goes down.</p>
+<p>When in <code class="docutils literal notranslate"><span class="pre">firstn</span></code> mode, CRUSH simply adjusts its calculation
+to select OSDs 1 and 2, then selects 3 and discovers that 3 is
+down, retries and selects 4 and 5, and finally goes on to
+select a new OSD: OSD 6. The final CRUSH mapping
+transformation is therefore 1, 2, 3, 4, 5 → 1, 2, 4, 5, 6.</p>
+<p>However, if you were storing an erasure-coded pool, the above
+sequence would have changed the data that is mapped to OSDs 4,
+5, and 6. The <code class="docutils literal notranslate"><span class="pre">indep</span></code> mode attempts to avoid this unwanted
+consequence. When in <code class="docutils literal notranslate"><span class="pre">indep</span></code> mode, CRUSH can be expected to
+select 3, discover that 3 is down, retry, and select 6. The
+final CRUSH mapping transformation is therefore 1, 2, 3, 4, 5
+→ 1, 2, 6, 4, 5.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choosemsr</span> <span class="pre">{num}</span> <span class="pre">type</span> <span class="pre">{bucket-type}</span></code></dt><dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Selects a num buckets of type bucket-type.  msr_firstn and msr_indep
+must use choosemsr rather than choose or chooseleaf.</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">{num}</span> <span class="pre">==</span> <span class="pre">0</span></code>, choose <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span></code> buckets (as many buckets as are available).</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">pool-num-replicas</span> <span class="pre">&gt;</span> <span class="pre">{num}</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, choose that many buckets.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Purpose<span class="colon">:</span></dt>
+<dd class="field-even"><p>Choose step required for msr_firstn and msr_indep rules.</p>
+</dd>
+<dt class="field-odd">Prerequisite<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Follows <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">take</span></code> and precedes <code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">emit</span></code></p>
+</dd>
+<dt class="field-even">Example<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">step</span> <span class="pre">choosemsr</span> <span class="pre">3</span> <span class="pre">type</span> <span class="pre">host</span></code></p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="migrating-from-a-legacy-ssd-rule-to-device-classes">
+<span id="crush-reclassify"></span><h2>Migrating from a legacy SSD rule to device classes<a class="headerlink" href="#migrating-from-a-legacy-ssd-rule-to-device-classes" title="Link to this heading"></a></h2>
+<p>Prior to the Luminous release’s introduction of the <em>device class</em> feature, in
+order to write rules that applied to a specialized device type (for example,
+SSD), it was necessary to manually edit the CRUSH map and maintain a parallel
+hierarchy for each device type. The device class feature provides a more
+transparent way to achieve this end.</p>
+<p>However, if your cluster is migrated from an existing manually-customized
+per-device map to new device class-based rules, all data in the system will be
+reshuffled.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">crushtool</span></code> utility has several commands that can transform a legacy rule
+and hierarchy and allow you to start using the new device class rules. There
+are three possible types of transformation:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">--reclassify-root</span> <span class="pre">&lt;root-name&gt;</span> <span class="pre">&lt;device-class&gt;</span></code></p>
+<p>This command examines everything under <code class="docutils literal notranslate"><span class="pre">root-name</span></code> in the hierarchy and
+rewrites any rules that reference the specified root and that have the
+form <code class="docutils literal notranslate"><span class="pre">take</span> <span class="pre">&lt;root-name&gt;</span></code> so that they instead have the
+form <code class="docutils literal notranslate"><span class="pre">take</span> <span class="pre">&lt;root-name&gt;</span> <span class="pre">class</span> <span class="pre">&lt;device-class&gt;</span></code>. The command also renumbers
+the buckets in such a way that the old IDs are used for the specified
+class’s “shadow tree” and as a result no data movement takes place.</p>
+<p>For example, suppose you have the following as an existing rule:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">replicated_rule</span> <span class="p">{</span>
+   <span class="nb">id</span> <span class="mi">0</span>
+   <span class="nb">type</span> <span class="n">replicated</span>
+   <span class="n">step</span> <span class="n">take</span> <span class="n">default</span>
+   <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">0</span> <span class="nb">type</span> <span class="n">rack</span>
+   <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the root <code class="docutils literal notranslate"><span class="pre">default</span></code> is reclassified as class <code class="docutils literal notranslate"><span class="pre">hdd</span></code>, the new rule will
+be as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="n">replicated_rule</span> <span class="p">{</span>
+   <span class="nb">id</span> <span class="mi">0</span>
+   <span class="nb">type</span> <span class="n">replicated</span>
+   <span class="n">step</span> <span class="n">take</span> <span class="n">default</span> <span class="k">class</span><span class="w"> </span><span class="nc">hdd</span>
+   <span class="n">step</span> <span class="n">chooseleaf</span> <span class="n">firstn</span> <span class="mi">0</span> <span class="nb">type</span> <span class="n">rack</span>
+   <span class="n">step</span> <span class="n">emit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-subtree-class</span> <span class="pre">&lt;bucket-name&gt;</span> <span class="pre">&lt;device-class&gt;</span></code></p>
+<p>This command marks every device in the subtree that is rooted at <em>bucket-name</em>
+with the specified device class.</p>
+<p>This command is typically used in conjunction with the <code class="docutils literal notranslate"><span class="pre">--reclassify-root</span></code> option
+in order to ensure that all devices in that root are labeled with the
+correct class. In certain circumstances, however, some of those devices
+are correctly labeled with a different class and must not be relabeled. To
+manage this difficulty, one can exclude the <code class="docutils literal notranslate"><span class="pre">--set-subtree-class</span></code>
+option. The remapping process will not be perfect, because the previous rule
+had an effect on devices of multiple classes but the adjusted rules will map
+only to devices of the specified device class. However, when there are not many
+outlier devices, the resulting level of data movement is often within tolerable
+limits.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reclassify-bucket</span> <span class="pre">&lt;match-pattern&gt;</span> <span class="pre">&lt;device-class&gt;</span> <span class="pre">&lt;default-parent&gt;</span></code></p>
+<p>This command allows you to merge a parallel type-specific hierarchy with the
+normal hierarchy. For example, many users have maps that resemble the
+following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">host</span> <span class="n">node1</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">2</span>           <span class="c1"># do not change unnecessarily</span>
+    <span class="c1"># weight 109.152</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>  <span class="c1"># rjenkins1</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.0</span> <span class="n">weight</span> <span class="mf">9.096</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.1</span> <span class="n">weight</span> <span class="mf">9.096</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.2</span> <span class="n">weight</span> <span class="mf">9.096</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.3</span> <span class="n">weight</span> <span class="mf">9.096</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.4</span> <span class="n">weight</span> <span class="mf">9.096</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.5</span> <span class="n">weight</span> <span class="mf">9.096</span>
+    <span class="o">...</span>
+ <span class="p">}</span>
+
+ <span class="n">host</span> <span class="n">node1</span><span class="o">-</span><span class="n">ssd</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">10</span>          <span class="c1"># do not change unnecessarily</span>
+    <span class="c1"># weight 2.000</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>  <span class="c1"># rjenkins1</span>
+    <span class="n">item</span> <span class="n">osd</span><span class="mf">.80</span> <span class="n">weight</span> <span class="mf">2.000</span>
+<span class="o">...</span>
+ <span class="p">}</span>
+
+ <span class="n">root</span> <span class="n">default</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">1</span>           <span class="c1"># do not change unnecessarily</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>  <span class="c1"># rjenkins1</span>
+    <span class="n">item</span> <span class="n">node1</span> <span class="n">weight</span> <span class="mf">110.967</span>
+    <span class="o">...</span>
+ <span class="p">}</span>
+
+ <span class="n">root</span> <span class="n">ssd</span> <span class="p">{</span>
+    <span class="nb">id</span> <span class="o">-</span><span class="mi">18</span>          <span class="c1"># do not change unnecessarily</span>
+    <span class="c1"># weight 16.000</span>
+    <span class="n">alg</span> <span class="n">straw2</span>
+    <span class="nb">hash</span> <span class="mi">0</span>  <span class="c1"># rjenkins1</span>
+    <span class="n">item</span> <span class="n">node1</span><span class="o">-</span><span class="n">ssd</span> <span class="n">weight</span> <span class="mf">2.000</span>
+<span class="o">...</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>This command reclassifies each bucket that matches a certain
+pattern. The pattern can be of the form <code class="docutils literal notranslate"><span class="pre">%suffix</span></code> or <code class="docutils literal notranslate"><span class="pre">prefix%</span></code>. For
+example, in the above example, we would use the pattern
+<code class="docutils literal notranslate"><span class="pre">%-ssd</span></code>. For each matched bucket, the remaining portion of the
+name (corresponding to the <code class="docutils literal notranslate"><span class="pre">%</span></code> wildcard) specifies the <em>base bucket</em>. All
+devices in the matched bucket are labeled with the specified
+device class and then moved to the base bucket. If the base bucket
+does not exist (for example, <code class="docutils literal notranslate"><span class="pre">node12-ssd</span></code> exists but <code class="docutils literal notranslate"><span class="pre">node12</span></code> does
+not), then it is created and linked under the specified
+<em>default parent</em> bucket. In each case, care is taken to preserve
+the old bucket IDs for the new shadow buckets in order to prevent data
+movement. Any rules with <code class="docutils literal notranslate"><span class="pre">take</span></code> steps that reference the old
+buckets are adjusted accordingly.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reclassify-bucket</span> <span class="pre">&lt;bucket-name&gt;</span> <span class="pre">&lt;device-class&gt;</span> <span class="pre">&lt;base-bucket&gt;</span></code></p>
+<p>The same command can also be used without a wildcard in order to map a
+single bucket. For example, in the previous example, we want the
+<code class="docutils literal notranslate"><span class="pre">ssd</span></code> bucket to be mapped to the <code class="docutils literal notranslate"><span class="pre">default</span></code> bucket.</p>
+</li>
+<li><p>The final command to convert the map that consists of the above fragments
+resembles the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>getcrushmap<span class="w"> </span>-o<span class="w"> </span>original</span>
+<span class="prompt2">crushtool<span class="w"> </span>-i<span class="w"> </span>original<span class="w"> </span>--reclassify<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set-subtree-class<span class="w"> </span>default<span class="w"> </span>hdd<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reclassify-root<span class="w"> </span>default<span class="w"> </span>hdd<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reclassify-bucket<span class="w"> </span>%-ssd<span class="w"> </span>ssd<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reclassify-bucket<span class="w"> </span>ssd<span class="w"> </span>ssd<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-o<span class="w"> </span>adjusted</span>
+</pre></div></div></li>
+</ol>
+</section>
+<section id="compare-flag">
+<h2><code class="docutils literal notranslate"><span class="pre">--compare</span></code> flag<a class="headerlink" href="#compare-flag" title="Link to this heading"></a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">--compare</span></code> flag is available to make sure that the conversion performed in
+<a class="reference internal" href="#crush-reclassify"><span class="std std-ref">Migrating from a legacy SSD rule to device classes</span></a> is
+correct. This flag tests a large sample of inputs against the CRUSH map and
+checks that the expected result is output. The options that control these
+inputs are the same as the options that apply to the <code class="docutils literal notranslate"><span class="pre">--test</span></code> command. For an
+illustration of how this <code class="docutils literal notranslate"><span class="pre">--compare</span></code> command applies to the above example,
+see the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>-i<span class="w"> </span>original<span class="w"> </span>--compare<span class="w"> </span>adjusted</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="mi">0</span> <span class="n">had</span> <span class="mi">0</span><span class="o">/</span><span class="mi">10240</span> <span class="n">mismatched</span> <span class="n">mappings</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rule</span> <span class="mi">1</span> <span class="n">had</span> <span class="mi">0</span><span class="o">/</span><span class="mi">10240</span> <span class="n">mismatched</span> <span class="n">mappings</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">maps</span> <span class="n">appear</span> <span class="n">equivalent</span>
+</pre></div>
+</div>
+<p>If the command finds any differences, the ratio of remapped inputs is reported
+in the parentheses.</p>
+<p>When you are satisfied with the adjusted map, apply it to the cluster by
+running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>setcrushmap<span class="w"> </span>-i<span class="w"> </span>adjusted</span>
+</pre></div></div></section>
+<section id="manually-tuning-crush">
+<h2>Manually Tuning CRUSH<a class="headerlink" href="#manually-tuning-crush" title="Link to this heading"></a></h2>
+<p>If you have verified that all clients are running recent code, you can adjust
+the CRUSH tunables by extracting the CRUSH map, modifying the values, and
+reinjecting the map into the cluster. The procedure is carried out as follows:</p>
+<ol class="arabic">
+<li><p>Extract the latest CRUSH map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>getcrushmap<span class="w"> </span>-o<span class="w"> </span>/tmp/crush</span>
+</pre></div></div></li>
+<li><p>Adjust tunables. In our tests, the following values appear to result in the
+best behavior for both large and small clusters. The procedure requires that
+you specify the <code class="docutils literal notranslate"><span class="pre">--enable-unsafe-tunables</span></code> flag in the <code class="docutils literal notranslate"><span class="pre">crushtool</span></code>
+command. Use this option with <strong>extreme care</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>-i<span class="w"> </span>/tmp/crush<span class="w"> </span>--set-choose-local-tries<span class="w"> </span><span class="m">0</span><span class="w"> </span>--set-choose-local-fallback-tries<span class="w"> </span><span class="m">0</span><span class="w"> </span>--set-choose-total-tries<span class="w"> </span><span class="m">50</span><span class="w"> </span>-o<span class="w"> </span>/tmp/crush.new</span>
+</pre></div></div></li>
+<li><p>Reinject the modified map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>setcrushmap<span class="w"> </span>-i<span class="w"> </span>/tmp/crush.new</span>
+</pre></div></div></li>
+</ol>
+</section>
+<section id="legacy-values">
+<h2>Legacy values<a class="headerlink" href="#legacy-values" title="Link to this heading"></a></h2>
+<p>To set the legacy values of the CRUSH tunables, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">crushtool<span class="w"> </span>-i<span class="w"> </span>/tmp/crush<span class="w"> </span>--set-choose-local-tries<span class="w"> </span><span class="m">2</span><span class="w"> </span>--set-choose-local-fallback-tries<span class="w"> </span><span class="m">5</span><span class="w"> </span>--set-choose-total-tries<span class="w"> </span><span class="m">19</span><span class="w"> </span>--set-chooseleaf-descend-once<span class="w"> </span><span class="m">0</span><span class="w"> </span>--set-chooseleaf-vary-r<span class="w"> </span><span class="m">0</span><span class="w"> </span>-o<span class="w"> </span>/tmp/crush.legacy</span>
+</pre></div></div><p>The special <code class="docutils literal notranslate"><span class="pre">--enable-unsafe-tunables</span></code> flag is required. Be careful when
+running old versions of the <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon after reverting to legacy
+values, because the feature bit is not perfectly enforced.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="crush-map.html" class="btn btn-neutral float-left" title="CRUSH Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="stretch-mode.html" class="btn btn-neutral float-right" title="Stretch Clusters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

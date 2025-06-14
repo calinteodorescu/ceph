@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developing with cephadm &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Host Maintenance" href="host-maintenance.html" />
+    <link rel="prev" title="CEPHADM Developer Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../developer_guide/index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/essentials.html">Essentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/merging.html">What is Merged and When</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/issue-tracker.html">Issue tracker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/tests-unit-tests.html">Tests: Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/testing_integration_tests/index.html">Tests: Integration Tests (Teuthology)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/running-tests-locally.html">Tests: Running Tests (Locally)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/tests-windows.html">Tests: Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/dash-devel.html">Ceph Dashboard Developer Documentation (formerly HACKING.rst)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/jaegertracing.html">Tracing Developer Documentation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Cephadm Developer Documentation</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Developing with cephadm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vstart-cephadm">vstart --cephadm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cstart-and-cpatch">cstart and cpatch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cephadm-bootstrap-shared-ceph-folder">cephadm bootstrap --shared_ceph_folder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kcli-a-virtualization-management-tool-to-make-easy-orchestrators-development">Kcli: a virtualization management tool to make easy orchestrators development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cephadm-box-container-podman-inside-podman-development-environment">Cephadm box container (Podman inside Podman) development environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#note-regarding-network-calls-from-cli-handlers">Note regarding network calls from CLI handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#note-regarding-different-variables-used-in-the-code">Note regarding different variables used in the code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compiling-cephadm">Compiling cephadm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="host-maintenance.html">Host Maintenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compliance-check.html">Compliance Check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design/storage_devices_and_osds.html">Storage devices and OSDs management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalability-notes.html">Notes and Thoughts on Cephadm’s scalability</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../developer_guide/debugging-gdb.html">Debugging with GDB</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../cephadm/index.html">Cephadm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">CEPHADM Developer Documentation</a></li>
+      <li class="breadcrumb-item active">Developing with cephadm</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dev/cephadm/developing-cephadm.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="developing-with-cephadm">
+<h1>Developing with cephadm<a class="headerlink" href="#developing-with-cephadm" title="Link to this heading"></a></h1>
+<p>There are several ways to develop with cephadm.  Which you use depends
+on what you’re trying to accomplish.</p>
+<section id="vstart-cephadm">
+<h2>vstart --cephadm<a class="headerlink" href="#vstart-cephadm" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Start a cluster with vstart, with cephadm configured</p></li>
+<li><p>Manage any additional daemons with cephadm</p></li>
+<li><p>Requires compiled ceph binaries</p></li>
+</ul>
+<p>In this case, the mon and manager at a minimum are running in the usual
+vstart way, not managed by cephadm.  But cephadm is enabled and the local
+host is added, so you can deploy additional daemons or add additional hosts.</p>
+<p>This works well for developing cephadm itself, because any mgr/cephadm
+or cephadm/cephadm code changes can be applied by kicking ceph-mgr
+with <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">fail</span> <span class="pre">x</span></code>.  (When the mgr (re)starts, it loads the
+cephadm/cephadm script into memory.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MON</span><span class="o">=</span><span class="mi">1</span> <span class="n">MGR</span><span class="o">=</span><span class="mi">1</span> <span class="n">OSD</span><span class="o">=</span><span class="mi">0</span> <span class="n">MDS</span><span class="o">=</span><span class="mi">0</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">x</span> <span class="o">--</span><span class="n">cephadm</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">~/.ssh/id_dsa[.pub]</span></code> is used as the cluster key.  It is assumed that
+this key is authorized to ssh with no passphrase to root&#64;`hostname`.</p></li>
+<li><p>cephadm does not try to manage any daemons started by vstart.sh (any
+nonzero number in the environment variables).  No service spec is defined
+for mon or mgr.</p></li>
+<li><p>You’ll see health warnings from cephadm about stray daemons--that’s because
+the vstart-launched daemons aren’t controlled by cephadm.</p></li>
+<li><p>The default image is <code class="docutils literal notranslate"><span class="pre">quay.io/ceph-ci/ceph:main</span></code>, but you can change
+this by passing <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">container_image=...</span></code> or <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">global</span> <span class="pre">container_image</span> <span class="pre">...</span></code>.</p></li>
+</ul>
+</section>
+<section id="cstart-and-cpatch">
+<h2>cstart and cpatch<a class="headerlink" href="#cstart-and-cpatch" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">cstart.sh</span></code> script will launch a cluster using cephadm and put the
+conf and keyring in your build dir, so that the <code class="docutils literal notranslate"><span class="pre">bin/ceph</span> <span class="pre">...</span></code> CLI works
+(just like with vstart).  The <code class="docutils literal notranslate"><span class="pre">ckill.sh</span></code> script will tear it down.</p>
+<ul class="simple">
+<li><p>A unique but stable fsid is stored in <code class="docutils literal notranslate"><span class="pre">fsid</span></code> (in the build dir).</p></li>
+<li><p>The mon port is random, just like with vstart.</p></li>
+<li><p>The container image is <code class="docutils literal notranslate"><span class="pre">quay.io/ceph-ci/ceph:$tag</span></code> where $tag is
+the first 8 chars of the fsid.</p></li>
+<li><p>If the container image doesn’t exist yet when you run cstart for the
+first time, it is built with cpatch.</p></li>
+</ul>
+<p>There are a few advantages here:</p>
+<ul class="simple">
+<li><p>The cluster is a “normal” cephadm cluster that looks and behaves
+just like a user’s cluster would.  In contrast, vstart and teuthology
+clusters tend to be special in subtle (and not-so-subtle) ways (e.g.
+having the <code class="docutils literal notranslate"><span class="pre">lockdep</span></code> turned on).</p></li>
+</ul>
+<p>To start a test cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">cstart</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>The last line of the output will be a line you can cut+paste to update
+the container image.  For instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">cpatch</span> <span class="o">-</span><span class="n">t</span> <span class="n">quay</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">ci</span><span class="o">/</span><span class="n">ceph</span><span class="p">:</span><span class="mi">8</span><span class="n">f509f4e</span>
+</pre></div>
+</div>
+<p>By default, cpatch will patch everything it can think of from the local
+build dir into the container image.  If you are working on a specific
+part of the system, though, can you get away with smaller changes so that
+cpatch runs faster.  For instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">cpatch</span> <span class="o">-</span><span class="n">t</span> <span class="n">quay</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">ci</span><span class="o">/</span><span class="n">ceph</span><span class="p">:</span><span class="mi">8</span><span class="n">f509f4e</span> <span class="o">--</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>will update the mgr modules (minus the dashboard).  Or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">cpatch</span> <span class="o">-</span><span class="n">t</span> <span class="n">quay</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">ci</span><span class="o">/</span><span class="n">ceph</span><span class="p">:</span><span class="mi">8</span><span class="n">f509f4e</span> <span class="o">--</span><span class="n">core</span>
+</pre></div>
+</div>
+<p>will do most binaries and libraries.  Pass <code class="docutils literal notranslate"><span class="pre">-h</span></code> to cpatch for all options.</p>
+<p>Once the container is updated, you can refresh/restart daemons by bouncing
+them with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo systemctl restart ceph-`cat fsid`.target
+</pre></div>
+</div>
+<p>When you’re done, you can tear down the cluster with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo ../src/ckill.sh   # or,
+sudo ../src/cephadm/cephadm rm-cluster --force --fsid `cat fsid`
+</pre></div>
+</div>
+</section>
+<section id="cephadm-bootstrap-shared-ceph-folder">
+<h2>cephadm bootstrap --shared_ceph_folder<a class="headerlink" href="#cephadm-bootstrap-shared-ceph-folder" title="Link to this heading"></a></h2>
+<p>Cephadm can also be used directly without compiled ceph binaries.</p>
+<p>Run cephadm like so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">./</span><span class="n">cephadm</span> <span class="n">bootstrap</span> <span class="o">--</span><span class="n">mon</span><span class="o">-</span><span class="n">ip</span> <span class="mf">127.0.0.1</span> \
+  <span class="o">--</span><span class="n">ssh</span><span class="o">-</span><span class="n">private</span><span class="o">-</span><span class="n">key</span> <span class="o">/</span><span class="n">home</span><span class="o">/&lt;</span><span class="n">user</span><span class="o">&gt;/.</span><span class="n">ssh</span><span class="o">/</span><span class="n">id_rsa</span> \
+  <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">mon</span><span class="o">-</span><span class="n">network</span> \
+  <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">monitoring</span><span class="o">-</span><span class="n">stack</span> <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">defaults</span> \
+  <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">dashboard</span> \
+  <span class="o">--</span><span class="n">shared_ceph_folder</span> <span class="o">/</span><span class="n">home</span><span class="o">/&lt;</span><span class="n">user</span><span class="o">&gt;/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa</span></code> is used as the cluster key.  It is assumed that
+this key is authorized to ssh with no passphrase to root&#64;`hostname`.</p></li>
+</ul>
+<p>Source code changes made in the <code class="docutils literal notranslate"><span class="pre">pybind/mgr/</span></code> directory then
+require a daemon restart to take effect.</p>
+</section>
+<section id="kcli-a-virtualization-management-tool-to-make-easy-orchestrators-development">
+<h2>Kcli: a virtualization management tool to make easy orchestrators development<a class="headerlink" href="#kcli-a-virtualization-management-tool-to-make-easy-orchestrators-development" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/karmab/kcli">Kcli</a> is meant to interact with existing
+virtualization providers (libvirt, KubeVirt, oVirt, OpenStack, VMware vSphere,
+GCP and AWS) and to easily deploy and customize VMs from cloud images.</p>
+<p>It allows you to setup an environment with several vms with your preferred
+configuration (memory, cpus, disks) and OS flavor.</p>
+<section id="main-advantages">
+<h3>main advantages:<a class="headerlink" href="#main-advantages" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fast. Typically you can have a completely new Ceph cluster ready to debug
+and develop orchestrator features in less than 5 minutes.</p></li>
+<li><p>“Close to production” lab. The resulting lab is close to “real” clusters
+in QE labs or even production. It makes it easy to test “real things” in
+an almost “real” environment.</p></li>
+<li><p>Safe and isolated. Does not depend of the things you have installed in
+your machine. And the vms are isolated from your environment.</p></li>
+<li><p>Easy to work “dev” environment. For “not compiled” software pieces,
+for example any mgr module. It is an environment that allow you to test your
+changes interactively.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="installation">
+<h3>Installation:<a class="headerlink" href="#installation" title="Link to this heading"></a></h3>
+<p>Complete documentation in <a class="reference external" href="https://kcli.readthedocs.io/en/latest/#installation">kcli installation</a>
+but we suggest to use the container image approach.</p>
+<dl>
+<dt>So things to do:</dt><dd><ul>
+<li><p>1. Review <a class="reference external" href="https://kcli.readthedocs.io/en/latest/#libvirt-hypervisor-requisites">requirements</a>
+and install/configure whatever is needed to meet them.</p></li>
+<li><p>2. get the kcli image and create one alias for executing the kcli command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># podman pull quay.io/karmab/kcli</span>
+<span class="c1"># alias kcli=&#39;podman run --net host -it --rm --security-opt label=disable -v $HOME/.ssh:/root/.ssh -v $HOME/.kcli:/root/.kcli -v /var/lib/libvirt/images:/var/lib/libvirt/images -v /var/run/libvirt:/var/run/libvirt -v $PWD:/workdir -v /var/tmp:/ignitiondir quay.io/karmab/kcli&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This assumes that /var/lib/libvirt/images is your default libvirt pool…. Adjust if using a different path</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once you have used your kcli tool to create and use different labs, we
+suggest you stick to a given container tag and update your kcli alias.
+Why? kcli uses a rolling release model and sticking to a specific
+container tag will improve overall stability.
+what we want is overall stability.</p>
+</div>
+</section>
+<section id="test-your-kcli-installation">
+<h3>Test your kcli installation:<a class="headerlink" href="#test-your-kcli-installation" title="Link to this heading"></a></h3>
+<p>See the kcli <a class="reference external" href="https://kcli.readthedocs.io/en/latest/#basic-workflow">basic usage workflow</a></p>
+</section>
+<section id="create-a-ceph-lab-cluster">
+<h3>Create a Ceph lab cluster<a class="headerlink" href="#create-a-ceph-lab-cluster" title="Link to this heading"></a></h3>
+<p>In order to make this task simple, we are going to use a “plan”.</p>
+<p>A “plan” is a file where you can define a set of vms with different settings.
+You can define hardware parameters (cpu, memory, disks ..), operating system and
+it also allows you to automate the installation and configuration of any
+software you want to have.</p>
+<p>There is a <a class="reference external" href="https://github.com/karmab/kcli-plans">repository</a> with a collection of
+plans that can be used for different purposes. And we have predefined plans to
+install Ceph clusters using Ceph ansible or cephadm, so let’s create our first Ceph
+cluster using cephadm:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># kcli create plan -u https://github.com/karmab/kcli-plans/blob/master/ceph/ceph_cluster.yml</span>
+</pre></div>
+</div>
+<p>This will create a set of three vms using the plan file pointed by the url.
+After a few minutes, let’s check the cluster:</p>
+<ul>
+<li><p>Take a look to the vms created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># kcli list vms</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enter in the bootstrap node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># kcli ssh ceph-node-00</span>
+</pre></div>
+</div>
+</li>
+<li><p>Take a look to the ceph cluster installed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[centos@ceph-node-00 ~]$ sudo -i
+[root@ceph-node-00 ~]# cephadm version
+[root@ceph-node-00 ~]# cephadm shell
+[ceph: root@ceph-node-00 /]# ceph orch host ls
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="create-a-ceph-cluster-to-make-easy-developing-in-mgr-modules-orchestrators-and-dashboard">
+<h3>Create a Ceph cluster to make easy developing in mgr modules (Orchestrators and Dashboard)<a class="headerlink" href="#create-a-ceph-cluster-to-make-easy-developing-in-mgr-modules-orchestrators-and-dashboard" title="Link to this heading"></a></h3>
+<p>The cephadm kcli plan (and cephadm) are prepared to do that.</p>
+<p>The idea behind this method is to replace several python mgr folders in each of
+the ceph daemons with the source code folders in your host machine.
+This “trick” will allow you to make changes in any orchestrator or dashboard
+module and test them intermediately. (only needed to disable/enable the mgr module)</p>
+<p>So in order to create a ceph cluster for development purposes you must use the
+same cephadm plan but with a new parameter pointing to your Ceph source code folder:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># kcli create plan -u https://github.com/karmab/kcli-plans/blob/master/ceph/ceph_cluster.yml -P ceph_dev_folder=/home/mycodefolder/ceph</span>
+</pre></div>
+</div>
+</section>
+<section id="ceph-dashboard-development">
+<h3>Ceph Dashboard development<a class="headerlink" href="#ceph-dashboard-development" title="Link to this heading"></a></h3>
+<p>Ceph dashboard module is not going to be loaded if previously you have not
+generated the frontend bundle.</p>
+<p>For now, in order load properly the Ceph Dashboardmodule and to apply frontend
+changes you have to run “ng build” on your laptop:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start local frontend build with watcher (in background):</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">nodejs</span>
+<span class="n">cd</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">your</span><span class="o">-</span><span class="n">ceph</span><span class="o">-</span><span class="n">repo</span><span class="o">&gt;</span>
+<span class="n">cd</span> <span class="n">src</span><span class="o">/</span><span class="n">pybind</span><span class="o">/</span><span class="n">mgr</span><span class="o">/</span><span class="n">dashboard</span><span class="o">/</span><span class="n">frontend</span>
+<span class="n">sudo</span> <span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="o">&lt;</span><span class="n">your</span><span class="o">-</span><span class="n">user</span><span class="o">&gt;</span><span class="p">:</span><span class="n">root</span> <span class="n">dist</span> <span class="n">node_modules</span>
+<span class="n">NG_CLI_ANALYTICS</span><span class="o">=</span><span class="n">false</span> <span class="n">npm</span> <span class="n">ci</span>
+<span class="n">npm</span> <span class="n">run</span> <span class="n">build</span> <span class="o">--</span> <span class="o">--</span><span class="n">deleteOutputPath</span><span class="o">=</span><span class="n">false</span> <span class="o">--</span><span class="n">watch</span> <span class="o">&amp;</span>
+</pre></div>
+</div>
+<p>After saving your changes, the frontend bundle will be built again.
+When completed, you’ll see:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Localized bundle generation complete.&quot;</span>
+</pre></div>
+</div>
+<p>Then you can reload your Dashboard browser tab.</p>
+</section>
+</section>
+<section id="cephadm-box-container-podman-inside-podman-development-environment">
+<h2>Cephadm box container (Podman inside Podman) development environment<a class="headerlink" href="#cephadm-box-container-podman-inside-podman-development-environment" title="Link to this heading"></a></h2>
+<p>As kcli has a long startup time, we created an alternative which is faster using
+Podman inside Podman. This approach has its downsides too as we have to
+simulate the creation of osds and addition of devices with loopback devices.</p>
+<p>Cephadm’s box environment is simple to set up. The setup requires you to
+get the required Podman images for Ceph and what we call boxes.
+A box is the first layer of Podman containers which can be either a seed or a
+host. A seed is the main box which holds Cephadm and where you bootstrap the
+cluster. On the other hand, you have hosts with a SSH server setup so you can
+add those hosts to the cluster. The second layer, managed by Cephadm, inside the
+seed box, requires the Ceph image.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This development environment is still experimental and can have unexpected
+behaviour. Please take a look at the road map and the known issues section
+to see what the development progress.</p>
+</div>
+<section id="id1">
+<h3>Requirements<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/containers/podman-compose">podman-compose</a></p></li>
+<li><p>lvm</p></li>
+</ul>
+</section>
+<section id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h3>
+<p>In order to setup Cephadm’s box run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">src</span><span class="o">/</span><span class="n">cephadm</span><span class="o">/</span><span class="n">box</span>
+<span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">v</span> <span class="n">cluster</span> <span class="n">setup</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is recommended to run box with verbose (-v) as it will show the output of
+shell commands being run.</p>
+</div>
+<p>After getting all needed images we can create a simple cluster without OSDs and hosts with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">v</span> <span class="n">cluster</span> <span class="n">start</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>If you want to deploy the cluster with more OSDs and hosts::</dt><dd><p># 3 osds and 3 hosts by default
+sudo box -v cluster start --extended
+# explicitly change number of hosts and osds
+sudo box -v cluster start --extended --osds 5 --hosts 5</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>OSDs are still not supported in the box implementation with Podman. It is
+work in progress.</p>
+</div>
+<p>Without the extended option, explicitly adding either more hosts or OSDs won’t change the state
+of the cluster.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cluster start will try to setup even if cluster setup was not called.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OSDs are created with loopback devices and hence, sudo is needed to
+create loopback devices capable of holding OSDs.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each osd will require 5GiB of space.</p>
+</div>
+<p>After bootstrapping the cluster you can go inside the seed box in which you’ll be
+able to run Cephadm commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">v</span> <span class="n">cluster</span> <span class="n">bash</span>
+<span class="p">[</span><span class="n">root</span><span class="o">@</span><span class="mi">8</span><span class="n">d52a7860245</span><span class="p">]</span> <span class="n">cephadm</span> <span class="o">--</span><span class="n">help</span>
+<span class="p">[</span><span class="n">root</span><span class="o">@</span><span class="mi">8</span><span class="n">d52a7860245</span><span class="p">]</span> <span class="n">cephadm</span> <span class="n">shell</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>If you want to navigate to the dashboard enter <a class="reference external" href="https://localhost:8443">https://localhost:8443</a> on you browser.</p>
+<p>You can also find the hostname and ip of each box container with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="n">cluster</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>and you’ll see something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IP</span>               <span class="n">Name</span>            <span class="n">Hostname</span>
+<span class="mf">172.30.0.2</span>       <span class="n">box_hosts_1</span>     <span class="mi">6283</span><span class="n">b7b51d91</span>
+<span class="mf">172.30.0.3</span>       <span class="n">box_hosts_3</span>     <span class="mi">3</span><span class="n">dcf7f1b25a4</span>
+<span class="mf">172.30.0.4</span>       <span class="n">box_seed_1</span>      <span class="mi">8</span><span class="n">d52a7860245</span>
+<span class="mf">172.30.0.5</span>       <span class="n">box_hosts_2</span>     <span class="n">c3c7b3273bf1</span>
+</pre></div>
+</div>
+<p>To remove the cluster and clean up run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="n">cluster</span> <span class="n">down</span>
+</pre></div>
+</div>
+<p>If you just want to clean up the last cluster created run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="n">cluster</span> <span class="n">cleanup</span>
+</pre></div>
+</div>
+<p>To check all available commands run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>If you want to run the box with Docker you can. You’ll have to specify which
+engine you want to you like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">engine</span> <span class="n">docker</span> <span class="n">cluster</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>With Docker commands like bootstrap and osd creation should be called with sudo
+since it requires privileges to create osds on VGs and LVs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">./</span><span class="n">box</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">engine</span> <span class="n">docker</span> <span class="n">cluster</span> <span class="n">start</span> <span class="o">--</span><span class="n">expanded</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using Docker as the box engine is dangerous as there were some instances
+where the Xorg session was killed.</p>
+</div>
+</section>
+<section id="known-issues">
+<h3>Known issues<a class="headerlink" href="#known-issues" title="Link to this heading"></a></h3>
+<ul>
+<li><p>If you get permission issues with Cephadm because it cannot infer the keyring
+and configuration, please run cephadm like this example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cephadm</span> <span class="n">shell</span> <span class="o">--</span><span class="n">config</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">conf</span> <span class="o">--</span><span class="n">keyring</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">kerying</span>
+</pre></div>
+</div>
+</li>
+<li><p>Docker containers run with the --privileged flag enabled which has been seen
+to make some computers log out.</p></li>
+<li><p>If SELinux is not disabled you’ll probably see unexpected behaviour. For example:
+if not all permissions of Ceph repo files are set to your user it will probably
+fail starting with podman-compose.</p></li>
+<li><p>If running a command it fails to run a podman command because it couldn’t find the
+container, you can debug by running the same podman-compose .. up command displayed
+with the flag -v.</p></li>
+</ul>
+</section>
+<section id="road-map">
+<h3>Road map<a class="headerlink" href="#road-map" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Create osds with <code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">raw</span></code>.</p></li>
+<li><p>Enable ceph-volume to mark loopback devices as a valid block device in
+the inventory.</p></li>
+<li><p>Make the box ready to run dashboard CI tests (including cluster expansion).</p></li>
+</ul>
+</section>
+</section>
+<section id="note-regarding-network-calls-from-cli-handlers">
+<h2>Note regarding network calls from CLI handlers<a class="headerlink" href="#note-regarding-network-calls-from-cli-handlers" title="Link to this heading"></a></h2>
+<p>Executing any cephadm CLI commands like <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">orch</span> <span class="pre">ls</span></code> will block the
+mon command handler thread within the MGR, thus preventing any concurrent
+CLI calls. Note that pressing <code class="docutils literal notranslate"><span class="pre">^C</span></code> will not resolve this situation,
+as <em>only</em> the client will be aborted, but not execution of the command
+within the orchestrator manager module itself. This means, cephadm will
+be completely unresponsive until the execution of the CLI handler is
+fully completed. Note that even <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">orch</span> <span class="pre">ps</span></code> will not respond while
+another handler is executing.</p>
+<p>This means we should do very few synchronous calls to remote hosts.
+As a guideline, cephadm should do at most <code class="docutils literal notranslate"><span class="pre">O(1)</span></code> network calls in CLI handlers.
+Everything else should be done asynchronously in other threads, like <code class="docutils literal notranslate"><span class="pre">serve()</span></code>.</p>
+</section>
+<section id="note-regarding-different-variables-used-in-the-code">
+<h2>Note regarding different variables used in the code<a class="headerlink" href="#note-regarding-different-variables-used-in-the-code" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>a <code class="docutils literal notranslate"><span class="pre">service_type</span></code> is something like mon, mgr, alertmanager etc defined
+in <code class="docutils literal notranslate"><span class="pre">ServiceSpec</span></code></p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">service_id</span></code> is the name of the service. Some services don’t have
+names.</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">service_name</span></code> is <code class="docutils literal notranslate"><span class="pre">&lt;service_type&gt;.&lt;service_id&gt;</span></code></p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">daemon_type</span></code> is the same as the service_type, except for ingress,
+which has the haproxy and keepalived daemon types.</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">daemon_id</span></code> is typically <code class="docutils literal notranslate"><span class="pre">&lt;service_id&gt;.&lt;hostname&gt;.&lt;random-string&gt;</span></code>.
+(Not the case for e.g. OSDs. OSDs are always called OSD.N)</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">daemon_name</span></code> is <code class="docutils literal notranslate"><span class="pre">&lt;daemon_type&gt;.&lt;daemon_id&gt;</span></code></p></li>
+</ul>
+</section>
+<section id="compiling-cephadm">
+<span id="id2"></span><h2>Compiling cephadm<a class="headerlink" href="#compiling-cephadm" title="Link to this heading"></a></h2>
+<p>Recent versions of cephadm are based on <a class="reference external" href="https://peps.python.org/pep-0441/">Python Zip Application</a> support, and
+are “compiled” from Python source code files in the ceph tree. To create your
+own copy of the cephadm “binary” use the script located at
+<code class="docutils literal notranslate"><span class="pre">src/cephadm/build.py</span></code> in the Ceph tree.  The command should take the form
+<code class="docutils literal notranslate"><span class="pre">./src/cephadm/build.py</span> <span class="pre">[output]</span></code>.</p>
+<p>You can pass a limited set of version metadata values to be stored in the
+compiled cepadm. These options can be passed to the build script with
+the <code class="docutils literal notranslate"><span class="pre">--set-version-var</span></code> or <code class="docutils literal notranslate"><span class="pre">-S</span></code> option. The values should take the form
+<code class="docutils literal notranslate"><span class="pre">KEY=VALUE</span></code> and valid keys include:
+* <code class="docutils literal notranslate"><span class="pre">CEPH_GIT_VER</span></code>
+* <code class="docutils literal notranslate"><span class="pre">CEPH_GIT_NICE_VER</span></code>
+* <code class="docutils literal notranslate"><span class="pre">CEPH_RELEASE</span></code>
+* <code class="docutils literal notranslate"><span class="pre">CEPH_RELEASE_NAME</span></code>
+* <code class="docutils literal notranslate"><span class="pre">CEPH_RELEASE_TYPE</span></code></p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">./src/cephadm/build.py</span> <span class="pre">-SCEPH_GIT_VER=$(git</span> <span class="pre">rev-parse</span> <span class="pre">HEAD)</span> <span class="pre">-SCEPH_GIT_NICE_VER=$(git</span> <span class="pre">describe)</span> <span class="pre">/tmp/cephadm</span></code></p>
+<p>Typically these values will be passed to build.py by other, higher level, build
+tools - such as cmake.</p>
+<p>The compiled version of the binary may include a curated set of dependencies
+within the zipapp. The tool used to fetch the bundled dependencies can be
+Python’s <code class="docutils literal notranslate"><span class="pre">pip</span></code>, locally installed RPMs, or bundled dependencies can be
+disabled. To select the mode for bundled dependencies use the
+<code class="docutils literal notranslate"><span class="pre">--bundled-dependencies</span></code> or <code class="docutils literal notranslate"><span class="pre">-B</span></code> option with a value of <code class="docutils literal notranslate"><span class="pre">pip</span></code>, <code class="docutils literal notranslate"><span class="pre">rpm</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">none</span></code>.</p>
+<p>The compiled cephadm zipapp file retains metadata about how it was built. This
+can be displayed by running <code class="docutils literal notranslate"><span class="pre">cephadm</span> <span class="pre">version</span> <span class="pre">--verbose</span></code>.  The command will
+emit a JSON formatted object showing version metadata (if available), a list of
+the bundled dependencies generated by the build script (if bundled dependencies
+were enabled), and a summary of the top-level contents of the zipapp. Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./cephadm version --verbose
+{
+  &quot;name&quot;: &quot;cephadm&quot;,
+  &quot;ceph_git_nice_ver&quot;: &quot;18.0.0-6867-g6a1df2d0b01&quot;,
+  &quot;ceph_git_ver&quot;: &quot;6a1df2d0b01da581bfef3357940e1e88d5ce70ce&quot;,
+  &quot;ceph_release_name&quot;: &quot;reef&quot;,
+  &quot;ceph_release_type&quot;: &quot;dev&quot;,
+  &quot;bundled_packages&quot;: [
+    {
+      &quot;name&quot;: &quot;Jinja2&quot;,
+      &quot;version&quot;: &quot;3.1.2&quot;,
+      &quot;package_source&quot;: &quot;pip&quot;,
+      &quot;requirements_entry&quot;: &quot;Jinja2 == 3.1.2&quot;
+    },
+    {
+      &quot;name&quot;: &quot;MarkupSafe&quot;,
+      &quot;version&quot;: &quot;2.1.3&quot;,
+      &quot;package_source&quot;: &quot;pip&quot;,
+      &quot;requirements_entry&quot;: &quot;MarkupSafe == 2.1.3&quot;
+    }
+  ],
+  &quot;zip_root_entries&quot;: [
+    &quot;Jinja2-3.1.2-py3.9.egg-info&quot;,
+    &quot;MarkupSafe-2.1.3-py3.9.egg-info&quot;,
+    &quot;__main__.py&quot;,
+    &quot;__main__.pyc&quot;,
+    &quot;_cephadmmeta&quot;,
+    &quot;cephadmlib&quot;,
+    &quot;jinja2&quot;,
+    &quot;markupsafe&quot;
+  ]
+}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="CEPHADM Developer Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="host-maintenance.html" class="btn btn-neutral float-right" title="Host Maintenance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

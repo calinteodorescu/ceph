@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Configuration &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CephFS Client Capabilities" href="client-auth.html" />
+    <link rel="prev" title="Purge Queue" href="purge-queue.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Client Configuration Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#updating-client-configuration">Updating Client Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#client-config-reference">Client Config Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="client-auth.html"> Client Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-prerequisites.html"> Mount CephFS: Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-using-kernel-driver.html"> Mount CephFS using Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-using-fuse.html"> Mount CephFS using FUSE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-dokan.html"> Mount CephFS on Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/cephfs-shell.html"> Use the CephFS Shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kernel-features.html"> Supported Features of Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-fuse.html"> Manual: ceph-fuse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/mount.ceph.html"> Manual: mount.ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/mount.fuse.ceph.html"> Manual: mount.fuse.ceph</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">Client Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/client-config-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="client-configuration">
+<h1>Client Configuration<a class="headerlink" href="#client-configuration" title="Link to this heading"></a></h1>
+<section id="updating-client-configuration">
+<h2>Updating Client Configuration<a class="headerlink" href="#updating-client-configuration" title="Link to this heading"></a></h2>
+<p>Certain client configurations can be applied at runtime. To check if a configuration option can be applied (taken into affect by a client) at runtime, use the <cite>config help</cite> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">config</span> <span class="n">help</span> <span class="n">debug_client</span>
+ <span class="n">debug_client</span> <span class="o">-</span> <span class="n">Debug</span> <span class="n">level</span> <span class="k">for</span> <span class="n">client</span>
+ <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">advanced</span><span class="p">)</span>                                                                                                                      <span class="n">Default</span><span class="p">:</span> <span class="mi">0</span><span class="o">/</span><span class="mi">5</span>
+ <span class="n">Can</span> <span class="n">update</span> <span class="n">at</span> <span class="n">runtime</span><span class="p">:</span> <span class="n">true</span>
+
+ <span class="n">The</span> <span class="n">value</span> <span class="n">takes</span> <span class="n">the</span> <span class="n">form</span> <span class="s1">&#39;N&#39;</span> <span class="ow">or</span> <span class="s1">&#39;N/M&#39;</span> <span class="n">where</span> <span class="n">N</span> <span class="ow">and</span> <span class="n">M</span> <span class="n">are</span> <span class="n">values</span> <span class="n">between</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mf">99.</span>  <span class="n">N</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">debug</span> <span class="n">level</span> <span class="n">to</span> <span class="n">log</span> <span class="p">(</span><span class="nb">all</span> <span class="n">values</span> <span class="n">below</span> <span class="n">this</span> <span class="n">are</span> <span class="n">included</span><span class="p">),</span> <span class="ow">and</span> <span class="n">M</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">level</span> <span class="n">to</span> <span class="n">gather</span> <span class="ow">and</span> <span class="n">buffer</span> <span class="ow">in</span> <span class="n">memory</span><span class="o">.</span>  <span class="n">In</span> <span class="n">the</span> <span class="n">event</span> <span class="n">of</span> <span class="n">a</span> <span class="n">crash</span><span class="p">,</span> <span class="n">the</span> <span class="n">most</span> <span class="n">recent</span> <span class="n">items</span> <span class="o">&lt;=</span> <span class="n">M</span> <span class="n">are</span> <span class="n">dumped</span> <span class="n">to</span> <span class="n">the</span> <span class="n">log</span> <span class="n">file</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><cite>config help</cite> tells if a given configuration can be applied at runtime along with the defaults and a description of the configuration option.</p>
+<p>To update a configuration option at runtime, use the <cite>config set</cite> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">config</span> <span class="nb">set</span> <span class="n">client</span> <span class="n">debug_client</span> <span class="mi">20</span><span class="o">/</span><span class="mi">20</span>
+</pre></div>
+</div>
+<p>Note that this changes a given configuration for all clients.</p>
+<p>To check configured options use the <cite>config get</cite> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">config</span> <span class="n">get</span> <span class="n">client</span>
+ <span class="n">WHO</span>    <span class="n">MASK</span> <span class="n">LEVEL</span>    <span class="n">OPTION</span>                    <span class="n">VALUE</span>     <span class="n">RO</span>
+ <span class="n">client</span>      <span class="n">advanced</span> <span class="n">debug_client</span>              <span class="mi">20</span><span class="o">/</span><span class="mi">20</span>
+ <span class="k">global</span>      <span class="n">advanced</span> <span class="n">osd_pool_default_min_size</span> <span class="mi">1</span>
+ <span class="k">global</span>      <span class="n">advanced</span> <span class="n">osd_pool_default_size</span>     <span class="mi">3</span>
+</pre></div>
+</div>
+</section>
+<section id="client-config-reference">
+<h2>Client Config Reference<a class="headerlink" href="#client-config-reference" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_acl_type">
+<span class="sig-name descname"><span class="pre">client_acl_type</span></span><a class="headerlink" href="#confval-client_acl_type" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the ACL type. Currently, only possible value is <code class="docutils literal notranslate"><span class="pre">&quot;posix_acl&quot;</span></code> to
+enable POSIX ACL, or an empty string. This option only takes effect
+when the <code class="docutils literal notranslate"><span class="pre">fuse_default_permissions</span></code> is set to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_cache_mid">
+<span class="sig-name descname"><span class="pre">client_cache_mid</span></span><a class="headerlink" href="#confval-client_cache_mid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set client cache midpoint. The midpoint splits the least recently used
+lists into a hot and warm list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.75</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_cache_size">
+<span class="sig-name descname"><span class="pre">client_cache_size</span></span><a class="headerlink" href="#confval-client_cache_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the number of inodes that the client keeps in the metadata cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">16Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_caps_release_delay">
+<span class="sig-name descname"><span class="pre">client_caps_release_delay</span></span><a class="headerlink" href="#confval-client_caps_release_delay" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the delay between capability releases in seconds. The delay sets
+how many   seconds a client waits to release capabilities that it no
+longer needs in case the capabilities are needed for another user
+space operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_debug_force_sync_read">
+<span class="sig-name descname"><span class="pre">client_debug_force_sync_read</span></span><a class="headerlink" href="#confval-client_debug_force_sync_read" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, clients read data directly from OSDs instead of
+using a local page cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_dirsize_rbytes">
+<span class="sig-name descname"><span class="pre">client_dirsize_rbytes</span></span><a class="headerlink" href="#confval-client_dirsize_rbytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This option enables a CephFS feature that stores the recursive
+directory size (the bytes used by files in the directory and its
+descendents) in the st_size field of the stat structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_max_inline_size">
+<span class="sig-name descname"><span class="pre">client_max_inline_size</span></span><a class="headerlink" href="#confval-client_max_inline_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the maximum size of inlined data stored in a file inode rather
+than in a separate data object in RADOS. This setting only applies if
+the <code class="docutils literal notranslate"><span class="pre">inline_data</span></code> flag is set on the MDS map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_metadata">
+<span class="sig-name descname"><span class="pre">client_metadata</span></span><a class="headerlink" href="#confval-client_metadata" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Comma-delimited strings for client metadata sent to each MDS, in
+addition to the automatically generated version, host name, and other
+metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_mount_gid">
+<span class="sig-name descname"><span class="pre">client_mount_gid</span></span><a class="headerlink" href="#confval-client_mount_gid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the group ID of CephFS mount.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_mount_timeout">
+<span class="sig-name descname"><span class="pre">client_mount_timeout</span></span><a class="headerlink" href="#confval-client_mount_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the timeout for CephFS mount in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">minutes</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_mount_uid">
+<span class="sig-name descname"><span class="pre">client_mount_uid</span></span><a class="headerlink" href="#confval-client_mount_uid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the user ID of CephFS mount.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_mountpoint">
+<span class="sig-name descname"><span class="pre">client_mountpoint</span></span><a class="headerlink" href="#confval-client_mountpoint" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Directory to mount on the CephFS file system. An alternative to the
+<code class="docutils literal notranslate"><span class="pre">-r</span></code> option of the <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code> command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_oc">
+<span class="sig-name descname"><span class="pre">client_oc</span></span><a class="headerlink" href="#confval-client_oc" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>enable object caching</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_oc_max_dirty">
+<span class="sig-name descname"><span class="pre">client_oc_max_dirty</span></span><a class="headerlink" href="#confval-client_oc_max_dirty" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the maximum number of dirty bytes in the object cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_oc_max_dirty_age">
+<span class="sig-name descname"><span class="pre">client_oc_max_dirty_age</span></span><a class="headerlink" href="#confval-client_oc_max_dirty_age" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the maximum age in seconds of dirty data in the object cache
+before writeback.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_oc_max_objects">
+<span class="sig-name descname"><span class="pre">client_oc_max_objects</span></span><a class="headerlink" href="#confval-client_oc_max_objects" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the maximum number of objects in the object cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_oc_size">
+<span class="sig-name descname"><span class="pre">client_oc_size</span></span><a class="headerlink" href="#confval-client_oc_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set how many bytes of data will the client cache.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">200Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_oc_target_dirty">
+<span class="sig-name descname"><span class="pre">client_oc_target_dirty</span></span><a class="headerlink" href="#confval-client_oc_target_dirty" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the target size of dirty data. We recommend to keep this number
+low.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">8Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_permissions">
+<span class="sig-name descname"><span class="pre">client_permissions</span></span><a class="headerlink" href="#confval-client_permissions" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Check client permissions on all I/O operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_quota_df">
+<span class="sig-name descname"><span class="pre">client_quota_df</span></span><a class="headerlink" href="#confval-client_quota_df" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Report root directory quota for the <code class="docutils literal notranslate"><span class="pre">statfs</span></code> operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_readahead_max_bytes">
+<span class="sig-name descname"><span class="pre">client_readahead_max_bytes</span></span><a class="headerlink" href="#confval-client_readahead_max_bytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the maximum number of bytes that the client reads ahead for future
+read operations. Overridden by the <code class="docutils literal notranslate"><span class="pre">client_readahead_max_periods</span></code>
+setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_readahead_max_periods">
+<span class="sig-name descname"><span class="pre">client_readahead_max_periods</span></span><a class="headerlink" href="#confval-client_readahead_max_periods" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the number of file layout periods (object size * number of
+stripes) that the client reads ahead. Overrides the
+<code class="docutils literal notranslate"><span class="pre">client_readahead_max_bytes</span></code> setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_readahead_min">
+<span class="sig-name descname"><span class="pre">client_readahead_min</span></span><a class="headerlink" href="#confval-client_readahead_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the minimum number bytes that the client reads ahead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_reconnect_stale">
+<span class="sig-name descname"><span class="pre">client_reconnect_stale</span></span><a class="headerlink" href="#confval-client_reconnect_stale" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>reconnect when the session becomes stale</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_snapdir">
+<span class="sig-name descname"><span class="pre">client_snapdir</span></span><a class="headerlink" href="#confval-client_snapdir" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the snapshot directory name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">.snap</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_tick_interval">
+<span class="sig-name descname"><span class="pre">client_tick_interval</span></span><a class="headerlink" href="#confval-client_tick_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the interval in seconds between capability renewal and other
+upkeep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_use_random_mds">
+<span class="sig-name descname"><span class="pre">client_use_random_mds</span></span><a class="headerlink" href="#confval-client_use_random_mds" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Choose random MDS for each request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-fuse_default_permissions">
+<span class="sig-name descname"><span class="pre">fuse_default_permissions</span></span><a class="headerlink" href="#confval-fuse_default_permissions" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>When set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code> utility checks does its own
+permissions checking, instead of relying on the permissions
+enforcement in FUSE. Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> together with the <code class="docutils literal notranslate"><span class="pre">client</span> <span class="pre">acl</span>
+<span class="pre">type=posix_acl</span></code> option to enable POSIX ACL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-fuse_max_write">
+<span class="sig-name descname"><span class="pre">fuse_max_write</span></span><a class="headerlink" href="#confval-fuse_max_write" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the maximum number of bytes in a single write operation. A value
+of 0 indicates no change; the FUSE default of 128 kbytes remains in
+force.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-fuse_disable_pagecache">
+<span class="sig-name descname"><span class="pre">fuse_disable_pagecache</span></span><a class="headerlink" href="#confval-fuse_disable_pagecache" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>If set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, kernel page cache is disabled for <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code>
+mounts. When multiple clients read/write to a file at the same time,
+readers may get stale data from page cache. Due to limitations of
+FUSE, <code class="docutils literal notranslate"><span class="pre">ceph-fuse</span></code> can’t disable page cache dynamically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<section id="developer-options">
+<h3>Developer Options<a class="headerlink" href="#developer-options" title="Link to this heading"></a></h3>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>These options are internal. They are listed here only to complete the list of options.</p>
+</div>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_debug_getattr_caps">
+<span class="sig-name descname"><span class="pre">client_debug_getattr_caps</span></span><a class="headerlink" href="#confval-client_debug_getattr_caps" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_debug_inject_tick_delay">
+<span class="sig-name descname"><span class="pre">client_debug_inject_tick_delay</span></span><a class="headerlink" href="#confval-client_debug_inject_tick_delay" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_inject_fixed_oldest_tid">
+<span class="sig-name descname"><span class="pre">client_inject_fixed_oldest_tid</span></span><a class="headerlink" href="#confval-client_inject_fixed_oldest_tid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_inject_release_failure">
+<span class="sig-name descname"><span class="pre">client_inject_release_failure</span></span><a class="headerlink" href="#confval-client_inject_release_failure" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-client_trace">
+<span class="sig-name descname"><span class="pre">client_trace</span></span><a class="headerlink" href="#confval-client_trace" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>file containing trace of client operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="purge-queue.html" class="btn btn-neutral float-left" title="Purge Queue" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="client-auth.html" class="btn btn-neutral float-right" title="CephFS Client Capabilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding/Removing Monitors &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Device Management" href="devices.html" />
+    <link rel="prev" title="Adding/Removing OSDs" href="add-or-rm-osds.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Adding/Removing Monitors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-monitors">Adding Monitors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#removing-monitors">Removing Monitors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-a-monitor-s-ip-address">Changing a Monitor’s IP Address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-cephadm-to-change-the-public-network">Using cephadm to change the public network</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Adding/Removing Monitors</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/add-or-rm-mons.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="adding-removing-monitors">
+<span id="adding-and-removing-monitors"></span><h1>Adding/Removing Monitors<a class="headerlink" href="#adding-removing-monitors" title="Link to this heading"></a></h1>
+<p>It is possible to add monitors to a running cluster as long as redundancy is
+maintained. To bootstrap a monitor, see <a class="reference external" href="../../../install/manual-deployment">Manual Deployment</a> or <a class="reference external" href="../../../dev/mon-bootstrap">Monitor
+Bootstrap</a>.</p>
+<section id="adding-monitors">
+<span id="id1"></span><h2>Adding Monitors<a class="headerlink" href="#adding-monitors" title="Link to this heading"></a></h2>
+<p>Ceph monitors serve as the single source of truth for the cluster map. It is
+possible to run a cluster with only one monitor, but for a production cluster
+it is recommended to have at least three monitors provisioned and in quorum.
+Ceph monitors use a variation of the <a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a> algorithm to maintain consensus
+about maps and about other critical information across the cluster. Due to the
+nature of Paxos, Ceph is able to maintain quorum (and thus establish
+consensus) only if a majority of the monitors are <code class="docutils literal notranslate"><span class="pre">active</span></code>.</p>
+<p>It is best to run an odd number of monitors. This is because a cluster that is
+running an odd number of monitors is more resilient than a cluster running an
+even number. For example, in a two-monitor deployment, no failures can be
+tolerated if quorum is to be maintained; in a three-monitor deployment, one
+failure can be tolerated; in a four-monitor deployment, one failure can be
+tolerated; and in a five-monitor deployment, two failures can be tolerated. In
+general, a cluster running an odd number of monitors is best because it avoids
+what is called the <em>split brain</em> phenomenon. In short, Ceph is able to operate
+only if a majority of monitors are <code class="docutils literal notranslate"><span class="pre">active</span></code> and able to communicate with each
+other, (for example: there must be a single monitor, two out of two monitors,
+two out of three monitors, three out of five monitors, or the like).</p>
+<p>For small or non-critical deployments of multi-node Ceph clusters, it is
+recommended to deploy three monitors. For larger clusters or for clusters that
+are intended to survive a double failure, it is recommended to deploy five
+monitors. Only in rare circumstances is there any justification for deploying
+seven or more monitors.</p>
+<p>It is possible to run a monitor on the same host that is running an OSD.
+However, this approach has disadvantages: for example: <cite>fsync</cite> issues with the
+kernel might weaken performance, monitor and OSD daemons might be inactive at
+the same time and cause disruption if the node crashes, is rebooted, or is
+taken down for maintenance. Because of these risks, it is instead
+recommended to run monitors and managers on dedicated hosts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <em>majority</em> of monitors in your cluster must be able to
+reach each other in order for quorum to be established.</p>
+</div>
+<section id="deploying-your-hardware">
+<h3>Deploying your Hardware<a class="headerlink" href="#deploying-your-hardware" title="Link to this heading"></a></h3>
+<p>Some operators choose to add a new monitor host at the same time that they add
+a new monitor. For details on the minimum recommendations for monitor hardware,
+see <a class="reference external" href="../../../start/hardware-recommendations">Hardware Recommendations</a>. Before adding a monitor host to the cluster,
+make sure that there is an up-to-date version of Linux installed.</p>
+<p>Add the newly installed monitor host to a rack in your cluster, connect the
+host to the network, and make sure that the host has network connectivity.</p>
+</section>
+<section id="installing-the-required-software">
+<h3>Installing the Required Software<a class="headerlink" href="#installing-the-required-software" title="Link to this heading"></a></h3>
+<p>In manually deployed clusters, it is necessary to install Ceph packages
+manually. For details, see <a class="reference external" href="../../../install/install-storage-cluster">Installing Packages</a>. Configure SSH so that it can
+be used by a user that has passwordless authentication and root permissions.</p>
+</section>
+<section id="adding-a-monitor-manual">
+<span id="id2"></span><h3>Adding a Monitor (Manual)<a class="headerlink" href="#adding-a-monitor-manual" title="Link to this heading"></a></h3>
+<p>The procedure in this section creates a <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> data directory, retrieves
+both the monitor map and the monitor keyring, and adds a <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> daemon to
+the cluster. The procedure might result in a Ceph cluster that contains only
+two monitor daemons. To add more monitors until there are enough <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code>
+daemons to establish quorum, repeat the procedure.</p>
+<p>This is a good point at which to define the new monitor’s <code class="docutils literal notranslate"><span class="pre">id</span></code>. Monitors have
+often been named with single letters (<code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, etc.), but you are
+free to define the <code class="docutils literal notranslate"><span class="pre">id</span></code> however you see fit. In this document, <code class="docutils literal notranslate"><span class="pre">{mon-id}</span></code>
+refers to the <code class="docutils literal notranslate"><span class="pre">id</span></code> exclusive of the <code class="docutils literal notranslate"><span class="pre">mon.</span></code> prefix: for example, if
+<code class="docutils literal notranslate"><span class="pre">mon.a</span></code> has been chosen as the <code class="docutils literal notranslate"><span class="pre">id</span></code> of a monitor, then <code class="docutils literal notranslate"><span class="pre">{mon-id}</span></code> is
+<code class="docutils literal notranslate"><span class="pre">a</span></code>.                                               ???</p>
+<ol class="arabic">
+<li><p>Create a data directory on the machine that will host the new monitor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>new-mon-host<span class="o">}</span></span>
+<span class="prompt2">sudo<span class="w"> </span>mkdir<span class="w"> </span>/var/lib/ceph/mon/ceph-<span class="o">{</span>mon-id<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Create a temporary directory <code class="docutils literal notranslate"><span class="pre">{tmp}</span></code> that will contain the files needed
+during this procedure. This directory should be different from the data
+directory created in the previous step. Because this is a temporary
+directory, it can be removed after the procedure is complete:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">mkdir<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Retrieve the keyring for your monitors (<code class="docutils literal notranslate"><span class="pre">{tmp}</span></code> is the path to the
+retrieved keyring and <code class="docutils literal notranslate"><span class="pre">{key-filename}</span></code> is the name of the file that
+contains the retrieved monitor key):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>get<span class="w"> </span>mon.<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>key-filename<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Retrieve the monitor map (<code class="docutils literal notranslate"><span class="pre">{tmp}</span></code> is the path to the retrieved monitor map
+and <code class="docutils literal notranslate"><span class="pre">{map-filename}</span></code> is the name of the file that contains the retrieved
+monitor map):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>getmap<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>map-filename<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Prepare the monitor’s data directory, which was created in the first step.
+The following command must specify the path to the monitor map (so that
+information about a quorum of monitors and their <code class="docutils literal notranslate"><span class="pre">fsid</span></code>s can be
+retrieved) and specify the path to the monitor keyring:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>ceph-mon<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span><span class="w"> </span>--mkfs<span class="w"> </span>--monmap<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>map-filename<span class="o">}</span><span class="w"> </span>--keyring<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>key-filename<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Start the new monitor. It will automatically join the cluster. To provide
+information to the daemon about which address to bind to, use either the
+<code class="docutils literal notranslate"><span class="pre">--public-addr</span> <span class="pre">{ip}</span></code> option or the <code class="docutils literal notranslate"><span class="pre">--public-network</span> <span class="pre">{network}</span></code> option.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-mon<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span><span class="w"> </span>--public-addr<span class="w"> </span><span class="o">{</span>ip:port<span class="o">}</span></span>
+</pre></div></div></li>
+</ol>
+</section>
+</section>
+<section id="removing-monitors">
+<span id="id3"></span><h2>Removing Monitors<a class="headerlink" href="#removing-monitors" title="Link to this heading"></a></h2>
+<p>When monitors are removed from a cluster, it is important to remember
+that Ceph monitors use Paxos to maintain consensus about the cluster
+map. Such consensus is possible only if the number of monitors is sufficient
+to establish quorum.</p>
+<section id="removing-a-monitor-manual">
+<span id="id4"></span><h3>Removing a Monitor (Manual)<a class="headerlink" href="#removing-a-monitor-manual" title="Link to this heading"></a></h3>
+<p>The procedure in this section removes a <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> daemon from the cluster.
+The procedure might result in a Ceph cluster that contains a number of monitors
+insufficient to maintain quorum, so plan carefully. When replacing an old
+monitor with a new monitor, add the new monitor first, wait for quorum to be
+established, and then remove the old monitor. This ensures that quorum is not
+lost.</p>
+<ol class="arabic">
+<li><p>Stop the monitor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">service<span class="w"> </span>ceph<span class="w"> </span>-a<span class="w"> </span>stop<span class="w"> </span>mon.<span class="o">{</span>mon-id<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Remove the monitor from the cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>remove<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Remove the monitor entry from the <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file:</p></li>
+</ol>
+</section>
+<section id="removing-monitors-from-an-unhealthy-cluster">
+<span id="rados-mon-remove-from-unhealthy"></span><h3>Removing Monitors from an Unhealthy Cluster<a class="headerlink" href="#removing-monitors-from-an-unhealthy-cluster" title="Link to this heading"></a></h3>
+<p>The procedure in this section removes a <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> daemon from an unhealthy
+cluster (for example, a cluster whose monitors are unable to form a quorum).</p>
+<ol class="arabic">
+<li><p>Stop all <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> daemons on all monitor hosts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>mon-host<span class="o">}</span></span>
+<span class="prompt2">systemctl<span class="w"> </span>stop<span class="w"> </span>ceph-mon.target</span>
+</pre></div></div><p>Repeat this step on every monitor host.</p>
+</li>
+<li><p>Identify a surviving monitor and log in to the monitor’s host:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>mon-host<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Extract a copy of the <code class="docutils literal notranslate"><span class="pre">monmap</span></code> file by running a command of the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-mon<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span><span class="w"> </span>--extract-monmap<span class="w"> </span><span class="o">{</span>map-path<span class="o">}</span></span>
+</pre></div></div><p>Here is a more concrete example. In this example, <code class="docutils literal notranslate"><span class="pre">hostname</span></code> is the
+<code class="docutils literal notranslate"><span class="pre">{mon-id}</span></code> and <code class="docutils literal notranslate"><span class="pre">/tmp/monpap</span></code> is the <code class="docutils literal notranslate"><span class="pre">{map-path}</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-mon<span class="w"> </span>-i<span class="w"> </span><span class="sb">`</span>hostname<span class="sb">`</span><span class="w"> </span>--extract-monmap<span class="w"> </span>/tmp/monmap</span>
+</pre></div></div></li>
+<li><p>Remove the non-surviving or otherwise problematic monitors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">monmaptool<span class="w"> </span><span class="o">{</span>map-path<span class="o">}</span><span class="w"> </span>--rm<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span></span>
+</pre></div></div><p>For example, suppose that there are three monitors—<code class="docutils literal notranslate"><span class="pre">mon.a</span></code>, <code class="docutils literal notranslate"><span class="pre">mon.b</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">mon.c</span></code>—and that only <code class="docutils literal notranslate"><span class="pre">mon.a</span></code> will survive:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">monmaptool<span class="w"> </span>/tmp/monmap<span class="w"> </span>--rm<span class="w"> </span>b</span>
+<span class="prompt2">monmaptool<span class="w"> </span>/tmp/monmap<span class="w"> </span>--rm<span class="w"> </span>c</span>
+</pre></div></div></li>
+<li><p>Inject the surviving map that includes the removed monitors into the
+monmap of the surviving monitor(s):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-mon<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span><span class="w"> </span>--inject-monmap<span class="w"> </span><span class="o">{</span>map-path<span class="o">}</span></span>
+</pre></div></div><p>Continuing with the above example, inject a map into monitor <code class="docutils literal notranslate"><span class="pre">mon.a</span></code> by
+running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-mon<span class="w"> </span>-i<span class="w"> </span>a<span class="w"> </span>--inject-monmap<span class="w"> </span>/tmp/monmap</span>
+</pre></div></div></li>
+<li><p>Start only the surviving monitors.</p></li>
+<li><p>Verify that the monitors form a quorum by running the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">-s</span></code>.</p></li>
+<li><p>The data directory of the removed monitors is in <code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/mon</span></code>:
+either archive this data directory in a safe location or delete this data
+directory. However, do not delete it unless you are confident that the
+remaining monitors are healthy and sufficiently redundant. Make sure that
+there is enough room for the live DB to expand and compact, and make sure
+that there is also room for an archived copy of the DB. The archived copy
+can be compressed.</p></li>
+</ol>
+</section>
+</section>
+<section id="changing-a-monitor-s-ip-address">
+<span id="id5"></span><h2>Changing a Monitor’s IP Address<a class="headerlink" href="#changing-a-monitor-s-ip-address" title="Link to this heading"></a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Existing monitors are not supposed to change their IP addresses.</p>
+</div>
+<p>Monitors are critical components of a Ceph cluster. The entire system can work
+properly only if the monitors maintain quorum, and quorum can be established
+only if the monitors have discovered each other by means of their IP addresses.
+Ceph has strict requirements on the discovery of monitors.</p>
+<p>Although the <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file is used by Ceph clients and other Ceph daemons
+to discover monitors, the monitor map is used by monitors to discover each
+other. This is why it is necessary to obtain the current <code class="docutils literal notranslate"><span class="pre">monmap</span></code> at the time
+a new monitor is created: as can be seen above in <a class="reference internal" href="#adding-a-monitor-manual">Adding a Monitor (Manual)</a>,
+the <code class="docutils literal notranslate"><span class="pre">monmap</span></code> is one of the arguments required by the <code class="docutils literal notranslate"><span class="pre">ceph-mon</span> <span class="pre">-i</span> <span class="pre">{mon-id}</span>
+<span class="pre">--mkfs</span></code> command. The following sections explain the consistency requirements
+for Ceph monitors, and also explain a number of safe ways to change a monitor’s
+IP address.</p>
+<section id="consistency-requirements">
+<h3>Consistency Requirements<a class="headerlink" href="#consistency-requirements" title="Link to this heading"></a></h3>
+<p>When a monitor discovers other monitors in the cluster, it always refers to the
+local copy of the monitor map. Using the monitor map instead of using the
+<code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file avoids errors that could break the cluster (for example,
+typos or other slight errors in <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> when a monitor address or port is
+specified). Because monitors use monitor maps for discovery and because they
+share monitor maps with Ceph clients and other Ceph daemons, the monitor map
+provides monitors with a strict guarantee that their consensus is valid.</p>
+<p>Strict consistency also applies to updates to the monmap. As with any other
+updates on the monitor, changes to the monmap always run through a distributed
+consensus algorithm called <a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a>. The monitors must agree on each update to
+the monmap, such as adding or removing a monitor, to ensure that each monitor
+in the quorum has the same version of the monmap. Updates to the monmap are
+incremental so that monitors have the latest agreed upon version, and a set of
+previous versions, allowing a monitor that has an older version of the monmap
+to catch up with the current state of the cluster.</p>
+<p>There are additional advantages to using the monitor map rather than
+<code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> when monitors discover each other. Because <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> is not
+automatically updated and distributed, its use would bring certain risks:
+monitors might use an outdated <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file, might fail to recognize a
+specific monitor, might fall out of quorum, and might develop a situation in
+which <a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a> is unable to accurately ascertain the current state of the
+system. Because of these risks, any changes to an existing monitor’s IP address
+must be made with great care.</p>
+</section>
+<section id="changing-a-monitor-s-ip-address-preferred-method">
+<span id="operations-add-or-rm-mons-changing-mon-ip"></span><h3>Changing a Monitor’s IP address (Preferred Method)<a class="headerlink" href="#changing-a-monitor-s-ip-address-preferred-method" title="Link to this heading"></a></h3>
+<p>If a monitor’s IP address is changed only in the <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file, there is
+no guarantee that the other monitors in the cluster will receive the update.
+For this reason, the preferred method to change a monitor’s IP address is as
+follows: add a new monitor with the desired IP address (as described in <a class="reference internal" href="#adding-a-monitor-manual">Adding
+a Monitor (Manual)</a>), make sure that the new monitor successfully joins the
+quorum, remove the monitor that is using the old IP address, and update the
+<code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file to ensure that clients and other daemons are made aware of
+the new monitor’s IP address.</p>
+<p>For example, suppose that there are three monitors in place:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">mon</span><span class="o">.</span><span class="n">a</span><span class="p">]</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">host01</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="mf">10.0.0.1</span><span class="p">:</span><span class="mi">6789</span>
+<span class="p">[</span><span class="n">mon</span><span class="o">.</span><span class="n">b</span><span class="p">]</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">host02</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="mf">10.0.0.2</span><span class="p">:</span><span class="mi">6789</span>
+<span class="p">[</span><span class="n">mon</span><span class="o">.</span><span class="n">c</span><span class="p">]</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">host03</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="mf">10.0.0.3</span><span class="p">:</span><span class="mi">6789</span>
+</pre></div>
+</div>
+<p>To change <code class="docutils literal notranslate"><span class="pre">mon.c</span></code> so that its name is <code class="docutils literal notranslate"><span class="pre">host04</span></code> and its IP address is
+<code class="docutils literal notranslate"><span class="pre">10.0.0.4</span></code>: (1) follow the steps in <a class="reference internal" href="#adding-a-monitor-manual">Adding a Monitor (Manual)</a> to add a new
+monitor <code class="docutils literal notranslate"><span class="pre">mon.d</span></code>, (2) make sure that <code class="docutils literal notranslate"><span class="pre">mon.d</span></code> is  running before removing
+<code class="docutils literal notranslate"><span class="pre">mon.c</span></code> or else quorum will be broken, and (3) follow the steps in <a class="reference internal" href="#removing-a-monitor-manual">Removing
+a Monitor (Manual)</a> to remove <code class="docutils literal notranslate"><span class="pre">mon.c</span></code>. To move all three monitors to new IP
+addresses, repeat this process.</p>
+</section>
+<section id="changing-a-monitor-s-ip-address-advanced-method">
+<h3>Changing a Monitor’s IP address (Advanced Method)<a class="headerlink" href="#changing-a-monitor-s-ip-address-advanced-method" title="Link to this heading"></a></h3>
+<p>There are cases in which the method outlined in
+<a class="reference internal" href="#operations-add-or-rm-mons-changing-mon-ip"><span class="std std-ref">Changing a Monitor’s IP address (Preferred Method)</span></a> cannot be used. For example,
+it might be necessary to move the cluster’s monitors to a different network, to
+a different part of the datacenter, or to a different datacenter altogether. It
+is still possible to change the monitors’ IP addresses, but a different method
+must be used.</p>
+<p>For such cases, a new monitor map with updated IP addresses for every monitor
+in the cluster must be generated and injected on each monitor. Although this
+method is not particularly easy, such a major migration is unlikely to be a
+routine task. As stated at the beginning of this section, existing monitors are
+not supposed to change their IP addresses.</p>
+<p>Continue with the monitor configuration in the example from
+<a class="reference internal" href="#operations-add-or-rm-mons-changing-mon-ip"><span class="std std-ref">Changing a Monitor’s IP address (Preferred Method)</span></a>. Suppose that all of the
+monitors are to be moved from the <code class="docutils literal notranslate"><span class="pre">10.0.0.x</span></code> range to the <code class="docutils literal notranslate"><span class="pre">10.1.0.x</span></code> range,
+and that these networks are unable to communicate. Carry out the following
+procedure:</p>
+<ol class="arabic">
+<li><p>Retrieve the monitor map (<code class="docutils literal notranslate"><span class="pre">{tmp}</span></code> is the path to the retrieved monitor
+map, and <code class="docutils literal notranslate"><span class="pre">{filename}</span></code> is the name of the file that contains the retrieved
+monitor map):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mon<span class="w"> </span>getmap<span class="w"> </span>-o<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>filename<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Check the contents of the monitor map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">monmaptool<span class="w"> </span>--print<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>filename<span class="o">}</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span><span class="p">:</span> <span class="n">monmap</span> <span class="n">file</span> <span class="p">{</span><span class="n">tmp</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">filename</span><span class="p">}</span>
+<span class="n">epoch</span> <span class="mi">1</span>
+<span class="n">fsid</span> <span class="mf">224e376</span><span class="n">d</span><span class="o">-</span><span class="n">c5fe</span><span class="o">-</span><span class="mi">4504</span><span class="o">-</span><span class="mi">96</span><span class="n">bb</span><span class="o">-</span><span class="n">ea6332a19e61</span>
+<span class="n">last_changed</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">17</span> <span class="mi">02</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mf">41.591248</span>
+<span class="n">created</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">17</span> <span class="mi">02</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mf">41.591248</span>
+<span class="mi">0</span><span class="p">:</span> <span class="mf">10.0.0.1</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span> <span class="n">mon</span><span class="o">.</span><span class="n">a</span>
+<span class="mi">1</span><span class="p">:</span> <span class="mf">10.0.0.2</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span> <span class="n">mon</span><span class="o">.</span><span class="n">b</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mf">10.0.0.3</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span> <span class="n">mon</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</li>
+<li><p>Remove the existing monitors from the monitor map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">monmaptool<span class="w"> </span>--rm<span class="w"> </span>a<span class="w"> </span>--rm<span class="w"> </span>b<span class="w"> </span>--rm<span class="w"> </span>c<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>filename<span class="o">}</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span><span class="p">:</span> <span class="n">monmap</span> <span class="n">file</span> <span class="p">{</span><span class="n">tmp</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">filename</span><span class="p">}</span>
+<span class="n">monmaptool</span><span class="p">:</span> <span class="n">removing</span> <span class="n">a</span>
+<span class="n">monmaptool</span><span class="p">:</span> <span class="n">removing</span> <span class="n">b</span>
+<span class="n">monmaptool</span><span class="p">:</span> <span class="n">removing</span> <span class="n">c</span>
+<span class="n">monmaptool</span><span class="p">:</span> <span class="n">writing</span> <span class="n">epoch</span> <span class="mi">1</span> <span class="n">to</span> <span class="p">{</span><span class="n">tmp</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">filename</span><span class="p">}</span> <span class="p">(</span><span class="mi">0</span> <span class="n">monitors</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the new monitor locations to the monitor map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">monmaptool<span class="w"> </span>--add<span class="w"> </span>a<span class="w"> </span><span class="m">10</span>.1.0.1:6789<span class="w"> </span>--add<span class="w"> </span>b<span class="w"> </span><span class="m">10</span>.1.0.2:6789<span class="w"> </span>--add<span class="w"> </span>c<span class="w"> </span><span class="m">10</span>.1.0.3:6789<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>filename<span class="o">}</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span><span class="p">:</span> <span class="n">monmap</span> <span class="n">file</span> <span class="p">{</span><span class="n">tmp</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">filename</span><span class="p">}</span>
+<span class="n">monmaptool</span><span class="p">:</span> <span class="n">writing</span> <span class="n">epoch</span> <span class="mi">1</span> <span class="n">to</span> <span class="p">{</span><span class="n">tmp</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">filename</span><span class="p">}</span> <span class="p">(</span><span class="mi">3</span> <span class="n">monitors</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Check the new contents of the monitor map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">monmaptool<span class="w"> </span>--print<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>filename<span class="o">}</span></span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span><span class="p">:</span> <span class="n">monmap</span> <span class="n">file</span> <span class="p">{</span><span class="n">tmp</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">filename</span><span class="p">}</span>
+<span class="n">epoch</span> <span class="mi">1</span>
+<span class="n">fsid</span> <span class="mf">224e376</span><span class="n">d</span><span class="o">-</span><span class="n">c5fe</span><span class="o">-</span><span class="mi">4504</span><span class="o">-</span><span class="mi">96</span><span class="n">bb</span><span class="o">-</span><span class="n">ea6332a19e61</span>
+<span class="n">last_changed</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">17</span> <span class="mi">02</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mf">41.591248</span>
+<span class="n">created</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">17</span> <span class="mi">02</span><span class="p">:</span><span class="mi">46</span><span class="p">:</span><span class="mf">41.591248</span>
+<span class="mi">0</span><span class="p">:</span> <span class="mf">10.1.0.1</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span> <span class="n">mon</span><span class="o">.</span><span class="n">a</span>
+<span class="mi">1</span><span class="p">:</span> <span class="mf">10.1.0.2</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span> <span class="n">mon</span><span class="o">.</span><span class="n">b</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mf">10.1.0.3</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span> <span class="n">mon</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>At this point, we assume that the monitors (and stores) have been installed at
+the new location. Next, propagate the modified monitor map to the new monitors,
+and inject the modified monitor map into each new monitor.</p>
+<ol class="arabic">
+<li><p>Make sure all of your monitors have been stopped. Never inject into a
+monitor while the monitor daemon is running.</p></li>
+<li><p>Inject the monitor map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-mon<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>mon-id<span class="o">}</span><span class="w"> </span>--inject-monmap<span class="w"> </span><span class="o">{</span>tmp<span class="o">}</span>/<span class="o">{</span>filename<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Restart all of the monitors.</p></li>
+</ol>
+<p>Migration to the new location is now complete. The monitors should operate
+successfully.</p>
+</section>
+</section>
+<section id="using-cephadm-to-change-the-public-network">
+<h2>Using cephadm to change the public network<a class="headerlink" href="#using-cephadm-to-change-the-public-network" title="Link to this heading"></a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h3>
+<p>The procedure in this overview section provides only the broad outlines of
+using <code class="docutils literal notranslate"><span class="pre">cephadm</span></code> to change the public network.</p>
+<ol class="arabic simple">
+<li><p>Create backups of all keyrings, configuration files, and the current monmap.</p></li>
+<li><p>Stop the cluster and disable <code class="docutils literal notranslate"><span class="pre">ceph.target</span></code> to prevent the daemons from
+starting.</p></li>
+<li><p>Move the servers and power them on.</p></li>
+<li><p>Change the network setup as desired.</p></li>
+</ol>
+</section>
+<section id="example-procedure">
+<h3>Example Procedure<a class="headerlink" href="#example-procedure" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this procedure, the “old network” has addresses of the form
+<code class="docutils literal notranslate"><span class="pre">10.10.10.0/24</span></code> and the “new network” has addresses of the form
+<code class="docutils literal notranslate"><span class="pre">192.168.160.0/24</span></code>.</p>
+</div>
+<ol class="arabic">
+<li><p>Enter the shell of the first monitor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cephadm<span class="w"> </span>shell<span class="w"> </span>--name<span class="w"> </span>mon.reef1</span>
+</pre></div></div></li>
+<li><p>Extract the current monmap from <code class="docutils literal notranslate"><span class="pre">mon.reef1</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-mon<span class="w"> </span>-i<span class="w"> </span>reef1<span class="w"> </span>--extract-monmap<span class="w"> </span>monmap</span>
+</pre></div></div></li>
+<li><p>Print the content of the monmap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">monmaptool<span class="w"> </span>--print<span class="w"> </span>monmap</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span><span class="p">:</span> <span class="n">monmap</span> <span class="n">file</span> <span class="n">monmap</span>
+<span class="n">epoch</span> <span class="mi">5</span>
+<span class="n">fsid</span> <span class="mi">2851404</span><span class="n">a</span><span class="o">-</span><span class="n">d09a</span><span class="o">-</span><span class="mi">11</span><span class="n">ee</span><span class="o">-</span><span class="mi">9</span><span class="n">aaa</span><span class="o">-</span><span class="n">fa163e2de51a</span>
+<span class="n">last_changed</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">21</span><span class="n">T09</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mf">18.292040</span><span class="o">+</span><span class="mi">0000</span>
+<span class="n">created</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">21</span><span class="n">T09</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mf">27.136371</span><span class="o">+</span><span class="mi">0000</span>
+<span class="n">min_mon_release</span> <span class="mi">18</span> <span class="p">(</span><span class="n">reef</span><span class="p">)</span>
+<span class="n">election_strategy</span><span class="p">:</span> <span class="mi">1</span>
+<span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="n">v2</span><span class="p">:</span><span class="mf">10.10.10.11</span><span class="p">:</span><span class="mi">3300</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">10.10.10.11</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span><span class="p">]</span> <span class="n">mon</span><span class="o">.</span><span class="n">reef1</span>
+<span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="n">v2</span><span class="p">:</span><span class="mf">10.10.10.12</span><span class="p">:</span><span class="mi">3300</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">10.10.10.12</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span><span class="p">]</span> <span class="n">mon</span><span class="o">.</span><span class="n">reef2</span>
+<span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="n">v2</span><span class="p">:</span><span class="mf">10.10.10.13</span><span class="p">:</span><span class="mi">3300</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">10.10.10.13</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span><span class="p">]</span> <span class="n">mon</span><span class="o">.</span><span class="n">reef3</span>
+</pre></div>
+</div>
+</li>
+<li><p>Remove monitors with old addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">monmaptool<span class="w"> </span>--rm<span class="w"> </span>reef1<span class="w"> </span>--rm<span class="w"> </span>reef2<span class="w"> </span>--rm<span class="w"> </span>reef3<span class="w"> </span>monmap</span>
+</pre></div></div></li>
+<li><p>Add monitors with new addresses:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">monmaptool<span class="w"> </span>--addv<span class="w"> </span>reef1<span class="w"> </span><span class="o">[</span>v2:192.168.160.11:3300/0,v1:192.168.160.11:6789/0<span class="o">]</span><span class="w"> </span>--addv<span class="w"> </span>reef2<span class="w"> </span><span class="o">[</span>v2:192.168.160.12:3300/0,v1:192.168.160.12:6789/0<span class="o">]</span><span class="w"> </span>--addv<span class="w"> </span>reef3<span class="w"> </span><span class="o">[</span>v2:192.168.160.13:3300/0,v1:192.168.160.13:6789/0<span class="o">]</span><span class="w"> </span>monmap</span>
+</pre></div></div></li>
+<li><p>Verify that the changes to the monmap have been made successfully:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">monmaptool<span class="w"> </span>--print<span class="w"> </span>monmap</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">monmaptool</span><span class="p">:</span> <span class="n">monmap</span> <span class="n">file</span> <span class="n">monmap</span>
+<span class="n">epoch</span> <span class="mi">4</span>
+<span class="n">fsid</span> <span class="mi">2851404</span><span class="n">a</span><span class="o">-</span><span class="n">d09a</span><span class="o">-</span><span class="mi">11</span><span class="n">ee</span><span class="o">-</span><span class="mi">9</span><span class="n">aaa</span><span class="o">-</span><span class="n">fa163e2de51a</span>
+<span class="n">last_changed</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">21</span><span class="n">T09</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mf">18.292040</span><span class="o">+</span><span class="mi">0000</span>
+<span class="n">created</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">21</span><span class="n">T09</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mf">27.136371</span><span class="o">+</span><span class="mi">0000</span>
+<span class="n">min_mon_release</span> <span class="mi">18</span> <span class="p">(</span><span class="n">reef</span><span class="p">)</span>
+<span class="n">election_strategy</span><span class="p">:</span> <span class="mi">1</span>
+<span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="n">v2</span><span class="p">:</span><span class="mf">192.168.160.11</span><span class="p">:</span><span class="mi">3300</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">192.168.160.11</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span><span class="p">]</span> <span class="n">mon</span><span class="o">.</span><span class="n">reef1</span>
+<span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="n">v2</span><span class="p">:</span><span class="mf">192.168.160.12</span><span class="p">:</span><span class="mi">3300</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">192.168.160.12</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span><span class="p">]</span> <span class="n">mon</span><span class="o">.</span><span class="n">reef2</span>
+<span class="mi">2</span><span class="p">:</span> <span class="p">[</span><span class="n">v2</span><span class="p">:</span><span class="mf">192.168.160.13</span><span class="p">:</span><span class="mi">3300</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span><span class="n">v1</span><span class="p">:</span><span class="mf">192.168.160.13</span><span class="p">:</span><span class="mi">6789</span><span class="o">/</span><span class="mi">0</span><span class="p">]</span> <span class="n">mon</span><span class="o">.</span><span class="n">reef3</span>
+</pre></div>
+</div>
+</li>
+<li><p>Inject the new monmap into the Ceph cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-mon<span class="w"> </span>-i<span class="w"> </span>reef1<span class="w"> </span>--inject-monmap<span class="w"> </span>monmap</span>
+</pre></div></div></li>
+<li><p>Repeat the steps above for all other monitors in the cluster.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/{FSID}/mon.{MON}/config</span></code>.</p></li>
+<li><p>Start the monitors.</p></li>
+<li><p>Update the ceph <code class="docutils literal notranslate"><span class="pre">public_network</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mon<span class="w"> </span>public_network<span class="w"> </span><span class="m">192</span>.168.160.0/24</span>
+</pre></div></div></li>
+<li><p>Update the configuration files of the managers
+(<code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/{FSID}/mgr.{mgr}/config</span></code>) and start them. Orchestrator
+will now be available, but it will attempt to connect to the old network
+because the host list contains the old addresses.</p></li>
+<li><p>Update the host addresses by running commands of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>host<span class="w"> </span>set-addr<span class="w"> </span>reef1<span class="w"> </span><span class="m">192</span>.168.160.11</span>
+<span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>host<span class="w"> </span>set-addr<span class="w"> </span>reef2<span class="w"> </span><span class="m">192</span>.168.160.12</span>
+<span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>host<span class="w"> </span>set-addr<span class="w"> </span>reef3<span class="w"> </span><span class="m">192</span>.168.160.13</span>
+</pre></div></div></li>
+<li><p>Wait a few minutes for the orchestrator to connect to each host.</p></li>
+<li><p>Reconfigure the OSDs so that their config files are automatically updated:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>reconfig<span class="w"> </span>osd</span>
+</pre></div></div></li>
+</ol>
+<p><em>The above procedure was developed by Eugen Block and was successfully tested
+in February 2024 on Ceph version 18.2.1 (Reef).</em></p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="add-or-rm-osds.html" class="btn btn-neutral float-left" title="Adding/Removing OSDs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="devices.html" class="btn btn-neutral float-right" title="Device Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

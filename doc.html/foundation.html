@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ceph Foundation &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ceph-volume" href="ceph-volume/index.html" />
+    <link rel="prev" title="Governance" href="governance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="governance.html">Governance</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ceph Foundation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#members">Members</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#diamond">Diamond</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#platinum">Platinum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#premier">Premier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gold">Gold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#silver">Silver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#associate">Associate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#governing-board">Governing Board</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Members</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#joining">Joining</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Ceph Foundation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/foundation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-foundation">
+<span id="foundation"></span><h1>Ceph Foundation<a class="headerlink" href="#ceph-foundation" title="Link to this heading"></a></h1>
+<p>The Ceph Foundation exists to enable industry members to collaborate
+and pool resources to support the Ceph project community. The
+Foundation provides an open, collaborative, and neutral home for
+project stakeholders to coordinate their development and community
+investments in the Ceph ecosystem.</p>
+<p>The Ceph Foundation is organized as a directed fund under the Linux
+Foundation. Premier and General Member organizations contribute a
+yearly fee to become members. Associate members are educational
+institutions or government organizations and are invited to join at no
+cost.</p>
+<p>For more information, see <a class="reference external" href="https://ceph.com/foundation">https://ceph.com/foundation</a>.</p>
+<section id="members">
+<h2>Members<a class="headerlink" href="#members" title="Link to this heading"></a></h2>
+<section id="diamond">
+<h3>Diamond<a class="headerlink" href="#diamond" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://45drives.com/">45Drives</a></p></li>
+<li><p><a class="reference external" href="https://bloomberg.com">Bloomberg</a></p></li>
+<li><p><a class="reference external" href="https://ibm.com">IBM</a></p></li>
+</ul>
+</section>
+<section id="platinum">
+<h3>Platinum<a class="headerlink" href="#platinum" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.clyso.com/en/">Clyso</a></p></li>
+<li><p><a class="reference external" href="https://samsung.com/">Samsung Electronics</a></p></li>
+</ul>
+</section>
+<section id="premier">
+<h3>Premier<a class="headerlink" href="#premier" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ovh.com/">OVH</a></p></li>
+</ul>
+</section>
+<section id="gold">
+<h3>Gold<a class="headerlink" href="#gold" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.42on.com/">42on</a></p></li>
+</ul>
+</section>
+<section id="silver">
+<h3>Silver<a class="headerlink" href="#silver" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.canonical.com/">Canonical</a></p></li>
+<li><p><a class="reference external" href="https://cloudferro.com/">CloudFerro</a></p></li>
+<li><p><a class="reference external" href="http://www.croit.io/">croit</a></p></li>
+<li><p><a class="reference external" href="http://iss-integration.com/">ISS</a></p></li>
+<li><p><a class="reference external" href="http://www.intel.com/">Intel</a></p></li>
+<li><p><a class="reference external" href="https://osnexus.com/">OSNexus</a></p></li>
+</ul>
+</section>
+<section id="associate">
+<h3>Associate<a class="headerlink" href="#associate" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.bu.com/">Boston University</a></p></li>
+<li><p><a class="reference external" href="http://cross.ucsc.edu/">Center for Research in Open Source Systems (CROSS)</a></p></li>
+<li><p><a class="reference external" href="https://home.cern/">CERN</a></p></li>
+<li><p><a class="reference external" href="https://www.rc.fas.harvard.edu/">FASRC</a></p></li>
+<li><p><a class="reference external" href="https://grnet.gr/">grnet</a></p></li>
+<li><p><a class="reference external" href="http://www.monash.edu/">Monash University</a></p></li>
+<li><p><a class="reference external" href="http://www.ska.ac.za/about/sarao/">NRF SARAO</a></p></li>
+<li><p><a class="reference external" href="http://openinfra.dev">Open Infrastructure Foundation</a></p></li>
+<li><p><a class="reference external" href="https://stfc.ukri.org/">Science &amp; Technology Facilities Councel (STFC)</a></p></li>
+<li><p><a class="reference external" href="https://switch.ch/">SWITCH</a></p></li>
+<li><p><a class="reference external" href="http://www.osris.org/">University of Michigan</a></p></li>
+</ul>
+</section>
+</section>
+<section id="governing-board">
+<h2>Governing Board<a class="headerlink" href="#governing-board" title="Link to this heading"></a></h2>
+<p>The Governing Board consists of all Premier members, a representative
+for the General members, a representative for the Associate members,
+and a representative from the Ceph Leadership Team (the technical
+governance body). The board is responsible for:</p>
+<ul class="simple">
+<li><p>Building and approving an annual budget for spending in support of
+the Ceph project</p></li>
+<li><p>Establishing ad-hoc committees to address current needs of the
+project</p></li>
+<li><p>Coordinating outreach or marketing</p></li>
+<li><p>Meeting regularly to discuss Foundation activities, the status of
+the Ceph project, and overall project strategy</p></li>
+<li><p>Voting on any decisions or matters before the board</p></li>
+</ul>
+<p>The Ceph Foundation board is not responsible for and does not have any
+direct control over the technical governance of Ceph. Development and
+engineering activities are managed through traditional open source
+processes and are overseen by the <a class="reference internal" href="governance.html#csc"><span class="std std-ref">Ceph Steering Committee</span></a>. For more
+information see <a class="reference internal" href="governance.html#governance"><span class="std std-ref">Governance</span></a>.</p>
+<section id="id1">
+<h3>Members<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Brett Kelly (45Drives)</p></li>
+<li><p>Carlos Maltzahn (UCSC) - Associate member representative</p></li>
+<li><p>Dan van der Ster (Clyso) - Ceph Council representative</p></li>
+<li><p>Joachim Kraftmayer (Clyso)</p></li>
+<li><p>Josh Durgin (IBM) - Ceph Council representative</p></li>
+<li><p>Matthew Leonard (Bloomberg)</p></li>
+<li><p>Mike Perez (IBM) - Ceph community manager</p></li>
+<li><p>Neha Ojha (IBM) - Ceph Council Representative</p></li>
+<li><p>Steven Umbehocker (OSNexus) - General member representative</p></li>
+<li><p>Pawel Sadowski (OVH)</p></li>
+<li><p>Sungmin Lee (Samsung Electronics)</p></li>
+<li><p>Vincent Hsu (IBM)</p></li>
+</ul>
+</section>
+</section>
+<section id="joining">
+<h2>Joining<a class="headerlink" href="#joining" title="Link to this heading"></a></h2>
+<p>For information about joining the Ceph Foundation, please contact
+<a class="reference external" href="mailto:membership&#37;&#52;&#48;linuxfoundation&#46;org">membership<span>&#64;</span>linuxfoundation<span>&#46;</span>org</a>.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="governance.html" class="btn btn-neutral float-left" title="Governance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ceph-volume/index.html" class="btn btn-neutral float-right" title="ceph-volume" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

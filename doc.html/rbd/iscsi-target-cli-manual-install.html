@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual ceph-iscsi Installation &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Block Device Quick Start" href="../start/quick-rbd.html" />
+    <link rel="prev" title="Configuring the iSCSI Target using the Command Line Interface" href="iscsi-target-cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-operations.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="rbd-integrations.html">Integrations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbd-ko.html">Kernel Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qemu-rbd.html">QEMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libvirt.html">libvirt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-nomad.html">Nomad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-openstack.html">OpenStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-cloudstack.html">CloudStack</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="iscsi-overview.html">LIO iSCSI Gateway</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="iscsi-requirements.html">Requirements</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="iscsi-targets.html">Configuring the iSCSI Target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iscsi-initiators.html">Configuring the iSCSI Initiators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iscsi-monitoring.html">Monitoring the iSCSI Gateways</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-windows.html">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html">Ceph NVMe-oF Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#high-availability-with-nvme-of-gateway-group">High Availability with NVMe-oF gateway group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#scaling-out-with-nvme-of-gateway">Scaling-out with NVMe-oF gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#nvme-of-gateway-discovery">NVMe-oF gateway Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="man/index.html">Manpages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="rbd-integrations.html">Ceph Block Device 3rd Party Integration</a></li>
+          <li class="breadcrumb-item"><a href="iscsi-overview.html">Ceph iSCSI Gateway</a></li>
+          <li class="breadcrumb-item"><a href="iscsi-targets.html">iSCSI Targets</a></li>
+          <li class="breadcrumb-item"><a href="iscsi-target-cli.html">Configuring the iSCSI Target using the Command Line Interface</a></li>
+      <li class="breadcrumb-item active">Manual ceph-iscsi Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rbd/iscsi-target-cli-manual-install.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="manual-ceph-iscsi-installation">
+<h1>Manual ceph-iscsi Installation<a class="headerlink" href="#manual-ceph-iscsi-installation" title="Link to this heading"></a></h1>
+<p><strong>Requirements</strong></p>
+<p>To complete the installation of ceph-iscsi, there are 4 steps:</p>
+<ol class="arabic simple">
+<li><p>Install common packages from your Linux distribution’s software repository</p></li>
+<li><p>Install Git to fetch the remaining packages directly from their Git repositories</p></li>
+<li><p>Ensure a compatible kernel is used</p></li>
+<li><p>Install all the components of ceph-iscsi and start associated daemons:</p>
+<ul class="simple">
+<li><p>tcmu-runner</p></li>
+<li><p>rtslib-fb</p></li>
+<li><p>configshell-fb</p></li>
+<li><p>targetcli-fb</p></li>
+<li><p>ceph-iscsi</p></li>
+</ul>
+</li>
+</ol>
+<section id="install-common-packages">
+<h2>1. Install Common Packages<a class="headerlink" href="#install-common-packages" title="Link to this heading"></a></h2>
+<p>The following packages will be used by ceph-iscsi and target tools.
+They must be installed from your Linux distribution’s software repository
+on each machine that will be a iSCSI gateway:</p>
+<ul class="simple">
+<li><p>libnl3</p></li>
+<li><p>libkmod</p></li>
+<li><p>librbd1</p></li>
+<li><p>pyparsing</p></li>
+<li><p>python kmod</p></li>
+<li><p>python pyudev</p></li>
+<li><p>python gobject</p></li>
+<li><p>python urwid</p></li>
+<li><p>python pyparsing</p></li>
+<li><p>python rados</p></li>
+<li><p>python rbd</p></li>
+<li><p>python netifaces</p></li>
+<li><p>python crypto</p></li>
+<li><p>python requests</p></li>
+<li><p>python flask</p></li>
+<li><p>pyOpenSSL</p></li>
+</ul>
+</section>
+<section id="install-git">
+<h2>2. Install Git<a class="headerlink" href="#install-git" title="Link to this heading"></a></h2>
+<p>In order to install all the packages needed to run iSCSI with Ceph, you need to download them directly from their repository by using Git.
+On CentOS/RHEL execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt15:before {
+  content: "> ";
+}
+</style><span class="prompt15">sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>git</span>
+</pre></div></div><p>On Debian/Ubuntu execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git</span>
+</pre></div></div><p>To know more about Git and how it works, please, visit <a class="reference external" href="https://git-scm.com">https://git-scm.com</a></p>
+</section>
+<section id="ensure-a-compatible-kernel-is-used">
+<h2>3. Ensure a compatible kernel is used<a class="headerlink" href="#ensure-a-compatible-kernel-is-used" title="Link to this heading"></a></h2>
+<p>Ensure you use a supported kernel that contains the required Ceph iSCSI patches:</p>
+<ul class="simple">
+<li><p>all Linux distribution with a kernel v4.16 or newer, or</p></li>
+<li><p>Red Hat Enterprise Linux or CentOS 7.5 or later (in these distributions ceph-iscsi support is backported)</p></li>
+</ul>
+<p>If you are already using a compatible kernel, you can go to next step.
+However, if you are NOT using a compatible kernel then check your distro’s
+documentation for specific instructions on how to build this kernel. The only
+Ceph iSCSI specific requirements are that the following build options must be
+enabled:</p>
+<blockquote>
+<div><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">CONFIG_TARGET_CORE</span><span class="o">=</span><span class="s">m</span>
+<span class="na">CONFIG_TCM_USER2</span><span class="o">=</span><span class="s">m</span>
+<span class="na">CONFIG_ISCSI_TARGET</span><span class="o">=</span><span class="s">m</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="install-ceph-iscsi">
+<h2>4. Install ceph-iscsi<a class="headerlink" href="#install-ceph-iscsi" title="Link to this heading"></a></h2>
+<p>Finally, the remaining tools can be fetched directly from their Git repositories and their associated services started</p>
+<section id="tcmu-runner">
+<h3>tcmu-runner<a class="headerlink" href="#tcmu-runner" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/open-iscsi/tcmu-runner</span>
+<span class="prompt15"><span class="nb">cd</span><span class="w"> </span>tcmu-runner</span>
+</pre></div></div><p>Run the following command to install all the needed dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">./extra/install_dep.sh</span>
+</pre></div></div><p>Now you can build the tcmu-runner.
+To do so, use the following build command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">cmake<span class="w"> </span>-Dwith-glfs<span class="o">=</span><span class="nb">false</span><span class="w"> </span>-Dwith-qcow<span class="o">=</span><span class="nb">false</span><span class="w"> </span>-DSUPPORT_SYSTEMD<span class="o">=</span>ON<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr</span>
+<span class="prompt15">make<span class="w"> </span>install</span>
+</pre></div></div><p>Enable and start the daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">systemctl<span class="w"> </span>daemon-reload</span>
+<span class="prompt15">systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>tcmu-runner</span>
+<span class="prompt15">systemctl<span class="w"> </span>start<span class="w"> </span>tcmu-runner</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="rtslib-fb">
+<h3>rtslib-fb<a class="headerlink" href="#rtslib-fb" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/open-iscsi/rtslib-fb.git</span>
+<span class="prompt15"><span class="nb">cd</span><span class="w"> </span>rtslib-fb</span>
+<span class="prompt15">python<span class="w"> </span>setup.py<span class="w"> </span>install</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="configshell-fb">
+<h3>configshell-fb<a class="headerlink" href="#configshell-fb" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/open-iscsi/configshell-fb.git</span>
+<span class="prompt15"><span class="nb">cd</span><span class="w"> </span>configshell-fb</span>
+<span class="prompt15">python<span class="w"> </span>setup.py<span class="w"> </span>install</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="targetcli-fb">
+<h3>targetcli-fb<a class="headerlink" href="#targetcli-fb" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/open-iscsi/targetcli-fb.git</span>
+<span class="prompt15"><span class="nb">cd</span><span class="w"> </span>targetcli-fb</span>
+<span class="prompt15">python<span class="w"> </span>setup.py<span class="w"> </span>install</span>
+<span class="prompt15">mkdir<span class="w"> </span>/etc/target</span>
+<span class="prompt15">mkdir<span class="w"> </span>/var/target</span>
+</pre></div></div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The ceph-iscsi tools assume they are managing all targets
+on the system. If targets have been setup and are being managed by
+targetcli the target service must be disabled.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="ceph-iscsi">
+<h3>ceph-iscsi<a class="headerlink" href="#ceph-iscsi" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>Installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ceph/ceph-iscsi.git</span>
+<span class="prompt15"><span class="nb">cd</span><span class="w"> </span>ceph-iscsi</span>
+<span class="prompt15">python<span class="w"> </span>setup.py<span class="w"> </span>install<span class="w"> </span>--install-scripts<span class="o">=</span>/usr/bin</span>
+<span class="prompt15">cp<span class="w"> </span>usr/lib/systemd/system/rbd-target-gw.service<span class="w"> </span>/lib/systemd/system</span>
+<span class="prompt15">cp<span class="w"> </span>usr/lib/systemd/system/rbd-target-api.service<span class="w"> </span>/lib/systemd/system</span>
+</pre></div></div><p>Enable and start the daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt15">systemctl<span class="w"> </span>daemon-reload</span>
+<span class="prompt15">systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rbd-target-gw</span>
+<span class="prompt15">systemctl<span class="w"> </span>start<span class="w"> </span>rbd-target-gw</span>
+<span class="prompt15">systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rbd-target-api</span>
+<span class="prompt15">systemctl<span class="w"> </span>start<span class="w"> </span>rbd-target-api</span>
+</pre></div></div></div></blockquote>
+<p>Installation is complete. Proceed to the setup section in the
+<a class="reference external" href="../iscsi-target-cli">main ceph-iscsi CLI page</a>.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iscsi-target-cli.html" class="btn btn-neutral float-left" title="Configuring the iSCSI Target using the Command Line Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../start/quick-rbd.html" class="btn btn-neutral float-right" title="Block Device Quick Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

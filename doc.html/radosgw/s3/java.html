@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java S3 Examples &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Perl S3 Examples" href="perl.html" />
+    <link rel="prev" title="C# S3 Examples" href="csharp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../account.html">User Accounts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../s3.html">S3 API</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../s3.html#api">API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="commons.html">Common</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serviceops.html">Service Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bucketops.html">Bucket Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="objectops.html">Object Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cpp.html">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="csharp.html">C#</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Java</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perl.html">Perl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="php.html">PHP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python.html">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ruby.html">Ruby AWS::SDK Examples (aws-sdk gem ~&gt;2)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ruby.html#ruby-aws-s3-examples-aws-s3-gem">Ruby AWS::S3 Examples (aws-s3 gem)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html#features-support">Features Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html#unsupported-header-fields">Unsupported Header Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Object Gateway</a></li>
+          <li class="breadcrumb-item"><a href="../s3.html">Ceph Object Gateway S3 API</a></li>
+      <li class="breadcrumb-item active">Java S3 Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/radosgw/s3/java.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="java-s3-examples">
+<span id="java"></span><h1>Java S3 Examples<a class="headerlink" href="#java-s3-examples" title="Link to this heading"></a></h1>
+<section id="pre-requisites">
+<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Link to this heading"></a></h2>
+<p>All examples are written against AWS Java SDK 2.17.42. You may need
+to change some code when using another client.</p>
+</section>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>The following examples may require some or all of the following java
+classes to be imported:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.URI</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.net.URISyntaxException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.ByteBuffer</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.nio.file.Paths</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.List</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ListIterator</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.time.Duration</span><span class="p">;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.auth.credentials.AwsCredentials</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.auth.credentials.AwsBasicCredentials</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.auth.credentials.StaticCredentialsProvider</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.core.sync.RequestBody</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.regions.Region</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.S3Client</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.model.Bucket</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.model.ListBucketsResponse</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.model.ListObjectsResponse</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.model.ObjectCannedACL</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.model.S3Exception</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.model.S3Object</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.presigner.S3Presigner</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If you are just testing the Ceph Object Storage services, consider
+using HTTP protocol instead of HTTPS protocol.</p>
+<p>First, import the <code class="docutils literal notranslate"><span class="pre">AwsBasicCredentials</span></code> and <code class="docutils literal notranslate"><span class="pre">S3Client</span></code> classes.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.auth.credentials.AwsBasicCredentials</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">software.amazon.awssdk.services.s3.S3Client</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Then, use the client builder to create an S3 client:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">AwsBasicCredentials</span><span class="w"> </span><span class="n">credentials</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AwsBasicCredentials</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">accessKey</span><span class="p">,</span><span class="w"> </span><span class="n">secretKey</span><span class="p">);</span>
+
+<span class="n">S3Client</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S3Client</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">endpointOverride</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">URI</span><span class="p">(</span><span class="s">&quot;https://endpoint.com&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="na">credentialsProvider</span><span class="p">(</span><span class="n">StaticCredentialsProvider</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">credentials</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="na">serviceConfiguration</span><span class="p">(</span><span class="n">srvcConf</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">srvcConf</span><span class="p">.</span><span class="na">pathStyleAccessEnabled</span><span class="p">();</span>
+<span class="w">        </span><span class="p">})</span>
+<span class="w">        </span><span class="p">.</span><span class="na">region</span><span class="p">(</span><span class="n">Region</span><span class="p">.</span><span class="na">US_EAST_1</span><span class="p">)</span><span class="w"> </span><span class="c1">// this is not used, but the AWS SDK requires it</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="listing-owned-buckets">
+<h2>Listing Owned Buckets<a class="headerlink" href="#listing-owned-buckets" title="Link to this heading"></a></h2>
+<p>This gets a list of Buckets that you own.
+This also prints out the bucket name and creation date of each bucket.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">ListBucketsResponse</span><span class="w"> </span><span class="n">lbResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">listBuckets</span><span class="p">();</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Bucket</span><span class="w"> </span><span class="n">bucket</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">lbResponse</span><span class="p">.</span><span class="na">buckets</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">bucket</span><span class="p">.</span><span class="na">name</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">bucket</span><span class="p">.</span><span class="na">creationDate</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mahbuckat1</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">20</span><span class="n">T14</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">57.231</span><span class="n">Z</span>
+<span class="n">mahbuckat2</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">20</span><span class="n">T14</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">59.402</span><span class="n">Z</span>
+<span class="n">mahbuckat3</span>    <span class="mi">2021</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">20</span><span class="n">T14</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mf">02.288</span><span class="n">Z</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-bucket">
+<h2>Creating a Bucket<a class="headerlink" href="#creating-a-bucket" title="Link to this heading"></a></h2>
+<p>This creates a new bucket called <code class="docutils literal notranslate"><span class="pre">my-new-bucket</span></code></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="p">.</span><span class="na">createBucket</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-new-bucket&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="listing-a-bucket-s-content">
+<h2>Listing a Bucket’s Content<a class="headerlink" href="#listing-a-bucket-s-content" title="Link to this heading"></a></h2>
+<p>This gets a list of objects in the bucket.
+This also prints out each object’s name, the file size, and last
+modified date.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">ListObjectsResponse</span><span class="w"> </span><span class="n">loResponse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="na">listObjects</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">S3Object</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">loResponse</span><span class="p">.</span><span class="na">contents</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span>
+<span class="w">                </span><span class="n">object</span><span class="p">.</span><span class="na">key</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                </span><span class="n">object</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;\t&quot;</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                </span><span class="n">object</span><span class="p">.</span><span class="na">lastModified</span><span class="p">()</span>
+<span class="w">        </span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myphoto1</span><span class="o">.</span><span class="n">jpg</span> <span class="mi">251262</span>  <span class="mi">2021</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">20</span><span class="n">T17</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mf">07.317</span><span class="n">Z</span>
+<span class="n">myphoto2</span><span class="o">.</span><span class="n">jpg</span> <span class="mi">262518</span>  <span class="mi">2021</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">20</span><span class="n">T17</span><span class="p">:</span><span class="mi">49</span><span class="p">:</span><span class="mf">46.872</span><span class="n">Z</span>
+</pre></div>
+</div>
+</section>
+<section id="deleting-a-bucket">
+<h2>Deleting a Bucket<a class="headerlink" href="#deleting-a-bucket" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Bucket must be empty! Otherwise it won’t work!</p>
+</div>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="p">.</span><span class="na">deleteBucket</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-new-bucket&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="forced-delete-for-non-empty-buckets">
+<h2>Forced Delete for Non-empty Buckets<a class="headerlink" href="#forced-delete-for-non-empty-buckets" title="Link to this heading"></a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>not available</p>
+</div>
+</section>
+<section id="creating-an-object">
+<h2>Creating an Object<a class="headerlink" href="#creating-an-object" title="Link to this heading"></a></h2>
+<p>This creates a file <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code> with the string <code class="docutils literal notranslate"><span class="pre">&quot;Hello</span> <span class="pre">World!&quot;</span></code></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">ByteBuffer</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">wrap</span><span class="p">(</span><span class="s">&quot;Hello World!&quot;</span><span class="p">.</span><span class="na">getBytes</span><span class="p">());</span>
+<span class="n">client</span><span class="p">.</span><span class="na">putObject</span><span class="p">(</span>
+<span class="w">        </span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">).</span><span class="na">key</span><span class="p">(</span><span class="s">&quot;hello.txt&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="n">RequestBody</span><span class="p">.</span><span class="na">fromByteBuffer</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="change-an-object-s-acl">
+<h2>Change an Object’s ACL<a class="headerlink" href="#change-an-object-s-acl" title="Link to this heading"></a></h2>
+<p>This makes the object <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code> to be publicly readable, and
+<code class="docutils literal notranslate"><span class="pre">secret_plans.txt</span></code> to be private.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="p">.</span><span class="na">putObjectAcl</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">).</span><span class="na">key</span><span class="p">(</span><span class="s">&quot;hello.txt&quot;</span><span class="p">).</span><span class="na">acl</span><span class="p">(</span><span class="n">ObjectCannedACL</span><span class="p">.</span><span class="na">PUBLIC_READ</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="n">client</span><span class="p">.</span><span class="na">putObjectAcl</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">).</span><span class="na">key</span><span class="p">(</span><span class="s">&quot;secret_plans.txt&quot;</span><span class="p">).</span><span class="na">acl</span><span class="p">(</span><span class="n">ObjectCannedACL</span><span class="p">.</span><span class="na">PRIVATE</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="download-an-object-to-a-file">
+<h2>Download an Object (to a file)<a class="headerlink" href="#download-an-object-to-a-file" title="Link to this heading"></a></h2>
+<p>This downloads the object <code class="docutils literal notranslate"><span class="pre">perl_poetry.pdf</span></code> and saves it in
+<code class="docutils literal notranslate"><span class="pre">/home/larry/documents</span></code></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="p">.</span><span class="na">getObject</span><span class="p">(</span>
+<span class="w">        </span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">).</span><span class="na">key</span><span class="p">(</span><span class="s">&quot;perl_poetry.pdf&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="n">Paths</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;/home/larry/documents/perl_poetry.pdf&quot;</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="delete-an-object">
+<h2>Delete an Object<a class="headerlink" href="#delete-an-object" title="Link to this heading"></a></h2>
+<p>This deletes the object <code class="docutils literal notranslate"><span class="pre">goodbye.txt</span></code></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="p">.</span><span class="na">deleteObject</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">).</span><span class="na">key</span><span class="p">(</span><span class="s">&quot;goodbye.txt&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-object-download-urls-signed-and-unsigned">
+<h2>Generate Object Download URLs (signed and unsigned)<a class="headerlink" href="#generate-object-download-urls-signed-and-unsigned" title="Link to this heading"></a></h2>
+<p>This generates an unsigned download URL for <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code>. This works
+because we made <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code> public by setting the ACL above.
+This then generates a signed download URL for <code class="docutils literal notranslate"><span class="pre">secret_plans.txt</span></code> that
+will work for 1 hour. Signed download URLs will work for the time
+period even if the object is private (when the time period is up, the
+URL will stop working).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The java library does not have a method for generating unsigned
+URLs, so the example below just generates a signed URL.</p>
+</div>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">S3Presigner</span><span class="w"> </span><span class="n">presigner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S3Presigner</span><span class="p">.</span><span class="na">builder</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">endpointOverride</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">URI</span><span class="p">(</span><span class="s">&quot;https://endpoint.com&quot;</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="na">credentialsProvider</span><span class="p">(</span><span class="n">StaticCredentialsProvider</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">credentials</span><span class="p">))</span>
+<span class="w">        </span><span class="p">.</span><span class="na">region</span><span class="p">(</span><span class="n">Region</span><span class="p">.</span><span class="na">US_EAST_1</span><span class="p">)</span><span class="w"> </span><span class="c1">// this is not used, but the AWS SDK requires it</span>
+<span class="w">        </span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+
+<span class="n">PresignedGetObjectRequest</span><span class="w"> </span><span class="n">presignedRequest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">presigner</span><span class="p">.</span><span class="na">presignGetObject</span><span class="p">(</span><span class="n">preReq</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">preReq</span><span class="p">.</span><span class="na">getObjectRequest</span><span class="p">(</span><span class="n">req</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">req</span><span class="p">.</span><span class="na">bucket</span><span class="p">(</span><span class="s">&quot;my-bucket&quot;</span><span class="p">).</span><span class="na">key</span><span class="p">(</span><span class="s">&quot;secret_plans.txt&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}).</span><span class="na">signatureDuration</span><span class="p">(</span>
+<span class="w">                </span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMinutes</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="w">        </span><span class="p">);</span>
+<span class="p">});</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">presignedRequest</span><span class="p">.</span><span class="na">url</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>https://endpoint.com/my-bucket/secret_plans.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Date=20210921T151408Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=1200&amp;X-Amz-Credential=XXXXXXXXXXXX%2F20210921%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Signature=yyyyyyyyyyyyyyyyyyyyyy
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="csharp.html" class="btn btn-neutral float-left" title="C# S3 Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="perl.html" class="btn btn-neutral float-right" title="Perl S3 Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

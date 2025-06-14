@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic Ceph Client Setup &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="Cephadm Operations" href="operations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cephadm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html">Compatibility and Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Using cephadm to Deploy a New Ceph Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adoption.html">Converting an existing cluster to cephadm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host-management.html">Host Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/index.html">Service Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="certmgr.html">Certificate Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrade.html">Upgrading Ceph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Cephadm operations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Client Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#config-file-setup">Config File Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keyring-setup">Keyring Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/cephadm/index.html">Cephadm Feature Planning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cephadm</a></li>
+      <li class="breadcrumb-item active">Basic Ceph Client Setup</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephadm/client-setup.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="basic-ceph-client-setup">
+<h1>Basic Ceph Client Setup<a class="headerlink" href="#basic-ceph-client-setup" title="Link to this heading"></a></h1>
+<p>Client hosts require basic configuration to interact with
+Ceph clusters. This section describes how to perform this configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Most client hosts need to install only the <code class="docutils literal notranslate"><span class="pre">ceph-common</span></code> package
+and its dependencies. Such an installation supplies the basic <code class="docutils literal notranslate"><span class="pre">ceph</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rados</span></code> commands, as well as other commands including <code class="docutils literal notranslate"><span class="pre">mount.ceph</span></code>
+and <code class="docutils literal notranslate"><span class="pre">rbd</span></code>.</p>
+</div>
+<section id="config-file-setup">
+<h2>Config File Setup<a class="headerlink" href="#config-file-setup" title="Link to this heading"></a></h2>
+<p>Client hosts  usually require smaller configuration files (here
+sometimes called “config files”) than do back-end cluster hosts.
+To generate a minimal config file, log into a host that has been
+configured as a client or that is running a cluster daemon, then
+run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span>generate-minimal-conf</span>
+</pre></div></div><p>This command generates a minimal config file that tells the client how
+to reach the Ceph Monitors. This file should usually
+be copied to <code class="docutils literal notranslate"><span class="pre">/etc/ceph/ceph.conf</span></code> on each client host.</p>
+</section>
+<section id="keyring-setup">
+<h2>Keyring Setup<a class="headerlink" href="#keyring-setup" title="Link to this heading"></a></h2>
+<p>Most Ceph clusters run with authentication enabled. This means that
+the client needs keys in order to communicate with Ceph daemons.
+To generate a keyring file with credentials for <code class="docutils literal notranslate"><span class="pre">client.fs</span></code>,
+log into an running cluster member and run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt2:before {
+  content: "$ ";
+}
+</style><span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>get-or-create<span class="w"> </span>client.fs</span>
+</pre></div></div><p>The resulting output is directed into a keyring file, typically
+<code class="docutils literal notranslate"><span class="pre">/etc/ceph/ceph.keyring</span></code>.</p>
+<p>To gain a broader understanding of client keyring distribution and administration,
+you should read <a class="reference internal" href="operations.html#client-keyrings-and-configs"><span class="std std-ref">Client keyrings and configs</span></a>.</p>
+<p>To see an example that explains how to distribute <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> configuration
+files to hosts that are tagged with the <code class="docutils literal notranslate"><span class="pre">bare_config</span></code> label, you should read
+the subsection named “Distributing ceph.conf to hosts tagged with bare_config”
+under the heading <a class="reference internal" href="operations.html#etc-ceph-conf-distribution"><span class="std std-ref">/etc/ceph/ceph.conf</span></a>.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="operations.html" class="btn btn-neutral float-left" title="Cephadm Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

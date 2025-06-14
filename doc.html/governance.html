@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Governance &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Ceph Foundation" href="foundation.html" />
+    <link rel="prev" title="PoseidonStore" href="dev/crimson/poseidonstore.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Governance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#key-principles">Key principles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bodies">Bodies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-executive-council">Ceph Executive Council</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#responsibilities">Responsibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#membership">Membership</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#current-members">Current Members</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-steering-committee">Ceph Steering Committee</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Responsibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Membership</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Current Members</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#component-team-leads">Component Team Leads</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Responsibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-ceph-foundation">The Ceph Foundation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Governance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/governance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="governance">
+<span id="id1"></span><h1>Governance<a class="headerlink" href="#governance" title="Link to this heading"></a></h1>
+<p>The Ceph open source community is guided by a few different groups.</p>
+<section id="key-principles">
+<h2>Key principles<a class="headerlink" href="#key-principles" title="Link to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>Decision-making is consensus-driven by those who participate.</p></li>
+<li><p>Leadership roles are defined primarily by responsibility, not prestige or seniority.</p></li>
+<li><p>It is normal and healthy for these roles to be passed on to others</p></li>
+<li><p>Everyone’s role is ultimately to serve the users and participation
+is voluntary.</p></li>
+</ul>
+</div></blockquote>
+<section id="bodies">
+<h3>Bodies<a class="headerlink" href="#bodies" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="ceph-executive-council">
+<h2>Ceph Executive Council<a class="headerlink" href="#ceph-executive-council" title="Link to this heading"></a></h2>
+<section id="responsibilities">
+<h3>Responsibilities<a class="headerlink" href="#responsibilities" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Arbiter in cases where decisions cannot be reached by consensus</p></li>
+<li><p>Distribute key responsibilities amongst themselves or others</p></li>
+<li><p>Point of contact for the project</p></li>
+<li><p>Representatives for Ceph foundation board meetings</p></li>
+<li><p>Ensure things get done</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="membership">
+<h3>Membership<a class="headerlink" href="#membership" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>3 people</p></li>
+<li><p>Elected by the steering committee</p></li>
+<li><p>Candidates self-nominate or are nominated by other members</p></li>
+<li><p>Discussion of how roles/responsibilities may be delegated</p></li>
+<li><p>Ranked-choice vote by the steering committee</p></li>
+<li><p>2 year terms, with one member being elected in even years, and the
+other two in odd years</p></li>
+<li><p>Members may resign at any time, and the steering committee may vote
+to appoint a replacement for the rest of their term</p></li>
+<li><p>members must involve &gt;1 employer</p></li>
+</ul>
+</div></blockquote>
+<section id="current-members">
+<h4>Current Members<a class="headerlink" href="#current-members" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Dan van der Ster &lt;<a class="reference external" href="mailto:dan&#46;vanderster&#37;&#52;&#48;clyso&#46;com">dan<span>&#46;</span>vanderster<span>&#64;</span>clyso<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Josh Durgin &lt;<a class="reference external" href="mailto:jdurgin&#37;&#52;&#48;redhat&#46;com">jdurgin<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Neha Ojha &lt;<a class="reference external" href="mailto:nojha&#37;&#52;&#48;redhat&#46;com">nojha<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="ceph-steering-committee">
+<span id="csc"></span><h2>Ceph Steering Committee<a class="headerlink" href="#ceph-steering-committee" title="Link to this heading"></a></h2>
+<section id="id2">
+<h3>Responsibilities<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Elect executive council</p></li>
+<li><p>Amend governance model by supermajority vote</p></li>
+<li><p>Meet regularly to discuss and decide on tactical and strategic projects
+and improvements</p></li>
+<li><p>Hold an annual election</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id3">
+<h3>Membership<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Developers, users, community members</p></li>
+<li><p>Members can be nominated and added/removed by existing members via a
+supermajority vote</p></li>
+<li><p>Anyone may attend steering committee meetings as a non-voting participant</p></li>
+<li><p>Existing Ceph Leadership Team members are grandfathered in</p></li>
+<li><p>Membership reflected by an email list and on the Ceph website and
+docs</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A “supermajority” is a 2/3 majority of votes on a particular item
+in an election. Abstaining does not bias a vote.</p>
+</div>
+<section id="id4">
+<h4>Current Members<a class="headerlink" href="#id4" title="Link to this heading"></a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><p>Adam King &lt;<a class="reference external" href="mailto:adking&#37;&#52;&#48;redhat&#46;com">adking<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Casey Bodley &lt;<a class="reference external" href="mailto:cbodley&#37;&#52;&#48;redhat&#46;com">cbodley<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Dan van der Ster &lt;<a class="reference external" href="mailto:dan&#46;vanderster&#37;&#52;&#48;clyso&#46;com">dan<span>&#46;</span>vanderster<span>&#64;</span>clyso<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>David Orman &lt;<a class="reference external" href="mailto:ormandj&#37;&#52;&#48;1111systems&#46;com">ormandj<span>&#64;</span>1111systems<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Ernesto Puerta &lt;<a class="reference external" href="mailto:epuertat&#37;&#52;&#48;redhat&#46;com">epuertat<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Gregory Farnum &lt;<a class="reference external" href="mailto:gfarnum&#37;&#52;&#48;redhat&#46;com">gfarnum<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Haomai Wang &lt;<a class="reference external" href="mailto:haomai&#37;&#52;&#48;xsky&#46;com">haomai<span>&#64;</span>xsky<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Ilya Dryomov &lt;<a class="reference external" href="mailto:idryomov&#37;&#52;&#48;redhat&#46;com">idryomov<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Igor Fedotov &lt;<a class="reference external" href="mailto:igor&#46;fedotov&#37;&#52;&#48;croit&#46;io">igor<span>&#46;</span>fedotov<span>&#64;</span>croit<span>&#46;</span>io</a>&gt;</p></li>
+<li><p>Jeff Layton &lt;<a class="reference external" href="mailto:jlayton&#37;&#52;&#48;redhat&#46;com">jlayton<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Josh Durgin &lt;<a class="reference external" href="mailto:jdurgin&#37;&#52;&#48;redhat&#46;com">jdurgin<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>João Eduardo Luis &lt;<a class="reference external" href="mailto:joao&#37;&#52;&#48;clyso&#46;com">joao<span>&#64;</span>clyso<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Ken Dreyer &lt;<a class="reference external" href="mailto:kdreyer&#37;&#52;&#48;redhat&#46;com">kdreyer<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Mark Nelson &lt;<a class="reference external" href="mailto:mark&#46;nelson&#37;&#52;&#48;clyso&#46;com">mark<span>&#46;</span>nelson<span>&#64;</span>clyso<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Matt Benjamin &lt;<a class="reference external" href="mailto:mbenjami&#37;&#52;&#48;redhat&#46;com">mbenjami<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Mike Perez &lt;<a class="reference external" href="mailto:miperez&#37;&#52;&#48;redhat&#46;com">miperez<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Myoungwon Oh &lt;<a class="reference external" href="mailto:myoungwon&#46;oh&#37;&#52;&#48;samsung&#46;com">myoungwon<span>&#46;</span>oh<span>&#64;</span>samsung<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Neha Ojha &lt;<a class="reference external" href="mailto:nojha&#37;&#52;&#48;redhat&#46;com">nojha<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Patrick Donnelly &lt;<a class="reference external" href="mailto:pdonnell&#37;&#52;&#48;ibm&#46;com">pdonnell<span>&#64;</span>ibm<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Sam Just &lt;<a class="reference external" href="mailto:sjust&#37;&#52;&#48;redhat&#46;com">sjust<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Vikhyat Umrao &lt;<a class="reference external" href="mailto:vikhyat&#37;&#52;&#48;redhat&#46;com">vikhyat<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Xie Xingguo &lt;<a class="reference external" href="mailto:xie&#46;xingguo&#37;&#52;&#48;zte&#46;com&#46;cn">xie<span>&#46;</span>xingguo<span>&#64;</span>zte<span>&#46;</span>com<span>&#46;</span>cn</a>&gt;</p></li>
+<li><p>Yehuda Sadeh &lt;<a class="reference external" href="mailto:yehuda&#37;&#52;&#48;redhat&#46;com">yehuda<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Yingxin Cheng &lt;<a class="reference external" href="mailto:yingxin&#46;cheng&#37;&#52;&#48;intel&#46;com">yingxin<span>&#46;</span>cheng<span>&#64;</span>intel<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Yuri Weinstein &lt;<a class="reference external" href="mailto:yweinste&#37;&#52;&#48;redhat&#46;com">yweinste<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Zac Dover &lt;<a class="reference external" href="mailto:zac&#46;dover&#37;&#52;&#48;proton&#46;me">zac<span>&#46;</span>dover<span>&#64;</span>proton<span>&#46;</span>me</a>&gt;</p></li>
+<li><p>Laura Flores &lt;<a class="reference external" href="mailto:lflores&#37;&#52;&#48;redhat&#46;com">lflores<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Venky Shankar &lt;<a class="reference external" href="mailto:vshankar&#37;&#52;&#48;redhat&#46;com">vshankar<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Guillaume Abrioux &lt;<a class="reference external" href="mailto:gabrioux&#37;&#52;&#48;redhat&#46;com">gabrioux<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Anthony D’Atri &lt;<a class="reference external" href="mailto:anthony&#46;datri&#37;&#52;&#48;gmail&#46;com">anthony<span>&#46;</span>datri<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Joseph Mundackal &lt;<a class="reference external" href="mailto:jmundackal&#37;&#52;&#48;bloomberg&#46;net">jmundackal<span>&#64;</span>bloomberg<span>&#46;</span>net</a>&gt;</p></li>
+<li><p>Gaurav Sitlani &lt;<a class="reference external" href="mailto:gsitlani&#37;&#52;&#48;ibm&#46;com">gsitlani<span>&#64;</span>ibm<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Afreen Misbah &lt;<a class="reference external" href="mailto:afreen&#37;&#52;&#48;ibm&#46;com">afreen<span>&#64;</span>ibm<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Radoslaw Zarzynski &lt;<a class="reference external" href="mailto:rzarzyns&#37;&#52;&#48;redhat&#46;com">rzarzyns<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Matan Breizman &lt;<a class="reference external" href="mailto:mbreizma&#37;&#52;&#48;redhat&#46;com">mbreizma<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Yaarit Hatuka &lt;<a class="reference external" href="mailto:yhatuka&#37;&#52;&#48;ibm&#46;com">yhatuka<span>&#64;</span>ibm<span>&#46;</span>com</a>&gt;</p></li>
+<li><p>Adam C. Emerson &lt;<a class="reference external" href="mailto:aemerson&#37;&#52;&#48;redhat&#46;com">aemerson<span>&#64;</span>redhat<span>&#46;</span>com</a>&gt;</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="component-team-leads">
+<span id="ctl"></span><h2>Component Team Leads<a class="headerlink" href="#component-team-leads" title="Link to this heading"></a></h2>
+<section id="id5">
+<h3>Responsibilities<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p>Manage a <a class="reference external" href="https://ceph.io/en/community/team/">component team</a> in Ceph</p></li>
+<li><p>Ensure PRs are reviewed and merged</p></li>
+<li><p>Ensure severe bug fixes are backported</p></li>
+<li><p>Run standups</p></li>
+<li><p>Bug triage, scrubs</p></li>
+<li><p>etc.</p></li>
+</ul>
+</div></blockquote>
+<p>Team leads are selected by the executive council, generally based on
+the recommendation by team members and outgoing lead.  Periodic
+rotation of lead responsibility among team members is encouraged.</p>
+</section>
+<section id="the-ceph-foundation">
+<h3>The Ceph Foundation<a class="headerlink" href="#the-ceph-foundation" title="Link to this heading"></a></h3>
+<p>The Ceph Foundation is organized as a directed fund under the Linux
+Foundation and is tasked with supporting the Ceph project community
+and ecosystem.  It has no direct control over the technical direction
+of the Ceph open source project beyond offering feedback and input
+into the collaborative development process.</p>
+<p>For more information, see <a class="reference internal" href="foundation.html#foundation"><span class="std std-ref">Ceph Foundation</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dev/crimson/poseidonstore.html" class="btn btn-neutral float-left" title="PoseidonStore" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="foundation.html" class="btn btn-neutral float-right" title="Ceph Foundation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ceph NVMe-oF Gateway &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NVMe-oF Gateway Requirements" href="nvmeof-requirements.html" />
+    <link rel="prev" title="RBD on Windows" href="rbd-windows.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-operations.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="rbd-integrations.html">Integrations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbd-ko.html">Kernel Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qemu-rbd.html">QEMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libvirt.html">libvirt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-nomad.html">Nomad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-openstack.html">OpenStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-cloudstack.html">CloudStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iscsi-overview.html">LIO iSCSI Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-windows.html">Windows</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Ceph NVMe-oF Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#high-availability-with-nvme-of-gateway-group">High Availability with NVMe-oF gateway group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scaling-out-with-nvme-of-gateway">Scaling-out with NVMe-oF gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nvme-of-gateway-discovery">NVMe-oF gateway Discovery</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nvmeof-requirements.html">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvmeof-target-configure.html">Configuring the NVME-oF Target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvmeof-initiators.html">Configuring the NVMe-oF Initiators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="man/index.html">Manpages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="rbd-integrations.html">Ceph Block Device 3rd Party Integration</a></li>
+      <li class="breadcrumb-item active">Ceph NVMe-oF Gateway</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rbd/nvmeof-overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-nvme-of-gateway">
+<span id="ceph-nvmeof"></span><h1>Ceph NVMe-oF Gateway<a class="headerlink" href="#ceph-nvme-of-gateway" title="Link to this heading"></a></h1>
+<p>Storage administrators can install and configure an NVMe over Fabrics (NVMe-oF) gateways for a Storage Ceph cluster. With Ceph NVMe-oF gateways, you can effectively run a fully integrated block storage infrastructure with all features and benefits of a conventional Storage Area Network (SAN).</p>
+<p>The NVMe-oF gateway integrates Storage Ceph with the NVMe over TCP (NVMe/TCP) protocol to provide an NVMe/TCP target that exports RADOS Block Device (RBD) images. The NVMe/TCP protocol allows clients, which are known as initiators, to send NVMe-oF commands to storage devices, which are known as targets, over an Internet Protocol network. Initiators can be Linux clients, VMWare clients, or both. For VMWare clients, the NVMe/TCP volumes are shown as VMFS Datastore and for Linux clients, the NVMe/TCP volumes are shown as block devices.</p>
+</section>
+<section id="high-availability-with-nvme-of-gateway-group">
+<h1>High Availability with NVMe-oF gateway group<a class="headerlink" href="#high-availability-with-nvme-of-gateway-group" title="Link to this heading"></a></h1>
+<p>High Availability (HA) provides I/O and control path redundancies for the host initiators. High Availability is also sometimes referred to as failover and failback support. The redundancy that HA creates is critical to protect against one or more gateway failures. With HA, the host can continue the I/O with only the possibility of performance latency until the failed gateways are back and functioning correctly.</p>
+<p>NVMe-oF gateways are virtually grouped into gateway groups and the HA domain sits within the gateway group. An NVMe-oF gateway group currently supports eight gateways. Each NVMe-oF gateway in the gateway group can be used as a path to any of the subsystems or namespaces that are defined in that gateway group. HA is effective with two or more gateways in a gateway group.</p>
+<p>High Availability is enabled by default. To use High Availability, a minimum of two gateways and listeners must be defined for the subsystems on every GW.</p>
+<p>It is important to create redundancy between the host and the gateways. To create a fully redundant network connectivity, be sure that the host has two Ethernet ports that are connected to the gateways over a network with redundancy (for example, two network switches).</p>
+<p>The HA feature uses the Active/Standby approach for each namespace. Using Active/Standby means that at any point in time, only one of the NVMe-oF gateways in the group serve I/O from the host to a specific namespace. To properly use all NVMe-oF gateways, each namespace is assigned to a different load-balancing group. The number of load-balancing groups is equal to the number of NVMe-oF gateways in the gateway group.</p>
+<p>In case the one or more GWs in the group dies or cannot be seen by the Ceph NVMe-oF monitor, an automatic failover is triggered, and another GW in the group will assume reponsibilty to the load-balancing group of the failed GW(s). That means that there is no disruption to the IO, because another GW will continue serving these namespaces. If the failing GW(s) are showing up again, a failback is automatically triggered.</p>
+<p>The NVMe-oF initoator on the host, will also continue trying to connect a failing GW, for the amount of time that was specified in the connect-all command. The recommended amount is 1800 seconds.</p>
+</section>
+<section id="scaling-out-with-nvme-of-gateway">
+<h1>Scaling-out with NVMe-oF gateway<a class="headerlink" href="#scaling-out-with-nvme-of-gateway" title="Link to this heading"></a></h1>
+<p>The NVMe-oF gateway supports scale-out. NVMe-oF gateway scale-out supports:
+Up to four NVMe-oF gateway groups.
+Up to eight NVMe-oF gateways in a gateway group.
+Up to 128 NVMe-oF subsystems within a gateway group.
+Up to 32 hosts per NVMe-oF subsystem.
+1024 namespaces per gateway group.</p>
+</section>
+<section id="nvme-of-gateway-discovery">
+<h1>NVMe-oF gateway Discovery<a class="headerlink" href="#nvme-of-gateway-discovery" title="Link to this heading"></a></h1>
+<p>Ceph NVMe-oF gateways support Discovery. Each NVMe-oF gateway that runs in the Ceph cluster also runs a Discovery Controller. The Discovery Controller reports all of the Subsystems in the GW group.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nvmeof-requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvmeof-target-configure.html">Configuring the NVME-oF Target</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvmeof-initiators.html">Configuring the NVMe-oF Initiators</a></li>
+</ul>
+</div>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rbd-windows.html" class="btn btn-neutral float-left" title="RBD on Windows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nvmeof-requirements.html" class="btn btn-neutral float-right" title="NVMe-oF Gateway Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

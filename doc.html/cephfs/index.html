@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ceph File System &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Create a Ceph file system" href="createfs.html" />
+    <link rel="prev" title="SDK for Ceph Object Classes" href="../rados/api/objclass-sdk.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ceph File System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#administration">Administration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="createfs.html"> Create a CephFS file system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="administration.html"> Administrative commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multifs.html"> Creating Multiple File Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-remove-mds.html"> Provision/Add/Remove MDS(s)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#referring-to-mds-daemons">Referring to MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#managing-failover">Managing failover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-standby-replay">Configuring standby-replay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-mds-file-system-affinity">Configuring MDS file system affinity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-configuration.html"> MDS Cache Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds-config-ref.html"> MDS Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-mds.html"> Manual: ceph-mds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nfs.html"> Export over NFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-best-practices.html"> Application best practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs-volumes.html"> FS volume and subvolumes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quota.html"> CephFS Quotas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-messages.html"> Health messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html">Upgrading the MDS Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#upgrading-pre-firefly-file-systems-past-jewel">Upgrading pre-Firefly file systems past Jewel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-top.html"> CephFS Top Utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snap-schedule.html"> Scheduled Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html"> CephFS Snapshot Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="purge-queue.html"> Purge Queue</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mounting-cephfs">Mounting CephFS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="client-config-ref.html"> Client Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="client-auth.html"> Client Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-prerequisites.html"> Mount CephFS: Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-using-kernel-driver.html"> Mount CephFS using Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mount-using-fuse.html"> Mount CephFS using FUSE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-dokan.html"> Mount CephFS on Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/cephfs-shell.html"> Use the CephFS Shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kernel-features.html"> Supported Features of Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-fuse.html"> Manual: ceph-fuse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/mount.ceph.html"> Manual: mount.ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/mount.fuse.ceph.html"> Manual: mount.fuse.ceph</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cephfs-concepts">CephFS Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mds-states.html"> MDS States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posix.html"> POSIX compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds-journaling.html"> MDS Journaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-layouts.html"> File layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdcache.html"> Distributed Metadata Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamic-metadata-management.html"> Dynamic Metadata Management in CephFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-io-path.html"> CephFS IO Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="charmap.html"> Case Sensitivity and Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazyio.html"> LazyIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dirfrags.html"> Directory fragmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimds.html"> Multiple active MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snapshots.html"> Snapshots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eviction.html"> Client eviction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scrub.html"> Scrubbing the File System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="full.html"> Handling full file systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="disaster-recovery-experts.html"> Metadata repair</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting.html"> Troubleshooting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="disaster-recovery.html"> Disaster recovery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-journal-tool.html"> cephfs-journal-tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recover-fs-after-mon-store-loss.html"> Recovering file system after monitor store loss</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-guides">Developer Guides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="journaler.html"> Journaler Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="capabilities.html"> Client's Capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/index.html"> Java and Python bindings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mantle.html"> Mantle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics.html#getting-metrics">Getting Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-details">Additional Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="experimental-features.html"> Experimental Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Ceph File System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-file-system">
+<span id="id1"></span><h1>Ceph File System<a class="headerlink" href="#ceph-file-system" title="Link to this heading"></a></h1>
+<p>The Ceph File System, or <strong>CephFS</strong>, is a POSIX-compliant file system built on
+top of Ceph’s distributed object store, <strong>RADOS</strong>. CephFS endeavors to provide
+a state-of-the-art, multi-use, highly available, and performant file store for
+a variety of applications, including traditional use-cases like shared home
+directories, HPC scratch space, and distributed workflow shared storage.</p>
+<p>CephFS achieves these goals through novel architectural choices. Notably, file
+metadata is stored in a RADOS pool separate from file data and is served via a
+resizable cluster of <em>Metadata Servers</em>, or <strong>MDS</strong>es, which scale to support
+higher-throughput workloads. Clients of the file system have direct access to
+RADOS for reading and writing file data blocks. This makes it possible for
+workloads to scale linearly with the size of the underlying RADOS object store.
+There is no gateway or broker that mediates data I/O for clients.</p>
+<p>Access to data is coordinated through the cluster of MDS which serve as
+authorities for the state of the distributed metadata cache cooperatively
+maintained by clients and MDS. Mutations to metadata are aggregated by each MDS
+into a series of efficient writes to a journal on RADOS; no metadata state is
+stored locally by the MDS. This model allows for coherent and rapid
+collaboration between clients within the context of a POSIX file system.</p>
+<img alt="../_images/cephfs-architecture.svg" src="../_images/cephfs-architecture.svg" />
+<p>CephFS is the subject of numerous academic papers for its novel designs and
+contributions to file system research. It is the oldest storage interface in
+Ceph and was once the primary use-case for RADOS.  Now it is joined by two
+other storage interfaces to form a modern unified storage system: RBD (Ceph
+Block Devices) and RGW (Ceph Object Storage Gateway).</p>
+<section id="getting-started-with-cephfs">
+<h2>Getting Started with CephFS<a class="headerlink" href="#getting-started-with-cephfs" title="Link to this heading"></a></h2>
+<p>For most deployments of Ceph, setting up your first CephFS file system is as simple as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2"><span class="c1"># Create a CephFS volume named (for example) &quot;cephfs&quot;:</span></span>
+<span class="prompt2">ceph<span class="w"> </span>fs<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>cephfs</span>
+</pre></div></div><p>The Ceph <a class="reference external" href="../mgr/orchestrator">Orchestrator</a>  will automatically create and configure MDS for
+your file system if the back-end deployment technology supports it (see
+<a class="reference external" href="../mgr/orchestrator/#current-implementation-status">Orchestrator deployment table</a>). Otherwise, please <a class="reference external" href="add-remove-mds">deploy MDS manually
+as needed</a>. You can also <a class="reference external" href="fs-volumes">create other CephFS volumes</a>.</p>
+<p>Finally, to mount CephFS on your client nodes, see <a class="reference external" href="mount-prerequisites">Mount CephFS:
+Prerequisites</a> page. Additionally, a command-line shell utility is available
+for interactive access or scripting via the <a class="reference external" href="../man/8/cephfs-shell">cephfs-shell</a>.</p>
+<!---</section>
+<section id="administration">
+<h2>Administration<a class="headerlink" href="#administration" title="Link to this heading"></a></h2>
+---><div class="toctree-wrapper compound">
+</div>
+<!---</section>
+<section id="mounting-cephfs">
+<h2>Mounting CephFS<a class="headerlink" href="#mounting-cephfs" title="Link to this heading"></a></h2>
+---><div class="toctree-wrapper compound">
+</div>
+<!---</section>
+<section id="cephfs-concepts">
+<h2>CephFS Concepts<a class="headerlink" href="#cephfs-concepts" title="Link to this heading"></a></h2>
+---><div class="toctree-wrapper compound">
+</div>
+<!---</section>
+<section id="troubleshooting-and-disaster-recovery">
+<h2>Troubleshooting and Disaster Recovery<a class="headerlink" href="#troubleshooting-and-disaster-recovery" title="Link to this heading"></a></h2>
+---><div class="toctree-wrapper compound">
+</div>
+<!---</section>
+<section id="developer-guides">
+<h2>Developer Guides<a class="headerlink" href="#developer-guides" title="Link to this heading"></a></h2>
+---><div class="toctree-wrapper compound">
+</div>
+<!---</section>
+<section id="additional-details">
+<h2>Additional Details<a class="headerlink" href="#additional-details" title="Link to this heading"></a></h2>
+---><div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rados/api/objclass-sdk.html" class="btn btn-neutral float-left" title="SDK for Ceph Object Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="createfs.html" class="btn btn-neutral float-right" title="Create a Ceph file system" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

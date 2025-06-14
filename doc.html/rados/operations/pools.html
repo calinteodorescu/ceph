@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pools &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Erasure code" href="erasure-code.html" />
+    <link rel="prev" title="Data Placement Overview" href="data-placement.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Pools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pool-names">Pool Names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-pools">List Pools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-pool">Creating a Pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#associating-a-pool-with-an-application">Associating a Pool with an Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-pool-quotas">Setting Pool Quotas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-a-pool">Deleting a Pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#renaming-a-pool">Renaming a Pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#showing-pool-statistics">Showing Pool Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#making-a-snapshot-of-a-pool">Making a Snapshot of a Pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#removing-a-snapshot-of-a-pool">Removing a Snapshot of a Pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-pool-values">Setting Pool Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-pool-values">Getting Pool Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-the-number-of-rados-object-replicas">Setting the Number of RADOS Object Replicas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-the-number-of-object-replicas">Getting the Number of Object Replicas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-pools-that-are-flagged-with-bulk">Managing pools that are flagged with <code class="docutils literal notranslate"><span class="pre">--bulk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-values-for-a-stretch-pool">Setting values for a stretch pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unsetting-values-for-a-stretch-pool">Unsetting values for a stretch pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#showing-values-of-a-stretch-pool">Showing values of a stretch pool</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Pools</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/pools.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="pools">
+<span id="rados-pools"></span><h1>Pools<a class="headerlink" href="#pools" title="Link to this heading"></a></h1>
+<p>Pools are logical partitions that are used to store RADOS objects.</p>
+<p>Pools provide:</p>
+<ul>
+<li><p><strong>Resilience</strong>: It is possible to plan for the number of OSDs that may
+fail in parallel without data being unavailable or lost. If your cluster
+uses replicated pools, the number of OSDs that can fail in parallel without
+data loss is one less than the number of replicas, and the number that can
+fail without data becoming unavailable is usually two.</p>
+<p>For example: a typical configuration stores three replicas
+(copies) of each RADOS object (that is: <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">=</span> <span class="pre">3</span></code>), but you can configure
+the number of replicas on a per-pool basis. For <a class="reference external" href="../erasure-code">erasure-coded pools</a>, resilience is defined as the number of coding (aka parity) chunks
+(for example, <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">2</span></code> in the default erasure code profile).</p>
+</li>
+<li><p><strong>Placement Groups</strong>: The <a class="reference internal" href="placement-groups.html#pg-autoscaler"><span class="std std-ref">autoscaler</span></a> sets the number
+of placement groups (PGs) for the pool. In a typical configuration, the
+target number of PGs is approximately one-hundred and fifty PGs per OSD. This
+provides reasonable balancing without consuming excessive computing
+resources. When setting up multiple pools, set an appropriate number of PGs
+for each pool and for the cluster as a whole. Each PG belongs to a specific
+pool: when multiple pools use the same OSDs, make sure that the <strong>sum</strong> of PG
+replicas per OSD is in the desired PG-per-OSD target range. See <a class="reference internal" href="placement-groups.html#setting-the-number-of-placement-groups"><span class="std std-ref">Setting
+the Number of Placement Groups</span></a> for
+instructions on how to manually set the number of placement groups per pool
+(this procedure works only when the autoscaler is not used). A handy calculator
+for various scenarios and combinations of pools, replicas, and target PG
+replicas per OSD is available for guidance at <a class="reference internal" href="pgcalc/index.html#pgcalc"><span class="std std-ref">PG Calc</span></a>.</p></li>
+<li><p><strong>CRUSH Rules</strong>: When data is stored in a pool, the placement of PGs and object
+replicas (or chunks/shards, in the case of erasure-coded pools) in your
+cluster is governed by CRUSH rules. Custom CRUSH rules can be created for a
+pool if the default rule does not fit your use case.</p></li>
+<li><p><strong>Snapshots</strong>: The command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">pool</span> <span class="pre">mksnap</span></code> creates a snapshot of a
+pool.</p></li>
+</ul>
+<section id="pool-names">
+<h2>Pool Names<a class="headerlink" href="#pool-names" title="Link to this heading"></a></h2>
+<p>Pool names beginning with <code class="docutils literal notranslate"><span class="pre">.</span></code> are reserved for use by Ceph’s internal
+operations. Do not create or manipulate pools with these names.</p>
+</section>
+<section id="list-pools">
+<h2>List Pools<a class="headerlink" href="#list-pools" title="Link to this heading"></a></h2>
+<p>There are multiple ways to list the pools in your cluster.</p>
+<p>To list just your cluster’s pool names (e.g. when scripting), execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">root</span>
+<span class="n">default</span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">log</span>
+<span class="n">default</span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">control</span>
+<span class="n">default</span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">meta</span>
+</pre></div>
+</div>
+<p>To list your cluster’s pools with the pool number, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>lspools</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">root</span>
+<span class="mi">2</span> <span class="n">default</span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">log</span>
+<span class="mi">3</span> <span class="n">default</span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">control</span>
+<span class="mi">4</span> <span class="n">default</span><span class="o">.</span><span class="n">rgw</span><span class="o">.</span><span class="n">meta</span>
+</pre></div>
+</div>
+<p>To list your cluster’s pools with additional information, execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>ls<span class="w"> </span>detail</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pool</span> <span class="mi">1</span> <span class="s1">&#39;.rgw.root&#39;</span> <span class="n">replicated</span> <span class="n">size</span> <span class="mi">3</span> <span class="n">min_size</span> <span class="mi">1</span> <span class="n">crush_rule</span> <span class="mi">0</span> <span class="n">object_hash</span> <span class="n">rjenkins</span> <span class="n">pg_num</span> <span class="mi">32</span> <span class="n">pgp_num</span> <span class="mi">32</span> <span class="n">autoscale_mode</span> <span class="n">on</span> <span class="n">last_change</span> <span class="mi">19</span> <span class="n">flags</span> <span class="n">hashpspool</span> <span class="n">stripe_width</span> <span class="mi">0</span> <span class="n">application</span> <span class="n">rgw</span> <span class="n">read_balance_score</span> <span class="mf">4.00</span>
+<span class="n">pool</span> <span class="mi">2</span> <span class="s1">&#39;default.rgw.log&#39;</span> <span class="n">replicated</span> <span class="n">size</span> <span class="mi">3</span> <span class="n">min_size</span> <span class="mi">1</span> <span class="n">crush_rule</span> <span class="mi">0</span> <span class="n">object_hash</span> <span class="n">rjenkins</span> <span class="n">pg_num</span> <span class="mi">32</span> <span class="n">pgp_num</span> <span class="mi">32</span> <span class="n">autoscale_mode</span> <span class="n">on</span> <span class="n">last_change</span> <span class="mi">21</span> <span class="n">flags</span> <span class="n">hashpspool</span> <span class="n">stripe_width</span> <span class="mi">0</span> <span class="n">application</span> <span class="n">rgw</span> <span class="n">read_balance_score</span> <span class="mf">4.00</span>
+<span class="n">pool</span> <span class="mi">3</span> <span class="s1">&#39;default.rgw.control&#39;</span> <span class="n">replicated</span> <span class="n">size</span> <span class="mi">3</span> <span class="n">min_size</span> <span class="mi">1</span> <span class="n">crush_rule</span> <span class="mi">0</span> <span class="n">object_hash</span> <span class="n">rjenkins</span> <span class="n">pg_num</span> <span class="mi">32</span> <span class="n">pgp_num</span> <span class="mi">32</span> <span class="n">autoscale_mode</span> <span class="n">on</span> <span class="n">last_change</span> <span class="mi">23</span> <span class="n">flags</span> <span class="n">hashpspool</span> <span class="n">stripe_width</span> <span class="mi">0</span> <span class="n">application</span> <span class="n">rgw</span> <span class="n">read_balance_score</span> <span class="mf">4.00</span>
+<span class="n">pool</span> <span class="mi">4</span> <span class="s1">&#39;default.rgw.meta&#39;</span> <span class="n">replicated</span> <span class="n">size</span> <span class="mi">3</span> <span class="n">min_size</span> <span class="mi">1</span> <span class="n">crush_rule</span> <span class="mi">0</span> <span class="n">object_hash</span> <span class="n">rjenkins</span> <span class="n">pg_num</span> <span class="mi">128</span> <span class="n">pgp_num</span> <span class="mi">128</span> <span class="n">autoscale_mode</span> <span class="n">on</span> <span class="n">last_change</span> <span class="mi">25</span> <span class="n">flags</span> <span class="n">hashpspool</span> <span class="n">stripe_width</span> <span class="mi">0</span> <span class="n">pg_autoscale_bias</span> <span class="mi">4</span> <span class="n">application</span> <span class="n">rgw</span> <span class="n">read_balance_score</span> <span class="mf">4.00</span>
+</pre></div>
+</div>
+<p>To retrieve even more information, you can execute this command with the <code class="docutils literal notranslate"><span class="pre">--format</span></code> (or <code class="docutils literal notranslate"><span class="pre">-f</span></code>) option and the <code class="docutils literal notranslate"><span class="pre">json</span></code>, <code class="docutils literal notranslate"><span class="pre">json-pretty</span></code>, <code class="docutils literal notranslate"><span class="pre">xml</span></code> or <code class="docutils literal notranslate"><span class="pre">xml-pretty</span></code> value.</p>
+</section>
+<section id="creating-a-pool">
+<span id="createpool"></span><h2>Creating a Pool<a class="headerlink" href="#creating-a-pool" title="Link to this heading"></a></h2>
+<p>Before creating a pool, consult <a class="reference external" href="../../configuration/pool-pg-config-ref">Pool, PG and CRUSH Config Reference</a>. The
+Ceph central configuration database contains a default setting
+(namely, <code class="docutils literal notranslate"><span class="pre">osd_pool_default_pg_num</span></code>) that determines the number of PGs assigned
+to a new pool if no specific value has been specified. It is possible to change
+this value from its default. For more on the subject of setting the number of
+PGs per pool, see <a class="reference external" href="../placement-groups#set-the-number-of-placement-groups">setting the number of placement groups</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In Luminous and later releases, each pool must be associated with the
+application that will be using the pool. For more information, see
+<a class="reference internal" href="#associating-a-pool-with-an-application">Associating a Pool with an Application</a> below.</p>
+</div>
+<p>To create a pool, run one of the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>create<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">[{</span>pg-num<span class="o">}</span><span class="w"> </span><span class="o">[{</span>pgp-num<span class="o">}]]</span><span class="w"> </span><span class="o">[</span>replicated<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">         </span><span class="o">[</span>crush-rule-name<span class="o">]</span><span class="w"> </span><span class="o">[</span>expected-num-objects<span class="o">]</span></span>
+</pre></div></div><p>or:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>create<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">[{</span>pg-num<span class="o">}</span><span class="w"> </span><span class="o">[{</span>pgp-num<span class="o">}]]</span><span class="w"> </span>erasure<span class="w"> </span><span class="se">\</span>
+<span class="w">         </span><span class="o">[</span>erasure-code-profile<span class="o">]</span><span class="w"> </span><span class="o">[</span>crush-rule-name<span class="o">]</span><span class="w"> </span><span class="o">[</span>expected_num_objects<span class="o">]</span><span class="w"> </span><span class="o">[</span>--autoscale-mode<span class="o">=</span>&lt;on,off,warn&gt;<span class="o">]</span></span>
+</pre></div></div><p>For a brief description of the elements of the above commands, consult the
+following:</p>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{pool-name}</span></span></dt>
+<dd><p>The name of the pool. It must be unique.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{pg-num}</span></span></dt>
+<dd><blockquote>
+<div><p>The total number of PGs in the pool. For details on calculating an
+appropriate number, see <a class="reference internal" href="placement-groups.html#placement-groups"><span class="std std-ref">Placement Groups</span></a>. The default value is
+NOT suitable for most systems.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{pgp-num}</span></span></dt>
+<dd><blockquote>
+<div><p>The total number of PGs for placement purposes. This <strong>should be equal to
+the total number of PGs</strong>, except briefly while <code class="docutils literal notranslate"><span class="pre">pg_num</span></code> is being
+increased or decreased. Note that in releases beginning with Nautilus one
+generally does not change <code class="docutils literal notranslate"><span class="pre">pgp_num</span></code> directly:  Ceph will automatically and
+incrementally scale <code class="docutils literal notranslate"><span class="pre">pgp_num</span></code> for a given pool when <code class="docutils literal notranslate"><span class="pre">pg_num</span></code> for that pool
+has been adjusted.  Adjustments to <code class="docutils literal notranslate"><span class="pre">pg_num</span></code> may be either made by the
+PG autoscaler, or if the autoscaler is disabled for a given pool by a manual
+setting via the CLI or dashboard.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes. If no value has been specified in the command, then the default value is used (unless a different value has been set in Ceph configuration).</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>32</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{replicated|erasure}</span></span></dt>
+<dd><blockquote>
+<div><p>The pool’s data protection strategy. This can be either <code class="docutils literal notranslate"><span class="pre">replicated</span></code>
+(like RAID1 and RAID10) <code class="docutils literal notranslate"><span class="pre">erasure</span> <span class="pre">(a</span> <span class="pre">kind</span>
+<span class="pre">of</span> <span class="pre">`generalized</span> <span class="pre">parity</span> <span class="pre">RAID</span> <span class="pre">&lt;../erasure-code&gt;`_</span> <span class="pre">strategy</span> <span class="pre">like</span> <span class="pre">RAID6</span> <span class="pre">but</span>
+<span class="pre">more</span> <span class="pre">flexible).</span>&#160; <span class="pre">A</span>
+<span class="pre">``replicated</span></code> pool yields less usable capacity for a given amount of
+raw storage but is suitable for all Ceph components and use cases.
+An <code class="docutils literal notranslate"><span class="pre">erasure</span></code> (EC) pool often yields more usable capacity than replication
+for a given amount of underlying raw storage, but is only suitable for
+a subset of Ceph components and use cases.  Depending on the workload and
+the specific profile, EC usually requires more failure domains than
+replication and provides decreased performance, but may tolerate a greater
+number of overlapping drive or host failures.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>replicated</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">[crush-rule-name]</span></span></dt>
+<dd><p>The name of the CRUSH rule to use for this pool. The specified rule must
+already exist, otherwise the command will fail.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>For <code class="docutils literal notranslate"><span class="pre">replicated</span></code> pools, it is by default the rule specified by the <a class="reference internal" href="../configuration/pool-pg-config-ref.html#confval-osd_pool_default_crush_rule"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_pool_default_crush_rule</span></code></a> configuration option. This rule must exist.  For <code class="docutils literal notranslate"><span class="pre">erasure</span></code> pools, it is the <code class="docutils literal notranslate"><span class="pre">erasure-code</span></code> rule if the <code class="docutils literal notranslate"><span class="pre">default</span></code> <a class="reference external" href="../erasure-code-profile">erasure code profile</a> is used or the <code class="docutils literal notranslate"><span class="pre">{pool-name}</span></code> rule  if not. This rule will be created implicitly if it doesn’t already exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">[erasure-code-profile=profile]</span></span></dt>
+<dd><blockquote>
+<div><p>For <code class="docutils literal notranslate"><span class="pre">erasure</span></code> pools only. Instructs Ceph to use the specified <a class="reference external" href="../erasure-code-profile">erasure
+code profile</a>. This profile must be an existing profile as defined via
+the dashboard or invoking <code class="docutils literal notranslate"><span class="pre">osd</span> <span class="pre">erasure-code-profile</span> <span class="pre">set</span></code>.  Note that
+changes to the EC profile of a pool after creation do <em>not</em> take effect.
+To change the EC profile of an existing pool one must modify the pool to
+use a different CRUSH rule defined with the desired profile.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">--autoscale-mode=&lt;on,off,warn&gt;</span></span></dt>
+<dd><blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">on</span></code>: the Ceph cluster will autotune changes to the number of PGs in the pool based on actual usage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">warn</span></code>: the Ceph cluster will recommend changes to the number of PGs in the pool based on actual usage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">off</span></code>: refer to <a class="reference internal" href="placement-groups.html#placement-groups"><span class="std std-ref">Placement Groups</span></a> for more information.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The default behavior is determined by the <a class="reference internal" href="../configuration/pool-pg-config-ref.html#confval-osd_pool_default_pg_autoscale_mode"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_pool_default_pg_autoscale_mode</span></code></a> option.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">[expected-num-objects]</span></span></dt>
+<dd><p>The expected number of RADOS objects for this pool. By setting this value and
+you arrange for PG splitting to occur at the time of pool creation and
+avoid the latency impact that accompanies runtime folder splitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>0, no splitting at the time of pool creation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="associating-a-pool-with-an-application">
+<span id="associate-pool-to-application"></span><h2>Associating a Pool with an Application<a class="headerlink" href="#associating-a-pool-with-an-application" title="Link to this heading"></a></h2>
+<p>Each pool must be associated with an application before it can be used. Pools
+that are intended for use with CephFS and pools that are created automatically
+by RGW are associated automatically. Pools that are intended for use with RBD
+should be initialized via the dashboard or the <code class="docutils literal notranslate"><span class="pre">rbd</span></code> CLI tool (see <a class="reference external" href="../../../rbd/rados-rbd-cmds/#create-a-block-device-pool">Block Device Commands</a> for
+more information).</p>
+<p>For unusual use cases you can associate a free-form application name to a
+pool by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>application<span class="w"> </span><span class="nb">enable</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>application-name<span class="o">}</span></span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>CephFS uses the application name <code class="docutils literal notranslate"><span class="pre">cephfs</span></code>, RBD uses the
+application name <code class="docutils literal notranslate"><span class="pre">rbd</span></code>, and RGW uses the application name <code class="docutils literal notranslate"><span class="pre">rgw</span></code>.</p>
+</div>
+</section>
+<section id="setting-pool-quotas">
+<h2>Setting Pool Quotas<a class="headerlink" href="#setting-pool-quotas" title="Link to this heading"></a></h2>
+<p>To set quotas for the maximum number of bytes or the maximum number of
+RADOS objects per pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>set-quota<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">[</span>max_objects<span class="w"> </span><span class="o">{</span>obj-count<span class="o">}]</span><span class="w"> </span><span class="o">[</span>max_bytes<span class="w"> </span><span class="o">{</span>bytes<span class="o">}]</span></span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>set-quota<span class="w"> </span>data<span class="w"> </span>max_objects<span class="w"> </span><span class="m">10000</span></span>
+</pre></div></div><p>To remove a quota, set its value to <code class="docutils literal notranslate"><span class="pre">0</span></code>.  Note that you may set a quota only
+for bytes or only for RADOS objects, or you can set both.</p>
+</section>
+<section id="deleting-a-pool">
+<h2>Deleting a Pool<a class="headerlink" href="#deleting-a-pool" title="Link to this heading"></a></h2>
+<p>To delete a pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>delete<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">[{</span>pool-name<span class="o">}</span><span class="w"> </span>--yes-i-really-really-mean-it<span class="o">]</span></span>
+</pre></div></div><p>To remove a pool, you must set the <code class="docutils literal notranslate"><span class="pre">mon_allow_pool_delete</span></code> flag to <code class="docutils literal notranslate"><span class="pre">true</span></code>
+in central configuration, otherwise the Ceph  monitors will refuse to remove
+pools.</p>
+<p>For more information, see <a class="reference external" href="../../configuration/mon-config-ref">Monitor Configuration</a>.</p>
+<p>If there are custom CRUSH rules that are no longer in use or needed, consider
+deleting those rules.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>get<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span>crush_rule</span>
+</pre></div></div><p>For example, if the custom rule is “123”, check all pools to see whether they
+use the rule by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>dump<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^pool&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;crush_rule 123&quot;</span></span>
+</pre></div></div><p>If no pools use this custom rule, then it is safe to delete the rule from the
+cluster.</p>
+<p>Similarly, if there are users with permissions restricted to a pool that no
+longer exists, consider deleting those users by running commands of the
+following forms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-C<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span></span>
+<span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>del<span class="w"> </span><span class="o">{</span>user<span class="o">}</span></span>
+</pre></div></div></section>
+<section id="renaming-a-pool">
+<h2>Renaming a Pool<a class="headerlink" href="#renaming-a-pool" title="Link to this heading"></a></h2>
+<p>To rename a pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>rename<span class="w"> </span><span class="o">{</span>current-pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>new-pool-name<span class="o">}</span></span>
+</pre></div></div><p>If you rename a pool for which an authenticated user has per-pool capabilities,
+you must update the user’s capabilities (“caps”) to refer to the new pool name.</p>
+</section>
+<section id="showing-pool-statistics">
+<h2>Showing Pool Statistics<a class="headerlink" href="#showing-pool-statistics" title="Link to this heading"></a></h2>
+<p>To show a pool’s utilization statistics, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">rados<span class="w"> </span>df</span>
+</pre></div></div><p>To obtain I/O information for a specific pool or for all pools, run a command
+of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stats<span class="w"> </span><span class="o">[{</span>pool-name<span class="o">}]</span></span>
+</pre></div></div></section>
+<section id="making-a-snapshot-of-a-pool">
+<h2>Making a Snapshot of a Pool<a class="headerlink" href="#making-a-snapshot-of-a-pool" title="Link to this heading"></a></h2>
+<p>To make a snapshot of a pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>mksnap<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>snap-name<span class="o">}</span></span>
+</pre></div></div></section>
+<section id="removing-a-snapshot-of-a-pool">
+<h2>Removing a Snapshot of a Pool<a class="headerlink" href="#removing-a-snapshot-of-a-pool" title="Link to this heading"></a></h2>
+<p>To remove a snapshot of a pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>rmsnap<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>snap-name<span class="o">}</span></span>
+</pre></div></div></section>
+<section id="setting-pool-values">
+<span id="setpoolvalues"></span><h2>Setting Pool Values<a class="headerlink" href="#setting-pool-values" title="Link to this heading"></a></h2>
+<p>To assign values to a pool’s configuration attributes, run a command of the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>key<span class="o">}</span><span class="w"> </span><span class="o">{</span>value<span class="o">}</span></span>
+</pre></div></div><p>You may set values for the following keys:</p>
+<dl class="describe" id="compression-algorithm">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">compression_algorithm</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the inline compression algorithm used in storing data on the underlying BlueStore back end. This key’s setting overrides the global setting <a class="reference internal" href="../configuration/bluestore-config-ref.html#confval-bluestore_compression_algorithm"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_algorithm</span></code></a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Valid Settings<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">lz4</span></code>, <code class="docutils literal notranslate"><span class="pre">snappy</span></code>, <code class="docutils literal notranslate"><span class="pre">zlib</span></code>, <code class="docutils literal notranslate"><span class="pre">zstd</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">compression_mode</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the policy for inline compression when storing data on the underlying BlueStore back end. This key’s setting overrides the global setting <a class="reference internal" href="../configuration/bluestore-config-ref.html#confval-bluestore_compression_mode"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_mode</span></code></a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Valid Settings<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">passive</span></code>, <code class="docutils literal notranslate"><span class="pre">aggressive</span></code>, <code class="docutils literal notranslate"><span class="pre">force</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">compression_min_blob_size</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the minimum size for the compression of chunks: that is, chunks smaller than this are not compressed.  This key’s setting overrides the following global settings:</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><a class="reference internal" href="../configuration/bluestore-config-ref.html#confval-bluestore_compression_min_blob_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_min_blob_size</span></code></a></p></li>
+<li><p><a class="reference internal" href="../configuration/bluestore-config-ref.html#confval-bluestore_compression_min_blob_size_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_min_blob_size_hdd</span></code></a></p></li>
+<li><p><a class="reference internal" href="../configuration/bluestore-config-ref.html#confval-bluestore_compression_min_blob_size_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_min_blob_size_ssd</span></code></a></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unsigned Integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">compression_max_blob_size</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the maximum size for chunks: that is, chunks larger than this are broken into smaller blobs no larger than this size before compression is performed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unsigned Integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Compressed pool statistics are visible using <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">df</span> <span class="pre">detail</span></code>.
+Objects within compressed pools will show their original uncompressed
+sizes via most API calls or CLI commands. For example: RGW buckets
+placed directly in a compressed RADOS pool with no RGW level compression
+will report uncompressed bucket sizes via <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span></code>.</p>
+</div>
+<dl class="describe" id="size">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">size</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the number of replicas for objects in the pool. For further details, see <a class="reference internal" href="#setting-the-number-of-rados-object-replicas">Setting the Number of RADOS Object Replicas</a>. This may be set only for <code class="docutils literal notranslate"><span class="pre">replicated</span></code> pools. EC pools will _report_ a <code class="docutils literal notranslate"><span class="pre">size</span></code> equal to K+M but this value may not be directly _set_.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="min-size">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">min_size</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the minimum number of active replicas (or shards) required for PGs to be active and thus for I/O operations to proceed.  For further details, see <a class="reference internal" href="#setting-the-number-of-rados-object-replicas">Setting the Number of RADOS Object Replicas</a>.  For erasure-coded pools, this should be set to a value greater than <code class="docutils literal notranslate"><span class="pre">K</span></code>. If I/O is allowed with only <code class="docutils literal notranslate"><span class="pre">K</span></code> shards available, there will be no redundancy and data will be lost in the event of an additional, permanent OSD failure. For more information, see <a class="reference external" href="../erasure-code">Erasure Code</a></p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Version<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.54</span></code> and above</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="pg-num">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">pg_num</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specifies the total number of PGs for the given pool.  Note that the PG autoscaler, if enabled for a given pool, may override a value manually assigned.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">mon_max_pool_pg_num</span></code>. If set to <code class="docutils literal notranslate"><span class="pre">0</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">osd_pool_default_pg_num</span></code> will be used.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="pgp-num">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">pgp_num</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the effective number of PGs to use when calculating data placement.  When running a Ceph release beginning with Nautilus, admins do not generally set this value explicitly: Ceph automatically and incrementally scales it up or down to match <code class="docutils literal notranslate"><span class="pre">pg_num</span></code>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Between <code class="docutils literal notranslate"><span class="pre">1</span></code> and the current value of <code class="docutils literal notranslate"><span class="pre">pg_num</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="crush-rule">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">crush_rule</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the CRUSH rule that Ceph uses to map the pool’s RADOS objects to appropriate OSDs.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="allow-ec-overwrites">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">allow_ec_overwrites</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Determines whether writes to an erasure-coded pool are allowed to update only part of a RADOS object. This allows CephFS and RBD to use an EC (erasure-coded) pool for user data (but not for metadata). For more details, see <a class="reference external" href="../erasure-code#erasure-coding-with-overwrites">Erasure Coding with Overwrites</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 12.2.0.</span></p>
+</div>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">hashpspool</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">HASHPSPOOL</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1 sets flag, 0 unsets flag</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="nodelete">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">nodelete</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">NODELETE</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1 sets flag, 0 unsets flag</p>
+</dd>
+<dt class="field-even">Version<span class="colon">:</span></dt>
+<dd class="field-even"><p>Version <code class="docutils literal notranslate"><span class="pre">FIXME</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="nopgchange">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">nopgchange</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">NOPGCHANGE</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1 sets flag, 0 unsets flag</p>
+</dd>
+<dt class="field-even">Version<span class="colon">:</span></dt>
+<dd class="field-even"><p>Version <code class="docutils literal notranslate"><span class="pre">FIXME</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="nosizechange">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">nosizechange</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">NOSIZECHANGE</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1 sets flag, 0 unsets flag</p>
+</dd>
+<dt class="field-even">Version<span class="colon">:</span></dt>
+<dd class="field-even"><p>Version <code class="docutils literal notranslate"><span class="pre">FIXME</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="bulk">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">bulk</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">BULK</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> sets flag, <code class="docutils literal notranslate"><span class="pre">false</span></code>/<code class="docutils literal notranslate"><span class="pre">0</span></code> unsets flag</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="write-fadvise-dontneed">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">write_fadvise_dontneed</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">WRITE_FADVISE_DONTNEED</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> sets flag, <code class="docutils literal notranslate"><span class="pre">0</span></code> unsets flag</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="noscrub">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">noscrub</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">NOSCRUB</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> sets flag, <code class="docutils literal notranslate"><span class="pre">0</span></code> unsets flag</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="nodeep-scrub">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">nodeep-scrub</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets or unsets the <code class="docutils literal notranslate"><span class="pre">NODEEP_SCRUB</span></code> flag on a given pool.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code> sets flag, <code class="docutils literal notranslate"><span class="pre">0</span></code> unsets flag</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="target-max-bytes">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">target_max_bytes</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ceph will begin flushing or evicting objects when the
+<code class="docutils literal notranslate"><span class="pre">max_bytes</span></code> threshold is triggered and the deprecated cache tier
+functionality is in use.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1000000000000</span></code>  #1-TB</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="target-max-objects">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">target_max_objects</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Ceph will begin flushing or evicting objects when the
+<code class="docutils literal notranslate"><span class="pre">max_objects</span></code> threshold is triggered and the deprecated cache tier
+functionality is in use.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1000000</span></code> #1M objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="fast-read">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">fast_read</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>For erasure-coded pools, if this flag is turned <code class="docutils literal notranslate"><span class="pre">on</span></code>, the
+read request issues “sub reads” to all shards, and then waits
+until it receives enough shards to decode before it serves
+the client. If <em>jerasure</em> or <em>isa</em> erasure plugins are in
+use, then after the first <em>K</em> replies have returned, the
+client’s request is served immediately using the data decoded
+from these replies. This approach sacrifices resources in
+exchange for better performance. This flag is supported only
+for erasure-coded pools.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Defaults<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="scrub-min-interval">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">scrub_min_interval</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the minimum interval (in seconds) between successive shallow (light) scrubs of the pool’s PGs. If this pool attribute is unchanged from its default (<code class="docutils literal notranslate"><span class="pre">0</span></code>), the value of <code class="docutils literal notranslate"><span class="pre">osd_scrub_min_interval</span></code> from central config is used instead.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="scrub-max-interval">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">scrub_max_interval</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the maximum interval (in seconds) between successive shallow (light) scrubs of the pool’s PGs. Affects the ‘overdue’ attribute appearing in scrub scheduler dumps. If unchanged from its default of <code class="docutils literal notranslate"><span class="pre">0</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">osd_scrub_max_interval</span></code> from central config is used instead.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="deep-scrub-interval">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">deep_scrub_interval</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the interval (in seconds) for successive pool deep scrubs of the pool’s PGs. If unchanged from its default of <code class="docutils literal notranslate"><span class="pre">0</span></code>, the value of <code class="docutils literal notranslate"><span class="pre">osd_deep_scrub_interval</span></code> from central config is used instead.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="recovery-priority">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">recovery_priority</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Setting this value adjusts a pool’s computed reservation priority. This value must be in the range <code class="docutils literal notranslate"><span class="pre">-10</span></code> to <code class="docutils literal notranslate"><span class="pre">10</span></code>. Any pool assigned a negative value will be given a lower priority than any new pools, so users are directed to assign negative values to low-priority pools.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe" id="recovery-op-priority">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">recovery_op_priority</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sets the recovery operation priority for a specific pool’s PGs. This overrides the general priority determined by <a class="reference internal" href="../configuration/osd-config-ref.html#confval-osd_recovery_op_priority"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_op_priority</span></code></a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="getting-pool-values">
+<h2>Getting Pool Values<a class="headerlink" href="#getting-pool-values" title="Link to this heading"></a></h2>
+<p>To get the value for a given pool’s key, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>get<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>key<span class="o">}</span></span>
+</pre></div></div><p>You may get values of the following keys:</p>
+<p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#size">size</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">min_size</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#min-size">min_size</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Version<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.54</span></code> and above</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">pg_num</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#pg-num">pg_num</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">pgp_num</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#pgp-num">pgp_num</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Valid Range<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Equal to or less than <code class="docutils literal notranslate"><span class="pre">pg_num</span></code>.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">crush_rule</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#crush-rule">crush_rule</a>.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">target_max_bytes</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#target-max-bytes">target_max_bytes</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">target_max_objects</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#target-max-objects">target_max_objects</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">fast_read</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#fast-read">fast_read</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">scrub_min_interval</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#scrub-min-interval">scrub_min_interval</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">scrub_max_interval</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#scrub-max-interval">scrub_max_interval</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">deep_scrub_interval</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#deep-scrub-interval">deep_scrub_interval</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">allow_ec_overwrites</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#allow-ec-overwrites">allow_ec_overwrites</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">recovery_priority</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#recovery-priority">recovery_priority</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">recovery_op_priority</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>See <a class="reference internal" href="#recovery-op-priority">recovery_op_priority</a>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+</section>
+<section id="setting-the-number-of-rados-object-replicas">
+<h2>Setting the Number of RADOS Object Replicas<a class="headerlink" href="#setting-the-number-of-rados-object-replicas" title="Link to this heading"></a></h2>
+<p>To set the number of data replicas to maintain for a given replicated pool, run a command of the
+following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">{</span>poolname<span class="o">}</span><span class="w"> </span>size<span class="w"> </span><span class="o">{</span>num-replicas<span class="o">}</span></span>
+</pre></div></div><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">{num-replicas}</span></code> argument includes the primary object
+itself.  For example, if you want there to be two replicas of the object in
+addition to the original object (for a total of three instances of the
+object) specify <code class="docutils literal notranslate"><span class="pre">3</span></code> by running the following command:</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>data<span class="w"> </span>size<span class="w"> </span><span class="m">3</span></span>
+</pre></div></div><p>You may independently run a command like the above for each desired pool.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A PG might accept I/O in degraded mode with fewer than <code class="docutils literal notranslate"><span class="pre">pool</span>
+<span class="pre">size</span></code> replicas. To set a minimum number of replicas required for I/O, you
+should use the <code class="docutils literal notranslate"><span class="pre">min_size</span></code> setting.  For example, you might run the
+following command:</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>data<span class="w"> </span>min_size<span class="w"> </span><span class="m">2</span></span>
+</pre></div></div><p>This command ensures that no object in the data pool will receive I/O if it has
+fewer than <code class="docutils literal notranslate"><span class="pre">min_size</span></code> (in this case, two) replicas.  Note that setting <code class="docutils literal notranslate"><span class="pre">size</span></code>
+to <code class="docutils literal notranslate"><span class="pre">2</span></code> or <code class="docutils literal notranslate"><span class="pre">min_size</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code> in production risks data loss and should only
+be done in certain emergency situations, and then only temporarily.</p>
+</section>
+<section id="getting-the-number-of-object-replicas">
+<h2>Getting the Number of Object Replicas<a class="headerlink" href="#getting-the-number-of-object-replicas" title="Link to this heading"></a></h2>
+<p>To get the number of object replicas, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>dump<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;replicated size&#39;</span></span>
+</pre></div></div><p>Ceph will list pools and highlight the <code class="docutils literal notranslate"><span class="pre">replicated</span> <span class="pre">size</span></code> attribute.  By
+default, Ceph maintains three replicas or copies, for a size of <code class="docutils literal notranslate"><span class="pre">3</span></code>).</p>
+</section>
+<section id="managing-pools-that-are-flagged-with-bulk">
+<h2>Managing pools that are flagged with <code class="docutils literal notranslate"><span class="pre">--bulk</span></code><a class="headerlink" href="#managing-pools-that-are-flagged-with-bulk" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="placement-groups.html#managing-bulk-flagged-pools"><span class="std std-ref">Managing pools that are flagged with bulk</span></a>.</p>
+</section>
+<section id="setting-values-for-a-stretch-pool">
+<h2>Setting values for a stretch pool<a class="headerlink" href="#setting-values-for-a-stretch-pool" title="Link to this heading"></a></h2>
+<p>To set values for a stretch pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stretch<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>peering_crush_bucket_count<span class="o">}</span><span class="w"> </span><span class="o">{</span>peering_crush_bucket_target<span class="o">}</span><span class="w"> </span><span class="o">{</span>peering_crush_bucket_barrier<span class="o">}</span><span class="w"> </span><span class="o">{</span>crush_rule<span class="o">}</span><span class="w"> </span><span class="o">{</span>size<span class="o">}</span><span class="w"> </span><span class="o">{</span>min_size<span class="o">}</span><span class="w"> </span><span class="o">[</span>--yes-i-really-mean-it<span class="o">]</span></span>
+</pre></div></div><p>Here are the break downs of the arguments:</p>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{pool-name}</span></span></dt>
+<dd><p>The name of the pool. It must be an existing pool: this command doesn’t create a new pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{peering_crush_bucket_count}</span></span></dt>
+<dd><p>This value is used along with <code class="docutils literal notranslate"><span class="pre">peering_crush_bucket_barrier</span></code> to determined whether the set of
+OSDs in the chosen acting set can peer with each other, based on the number of distinct
+buckets there are in the acting set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{peering_crush_bucket_target}</span></span></dt>
+<dd><p>This value is used along with <code class="docutils literal notranslate"><span class="pre">peering_crush_bucket_barrier</span></code> and <code class="docutils literal notranslate"><span class="pre">size</span></code> to calculate
+the value <code class="docutils literal notranslate"><span class="pre">bucket_max</span></code> which limits the number of OSDs in the same bucket chosen
+to be in the acting set of a PG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{peering_crush_bucket_barrier}</span></span></dt>
+<dd><p>The type of CRUSH bucket the pool’s PGs are spread among, e.g., <code class="docutils literal notranslate"><span class="pre">rack</span></code>, <code class="docutils literal notranslate"><span class="pre">row</span></code>, or <code class="docutils literal notranslate"><span class="pre">datacenter</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{crush_rule}</span></span></dt>
+<dd><p>The CRUSH rule to use for the pool. The type of pool must match the type of the CRUSH rule
+(<code class="docutils literal notranslate"><span class="pre">replicated</span></code> or <code class="docutils literal notranslate"><span class="pre">erasure</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{size}</span></span></dt>
+<dd><p>The number of replicas for RADOS objects (and thus PGs) in the pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{min_size}</span></span></dt>
+<dd><p>The minimum number of replicas that must be active for IO operations to be
+serviced.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{--yes-i-really-mean-it}</span></span></dt>
+<dd><p>This flag is required to confirm that you really want to bypass
+safety checks and set the values for a pool, e.g,
+when you are trying to set <code class="docutils literal notranslate"><span class="pre">peering_crush_bucket_count</span></code> or
+<code class="docutils literal notranslate"><span class="pre">peering_crush_bucket_target</span></code> to be more than the number of buckets in the crush map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flag</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="unsetting-values-for-a-stretch-pool">
+<span id="id1"></span><h2>Unsetting values for a stretch pool<a class="headerlink" href="#unsetting-values-for-a-stretch-pool" title="Link to this heading"></a></h2>
+<p>To move the pool back to non-stretch, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stretch<span class="w"> </span><span class="nb">unset</span><span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>crush_rule<span class="o">}</span><span class="w"> </span><span class="o">{</span>size<span class="o">}</span><span class="w"> </span><span class="o">{</span>min_size<span class="o">}</span></span>
+</pre></div></div><p>Here are the breakdowns of the arguments:</p>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{pool-name}</span></span></dt>
+<dd><p>The name of the pool. It must be an existing pool that is stretched,
+i.e., set with the command <cite>ceph osd pool stretch set</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{crush_rule}</span></span></dt>
+<dd><p>The crush rule to use after exiting the stretch pool. The type of pool must match the type of crush_rule
+(replicated or erasure).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{size}</span></span></dt>
+<dd><p>The number of replicas for objects after exiting stretch pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{min_size}</span></span></dt>
+<dd><p>The minimum number of replicas required for I/O after exiting stretch pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Integer</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="showing-values-of-a-stretch-pool">
+<h2>Showing values of a stretch pool<a class="headerlink" href="#showing-values-of-a-stretch-pool" title="Link to this heading"></a></h2>
+<p>To show values for a stretch pool, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span>stretch<span class="w"> </span>show<span class="w"> </span><span class="o">{</span>pool-name<span class="o">}</span></span>
+</pre></div></div><p>Here are the break downs of the argument:</p>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">{pool-name}</span></span></dt>
+<dd><p>The name of the pool. It must be an existing pool that is stretched,
+i.e., it has already been set with the command <cite>ceph osd pool stretch set</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data-placement.html" class="btn btn-neutral float-left" title="Data Placement Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="erasure-code.html" class="btn btn-neutral float-right" title="Erasure code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

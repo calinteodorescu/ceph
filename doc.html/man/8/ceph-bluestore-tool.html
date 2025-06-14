@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ceph-bluestore-tool -- bluestore administrative tool &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ceph-bluestore-tool -- bluestore administrative tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/man/8/ceph-bluestore-tool.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-bluestore-tool-bluestore-administrative-tool">
+<h1>ceph-bluestore-tool -- bluestore administrative tool<a class="headerlink" href="#ceph-bluestore-tool-bluestore-administrative-tool" title="Link to this heading"></a></h1>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line"><strong>ceph-bluestore-tool</strong> <em>command</em>
+[ --dev <em>device</em> … ]
+[ -i <em>osd_id</em> ]
+[ --path <em>osd path</em> ]
+[ --out-dir <em>dir</em> ]
+[ --log-file | -l <em>filename</em> ]
+[ --deep ]</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> fsck|repair --path <em>osd path</em> [ --deep ]</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> qfsck       --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> allocmap    --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> restore_cfb --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> show-label --dev <em>device</em> …</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> show-label-at --dev <em>device</em> --offset <em>lba</em> …</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> prime-osd-dir --dev <em>device</em> --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> bluefs-export --path <em>osd path</em> --out-dir <em>dir</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> bluefs-bdev-new-wal --path <em>osd path</em> --dev-target <em>new-device</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> bluefs-bdev-new-db --path <em>osd path</em> --dev-target <em>new-device</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> bluefs-bdev-migrate --path <em>osd path</em> --dev-target <em>new-device</em> --devs-source <em>device1</em> [--devs-source <em>device2</em>]</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> free-dump|free-score --path <em>osd path</em> [ --allocator block/bluefs-wal/bluefs-db/bluefs-slow ]</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> bluefs-stats --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> bluefs-files --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> reshard --path <em>osd path</em> --sharding <em>new sharding</em> [ --sharding-ctrl <em>control string</em> ]</div>
+<div class="line"><strong>ceph-bluestore-tool</strong> show-sharding --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> trim --path <em>osd path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> zap-device --dev <em>dev path</em></div>
+<div class="line"><strong>ceph-bluestore-tool</strong> revert-wal-to-plain --path <em>osd path</em></div>
+</div>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p><strong>ceph-bluestore-tool</strong> is a utility to perform low-level administrative
+operations on a BlueStore instance.</p>
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<p><strong class="command">help</strong></p>
+<blockquote>
+<div><p>show help</p>
+</div></blockquote>
+<p><strong class="command">fsck</strong> [ --deep ] <em>(on|off) or (yes|no) or (1|0) or (true|false)</em></p>
+<blockquote>
+<div><p>run consistency check on BlueStore metadata.  If <em>--deep</em> is specified, also read all object data and verify checksums.</p>
+</div></blockquote>
+<p><strong class="command">repair</strong></p>
+<blockquote>
+<div><p>Run a consistency check <em>and</em> repair any errors we can.</p>
+</div></blockquote>
+<p><strong class="command">qfsck</strong></p>
+<blockquote>
+<div><p>run consistency check on BlueStore metadata comparing allocator data (from RocksDB CFB when exists and if not uses allocation-file) with ONodes state.</p>
+</div></blockquote>
+<p><strong class="command">allocmap</strong></p>
+<blockquote>
+<div><p>performs the same check done by qfsck and then stores a new allocation-file (command is disabled by default and requires a special build)</p>
+</div></blockquote>
+<p><strong class="command">restore_cfb</strong></p>
+<blockquote>
+<div><p>Reverses changes done by the new NCB code (either through ceph restart or when running allocmap command) and restores RocksDB B Column-Family (allocator-map).</p>
+</div></blockquote>
+<p><strong class="command">bluefs-export</strong></p>
+<blockquote>
+<div><p>Export the contents of BlueFS (i.e., RocksDB files) to an output directory.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-bdev-sizes</strong> --path <em>osd path</em></p>
+<blockquote>
+<div><p>Print the device sizes, as understood by BlueFS, to stdout.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-bdev-expand</strong> --path <em>osd path</em></p>
+<blockquote>
+<div><p>Instruct BlueFS to check the size of its block devices and, if they have
+expanded, make use of the additional space. Please note that only the new
+files created by BlueFS will be allocated on the preferred block device if
+it has enough free space, and the existing files that have spilled over to
+the slow device will be gradually removed when RocksDB performs compaction.
+In other words, if there is any data spilled over to the slow device, it
+will be moved to the fast device over time.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-bdev-new-wal</strong> --path <em>osd path</em> --dev-target <em>new-device</em></p>
+<blockquote>
+<div><p>Adds WAL device to BlueFS, fails if WAL device already exists.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-bdev-new-db</strong> --path <em>osd path</em> --dev-target <em>new-device</em></p>
+<blockquote>
+<div><p>Adds DB device to BlueFS, fails if DB device already exists.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-bdev-migrate</strong> --dev-target <em>new-device</em> --devs-source <em>device1</em> [--devs-source <em>device2</em>]</p>
+<blockquote>
+<div><p>Moves BlueFS data from source device(s) to the target device. Source devices
+(except the main one) are removed on success. Expands the target storage
+(updates the size label), making “bluefs-bdev-expand” unnecessary. The
+target device can be either a new device or a device that is already
+attached. If the device is a new device, it is added to the OSD replacing
+one of the source devices. The following replacement rules apply (in the
+order of precedence, stop on the first match):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>if the source list has DB volume - the target device replaces it.</p></li>
+<li><p>if the source list has WAL volume - the target device replaces it.</p></li>
+<li><p>if the source list has slow volume only - the operation isn’t permitted and requires explicit allocation via a new-DB/new-WAL command.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><strong class="command">show-label</strong> --dev <em>device</em> […]</p>
+<blockquote>
+<div><p>Show device label(s).
+The label may be printed while an OSD is running.</p>
+</div></blockquote>
+<p><strong class="command">show-label-at</strong> --dev <em>device</em> --offset <em>lba</em> […]</p>
+<blockquote>
+<div><p>Show device label at specific disk location. Dedicated DB/WAL volumes have a single label at offset 0.
+Main device could have valid labels at multiple locations: 0/1GiB/10GiB/100GiB/1000GiB.
+The labels at some locations might not exist though.
+The label may be printed while an OSD is running.</p>
+</div></blockquote>
+<p><strong class="command">free-dump</strong> --path <em>osd path</em> [ --allocator block/bluefs-wal/bluefs-db/bluefs-slow ]</p>
+<blockquote>
+<div><p>Dump all free regions in allocator.</p>
+</div></blockquote>
+<p><strong class="command">free-score</strong> --path <em>osd path</em> [ --allocator block/bluefs-wal/bluefs-db/bluefs-slow ]</p>
+<blockquote>
+<div><p>Give a [0-1] number that represents quality of fragmentation in allocator.
+0 represents case when all free space is in one chunk. 1 represents worst possible fragmentation.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-stats</strong> --path <em>osd path</em></p>
+<blockquote>
+<div><p>Shows summary of BlueFS occupied space with split on devices: block/db/wal and roles: wal/log/db.</p>
+</div></blockquote>
+<p><strong class="command">bluefs-files</strong> --path <em>osd path</em></p>
+<blockquote>
+<div><p>Lists all BlueFS managed files, printing name, size and space used on devices.</p>
+</div></blockquote>
+<p><strong class="command">reshard</strong> --path <em>osd path</em> --sharding <em>new sharding</em> [ --resharding-ctrl <em>control string</em> ]</p>
+<blockquote>
+<div><p>Changes sharding of BlueStore’s RocksDB. Sharding is build on top of RocksDB column families.
+This option allows to test performance of <em>new sharding</em> without need to redeploy OSD.
+Resharding is usually a long process, which involves walking through entire RocksDB key space
+and moving some of them to different column families.
+Option --resharding-ctrl provides performance control over resharding process.
+Interrupted resharding will prevent OSD from running.
+Interrupted resharding does not corrupt data. It is always possible to continue previous resharding,
+or select any other sharding scheme, including reverting to original one.</p>
+</div></blockquote>
+<p><strong class="command">show-sharding</strong> --path <em>osd path</em></p>
+<blockquote>
+<div><p>Show sharding that is currently applied to BlueStore’s RocksDB.</p>
+</div></blockquote>
+<dl class="field-list">
+<dt class="field-odd">command<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>trim</cite> --path <em>osd path</em></p>
+<p>An SSD that has been used heavily may experience performance degradation.
+This operation uses TRIM / discard to free unused blocks from BlueStore and BlueFS block devices,
+and allows the drive to perform more efficient internal housekeeping.
+If BlueStore runs with discard enabled, this option may not be useful.</p>
+</dd>
+<dt class="field-even">command<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>zap-device</cite> --dev <em>dev path</em></p>
+<p>Zeros all device label locations. This effectively makes device appear empty.</p>
+</dd>
+<dt class="field-odd">command<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>revert-wal-to-plain</cite> --path <em>osd path</em></p>
+<p>Changes WAL files from envelope mode to the legacy plain mode.
+Useful for downgrades, or if you might want to disable this new feature (bluefs_wal_envelope_mode).</p>
+</dd>
+</dl>
+</section>
+<section id="options">
+<h2>Options<a class="headerlink" href="#options" title="Link to this heading"></a></h2>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-dev">
+<span class="sig-name descname"><span class="pre">--dev</span></span><span class="sig-prename descclassname"> <span class="pre">*device*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-dev" title="Link to this definition"></a></dt>
+<dd><p>Add <em>device</em> to the list of devices to consider</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-i">
+<span class="sig-name descname"><span class="pre">-i</span></span><span class="sig-prename descclassname"> <span class="pre">*osd_id*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-i" title="Link to this definition"></a></dt>
+<dd><p>Operate as OSD <em>osd_id</em>. Connect to monitor for OSD specific options.
+If monitor is unavailable, add --no-mon-config to read from ceph.conf instead.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-devs-source">
+<span class="sig-name descname"><span class="pre">--devs-source</span></span><span class="sig-prename descclassname"> <span class="pre">*device*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-devs-source" title="Link to this definition"></a></dt>
+<dd><p>Add <em>device</em> to the list of devices to consider as sources for migrate operation</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-dev-target">
+<span class="sig-name descname"><span class="pre">--dev-target</span></span><span class="sig-prename descclassname"> <span class="pre">*device*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-dev-target" title="Link to this definition"></a></dt>
+<dd><p>Specify target <em>device</em> migrate operation or device to add for adding new DB/WAL.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-path">
+<span class="sig-name descname"><span class="pre">--path</span></span><span class="sig-prename descclassname"> <span class="pre">*osd</span> <span class="pre">path*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-path" title="Link to this definition"></a></dt>
+<dd><p>Specify an osd path.  In most cases, the device list is inferred from the symlinks present in <em>osd path</em>.  This is usually simpler than explicitly specifying the device(s) with --dev. Not necessary if -i <em>osd_id</em> is provided.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-out-dir">
+<span class="sig-name descname"><span class="pre">--out-dir</span></span><span class="sig-prename descclassname"> <span class="pre">*dir*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-out-dir" title="Link to this definition"></a></dt>
+<dd><p>Output directory for bluefs-export</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-l">
+<span id="cmdoption-ceph-bluestore-tool-log-file"></span><span class="sig-name descname"><span class="pre">-l</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--log-file</span></span><span class="sig-prename descclassname"> <span class="pre">*log</span> <span class="pre">file*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-l" title="Link to this definition"></a></dt>
+<dd><p>file to log to</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-log-level">
+<span class="sig-name descname"><span class="pre">--log-level</span></span><span class="sig-prename descclassname"> <span class="pre">*num*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-log-level" title="Link to this definition"></a></dt>
+<dd><p>debug log level.  Default is 30 (extremely verbose), 20 is very
+verbose, 10 is verbose, and 1 is not very verbose.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-deep">
+<span class="sig-name descname"><span class="pre">--deep</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-deep" title="Link to this definition"></a></dt>
+<dd><p>deep scrub/repair (read and validate object data, not just metadata)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-allocator">
+<span class="sig-name descname"><span class="pre">--allocator</span></span><span class="sig-prename descclassname"> <span class="pre">*name*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-allocator" title="Link to this definition"></a></dt>
+<dd><p>Useful for <em>free-dump</em> and <em>free-score</em> actions. Selects allocator(s).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-ceph-bluestore-tool-resharding-ctrl">
+<span class="sig-name descname"><span class="pre">--resharding-ctrl</span></span><span class="sig-prename descclassname"> <span class="pre">*control</span> <span class="pre">string*</span></span><a class="headerlink" href="#cmdoption-ceph-bluestore-tool-resharding-ctrl" title="Link to this definition"></a></dt>
+<dd><p>Provides control over resharding process. Specifies how often refresh RocksDB iterator,
+and how large should commit batch be before committing to RocksDB. Option format is:
+&lt;iterator_refresh_bytes&gt;/&lt;iterator_refresh_keys&gt;/&lt;batch_commit_bytes&gt;/&lt;batch_commit_keys&gt;
+Default: 10000000/10000/1000000/1000</p>
+</dd></dl>
+
+</section>
+<section id="additional-ceph-conf-options">
+<h2>Additional ceph.conf options<a class="headerlink" href="#additional-ceph-conf-options" title="Link to this heading"></a></h2>
+<p>Any configuration option that is accepted by OSD can be also passed to <strong>ceph-bluestore-tool</strong>.
+Useful to provide necessary configuration options when access to monitor/ceph.conf is impossible and -i option cannot be used.</p>
+</section>
+<section id="device-labels">
+<h2>Device labels<a class="headerlink" href="#device-labels" title="Link to this heading"></a></h2>
+<p>Every BlueStore block device has a block label at the beginning of the device.
+Main device might optionaly have additional labels at different locations
+for the sake of OSD robustness.
+You can dump the contents of the label with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">bluestore</span><span class="o">-</span><span class="n">tool</span> <span class="n">show</span><span class="o">-</span><span class="n">label</span> <span class="o">--</span><span class="n">dev</span> <span class="o">*</span><span class="n">device</span><span class="o">*</span>
+</pre></div>
+</div>
+<p>The main device will have a lot of metadata, including information
+that used to be stored in small files in the OSD data directory.  The
+auxiliary devices (db and wal) will only have the minimum required
+fields (OSD UUID, size, device type, birth time).
+The main device contains additional label copies at offsets: 1GiB, 10GiB, 100GiB and 1000GiB.
+Corrupted labels are fixed as part of repair:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">bluestore</span><span class="o">-</span><span class="n">tool</span> <span class="n">repair</span> <span class="o">--</span><span class="n">dev</span> <span class="o">*</span><span class="n">device</span><span class="o">*</span>
+</pre></div>
+</div>
+</section>
+<section id="osd-directory-priming">
+<h2>OSD directory priming<a class="headerlink" href="#osd-directory-priming" title="Link to this heading"></a></h2>
+<p>You can generate the content for an OSD data directory that can start up a
+BlueStore OSD with the <em>prime-osd-dir</em> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">bluestore</span><span class="o">-</span><span class="n">tool</span> <span class="n">prime</span><span class="o">-</span><span class="n">osd</span><span class="o">-</span><span class="nb">dir</span> <span class="o">--</span><span class="n">dev</span> <span class="o">*</span><span class="n">main</span> <span class="n">device</span><span class="o">*</span> <span class="o">--</span><span class="n">path</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">osd</span><span class="o">/</span><span class="n">ceph</span><span class="o">-*</span><span class="nb">id</span><span class="o">*</span>
+</pre></div>
+</div>
+</section>
+<section id="bluefs-log-rescue">
+<h2>BlueFS log rescue<a class="headerlink" href="#bluefs-log-rescue" title="Link to this heading"></a></h2>
+<p>Some versions of BlueStore were susceptible to BlueFS log growing extremely large -
+beyond the point of making booting OSD impossible. This state is indicated by
+booting that takes very long and fails in _replay function.</p>
+<dl class="simple">
+<dt>This can be fixed by::</dt><dd><p>ceph-bluestore-tool fsck --path <em>osd path</em> --bluefs_replay_recovery=true</p>
+</dd>
+<dt>It is advised to first check if rescue process would be successful::</dt><dd><p>ceph-bluestore-tool fsck --path <em>osd path</em> --bluefs_replay_recovery=true --bluefs_replay_recovery_disable_compact=true</p>
+</dd>
+</dl>
+<p>If above fsck is successful fix procedure can be applied.</p>
+</section>
+<section id="availability">
+<h2>Availability<a class="headerlink" href="#availability" title="Link to this heading"></a></h2>
+<p><strong>ceph-bluestore-tool</strong> is part of Ceph, a massively scalable,
+open-source, distributed storage system. Please refer to the Ceph
+documentation at <a class="reference external" href="https://docs.ceph.com">https://docs.ceph.com</a> for more information.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="ceph-osd.html"><span class="doc">ceph-osd</span></a>(8)</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

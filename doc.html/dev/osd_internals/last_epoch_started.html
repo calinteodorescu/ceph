@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>last_epoch_started &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Log Based PG" href="log_based_pg.html" />
+    <link rel="prev" title="Erasure coding enhancements" href="erasure_coding/enhancements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">OSD developer documentation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="async_recovery.html">Asynchronous Recovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="backfill_reservation.html">Backfill Reservation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure_coding.html">Erasure Coded Placement Groups</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">last_epoch_started</a></li>
+<li class="toctree-l4"><a class="reference internal" href="log_based_pg.html">Log Based PG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="manifest.html">Manifest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="map_message_handling.html">Map and PG Message handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mclock_wpq_cmp_study.html">QoS Study with mClock and WPQ Schedulers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_overview.html">OSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="partial_object_recovery.html">Partial Object Recovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="past_intervals.html">OSDMap Trimming and PastIntervals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg.html">PG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_removal.html">PG Removal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pgpool.html">PGPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery_reservation.html">Recovery Reservation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="refcount.html">Refcount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scrub.html">Scrub internals and diagnostics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="snaps.html">Snaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stale_read.html">Preventing Stale Reads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="watch_notify.html">Watch Notify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wbthrottle.html">Writeback Throttle</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../internals.html">Ceph Internals</a></li>
+          <li class="breadcrumb-item"><a href="index.html">OSD developer documentation</a></li>
+      <li class="breadcrumb-item active">last_epoch_started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dev/osd_internals/last_epoch_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="last-epoch-started">
+<h1>last_epoch_started<a class="headerlink" href="#last-epoch-started" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code> records an activation epoch <code class="docutils literal notranslate"><span class="pre">e</span></code> for interval <code class="docutils literal notranslate"><span class="pre">i</span></code>
+such that all writes committed in <code class="docutils literal notranslate"><span class="pre">i</span></code> or earlier are reflected in the
+local info/log and no writes after <code class="docutils literal notranslate"><span class="pre">i</span></code> are reflected in the local
+info/log.  Since no committed write is ever divergent, even if we
+get an authoritative log/info with an older <code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code>,
+we can leave our <code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code> alone since no writes could
+have committed in any intervening interval (See PG::proc_master_log).</p>
+<p><code class="docutils literal notranslate"><span class="pre">info.history.last_epoch_started</span></code> records a lower bound on the most
+recent interval in which the PG as a whole went active and accepted
+writes.  On a particular OSD it is also an upper bound on the
+activation epoch of intervals in which writes in the local PG log
+occurred:  we update it before accepting writes.  Because all
+committed writes are committed by all acting set OSDs, any
+non-divergent writes ensure that <code class="docutils literal notranslate"><span class="pre">history.last_epoch_started</span></code> was
+recorded by all acting set members in the interval.  Once peering has
+queried one OSD from each interval back to some seen
+<code class="docutils literal notranslate"><span class="pre">history.last_epoch_started</span></code>, it follows that no interval after the max
+<code class="docutils literal notranslate"><span class="pre">history.last_epoch_started</span></code> can have reported writes as committed
+(since we record it before recording client writes in an interval).
+Thus, the minimum <code class="docutils literal notranslate"><span class="pre">last_update</span></code> across all infos with
+<code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span> <span class="pre">&gt;=</span> <span class="pre">MAX(history.last_epoch_started)</span></code> must be an
+upper bound on writes reported as committed to the client.</p>
+<p>We update <code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code> with the initial activation message,
+but we only update <code class="docutils literal notranslate"><span class="pre">history.last_epoch_started</span></code> after the new
+<code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code> is persisted (possibly along with the first
+write).  This ensures that we do not require an OSD with the most
+recent <code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code> until all acting set OSDs have recorded
+it.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">find_best_info</span></code>, we do include <code class="docutils literal notranslate"><span class="pre">info.last_epoch_started</span></code> values when
+calculating <code class="docutils literal notranslate"><span class="pre">max_last_epoch_started_found</span></code> because we want to avoid
+designating a log entry divergent which in a prior interval would have
+been non-divergent since it might have been used to serve a read.  In
+<code class="docutils literal notranslate"><span class="pre">activate()</span></code>, we use the peer’s <code class="docutils literal notranslate"><span class="pre">last_epoch_started</span></code> value as a bound on
+how far back divergent log entries can be found.</p>
+<p>However, in a case like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calc_acting</span> <span class="n">osd</span><span class="mf">.0</span> <span class="mf">1.4</span><span class="n">e</span><span class="p">(</span> <span class="n">v</span> <span class="mi">473</span><span class="s1">&#39;302 (292&#39;</span><span class="mi">200</span><span class="p">,</span><span class="mi">473</span><span class="s1">&#39;302] local-les=473 n=4 ec=5 les/c 473/473 556/556/556</span>
+<span class="n">calc_acting</span> <span class="n">osd</span><span class="mf">.1</span> <span class="mf">1.4</span><span class="n">e</span><span class="p">(</span> <span class="n">v</span> <span class="mi">473</span><span class="s1">&#39;302 (293&#39;</span><span class="mi">202</span><span class="p">,</span><span class="mi">473</span><span class="s1">&#39;302] lb 0//0//-1 local-les=477 n=0 ec=5 les/c 473/473 556/556/556</span>
+<span class="n">calc_acting</span> <span class="n">osd</span><span class="mf">.4</span> <span class="mf">1.4</span><span class="n">e</span><span class="p">(</span> <span class="n">v</span> <span class="mi">473</span><span class="s1">&#39;302 (120&#39;</span><span class="mi">121</span><span class="p">,</span><span class="mi">473</span><span class="s1">&#39;302] local-les=473 n=4 ec=5 les/c 473/473 556/556/556</span>
+<span class="n">calc_acting</span> <span class="n">osd</span><span class="mf">.5</span> <span class="mf">1.4</span><span class="n">e</span><span class="p">(</span> <span class="n">empty</span> <span class="n">local</span><span class="o">-</span><span class="n">les</span><span class="o">=</span><span class="mi">0</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span> <span class="n">ec</span><span class="o">=</span><span class="mi">5</span> <span class="n">les</span><span class="o">/</span><span class="n">c</span> <span class="mi">473</span><span class="o">/</span><span class="mi">473</span> <span class="mi">556</span><span class="o">/</span><span class="mi">556</span><span class="o">/</span><span class="mi">556</span>
+</pre></div>
+</div>
+<p>since osd.1 is the only one which recorded info.les=477, while osd.4,osd.0
+(which were the acting set in that interval) did not (osd.4 restarted and osd.0
+did not get the message in time), the PG is marked incomplete when
+either osd.4 or osd.0 would have been valid choices. To avoid this, we do not
+consider <code class="docutils literal notranslate"><span class="pre">info.les</span></code> for incomplete peers when calculating
+<code class="docutils literal notranslate"><span class="pre">min_last_epoch_started_found</span></code>.  It would not have been in the acting
+set, so we must have another OSD from that interval anyway (if
+<code class="docutils literal notranslate"><span class="pre">maybe_went_rw</span></code>).  If that OSD does not remember that <code class="docutils literal notranslate"><span class="pre">info.les</span></code>, then we
+cannot have served reads.</p>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="erasure_coding/enhancements.html" class="btn btn-neutral float-left" title="Erasure coding enhancements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="log_based_pg.html" class="btn btn-neutral float-right" title="Log Based PG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balancer Module &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CRUSH Maps" href="crush-map.html" />
+    <link rel="prev" title="Operating the Read (Primary) Balancer" href="read-balancer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Balancer Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#status">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-balancing">Automatic balancing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#throttling">Throttling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modes">Modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#supervised-optimization">Supervised optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Balancer Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/balancer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="balancer-module">
+<span id="balancer"></span><h1>Balancer Module<a class="headerlink" href="#balancer-module" title="Link to this heading"></a></h1>
+<p>The <em>balancer</em> can optimize the allocation of placement groups (PGs) across
+OSDs in order to achieve a balanced distribution. The balancer can operate
+either automatically or in a supervised fashion.</p>
+<section id="status">
+<h2>Status<a class="headerlink" href="#status" title="Link to this heading"></a></h2>
+<p>To check the current status of the balancer, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>status</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="automatic-balancing">
+<h2>Automatic balancing<a class="headerlink" href="#automatic-balancing" title="Link to this heading"></a></h2>
+<p>When the balancer is in <code class="docutils literal notranslate"><span class="pre">upmap</span></code> mode, which is the default, the automatic
+upmap balancing feature is enabled.  For more details, see <a class="reference internal" href="upmap.html#upmap"><span class="std std-ref">Using pg-upmap</span></a>.
+To disable the balancer, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>off</span>
+</pre></div></div></div></blockquote>
+<p>The balancer mode can be changed from <code class="docutils literal notranslate"><span class="pre">upmap</span></code> mode to <code class="docutils literal notranslate"><span class="pre">crush-compat</span></code> mode.
+<code class="docutils literal notranslate"><span class="pre">crush-compat</span></code> mode is backward compatible with older clients.  In
+<code class="docutils literal notranslate"><span class="pre">crush-compat</span></code> mode, the balancer automatically makes small changes to the
+data distribution in order to ensure that OSDs are utilized equally.</p>
+<p>Additional modes include <code class="docutils literal notranslate"><span class="pre">upmap-read</span></code> and <code class="docutils literal notranslate"><span class="pre">read</span></code>. <code class="docutils literal notranslate"><span class="pre">upmap-read</span></code> mode
+combines the upmap balancer with the read balancer so that both writes
+and reads are optimized. <code class="docutils literal notranslate"><span class="pre">read</span></code> mode can be used when only read optimization
+is desired. For more details, see <a class="reference internal" href="read-balancer.html#read-balancer"><span class="std std-ref">Operating the Read (Primary) Balancer</span></a>.</p>
+</section>
+<section id="throttling">
+<h2>Throttling<a class="headerlink" href="#throttling" title="Link to this heading"></a></h2>
+<p>If the cluster is degraded (that is, if an OSD has failed and the system hasn’t
+healed itself yet), then the balancer will not make any adjustments to the PG
+distribution.</p>
+<p>When the cluster is healthy, the balancer will remap
+unbalanced PGs in phases to incrementally improve the uniformity
+of PG distribution.  The maximum percentage of PGs to remap (move) in
+a single phase defaults to 5%. To adjust this
+<code class="docutils literal notranslate"><span class="pre">target_max_misplaced_ratio</span></code> threshold setting, run a command
+of the following form:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>target_max_misplaced_ratio<span class="w"> </span>.03<span class="w">   </span><span class="c1"># 3%</span></span>
+</pre></div></div></div></blockquote>
+<p>A larger value may increase the speed of cluster balancing / convergence
+at the potential cost of greater impact on client operations.</p>
+<p>There is a separate setting for how uniform the distribution of PGs must be for
+the module to consider the cluster adequately balanced.  At the time of writing
+(June 2025), this value defaults to <code class="docutils literal notranslate"><span class="pre">5</span></code>, which means that if a given OSD’s PG
+replicas vary by five or fewer above or below the cluster’s average, it will be
+considered sufficiently balanced.</p>
+<p>This value of PG replicas / shards (as distinct from logical PGs) is reported
+by the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">df</span></code> command under the <code class="docutils literal notranslate"><span class="pre">PGS</span></code> column and the variance
+above or below the average under the <code class="docutils literal notranslate"><span class="pre">VAR</span></code> column.  It may seem desirable
+to specify a perfect or nearly perfect distribution by setting a very low
+value, but in practice this is not advised, especially when a cluster or
+individual pools have fewer PGs configured than is ideal.  An excessively
+low value for this setting may result in the balancer shuffling data
+forever as it endeavors to meet an impossible expectation.</p>
+<p>That said, clusters with multiple CRUSH device classes and / or OSDs that
+differ in capacity will benefit from a smaller value.  In this situation
+run a command of the following form:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr/balancer/upmap_max_deviation<span class="w">   </span><span class="m">1</span></span>
+</pre></div></div></div></blockquote>
+<p>This value is reasonable and safe for most clusters.  Note that this is
+an absolute integer number of PGs, not a percentage.</p>
+<p>The balancer sleeps between runs. To set the number of seconds for this
+interval of sleep, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/sleep_interval<span class="w"> </span><span class="m">60</span></span>
+</pre></div></div></div></blockquote>
+<p>To set the time of day (in HHMM format) at which automatic balancing begins,
+run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/begin_time<span class="w"> </span><span class="m">0000</span></span>
+</pre></div></div></div></blockquote>
+<p>To set the time of day (in HHMM format) at which automatic balancing ends, run
+the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/end_time<span class="w"> </span><span class="m">2359</span></span>
+</pre></div></div></div></blockquote>
+<p>Automatic balancing can be restricted to certain days of the week.  To restrict
+it to a specific day of the week or later (as with crontab, <code class="docutils literal notranslate"><span class="pre">0</span></code> is Sunday,
+<code class="docutils literal notranslate"><span class="pre">1</span></code> is Monday, and so on), run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/begin_weekday<span class="w"> </span><span class="m">0</span></span>
+</pre></div></div></div></blockquote>
+<p>To restrict automatic balancing to a specific day of the week or earlier
+(again, <code class="docutils literal notranslate"><span class="pre">0</span></code> is Sunday, <code class="docutils literal notranslate"><span class="pre">1</span></code> is Monday, and so on), run the following
+command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/end_weekday<span class="w"> </span><span class="m">6</span></span>
+</pre></div></div></div></blockquote>
+<p>Automatic balancing can be restricted to certain pools. By default, the value
+of this setting is an empty string, so that all pools are automatically
+balanced.  To restrict automatic balancing to specific pools, retrieve their
+numeric pool IDs (by running the <strong class="command">ceph osd pool ls detail</strong> command),
+and then run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/pool_ids<span class="w"> </span><span class="m">1</span>,2,3</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="modes">
+<h2>Modes<a class="headerlink" href="#modes" title="Link to this heading"></a></h2>
+<p>There are four supported balancer modes:</p>
+<ol class="arabic">
+<li><p><strong>crush-compat</strong>. This mode uses the compat weight-set feature (introduced
+in Luminous) to manage an alternative set of weights for devices in the
+CRUSH hierarchy. When the balancer is operating in this mode, the normal
+weights should remain set to the size of the device in order to reflect the
+target amount of data intended to be stored on the device. The balancer will
+then optimize the weight-set values, adjusting them up or down in small
+increments, in order to achieve a distribution that matches the target
+distribution as closely as possible. (Because PG placement is a pseudorandom
+process, it is subject to a natural amount of variation; optimizing the
+weights serves to counteract that natural variation.)</p>
+<p>Note that this mode is <em>fully backward compatible</em> with older clients: when
+an OSD Map and CRUSH map are shared with older clients, Ceph presents the
+optimized weights as the “real” weights.</p>
+<p>The primary limitation of this mode is that the balancer cannot handle
+multiple CRUSH hierarchies with different placement rules if the subtrees of
+the hierarchy share any OSDs. (Such sharing of OSDs is not typical and,
+because of the difficulty of managing the space utilization on the shared
+OSDs, is generally not recommended.)</p>
+</li>
+<li><p><strong>upmap</strong>. In Luminous and later releases, the OSDMap can store explicit
+mappings for individual OSDs as exceptions to the normal CRUSH placement
+calculation. These <code class="docutils literal notranslate"><span class="pre">upmap</span></code> entries provide fine-grained control over the
+PG mapping. This balancer mode optimizes the placement of individual PGs in
+order to achieve a balanced distribution.  In most cases, the resulting
+distribution is nearly perfect: that is, there is an equal number of PGs on
+each OSD (±1 PG, since the total number might not divide evenly).</p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">upmap</span></code>, all clients must be Luminous or newer.</p>
+</li>
+<li><p><strong>read</strong>. In Reef and later releases, the OSDMap can store explicit
+mappings for individual primary OSDs as exceptions to the normal CRUSH
+placement calculation. These <code class="docutils literal notranslate"><span class="pre">pg-upmap-primary</span></code> entries provide fine-grained
+control over primary PG mappings. This mode optimizes the placement of individual
+primary PGs in order to achieve balanced reads, or primary PGs, in a cluster.
+In <code class="docutils literal notranslate"><span class="pre">read</span></code> mode, upmap behavior is not excercised, so this mode is best for
+uses cases in which only read balancing is desired.</p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">pg-upmap-primary</span></code>, all clients must be Reef or newer. For more
+details about client compatibility, see <a class="reference internal" href="read-balancer.html#read-balancer"><span class="std std-ref">Operating the Read (Primary) Balancer</span></a>.</p>
+</li>
+<li><p><strong>upmap-read</strong>. This balancer mode combines optimization benefits of
+both <code class="docutils literal notranslate"><span class="pre">upmap</span></code> and <code class="docutils literal notranslate"><span class="pre">read</span></code> mode. Like in <code class="docutils literal notranslate"><span class="pre">read</span></code> mode, <code class="docutils literal notranslate"><span class="pre">upmap-read</span></code>
+makes use of <code class="docutils literal notranslate"><span class="pre">pg-upmap-primary</span></code>. As such, only Reef and later clients
+are compatible. For more details about client compatibility, see
+<a class="reference internal" href="read-balancer.html#read-balancer"><span class="std std-ref">Operating the Read (Primary) Balancer</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">upmap-read</span></code> is highly recommended for achieving the <code class="docutils literal notranslate"><span class="pre">upmap</span></code> mode’s
+offering of balanced PG distribution as well as the <code class="docutils literal notranslate"><span class="pre">read</span></code> mode’s
+offering of balanced reads.</p>
+</li>
+</ol>
+<p>The default mode is <code class="docutils literal notranslate"><span class="pre">upmap</span></code>. The mode can be changed to <code class="docutils literal notranslate"><span class="pre">crush-compat</span></code> by running the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>mode<span class="w"> </span>crush-compat</span>
+</pre></div></div></div></blockquote>
+<p>The mode can be changed to <code class="docutils literal notranslate"><span class="pre">read</span></code> by running the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>mode<span class="w"> </span><span class="nb">read</span></span>
+</pre></div></div></div></blockquote>
+<p>The mode can be changed to <code class="docutils literal notranslate"><span class="pre">upmap-read</span></code> by running the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>mode<span class="w"> </span>upmap-read</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="supervised-optimization">
+<h2>Supervised optimization<a class="headerlink" href="#supervised-optimization" title="Link to this heading"></a></h2>
+<p>Supervised use of the balancer can be understood in terms of three distinct
+phases:</p>
+<ol class="arabic simple">
+<li><p>building a plan</p></li>
+<li><p>evaluating the quality of the data distribution, either for the current PG
+distribution or for the PG distribution that would result after executing a
+plan</p></li>
+<li><p>executing the plan</p></li>
+</ol>
+<p>To evaluate the current distribution, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span><span class="nb">eval</span></span>
+</pre></div></div></div></blockquote>
+<p>To evaluate the distribution for a single pool, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>&lt;pool-name&gt;</span>
+</pre></div></div></div></blockquote>
+<p>To see the evaluation in greater detail, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>eval-verbose<span class="w"> </span>...</span>
+</pre></div></div></div></blockquote>
+<p>To instruct the balancer to generate a plan (using the currently configured
+mode), make up a name (any useful identifying string) for the plan, and run the
+following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>optimize<span class="w"> </span>&lt;plan-name&gt;</span>
+</pre></div></div></div></blockquote>
+<p>To see the contents of a plan, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>show<span class="w"> </span>&lt;plan-name&gt;</span>
+</pre></div></div></div></blockquote>
+<p>To display all plans, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>ls</span>
+</pre></div></div></div></blockquote>
+<p>To discard an old plan, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>rm<span class="w"> </span>&lt;plan-name&gt;</span>
+</pre></div></div></div></blockquote>
+<p>To see currently recorded plans, examine the output of the following status
+command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>status</span>
+</pre></div></div></div></blockquote>
+<p>To see the status in greater detail, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>status<span class="w"> </span>detail</span>
+</pre></div></div></div></blockquote>
+<p>To enable <cite>ceph balancer status detail</cite>, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/update_pg_upmap_activity<span class="w"> </span>True</span>
+</pre></div></div></div></blockquote>
+<p>To disable <cite>ceph balancer status detail</cite>, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/balancer/update_pg_upmap_activity<span class="w"> </span>False</span>
+</pre></div></div></div></blockquote>
+<p>To evaluate the distribution that would result from executing a specific plan,
+run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>&lt;plan-name&gt;</span>
+</pre></div></div></div></blockquote>
+<p>If a plan is expected to improve the distribution (that is, the plan’s score is
+lower than the current cluster state’s score), you can execute that plan by
+running the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>balancer<span class="w"> </span>execute<span class="w"> </span>&lt;plan-name&gt;</span>
+</pre></div></div></div></blockquote>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="read-balancer.html" class="btn btn-neutral float-left" title="Operating the Read (Primary) Balancer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crush-map.html" class="btn btn-neutral float-right" title="CRUSH Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

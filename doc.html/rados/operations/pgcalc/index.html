@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PG Calc &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Data Placement Overview" href="../data-placement.html" />
+    <link rel="prev" title="User Management" href="../user-management.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user-management.html">User Management</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../add-or-rm-osds.html">Adding/Removing OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">PG Calc</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/rados/operations/pgcalc/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="pg-calc">
+<span id="pgcalc"></span><h1>PG Calc<a class="headerlink" href="#pg-calc" title="Link to this heading"></a></h1>
+<link rel="stylesheet" id="wp-job-manager-job-listings-css" href="https://web.archive.org/web/20230614135557cs_/https://old.ceph.com/wp-content/plugins/wp-job-manager/assets/dist/css/job-listings.css" type="text/css" media="all"/>
+<link rel="stylesheet" id="ceph/googlefont-css" href="https://web.archive.org/web/20230614135557cs_/https://fonts.googleapis.com/css?family=Raleway%3A300%2C400%2C700&amp;ver=5.7.2" type="text/css" media="all"/>
+<link rel="stylesheet" id="Stylesheet-css" href="https://web.archive.org/web/20230614135557cs_/https://old.ceph.com/wp-content/themes/cephTheme/Resources/Styles/style.min.css" type="text/css" media="all"/>
+<link rel="stylesheet" id="tablepress-default-css" href="https://web.archive.org/web/20230614135557cs_/https://old.ceph.com/wp-content/plugins/tablepress/css/default.min.css" type="text/css" media="all"/>
+<link rel="stylesheet" id="jetpack_css-css" href="https://web.archive.org/web/20230614135557cs_/https://old.ceph.com/wp-content/plugins/jetpack/css/jetpack.css" type="text/css" media="all"/>
+<script type="text/javascript" src="https://web.archive.org/web/20230614135557js_/https://old.ceph.com/wp-content/themes/cephTheme/foundation_framework/js/vendor/jquery.js" id="jquery-js"></script>
+
+<link rel="stylesheet" href="https://web.archive.org/web/20230614135557cs_/https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
+<link rel="stylesheet" href="https://web.archive.org/web/20230614135557cs_/https://old.ceph.com/pgcalc_assets/pgcalc.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+     <script src="../../../_static/js/pgcalc.js"></script>
+             <div id="pgcalcdiv">
+             <div id="instructions">
+             <h2>Ceph PGs per Pool Calculator</h2><br/><fieldset><legend>Instructions</legend>
+             <ol>
+                     <li>Confirm your understanding of the fields by reading through the Key below.</li>
+                     <li>Select a <b>"Ceph Use Case"</b> from the drop down menu.</li>
+                     <li>Adjust the values in the <span class="inputColor addBorder" style="font-weight: bold;">"Green"</span> shaded fields below.<br/>
+                             <b>Tip:</b> Headers can be clicked to change the value throughout the table.</li>
+                     <li>You will see the Suggested PG Count update based on your inputs.</li>
+                     <li>Click the <b>"Add Pool"</b> button to create a new line for a new pool.</li>
+                     <li>Click the <span class="ui-icon ui-icon-trash" style="display:inline-block;"></span> icon to delete the specific Pool.</li>
+                     <li>For more details on the logic used and some important details, see the area below the table.</li>
+                     <li>Once all values have been adjusted, click the <b>"Generate Commands"</b> button to get the pool creation commands.</li>
+             </ol></fieldset>
+             </div>
+             <div id="beforeTable"></div>
+             <br/>
+             <p class="validateTips">&nbsp;</p>
+             <label for="presetType">Ceph Use Case Selector:</label><br/><select id="presetType"></select><button style="margin-left: 200px;" id="btnAddPool" type="button">Add Pool</button><button type="button" id="btnGenCommands" download="commands.txt">Generate Commands</button>
+             <div id="pgsPerPoolTable">
+                     <table id="pgsperpool">
+                     </table>
+             </div> <!-- id = pgsPerPoolTable -->
+             <br/>
+             <div id="afterTable"></div>
+             <div id="countLogic"><fieldset><legend>Logic behind Suggested PG Count</legend>
+                     <br/>
+                     <div class="upperFormula">( Target PGs per OSD ) x ( OSD # ) x ( %Data )</div>
+                     <div class="lowerFormula">( Size )</div>
+                     <ol id="countLogicList">
+                             <li>If the value of the above calculation is less than the value of <b>( OSD# ) / ( Size )</b>, then the value is updated to the value of <b>( OSD# ) / ( Size )</b>.  This is to ensure even load / data distribution by allocating at least one Primary or Secondary PG to every OSD for every Pool.</li>
+                             <li>The output value is then rounded to the <b>nearest power of 2</b>.<br/><b>Tip:</b> The nearest power of 2 provides a marginal improvement in efficiency of the <a href="https://web.archive.org/web/20230614135557/http://ceph.com/docs/master/rados/operations/crush-map/" title="CRUSH Map Details">CRUSH</a> algorithm.</li>
+                             <li>If the nearest power of 2 is more than <b>25%</b> below the original value, the next higher power of 2 is used.</li>
+                     </ol>
+                     <b>Objective</b>
+                     <ul><li>The objective of this calculation and the target ranges noted in the &quot;Key&quot; section above are to ensure that there are sufficient Placement Groups for even data distribution throughout the cluster, while not going high enough on the PG per OSD ratio to cause problems during Recovery and/or Backfill operations.</li></ul>
+                     <b>Effects of empty or non-active pools:</b>
+                     <ul>
+                             <li>Empty or otherwise non-active pools should not be considered helpful toward even data distribution throughout the cluster.</li>
+                             <li>However, the PGs associated with these empty / non-active pools still consume memory and CPU overhead.</li>
+                     </ul>
+             </fieldset>
+             </div>
+             <div id="commands" title="Pool Creation Commands"><code><pre id="commandCode"></pre></code></div>
+             </div></section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../user-management.html" class="btn btn-neutral float-left" title="User Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../data-placement.html" class="btn btn-neutral float-right" title="Data Placement Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

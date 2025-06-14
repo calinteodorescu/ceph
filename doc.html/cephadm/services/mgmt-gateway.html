@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Management Gateway &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="OAuth2 Proxy" href="oauth2-proxy.html" />
+    <link rel="prev" title="SMB Service" href="smb.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Cephadm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../compatibility.html">Compatibility and Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html">Using cephadm to Deploy a New Ceph Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adoption.html">Converting an existing cluster to cephadm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-management.html">Host Management</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Service Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mon.html">MON Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgr.html">MGR Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd.html">OSD Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rgw.html">RGW Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds.html">MDS Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nfs.html">NFS Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iscsi.html">iSCSI Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="custom-container.html">Custom Container Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snmp-gateway.html">SNMP Gateway Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tracing.html">Tracing Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smb.html">SMB Service</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Management Gateway</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#deploying-mgmt-gateway">Deploying mgmt-gateway</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#benefits-of-the-mgmt-gateway-service">Benefits of the mgmt-gateway service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-enhancements">Security enhancements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#high-availability-enhancements">High availability enhancements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#high-availability-for-mgmt-gateway-service">High Availability for mgmt-gateway service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accessing-services-with-mgmt-gateway">Accessing services with mgmt-gateway</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#service-specification">Service Specification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="oauth2-proxy.html">OAuth2 Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-status">Service Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#daemon-status">Daemon Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-specification">Service Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#daemon-placement">Daemon Placement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#extra-container-arguments">Extra Container Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#extra-entrypoint-arguments">Extra Entrypoint Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#custom-config-files">Custom Config Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#removing-a-service">Removing a Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#disabling-automatic-deployment-of-daemons">Disabling automatic deployment of daemons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../certmgr.html">Certificate Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../upgrade.html">Upgrading Ceph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations.html">Cephadm operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-setup.html">Client Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/cephadm/index.html">Cephadm Feature Planning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Cephadm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Service Management</a></li>
+      <li class="breadcrumb-item active">Management Gateway</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/cephadm/services/mgmt-gateway.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="management-gateway">
+<span id="deploy-cephadm-mgmt-gateway"></span><h1>Management Gateway<a class="headerlink" href="#management-gateway" title="Link to this heading"></a></h1>
+<section id="deploying-mgmt-gateway">
+<h2>Deploying mgmt-gateway<a class="headerlink" href="#deploying-mgmt-gateway" title="Link to this heading"></a></h2>
+<p>In Ceph releases beginning with Squid, the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service introduces a new design for Ceph applications
+based on a modular, service-based architecture. This service, managed by cephadm and built on top of nginx
+(an open-source, high-performance web server), acts as the new front-end and single entry point to the
+Ceph cluster. The <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> provides unified access to all Ceph applications, including the Ceph dashboard
+and monitoring stack. Employing nginx enhances security and simplifies access management due to its robust
+community support and high-security standards. The <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service acts as a reverse proxy that routes
+requests to the appropriate Ceph application instances.</p>
+<p>In order to deploy the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service, use the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>mgmt-gateway<span class="w"> </span><span class="o">[</span>--placement<span class="w"> </span>...<span class="o">]</span><span class="w"> </span>...</span>
+</pre></div></div><p>Once applied cephadm will reconfigure specific running daemons (such as monitoring) to run behind the
+new created service. External access to those services will not be possible anymore. Access will be
+consolidated behind the new service endpoint: <code class="docutils literal notranslate"><span class="pre">https://&lt;node-ip&gt;:&lt;port&gt;</span></code>.</p>
+</section>
+<section id="benefits-of-the-mgmt-gateway-service">
+<h2>Benefits of the mgmt-gateway service<a class="headerlink" href="#benefits-of-the-mgmt-gateway-service" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Unified</span> <span class="pre">Access</span></code>: Consolidated access through nginx improves security and provide a single entry point to services.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Improved</span> <span class="pre">user</span> <span class="pre">experience</span></code>: User no longer need to know where each application is running (ip/host).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">Availability</span> <span class="pre">for</span> <span class="pre">dashboard</span></code>: nginx HA mechanisms are used to provide high availability for the Ceph dashboard.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">High</span> <span class="pre">Availability</span> <span class="pre">for</span> <span class="pre">monitoring</span></code>: nginx HA mechanisms are used to provide high availability for monitoring.</p></li>
+</ul>
+</section>
+<section id="security-enhancements">
+<h2>Security enhancements<a class="headerlink" href="#security-enhancements" title="Link to this heading"></a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service is deployed user cannot access monitoring services without authentication through the
+Ceph dashboard.</p>
+</section>
+<section id="high-availability-enhancements">
+<h2>High availability enhancements<a class="headerlink" href="#high-availability-enhancements" title="Link to this heading"></a></h2>
+<p>nginx HA mechanisms are used to provide high availability for all the Ceph management applications including the Ceph dashboard
+and monitoring stack. In case of the Ceph dashboard user no longer need to know where the active manager is running.
+<code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> handles manager failover transparently and redirects the user to the active manager. In case of the
+monitoring <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> takes care of handling HA when several instances of Prometheus, Alertmanager or Grafana are
+available. The reverse proxy will automatically detect healthy instances and use them to process user requests.</p>
+</section>
+<section id="high-availability-for-mgmt-gateway-service">
+<h2>High Availability for mgmt-gateway service<a class="headerlink" href="#high-availability-for-mgmt-gateway-service" title="Link to this heading"></a></h2>
+<p>In addition to providing high availability for the underlying backend services, the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code>
+service itself can be configured for high availability, ensuring that the system remains resilient
+even if certain core components for the service fail, including the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> itself.</p>
+<p>Multiple <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> instances can be deployed in an active/standby configuration using keepalived
+for seamless failover. The <code class="docutils literal notranslate"><span class="pre">oauth2-proxy</span></code> service can be deployed as multiple stateless instances,
+with nginx acting as a load balancer across them using round-robin strategy. This setup removes
+single points of failure and enhances the resilience of the entire system.</p>
+<p>In this setup, the underlying internal services follow the same high availability mechanism. Instead of
+directly accessing the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> internal endpoint, services use the virtual IP specified in the spec.
+This ensures that the high availability mechanism for <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> is transparent to other services.</p>
+<p>The simplest and recommended way to deploy the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> in high availability mode is by using labels. To
+run the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> in HA mode users can either use the cephadm command line as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>mgmt-gateway<span class="w"> </span>--virtual_ip<span class="w"> </span><span class="m">192</span>.168.100.220<span class="w"> </span>--enable-auth<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--placement<span class="o">=</span><span class="s2">&quot;label:mgmt&quot;</span></span>
+</pre></div></div><p>Or provide specification files as following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> Configuration:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgmt-gateway</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgmt</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enable_auth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">virtual_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.100.220</span>
+</pre></div>
+</div>
+<p>In addition, the user must configure an ingress service to provide virtual IP functionality for
+the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code>. For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress-mgmt-gw</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgmt</span>
+<span class="nt">virtual_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.100.220</span>
+<span class="nt">backend_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgmt-gateway</span>
+<span class="nt">keepalive_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>The number of deployed instances is determined by the number of hosts with the <code class="docutils literal notranslate"><span class="pre">mgmt</span></code> label.
+The ingress is configured in <code class="docutils literal notranslate"><span class="pre">keepalive_only</span></code> mode, with labels ensuring that any changes to
+the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> daemons are replicated to the corresponding keepalived instances.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">virtual_ip</span></code> parameter must be identical in both the ingress and <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> specifications.</p>
+</div>
+</section>
+<section id="accessing-services-with-mgmt-gateway">
+<h2>Accessing services with mgmt-gateway<a class="headerlink" href="#accessing-services-with-mgmt-gateway" title="Link to this heading"></a></h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service is deployed direct access to the monitoring services will not be allowed anymore.
+Applications including: Prometheus, Grafana and Alertmanager are now accessible through links
+from <code class="docutils literal notranslate"><span class="pre">Administration</span> <span class="pre">&gt;</span> <span class="pre">Services</span></code>.</p>
+</section>
+<section id="service-specification">
+<h2>Service Specification<a class="headerlink" href="#service-specification" title="Link to this heading"></a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service can be applied using a specification. An example in YAML follows:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgmt-gateway</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceph0</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+<span class="w"> </span><span class="nt">ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w"> </span><span class="nt">ssl_protocols</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSv1.2</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TLSv1.3</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w"> </span><span class="nt">ssl_ciphers</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AES128-SHA</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AES256-SHA</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w"> </span><span class="nt">ssl_cert</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">   </span><span class="no">-----BEGIN CERTIFICATE-----</span>
+<span class="w">   </span><span class="no">MIIDtTCCAp2gAwIBAgIYMC4xNzc1NDQxNjEzMzc2MjMyXzxvQ7EcMA0GCSqGSIb3</span>
+<span class="w">   </span><span class="no">DQEBCwUAMG0xCzAJBgNVBAYTAlVTMQ0wCwYDVQQIDARVdGFoMRcwFQYDVQQHDA5T</span>
+<span class="w">   </span><span class="no">[...]</span>
+<span class="w">   </span><span class="no">-----END CERTIFICATE-----</span>
+<span class="w"> </span><span class="nt">ssl_key</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">   </span><span class="no">-----BEGIN PRIVATE KEY-----</span>
+<span class="w">   </span><span class="no">MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5jdYbjtNTAKW4</span>
+<span class="w">   </span><span class="no">/CwQr/7wOiLGzVxChn3mmCIF3DwbL/qvTFTX2d8bDf6LjGwLYloXHscRfxszX/4h</span>
+<span class="w">   </span><span class="no">[...]</span>
+<span class="w">   </span><span class="no">-----END PRIVATE KEY-----</span>
+</pre></div>
+</div>
+<p>Fields specific to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> section of the <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service are described below.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ceph.deployment.service_spec.</span></span><span class="sig-name descname"><span class="pre">MgmtGatewaySpec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mgmt-gateway'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">networks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">placement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_auth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_cert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_prefer_server_ciphers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_session_tickets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_session_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_session_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_stapling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_stapling_verify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_protocols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssl_ciphers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_health_check_endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_ip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preview_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unmanaged</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_container_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_entrypoint_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_configs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.enable_auth">
+<span class="sig-name descname"><span class="pre">enable_auth</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.enable_auth" title="Link to this definition"></a></dt>
+<dd><p>Is a flag to enable SSO auth. Requires oauth2-proxy to be active for SSO authentication.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.port">
+<span class="sig-name descname"><span class="pre">port</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.port" title="Link to this definition"></a></dt>
+<dd><p>The port number on which the server will listen</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.server_tokens">
+<span class="sig-name descname"><span class="pre">server_tokens</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.server_tokens" title="Link to this definition"></a></dt>
+<dd><p>Flag control server tokens in responses:  on | off | build | string</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl">
+<span class="sig-name descname"><span class="pre">ssl</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl" title="Link to this definition"></a></dt>
+<dd><p>Is a flag to enable/disable HTTPS. By default set to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_cert">
+<span class="sig-name descname"><span class="pre">ssl_cert</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_cert" title="Link to this definition"></a></dt>
+<dd><p>A multi-line string that contains the SSL certificate</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_ciphers">
+<span class="sig-name descname"><span class="pre">ssl_ciphers</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_ciphers" title="Link to this definition"></a></dt>
+<dd><p>List of supported secure SSL ciphers. Changing this list may reduce system security.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_key">
+<span class="sig-name descname"><span class="pre">ssl_key</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_key" title="Link to this definition"></a></dt>
+<dd><p>A multi-line string that contains the SSL key</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_prefer_server_ciphers">
+<span class="sig-name descname"><span class="pre">ssl_prefer_server_ciphers</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_prefer_server_ciphers" title="Link to this definition"></a></dt>
+<dd><p>Prefer server ciphers over client ciphers: on | off</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_protocols">
+<span class="sig-name descname"><span class="pre">ssl_protocols</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_protocols" title="Link to this definition"></a></dt>
+<dd><p>A list of supported SSL protocols (as supported by nginx)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_session_cache">
+<span class="sig-name descname"><span class="pre">ssl_session_cache</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_session_cache" title="Link to this definition"></a></dt>
+<dd><p>Duration an SSL/TLS session is cached: off | none | [builtin[:size]] [shared:name:size]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_session_tickets">
+<span class="sig-name descname"><span class="pre">ssl_session_tickets</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_session_tickets" title="Link to this definition"></a></dt>
+<dd><p>A multioption flag to control session tickets: on | off</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_session_timeout">
+<span class="sig-name descname"><span class="pre">ssl_session_timeout</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_session_timeout" title="Link to this definition"></a></dt>
+<dd><p>The duration for SSL session timeout. Syntax: time (i.e: 5m)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_stapling">
+<span class="sig-name descname"><span class="pre">ssl_stapling</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_stapling" title="Link to this definition"></a></dt>
+<dd><p>Flag to enable or disable SSL stapling: on | off</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.ssl_stapling_verify">
+<span class="sig-name descname"><span class="pre">ssl_stapling_verify</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.ssl_stapling_verify" title="Link to this definition"></a></dt>
+<dd><p>Flag to control verification of SSL stapling: on | off</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ceph.deployment.service_spec.MgmtGatewaySpec.virtual_ip">
+<span class="sig-name descname"><span class="pre">virtual_ip</span></span><a class="headerlink" href="#ceph.deployment.service_spec.MgmtGatewaySpec.virtual_ip" title="Link to this definition"></a></dt>
+<dd><p>Virtual IP address used for the management gateway in a high availability setup.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>TLSv1.3 is considered safe at this moment and includes a set of secure ciphers by default.
+When configuring SSL/TLS ciphers for older versions, especially TLSv1.2, it is crucial to
+use only a subset of secure ciphers. Using weak or outdated ciphers can significantly
+compromise the security of your system.</p>
+<p>Any alteration of the cipher list for SSL/TLS configurations is the responsibility of the
+system administrator. Avoid modifying these lists without a thorough understanding of the
+implications. Incorrect configurations can lead to vulnerabilities such as weak encryption,
+lack of forward secrecy, and susceptibility to various attacks. Always refer to up-to-date
+security guidelines and best practices when configuring SSL/TLS settings.</p>
+</div>
+<p>The specification can then be applied by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>-i<span class="w"> </span>mgmt-gateway.yaml</span>
+</pre></div></div></section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Services must bind to the appropriate ports based on the applications being proxied. Ensure that there
+are no port conflicts that might disrupt service availability.</p></li>
+</ul>
+<section id="default-images">
+<h3>Default images<a class="headerlink" href="#default-images" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">mgmt-gateway</span></code> service internally makes use of nginx reverse proxy. The following container image is used by default:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mgr</span><span class="o">/</span><span class="n">cephadm</span><span class="o">/</span><span class="n">container_image_nginx</span> <span class="o">=</span> <span class="s1">&#39;quay.io/ceph/nginx:sclorg-nginx-126&#39;</span>
+</pre></div>
+</div>
+<p>Admins can specify the image to be used by changing the <code class="docutils literal notranslate"><span class="pre">container_image_nginx</span></code> cephadm module option. If there were already
+running daemon(s) you must redeploy the daemon(s) in order to have them actually use the new image.</p>
+<p>For example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/cephadm/container_image_nginx<span class="w"> </span>&lt;new-nginx-image&gt;
+ceph<span class="w"> </span>orch<span class="w"> </span>redeploy<span class="w"> </span><span class="sb">``</span>mgmt-gateway<span class="sb">``</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="smb.html" class="btn btn-neutral float-left" title="SMB Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="oauth2-proxy.html" class="btn btn-neutral float-right" title="OAuth2 Proxy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

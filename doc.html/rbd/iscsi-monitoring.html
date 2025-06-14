@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring Ceph iSCSI gateways &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RBD on Windows" href="rbd-windows.html" />
+    <link rel="prev" title="iSCSI Initiator for VMware ESX" href="iscsi-initiator-esx.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-operations.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="rbd-integrations.html">Integrations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbd-ko.html">Kernel Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qemu-rbd.html">QEMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libvirt.html">libvirt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-nomad.html">Nomad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-openstack.html">OpenStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-cloudstack.html">CloudStack</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="iscsi-overview.html">LIO iSCSI Gateway</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="iscsi-requirements.html">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iscsi-targets.html">Configuring the iSCSI Target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iscsi-initiators.html">Configuring the iSCSI Initiators</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Monitoring the iSCSI Gateways</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-windows.html">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html">Ceph NVMe-oF Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#high-availability-with-nvme-of-gateway-group">High Availability with NVMe-oF gateway group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#scaling-out-with-nvme-of-gateway">Scaling-out with NVMe-oF gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nvmeof-overview.html#nvme-of-gateway-discovery">NVMe-oF gateway Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="man/index.html">Manpages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="rbd-integrations.html">Ceph Block Device 3rd Party Integration</a></li>
+          <li class="breadcrumb-item"><a href="iscsi-overview.html">Ceph iSCSI Gateway</a></li>
+      <li class="breadcrumb-item active">Monitoring Ceph iSCSI gateways</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rbd/iscsi-monitoring.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="monitoring-ceph-iscsi-gateways">
+<h1>Monitoring Ceph iSCSI gateways<a class="headerlink" href="#monitoring-ceph-iscsi-gateways" title="Link to this heading"></a></h1>
+<p>Ceph provides a tool for iSCSI gateway environments
+to monitor performance of exported RADOS Block Device (RBD) images.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">gwtop</span></code> tool is a <code class="docutils literal notranslate"><span class="pre">top</span></code>-like tool that displays aggregated
+performance metrics of RBD images that are exported to clients over
+iSCSI. The metrics are sourced from a Performance Metrics Domain Agent
+(PMDA). Information from the Linux-IO target (LIO) PMDA is used to list
+each exported RBD image, the connected client, and its associated I/O
+metrics.</p>
+<p><strong>Requirements:</strong></p>
+<ul class="simple">
+<li><p>A running Ceph iSCSI gateway</p></li>
+</ul>
+<p><strong>Installing:</strong></p>
+<ol class="arabic">
+<li><p>As <code class="docutils literal notranslate"><span class="pre">root</span></code>, install the <code class="docutils literal notranslate"><span class="pre">ceph-iscsi-tools</span></code> package on each iSCSI
+gateway node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">yum<span class="w"> </span>install<span class="w"> </span>ceph-iscsi-tools</span>
+</pre></div></div></li>
+<li><p>As <code class="docutils literal notranslate"><span class="pre">root</span></code>, install the performance co-pilot package on each iSCSI
+gateway node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">yum<span class="w"> </span>install<span class="w"> </span>pcp</span>
+</pre></div></div></li>
+<li><p>As <code class="docutils literal notranslate"><span class="pre">root</span></code>, install the LIO PMDA package on each iSCSI gateway node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">yum<span class="w"> </span>install<span class="w"> </span>pcp-pmda-lio</span>
+</pre></div></div></li>
+<li><p>As <code class="docutils literal notranslate"><span class="pre">root</span></code>, enable and start the performance co-pilot service on
+each iSCSI gateway node:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>pmcd</span>
+<span class="prompt1">systemctl<span class="w"> </span>start<span class="w"> </span>pmcd</span>
+</pre></div></div></li>
+<li><p>As <code class="docutils literal notranslate"><span class="pre">root</span></code>, register the <code class="docutils literal notranslate"><span class="pre">pcp-pmda-lio</span></code> agent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span>/var/lib/pcp/pmdas/lio</span>
+<span class="prompt1">./Install</span>
+</pre></div></div></li>
+</ol>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">gwtop</span></code> assumes the iSCSI gateway configuration object is
+stored in a RADOS object called <code class="docutils literal notranslate"><span class="pre">gateway.conf</span></code> in the <code class="docutils literal notranslate"><span class="pre">rbd</span></code> pool.
+This configuration defines the iSCSI gateways to contact for gathering
+the performance statistics. This can be overridden by using either the
+<code class="docutils literal notranslate"><span class="pre">-g</span></code> or <code class="docutils literal notranslate"><span class="pre">-c</span></code> flags. See <code class="docutils literal notranslate"><span class="pre">gwtop</span> <span class="pre">--help</span></code> for more details.</p>
+<p>The LIO configuration determines which type of performance statistics to
+extract from performance co-pilot. When <code class="docutils literal notranslate"><span class="pre">gwtop</span></code> starts it looks at the
+LIO configuration, and if it find user-space disks, then <code class="docutils literal notranslate"><span class="pre">gwtop</span></code>
+selects the LIO collector automatically.</p>
+<p><strong>Example ``gwtop`` Outputs</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gwtop</span>  <span class="mi">2</span><span class="o">/</span><span class="mi">2</span> <span class="n">Gateways</span>   <span class="n">CPU</span><span class="o">%</span> <span class="n">MIN</span><span class="p">:</span>  <span class="mi">4</span> <span class="n">MAX</span><span class="p">:</span>  <span class="mi">5</span>    <span class="n">Network</span> <span class="n">Total</span> <span class="n">In</span><span class="p">:</span>    <span class="mi">2</span><span class="n">M</span>  <span class="n">Out</span><span class="p">:</span>    <span class="mi">3</span><span class="n">M</span>   <span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">Capacity</span><span class="p">:</span>   <span class="mi">8</span><span class="n">G</span>    <span class="n">Disks</span><span class="p">:</span>   <span class="mi">8</span>   <span class="n">IOPS</span><span class="p">:</span>  <span class="mi">503</span>   <span class="n">Clients</span><span class="p">:</span>  <span class="mi">1</span>   <span class="n">Ceph</span><span class="p">:</span> <span class="n">HEALTH_OK</span>          <span class="n">OSDs</span><span class="p">:</span>   <span class="mi">3</span>
+<span class="n">Pool</span><span class="o">.</span><span class="n">Image</span>       <span class="n">Src</span>    <span class="n">Size</span>     <span class="n">iops</span>     <span class="n">rMB</span><span class="o">/</span><span class="n">s</span>     <span class="n">wMB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Client</span>
+<span class="n">iscsi</span><span class="o">.</span><span class="n">t1703</span>             <span class="mi">500</span><span class="n">M</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+<span class="n">iscsi</span><span class="o">.</span><span class="n">testme1</span>           <span class="mi">500</span><span class="n">M</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+<span class="n">iscsi</span><span class="o">.</span><span class="n">testme2</span>           <span class="mi">500</span><span class="n">M</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+<span class="n">iscsi</span><span class="o">.</span><span class="n">testme3</span>           <span class="mi">500</span><span class="n">M</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+<span class="n">iscsi</span><span class="o">.</span><span class="n">testme5</span>           <span class="mi">500</span><span class="n">M</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+<span class="n">rbd</span><span class="o">.</span><span class="n">myhost_1</span>      <span class="n">T</span>       <span class="mi">4</span><span class="n">G</span>      <span class="mi">504</span>      <span class="mf">1.95</span>      <span class="mf">0.00</span>   <span class="n">rh460p</span><span class="p">(</span><span class="n">CON</span><span class="p">)</span>
+<span class="n">rbd</span><span class="o">.</span><span class="n">test_2</span>                <span class="mi">1</span><span class="n">G</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+<span class="n">rbd</span><span class="o">.</span><span class="n">testme</span>              <span class="mi">500</span><span class="n">M</span>        <span class="mi">0</span>      <span class="mf">0.00</span>      <span class="mf">0.00</span>
+</pre></div>
+</div>
+<p>In the <em>Client</em> column, <code class="docutils literal notranslate"><span class="pre">(CON)</span></code> means the iSCSI initiator (client) is
+currently logged into the iSCSI gateway. If <code class="docutils literal notranslate"><span class="pre">-multi-</span></code> is displayed,
+then multiple clients are mapped to the single RBD image.</p>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="iscsi-initiator-esx.html" class="btn btn-neutral float-left" title="iSCSI Initiator for VMware ESX" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbd-windows.html" class="btn btn-neutral float-right" title="RBD on Windows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

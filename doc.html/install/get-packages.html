@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Packages &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Downloading a Ceph Release Tarball" href="get-tarballs.html" />
+    <link rel="prev" title="Installation (Manual)" href="index_manual.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installing Ceph</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#recommended-methods">Recommended methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#other-methods">Other methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index_manual.html">Installation (Manual)</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index_manual.html#get-software">Get Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#install-software">Install Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#deploy-a-cluster-manually">Deploy a Cluster Manually</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#upgrade-software">Upgrade Software</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#windows">Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installing Ceph</a></li>
+          <li class="breadcrumb-item"><a href="index_manual.html">Installation (Manual)</a></li>
+      <li class="breadcrumb-item active">Get Packages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/install/get-packages.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="get-packages">
+<span id="packages"></span><h1>Get Packages<a class="headerlink" href="#get-packages" title="Link to this heading"></a></h1>
+<p>To install Ceph and other enabling software, you need to retrieve packages from
+the Ceph repository.</p>
+<p>There are three ways to get packages:</p>
+<ul class="simple">
+<li><p><strong>Cephadm:</strong> Cephadm can configure your Ceph repositories for you
+based on a release name or a specific Ceph version.  Each
+<a class="reference internal" href="../glossary.html#term-Ceph-Node"><span class="xref std std-term">Ceph Node</span></a> in your cluster must have internet access.</p></li>
+<li><p><strong>Configure Repositories Manually:</strong> You can manually configure your
+package management tool to retrieve Ceph packages and all enabling
+software.  Each <a class="reference internal" href="../glossary.html#term-Ceph-Node"><span class="xref std std-term">Ceph Node</span></a> in your cluster must have internet
+access.</p></li>
+<li><p><strong>Download Packages Manually:</strong> Downloading packages manually is a convenient
+way to install Ceph if your environment does not allow a <a class="reference internal" href="../glossary.html#term-Ceph-Node"><span class="xref std std-term">Ceph Node</span></a> to
+access the internet.</p></li>
+</ul>
+<section id="install-packages-with-cephadm">
+<h2>Install packages with cephadm<a class="headerlink" href="#install-packages-with-cephadm" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Download cephadm</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">curl<span class="w"> </span>--silent<span class="w"> </span>--remote-name<span class="w"> </span>--location<span class="w"> </span>https://download.ceph.com/rpm-squid/el9/noarch/cephadm</span>
+<span class="prompt2">chmod<span class="w"> </span>+x<span class="w"> </span>cephadm</span>
+</pre></div></div><ol class="arabic">
+<li><p>Configure the Ceph repository based on the release name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">cephadm</span> <span class="n">add</span><span class="o">-</span><span class="n">repo</span> <span class="o">--</span><span class="n">release</span> <span class="o">|</span><span class="n">stable</span><span class="o">-</span><span class="n">release</span><span class="o">|</span>
+</pre></div>
+</div>
+<p>For Octopus (15.2.0) and later releases, you can also specify a specific
+version:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">cephadm</span> <span class="n">add</span><span class="o">-</span><span class="n">repo</span> <span class="o">--</span><span class="n">version</span> <span class="mf">15.2.1</span>
+</pre></div>
+</div>
+<p>For development packages, you can specify a specific branch name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">cephadm</span> <span class="n">add</span><span class="o">-</span><span class="n">repo</span> <span class="o">--</span><span class="n">dev</span> <span class="n">my</span><span class="o">-</span><span class="n">branch</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install the appropriate packages.  You can install them using your
+package management tool (e.g., APT, Yum) directly, or you can
+use the cephadm wrapper command.  For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">cephadm</span> <span class="n">install</span> <span class="n">ceph</span><span class="o">-</span><span class="n">common</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="configure-repositories-manually">
+<h2>Configure Repositories Manually<a class="headerlink" href="#configure-repositories-manually" title="Link to this heading"></a></h2>
+<p>All Ceph deployments require Ceph packages (except for development). You should
+also add keys and recommended packages.</p>
+<ul class="simple">
+<li><p><strong>Keys: (Recommended)</strong> Whether you add repositories or download packages
+manually, you should download keys to verify the packages. If you do not get
+the keys, you may encounter security warnings.</p></li>
+<li><p><strong>Ceph: (Required)</strong> All Ceph deployments require Ceph release packages,
+except for deployments that use development packages (development, QA, and
+bleeding edge deployments only).</p></li>
+<li><p><strong>Ceph Development: (Optional)</strong> If you are developing for Ceph, testing Ceph
+development builds, or if you want features from the bleeding edge of Ceph
+development, you may get Ceph development packages.</p></li>
+</ul>
+<section id="add-keys">
+<h3>Add Keys<a class="headerlink" href="#add-keys" title="Link to this heading"></a></h3>
+<p>Add a key to your system’s list of trusted keys to avoid a security warning. For
+major releases (e.g., <code class="docutils literal notranslate"><span class="pre">luminous</span></code>, <code class="docutils literal notranslate"><span class="pre">mimic</span></code>, <code class="docutils literal notranslate"><span class="pre">nautilus</span></code>) and development releases
+(<code class="docutils literal notranslate"><span class="pre">release-name-rc1</span></code>, <code class="docutils literal notranslate"><span class="pre">release-name-rc2</span></code>), use the <code class="docutils literal notranslate"><span class="pre">release.asc</span></code> key.</p>
+<section id="apt">
+<h4>APT<a class="headerlink" href="#apt" title="Link to this heading"></a></h4>
+<p>To install the <code class="docutils literal notranslate"><span class="pre">release.asc</span></code> key, execute the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">O</span><span class="o">-</span> <span class="s1">&#39;https://download.ceph.com/keys/release.asc&#39;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">trusted</span><span class="o">.</span><span class="n">gpg</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">asc</span>
+</pre></div>
+</div>
+</section>
+<section id="rpm">
+<h4>RPM<a class="headerlink" href="#rpm" title="Link to this heading"></a></h4>
+<p>To install the <code class="docutils literal notranslate"><span class="pre">release.asc</span></code> key, execute the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">rpm</span> <span class="o">--</span><span class="kn">import</span><span class="w"> </span><span class="s1">&#39;https://download.ceph.com/keys/release.asc&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="ceph-release-packages">
+<h3>Ceph Release Packages<a class="headerlink" href="#ceph-release-packages" title="Link to this heading"></a></h3>
+<p>Release repositories use the <code class="docutils literal notranslate"><span class="pre">release.asc</span></code> key to verify packages.
+To install Ceph packages with the Advanced Package Tool (APT) or
+Yellowdog Updater, Modified (YUM), you must add Ceph repositories.</p>
+<p>You may find releases for Debian/Ubuntu (installed with APT) at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">debian</span><span class="o">-</span><span class="p">{</span><span class="n">release</span><span class="o">-</span><span class="n">name</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You may find releases for CentOS/RHEL and others (installed with YUM) at:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rpm</span><span class="o">-</span><span class="p">{</span><span class="n">release</span><span class="o">-</span><span class="n">name</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>For Octopus and later releases, you can also configure a repository for a
+specific version <code class="docutils literal notranslate"><span class="pre">x.y.z</span></code>.  For Debian/Ubuntu packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">debian</span><span class="o">-</span><span class="p">{</span><span class="n">version</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>For RPMs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rpm</span><span class="o">-</span><span class="p">{</span><span class="n">version</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The major releases of Ceph are summarized at: <a class="reference external" href="https://docs.ceph.com/en/latest/releases/">Releases</a></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For non-US users: There might be a mirror close to you where
+to download Ceph from. For more information see: <a class="reference external" href="../mirrors">Ceph Mirrors</a>.</p>
+</div>
+<section id="debian-packages">
+<h4>Debian Packages<a class="headerlink" href="#debian-packages" title="Link to this heading"></a></h4>
+<p>Add a Ceph package repository to your system’s list of APT sources. For newer
+versions of Debian/Ubuntu, call <code class="docutils literal notranslate"><span class="pre">lsb_release</span> <span class="pre">-sc</span></code> on the command line to
+get the short codename, and replace <code class="docutils literal notranslate"><span class="pre">{codename}</span></code> in the following command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>apt-add-repository<span class="w"> </span><span class="s1">&#39;deb https://download.ceph.com/debian-squid/ {codename} main&#39;</span></span>
+</pre></div></div><p>For early Linux distributions, you may execute the following command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2"><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>https://download.ceph.com/debian-squid/<span class="w"> </span><span class="k">$(</span>lsb_release<span class="w"> </span>-sc<span class="k">)</span><span class="w"> </span>main<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/ceph.list</span>
+</pre></div></div><p>For earlier Ceph releases, replace <code class="docutils literal notranslate"><span class="pre">{release-name}</span></code> with the name  with the
+name of the Ceph release. You may call <code class="docutils literal notranslate"><span class="pre">lsb_release</span> <span class="pre">-sc</span></code> on the command  line
+to get the short codename, and replace <code class="docutils literal notranslate"><span class="pre">{codename}</span></code> in the following command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>apt-add-repository<span class="w"> </span><span class="s1">&#39;deb https://download.ceph.com/debian-{release-name}/ {codename} main&#39;</span></span>
+</pre></div></div><p>For older Linux distributions, replace <code class="docutils literal notranslate"><span class="pre">{release-name}</span></code> with the name of the
+release</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2"><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>https://download.ceph.com/debian-<span class="o">{</span>release-name<span class="o">}</span>/<span class="w"> </span><span class="k">$(</span>lsb_release<span class="w"> </span>-sc<span class="k">)</span><span class="w"> </span>main<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/ceph.list</span>
+</pre></div></div><p>For development release packages, add our package repository to your system’s
+list of APT sources.  See <a class="reference external" href="https://download.ceph.com/debian-testing/dists">the testing Debian repository</a> for a complete list
+of Debian and Ubuntu releases supported.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2"><span class="nb">echo</span><span class="w"> </span>deb<span class="w"> </span>https://download.ceph.com/debian-testing/<span class="w"> </span><span class="k">$(</span>lsb_release<span class="w"> </span>-sc<span class="k">)</span><span class="w"> </span>main<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/ceph.list</span>
+</pre></div></div><div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For non-US users: There might be a mirror close to you where
+to download Ceph from. For more information see: <a class="reference external" href="../mirrors">Ceph Mirrors</a>.</p>
+</div>
+</section>
+<section id="rpm-packages">
+<h4>RPM Packages<a class="headerlink" href="#rpm-packages" title="Link to this heading"></a></h4>
+<section id="rhel">
+<h5>RHEL<a class="headerlink" href="#rhel" title="Link to this heading"></a></h5>
+<p>For major releases, you may add a Ceph entry to the <code class="docutils literal notranslate"><span class="pre">/etc/yum.repos.d</span></code>
+directory. Create a <code class="docutils literal notranslate"><span class="pre">ceph.repo</span></code> file. In the example below, replace
+<code class="docutils literal notranslate"><span class="pre">{ceph-release}</span></code> with  a major release of Ceph (e.g., <code class="docutils literal notranslate"><span class="pre">|stable-release|</span></code>)
+and <code class="docutils literal notranslate"><span class="pre">{distro}</span></code> with your Linux distribution (e.g., <code class="docutils literal notranslate"><span class="pre">el8</span></code>, etc.).  You
+may view <a class="reference external" href="https://download.ceph.com/rpm">https://download.ceph.com/rpm</a>-{ceph-release}/ directory to see which
+distributions Ceph supports. Some Ceph packages (e.g., EPEL) must take priority
+over standard packages, so you must ensure that you set
+<code class="docutils literal notranslate"><span class="pre">priority=2</span></code>.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[ceph]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Ceph packages for $basearch</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">https://download.ceph.com/rpm-{ceph-release}/{distro}/$basearch</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">1</span>
+<span class="na">priority</span><span class="o">=</span><span class="s">2</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">https://download.ceph.com/keys/release.asc</span>
+
+<span class="k">[ceph-noarch]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Ceph noarch packages</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">https://download.ceph.com/rpm-{ceph-release}/{distro}/noarch</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">1</span>
+<span class="na">priority</span><span class="o">=</span><span class="s">2</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">https://download.ceph.com/keys/release.asc</span>
+
+<span class="k">[ceph-source]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Ceph source packages</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">https://download.ceph.com/rpm-{ceph-release}/{distro}/SRPMS</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">0</span>
+<span class="na">priority</span><span class="o">=</span><span class="s">2</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">https://download.ceph.com/keys/release.asc</span>
+</pre></div>
+</div>
+<p>For specific packages, you may retrieve them by downloading the release package
+by name. Our development process generates a new release of Ceph every 3-4
+weeks. These packages are faster-moving than the major releases.  Development
+packages have new features integrated quickly, while still undergoing several
+weeks of QA prior to release.</p>
+<p>The repository package installs the repository details on your local system for
+use with <code class="docutils literal notranslate"><span class="pre">yum</span></code>. Replace <code class="docutils literal notranslate"><span class="pre">{distro}</span></code> with your Linux distribution, and
+<code class="docutils literal notranslate"><span class="pre">{release}</span></code> with the specific release of Ceph</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">su<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;rpm -Uvh https://download.ceph.com/rpms/{distro}/x86_64/ceph-{release}.el8.noarch.rpm&#39;</span></span>
+</pre></div></div><p>You can download the RPMs directly from</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://download.ceph.com/rpm-testing
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For non-US users: There might be a mirror close to you where
+to download Ceph from. For more information see: <a class="reference external" href="../mirrors">Ceph Mirrors</a>.</p>
+</div>
+</section>
+<section id="opensuse-leap-15-1">
+<h5>openSUSE Leap 15.1<a class="headerlink" href="#opensuse-leap-15-1" title="Link to this heading"></a></h5>
+<p>You need to add the Ceph package repository to your list of zypper sources. This can be done with the following command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>zypper<span class="w"> </span>ar<span class="w"> </span>https://download.opensuse.org/repositories/filesystems:/ceph/openSUSE_Leap_15.1/filesystems:ceph.repo
+</pre></div>
+</div>
+</section>
+<section id="opensuse-tumbleweed">
+<h5>openSUSE Tumbleweed<a class="headerlink" href="#opensuse-tumbleweed" title="Link to this heading"></a></h5>
+<p>The newest major release of Ceph is already available through the normal Tumbleweed repositories.
+There’s no need to add another package repository manually.</p>
+</section>
+<section id="openeuler">
+<h5>openEuler<a class="headerlink" href="#openeuler" title="Link to this heading"></a></h5>
+<p>There are two Ceph releases supported in normal openEuler repositories. They are Ceph 12.2.8 in the openEuler-20.03-LTS series and Ceph 16.2.7 in the openEuler-22.03-LTS series. There’s no need to add another package repository manually.
+You can install Ceph by executing the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>ceph</span>
+</pre></div></div><p>Also you can download packages manually from <a class="reference external" href="https://repo.openeuler.org/openEuler">https://repo.openeuler.org/openEuler</a>-{release}/everything/{arch}/Packages/.</p>
+</section>
+</section>
+</section>
+<section id="ceph-development-packages">
+<h3>Ceph Development Packages<a class="headerlink" href="#ceph-development-packages" title="Link to this heading"></a></h3>
+<p>If you are developing Ceph and need to deploy and test specific Ceph branches,
+ensure that you remove repository entries for major releases first.</p>
+<section id="deb-packages">
+<h4>DEB Packages<a class="headerlink" href="#deb-packages" title="Link to this heading"></a></h4>
+<p>We automatically build Ubuntu packages for current development branches in the
+Ceph source code repository.  These packages are intended for developers and QA
+only.</p>
+<p>Add the package repository to your system’s list of APT sources, but
+replace <code class="docutils literal notranslate"><span class="pre">{BRANCH}</span></code> with the branch you’d like to use (e.g.,
+wip-hack, master).  See <a class="reference external" href="https://shaman.ceph.com">the shaman page</a> for a complete
+list of distributions we build.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">curl<span class="w"> </span>-L<span class="w"> </span>https://shaman.ceph.com/api/repos/ceph/<span class="o">{</span>BRANCH<span class="o">}</span>/latest/ubuntu/<span class="k">$(</span>lsb_release<span class="w"> </span>-sc<span class="k">)</span>/repo/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/shaman.list</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the repository is not ready an HTTP 504 will be returned</p>
+</div>
+<p>The use of <code class="docutils literal notranslate"><span class="pre">latest</span></code> in the url, means it will figure out which is the last
+commit that has been built. Alternatively, a specific sha1 can be specified.
+For Ubuntu Xenial and the master branch of Ceph, it would look like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">curl<span class="w"> </span>-L<span class="w"> </span>https://shaman.ceph.com/api/repos/ceph/master/53e772a45fdf2d211c0c383106a66e1feedec8fd/ubuntu/xenial/repo/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/shaman.list</span>
+</pre></div></div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Development repositories are no longer available after two weeks.</p>
+</div>
+</section>
+<section id="id1">
+<h4>RPM Packages<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>For current development branches, you may add a Ceph entry to the
+<code class="docutils literal notranslate"><span class="pre">/etc/yum.repos.d</span></code> directory. The <a class="reference external" href="https://shaman.ceph.com">the shaman page</a> can be used to retrieve the full details
+of a repo file. It can be retrieved via an HTTP request, for example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">curl<span class="w"> </span>-L<span class="w"> </span>https://shaman.ceph.com/api/repos/ceph/<span class="o">{</span>BRANCH<span class="o">}</span>/latest/centos/8/repo/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/yum.repos.d/shaman.repo</span>
+</pre></div></div><p>The use of <code class="docutils literal notranslate"><span class="pre">latest</span></code> in the url, means it will figure out which is the last
+commit that has been built. Alternatively, a specific sha1 can be specified.
+For CentOS 8 and the master branch of Ceph, it would look like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">curl<span class="w"> </span>-L<span class="w"> </span>https://shaman.ceph.com/api/repos/ceph/master/488e6be0edff7eb18343fd5c7e2d7ed56435888f/centos/8/repo/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/shaman.list</span>
+</pre></div></div><div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Development repositories are no longer available after two weeks.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the repository is not ready an HTTP 504 will be returned</p>
+</div>
+</section>
+</section>
+<section id="download-packages-manually">
+<h3>Download Packages Manually<a class="headerlink" href="#download-packages-manually" title="Link to this heading"></a></h3>
+<p>If you are attempting to install behind a firewall in an environment without internet
+access, you must retrieve the packages (mirrored with all the necessary dependencies)
+before attempting an install.</p>
+<section id="id2">
+<h4>Debian Packages<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>The repository package installs the repository details on your local system for
+use with <code class="docutils literal notranslate"><span class="pre">apt</span></code>. Replace <code class="docutils literal notranslate"><span class="pre">{release}</span></code> with the latest Ceph release. Replace
+<code class="docutils literal notranslate"><span class="pre">{version}</span></code> with the latest Ceph version number. Replace <code class="docutils literal notranslate"><span class="pre">{distro}</span></code> with
+your Linux distribution codename. Replace <code class="docutils literal notranslate"><span class="pre">{arch}</span></code> with the CPU architecture.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">wget<span class="w"> </span>-q<span class="w"> </span>https://download.ceph.com/debian-<span class="o">{</span>release<span class="o">}</span>/pool/main/c/ceph/ceph_<span class="o">{</span>version<span class="o">}{</span>distro<span class="o">}</span>_<span class="o">{</span>arch<span class="o">}</span>.deb</span>
+</pre></div></div></section>
+<section id="id3">
+<h4>RPM Packages<a class="headerlink" href="#id3" title="Link to this heading"></a></h4>
+<p>Ceph requires additional third party libraries.
+To add the EPEL repository, execute the following</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm</span>
+</pre></div></div><p>Packages are currently built for the RHEL/CentOS8 (<code class="docutils literal notranslate"><span class="pre">el8</span></code>) platforms.  The
+repository package installs the repository details on your local system for use
+with <code class="docutils literal notranslate"><span class="pre">yum</span></code>. Replace <code class="docutils literal notranslate"><span class="pre">{distro}</span></code> with your distribution.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">su<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;rpm -Uvh https://download.ceph.com/rpm-squid/{distro}/noarch/ceph-{version}.{distro}.noarch.rpm&#39;</span></span>
+</pre></div></div><p>For example, for CentOS 8  (<code class="docutils literal notranslate"><span class="pre">el8</span></code>)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">su<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;rpm -Uvh https://download.ceph.com/rpm-squid/el8/noarch/ceph-release-1-0.el8.noarch.rpm&#39;</span></span>
+</pre></div></div><p>You can download the RPMs directly from</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://download.ceph.com/rpm-squid
+</pre></div>
+</div>
+<p>For earlier Ceph releases, replace <code class="docutils literal notranslate"><span class="pre">{release-name}</span></code> with the name
+with the name of the Ceph release. You may call <code class="docutils literal notranslate"><span class="pre">lsb_release</span> <span class="pre">-sc</span></code> on the command
+line to get the short codename.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">su<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;rpm -Uvh https://download.ceph.com/rpm-{release-name}/{distro}/noarch/ceph-{version}.{distro}.noarch.rpm&#39;</span></span>
+</pre></div></div></section>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index_manual.html" class="btn btn-neutral float-left" title="Installation (Manual)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="get-tarballs.html" class="btn btn-neutral float-right" title="Downloading a Ceph Release Tarball" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

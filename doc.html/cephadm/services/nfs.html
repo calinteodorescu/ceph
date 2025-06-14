@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NFS Service &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="iSCSI Service" href="iscsi.html" />
+    <link rel="prev" title="MDS Service" href="mds.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Cephadm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../compatibility.html">Compatibility and Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html">Using cephadm to Deploy a New Ceph Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adoption.html">Converting an existing cluster to cephadm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-management.html">Host Management</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Service Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mon.html">MON Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgr.html">MGR Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd.html">OSD Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rgw.html">RGW Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds.html">MDS Service</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NFS Service</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#deploying-nfs-ganesha">Deploying NFS ganesha</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#service-specification">Service Specification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#high-availability-nfs">High-availability NFS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iscsi.html">iSCSI Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="custom-container.html">Custom Container Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snmp-gateway.html">SNMP Gateway Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tracing.html">Tracing Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smb.html">SMB Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgmt-gateway.html">Management Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oauth2-proxy.html">OAuth2 Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-status">Service Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#daemon-status">Daemon Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#service-specification">Service Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#daemon-placement">Daemon Placement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#extra-container-arguments">Extra Container Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#extra-entrypoint-arguments">Extra Entrypoint Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#custom-config-files">Custom Config Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#removing-a-service">Removing a Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.html#disabling-automatic-deployment-of-daemons">Disabling automatic deployment of daemons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../certmgr.html">Certificate Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../upgrade.html">Upgrading Ceph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations.html">Cephadm operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-setup.html">Client Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dev/cephadm/index.html">Cephadm Feature Planning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Cephadm</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Service Management</a></li>
+      <li class="breadcrumb-item active">NFS Service</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/cephadm/services/nfs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="nfs-service">
+<span id="deploy-cephadm-nfs-ganesha"></span><h1>NFS Service<a class="headerlink" href="#nfs-service" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the NFSv4 protocol is supported.</p>
+</div>
+<p>The simplest way to manage NFS is via the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">nfs</span> <span class="pre">cluster</span> <span class="pre">...</span></code>
+commands; see <a class="reference internal" href="../../mgr/nfs.html#mgr-nfs"><span class="std std-ref">CephFS &amp; RGW Exports over NFS</span></a>.  This document covers how to manage the
+cephadm services directly, which should only be necessary for unusual NFS
+configurations.</p>
+<section id="deploying-nfs-ganesha">
+<h2>Deploying NFS ganesha<a class="headerlink" href="#deploying-nfs-ganesha" title="Link to this heading"></a></h2>
+<p>Cephadm deploys NFS Ganesha daemon (or set of daemons).  The configuration for
+NFS is stored in the <code class="docutils literal notranslate"><span class="pre">.nfs</span></code> pool and exports are managed via the
+<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">nfs</span> <span class="pre">export</span> <span class="pre">...</span></code> commands and via the dashboard.</p>
+<p>To deploy a NFS Ganesha gateway, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>nfs<span class="w"> </span>*&lt;svc_id&gt;*<span class="w"> </span><span class="o">[</span>--port<span class="w"> </span>*&lt;port&gt;*<span class="o">]</span><span class="w"> </span><span class="o">[</span>--placement<span class="w"> </span>...<span class="o">]</span></span>
+</pre></div></div><p>For example, to deploy NFS with a service id of <em>foo</em> on the default
+port 2049 with the default placement of a single daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>nfs<span class="w"> </span>foo</span>
+</pre></div></div><p>See <a class="reference internal" href="index.html#orchestrator-cli-placement-spec"><span class="std std-ref">Daemon Placement</span></a> for the details of the placement
+specification.</p>
+</section>
+<section id="service-specification">
+<h2>Service Specification<a class="headerlink" href="#service-specification" title="Link to this heading"></a></h2>
+<p>Alternatively, an NFS service can be applied using a YAML specification.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mynfs</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host1</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host2</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12345</span>
+</pre></div>
+</div>
+<p>In this example, we run the server on the non-default <code class="docutils literal notranslate"><span class="pre">port</span></code> of
+12345 (instead of the default 2049) on <code class="docutils literal notranslate"><span class="pre">host1</span></code> and <code class="docutils literal notranslate"><span class="pre">host2</span></code>.</p>
+<p>The specification can then be applied by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>-i<span class="w"> </span>nfs.yaml</span>
+</pre></div></div></section>
+<section id="high-availability-nfs">
+<span id="cephadm-ha-nfs"></span><h2>High-availability NFS<a class="headerlink" href="#high-availability-nfs" title="Link to this heading"></a></h2>
+<p>Deploying an <em>ingress</em> service for an existing <em>nfs</em> service will provide:</p>
+<ul class="simple">
+<li><p>a stable, virtual IP that can be used to access the NFS server</p></li>
+<li><p>fail-over between hosts if there is a host failure</p></li>
+<li><p>load distribution across multiple NFS gateways (although this is rarely necessary)</p></li>
+</ul>
+<p>Ingress for NFS can be deployed for an existing NFS service
+(<code class="docutils literal notranslate"><span class="pre">nfs.mynfs</span></code> in this example) with the following specification:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs.mynfs</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs.mynfs</span>
+<span class="w">  </span><span class="nt">frontend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2049</span>
+<span class="w">  </span><span class="nt">monitor_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9000</span>
+<span class="w">  </span><span class="nt">virtual_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.0.123/24</span>
+</pre></div>
+</div>
+<p>A few notes:</p>
+<blockquote>
+<div><ul>
+<li><p>The <em>virtual_ip</em> must include a CIDR prefix length, as in the
+example above.  The virtual IP will normally be configured on the
+first identified network interface that has an existing IP in the
+same subnet.  You can also specify a <em>virtual_interface_networks</em>
+property to match against IPs in other networks; see
+<a class="reference internal" href="rgw.html#ingress-virtual-ip"><span class="std std-ref">Selecting network interfaces for the virtual IP</span></a> for more information.</p></li>
+<li><p>The <em>monitor_port</em> is used to access the haproxy load status
+page.  The user is <code class="docutils literal notranslate"><span class="pre">admin</span></code> by default, but can be modified by
+via an <em>admin</em> property in the spec.  If a password is not
+specified via a <em>password</em> property in the spec, the auto-generated password
+can be found with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config-key<span class="w"> </span>get<span class="w"> </span>mgr/cephadm/ingress.*<span class="o">{</span>svc_id<span class="o">}</span>*/monitor_password</span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config-key<span class="w"> </span>get<span class="w"> </span>mgr/cephadm/ingress.nfs.myfoo/monitor_password</span>
+</pre></div></div></li>
+<li><p>The backend service (<code class="docutils literal notranslate"><span class="pre">nfs.mynfs</span></code> in this example) should include
+a <em>port</em> property that is not 2049 to avoid conflicting with the
+ingress service, which could be placed on the same host(s).</p></li>
+</ul>
+</div></blockquote>
+<section id="nfs-with-virtual-ip-but-no-haproxy">
+<h3>NFS with virtual IP but no haproxy<a class="headerlink" href="#nfs-with-virtual-ip-but-no-haproxy" title="Link to this heading"></a></h3>
+<p>Cephadm also supports deploying nfs with keepalived but not haproxy. This
+offers a virtual ip supported by keepalived that the nfs daemon can directly bind
+to instead of having traffic go through haproxy.</p>
+<p>In this setup, you’ll either want to set up the service using the nfs module
+(see <a class="reference internal" href="../../mgr/nfs.html#nfs-module-cluster-create"><span class="std std-ref">Create NFS Ganesha Cluster</span></a>) or place the ingress service first, so
+the virtual IP is present for the nfs daemon to bind to. The ingress service
+should include the attribute <code class="docutils literal notranslate"><span class="pre">keepalive_only</span></code> set to true. For example</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs.foo</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host3</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs.foo</span>
+<span class="w">  </span><span class="nt">monitor_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9049</span>
+<span class="w">  </span><span class="nt">virtual_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.122.100/24</span>
+<span class="w">  </span><span class="nt">keepalive_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>Then, an nfs service could be created that specifies a <code class="docutils literal notranslate"><span class="pre">virtual_ip</span></code> attribute
+that will tell it to bind to that specific IP.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host3</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2049</span>
+<span class="w">  </span><span class="nt">virtual_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.122.100</span>
+</pre></div>
+</div>
+<p>Note that in these setups, one should make sure to include <code class="docutils literal notranslate"><span class="pre">count:</span> <span class="pre">1</span></code> in the
+nfs placement, as it’s only possible for one nfs daemon to bind to the virtual IP.</p>
+</section>
+<section id="nfs-with-haproxy-protocol-support">
+<h3>NFS with HAProxy Protocol Support<a class="headerlink" href="#nfs-with-haproxy-protocol-support" title="Link to this heading"></a></h3>
+<p>Cephadm supports deploying NFS in High-Availability mode with additional
+HAProxy protocol support. This works just like High-availability NFS but also
+supports client IP level configuration on NFS Exports.  This feature requires
+<a class="reference external" href="https://github.com/nfs-ganesha/nfs-ganesha/wiki/ReleaseNotes_5">NFS-Ganesha v5.0</a> or later.</p>
+<p>To use this mode, you’ll either want to set up the service using the nfs module
+(see <a class="reference internal" href="../../mgr/nfs.html#nfs-module-cluster-create"><span class="std std-ref">Create NFS Ganesha Cluster</span></a>) or manually create services with the
+extra parameter <code class="docutils literal notranslate"><span class="pre">enable_haproxy_protocol</span></code> set to true. Both NFS Service and
+Ingress service must have <code class="docutils literal notranslate"><span class="pre">enable_haproxy_protocol</span></code> set to the same value.
+For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingress</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs.foo</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host3</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend_service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs.foo</span>
+<span class="w">  </span><span class="nt">monitor_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9049</span>
+<span class="w">  </span><span class="nt">virtual_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.122.100/24</span>
+<span class="w">  </span><span class="nt">enable_haproxy_protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">service_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfs</span>
+<span class="nt">service_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host2</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host3</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2049</span>
+<span class="w">  </span><span class="nt">enable_haproxy_protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>CephFS: <a class="reference internal" href="../../cephfs/nfs.html#cephfs-nfs"><span class="std std-ref">NFS</span></a></p></li>
+<li><p>MGR: <a class="reference internal" href="../../mgr/nfs.html#mgr-nfs"><span class="std std-ref">CephFS &amp; RGW Exports over NFS</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mds.html" class="btn btn-neutral float-left" title="MDS Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="iscsi.html" class="btn btn-neutral float-right" title="iSCSI Service" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

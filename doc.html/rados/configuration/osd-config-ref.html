@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSD Config Reference &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="mClock Config Reference" href="mclock-config-ref.html" />
+    <link rel="prev" title="Configuring Monitor/OSD Interaction" href="mon-osd-interaction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="storage-devices.html">Storage devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">Configuring Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html">Common Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#networks">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#temporary-directory">Temporary Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#monitors">Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#osds">OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#heartbeats">Heartbeats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#logs-debugging">Logs / Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#example-ceph-conf">Example ceph.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#naming-clusters-deprecated">Naming Clusters (deprecated)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-config-ref.html">Network Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">Messenger v2 protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth-config-ref.html">Auth Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-config-ref.html">Monitor Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-lookup-dns.html">Looking up Monitors through DNS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osd-interaction.html">Heartbeat Settings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">OSD Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-settings">General Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-system-settings">File System Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#journal-settings">Journal Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitor-osd-interaction">Monitor OSD Interaction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-placement">Data Placement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scrubbing">Scrubbing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operations">Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#backfilling">Backfilling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#osd-map">OSD Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recovery">Recovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tiering">Tiering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mclock-config-ref.html">DmClock Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-config-ref.html">BlueStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="filestore-config-ref.html">FileStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="journal-ref.html">Journal Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pool-pg-config-ref.html">Pool, PG &amp; CRUSH Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-config-ref.html">General Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">OSD Config Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/configuration/osd-config-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="osd-config-reference">
+<h1>OSD Config Reference<a class="headerlink" href="#osd-config-reference" title="Link to this heading"></a></h1>
+<p id="index-0">You can configure Ceph OSD Daemons in the Ceph configuration file (or in recent
+releases, the central config store), but Ceph OSD
+Daemons can use the default values and a very minimal configuration. A minimal
+Ceph OSD Daemon configuration sets <code class="docutils literal notranslate"><span class="pre">host</span></code> and
+uses default values for nearly everything else.</p>
+<p>Ceph OSD Daemons are numerically identified in incremental fashion, beginning
+with <code class="docutils literal notranslate"><span class="pre">0</span></code> using the following convention.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">osd</span><span class="mf">.0</span>
+<span class="n">osd</span><span class="mf">.1</span>
+<span class="n">osd</span><span class="mf">.2</span>
+</pre></div>
+</div>
+<p>In a configuration file, you may specify settings for all Ceph OSD Daemons in
+the cluster by adding configuration settings to the <code class="docutils literal notranslate"><span class="pre">[osd]</span></code> section of your
+configuration file. To add settings directly to a specific Ceph OSD Daemon
+(e.g., <code class="docutils literal notranslate"><span class="pre">host</span></code>), enter  it in an OSD-specific section of your configuration
+file. For example:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[osd]</span>
+<span class="w">        </span><span class="na">osd_journal_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5120</span>
+
+<span class="k">[osd.0]</span>
+<span class="w">        </span><span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">osd-host-a</span>
+
+<span class="k">[osd.1]</span>
+<span class="w">        </span><span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">osd-host-b</span>
+</pre></div>
+</div>
+<section id="general-settings">
+<span id="index-1"></span><h2>General Settings<a class="headerlink" href="#general-settings" title="Link to this heading"></a></h2>
+<p>The following settings provide a Ceph OSD Daemon’s ID, and determine paths to
+data and journals. Ceph deployment scripts typically generate the UUID
+automatically.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>DO NOT</strong> change the default paths for data or journals, as it
+makes it more problematic to troubleshoot Ceph later.</p>
+</div>
+<p>When using Filestore, the journal size should be at least twice the product of the expected drive
+speed multiplied by <code class="docutils literal notranslate"><span class="pre">filestore_max_sync_interval</span></code>. However, the most common
+practice is to partition the journal drive (often an SSD), and mount it such
+that Ceph uses the entire partition for the journal. Note that Filestore has been
+deprecated for several releases and any legacy Filestore OSDs should be migrated
+to BlueStore.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_uuid">
+<span class="sig-name descname"><span class="pre">osd_uuid</span></span><a class="headerlink" href="#confval-osd_uuid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The universally unique identifier (UUID) for the Ceph OSD Daemon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">osd_uuid</span></code> applies to a single Ceph OSD Daemon. The <code class="docutils literal notranslate"><span class="pre">fsid</span></code> applies to the entire cluster.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_data">
+<span class="sig-name descname"><span class="pre">osd_data</span></span><a class="headerlink" href="#confval-osd_data" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The path to the OSDs data. You must create the directory when
+deploying Ceph. You should mount a drive for OSD data at this mount
+point. We do not recommend changing the default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/osd/$cluster-$id</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_max_write_size">
+<span class="sig-name descname"><span class="pre">osd_max_write_size</span></span><a class="headerlink" href="#confval-osd_max_write_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum size of a write in megabytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">90B</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_max_object_size">
+<span class="sig-name descname"><span class="pre">osd_max_object_size</span></span><a class="headerlink" href="#confval-osd_max_object_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum size of a RADOS object in bytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_client_message_size_cap">
+<span class="sig-name descname"><span class="pre">osd_client_message_size_cap</span></span><a class="headerlink" href="#confval-osd_client_message_size_cap" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The largest client data message allowed in memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_class_dir">
+<span class="sig-name descname"><span class="pre">osd_class_dir</span></span><a class="headerlink" href="#confval-osd_class_dir" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The class path for RADOS class plug-ins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">$libdir/rados-classes</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="file-system-settings">
+<span id="index-2"></span><h2>File System Settings<a class="headerlink" href="#file-system-settings" title="Link to this heading"></a></h2>
+<p>Ceph builds and mounts file systems which are used for Ceph OSDs.</p>
+<p><code class="docutils literal notranslate"><span class="pre">osd_mkfs_options</span> <span class="pre">{fs-type}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Options used when creating a new Ceph Filestore OSD of type {fs-type}.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Default for xfs<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">-i</span> <span class="pre">2048</span></code></p>
+</dd>
+<dt class="field-even">Default for other file systems<span class="colon">:</span></dt>
+<dd class="field-even"><p>{empty string}</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>For example::</dt><dd><p><code class="docutils literal notranslate"><span class="pre">osd_mkfs_options_xfs</span> <span class="pre">=</span> <span class="pre">-f</span> <span class="pre">-d</span> <span class="pre">agcount=24</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">osd_mount_options</span> <span class="pre">{fs-type}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Options used when mounting a Ceph Filestore OSD of type {fs-type}.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Default for xfs<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">rw,noatime,inode64</span></code></p>
+</dd>
+<dt class="field-even">Default for other file systems<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">rw,</span> <span class="pre">noatime</span></code></p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>For example::</dt><dd><p><code class="docutils literal notranslate"><span class="pre">osd_mount_options_xfs</span> <span class="pre">=</span> <span class="pre">rw,</span> <span class="pre">noatime,</span> <span class="pre">inode64,</span> <span class="pre">logbufs=8</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="journal-settings">
+<span id="index-3"></span><h2>Journal Settings<a class="headerlink" href="#journal-settings" title="Link to this heading"></a></h2>
+<p>This section applies only to the older Filestore OSD back end.  Since Luminous
+BlueStore has been default and preferred.</p>
+<p>By default, Ceph expects that you will provision a Ceph OSD Daemon’s journal at
+the following path, which is usually a symlink to a device or partition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/var/lib/ceph/osd/$cluster-$id/journal
+</pre></div>
+</div>
+<p>When using a single device type (for example, spinning drives), the journals
+should be <em>colocated</em>: the logical volume (or partition) should be in the same
+device as the <code class="docutils literal notranslate"><span class="pre">data</span></code> logical volume.</p>
+<p>When using a mix of fast (SSDs, NVMe) devices with slower ones (like spinning
+drives) it makes sense to place the journal on the faster device, while
+<code class="docutils literal notranslate"><span class="pre">data</span></code> occupies the slower device fully.</p>
+<p>The default <code class="docutils literal notranslate"><span class="pre">osd_journal_size</span></code> value is 5120 (5 gigabytes), but it can be
+larger, in which case it will need to be set in the <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file.
+A value of 10 gigabytes is common in practice:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">osd_journal_size</span> <span class="o">=</span> <span class="mi">10240</span>
+</pre></div>
+</div>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_journal">
+<span class="sig-name descname"><span class="pre">osd_journal</span></span><a class="headerlink" href="#confval-osd_journal" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The path to the OSD’s journal. This may be a path to a file or a block
+device (such as a partition of an SSD). If it is a file, you must
+create the directory to contain it. We recommend using a separate fast
+device when the <code class="docutils literal notranslate"><span class="pre">osd_data</span></code> drive is an HDD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/osd/$cluster-$id/journal</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_journal_size">
+<span class="sig-name descname"><span class="pre">osd_journal_size</span></span><a class="headerlink" href="#confval-osd_journal_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The size of the journal in megabytes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>See <a class="reference external" href="../journal-ref">Journal Config Reference</a> for additional details.</p>
+</section>
+<section id="monitor-osd-interaction">
+<h2>Monitor OSD Interaction<a class="headerlink" href="#monitor-osd-interaction" title="Link to this heading"></a></h2>
+<p>Ceph OSD Daemons check each other’s heartbeats and report to monitors
+periodically. Ceph can use default values in many cases. However, if your
+network has latency issues, you may need to adopt longer intervals. See
+<a class="reference external" href="../mon-osd-interaction">Configuring Monitor/OSD Interaction</a> for a detailed discussion of heartbeats.</p>
+</section>
+<section id="data-placement">
+<h2>Data Placement<a class="headerlink" href="#data-placement" title="Link to this heading"></a></h2>
+<p>See <a class="reference external" href="../pool-pg-config-ref">Pool &amp; PG Config Reference</a> for details.</p>
+</section>
+<section id="scrubbing">
+<span id="rados-config-scrubbing"></span><span id="index-4"></span><h2>Scrubbing<a class="headerlink" href="#scrubbing" title="Link to this heading"></a></h2>
+<p>One way that Ceph ensures data integrity is by “scrubbing” placement groups.
+Ceph scrubbing is analogous to <code class="docutils literal notranslate"><span class="pre">fsck</span></code> on the object storage layer. Ceph
+generates a catalog of all objects in each placement group and compares each
+primary object to its replicas, ensuring that no objects are missing or
+mismatched. Light scrubbing checks the object size and attributes, and is
+usually done daily. Deep scrubbing reads the data and uses checksums to ensure
+data integrity, and is usually done weekly. The frequencies of both light
+scrubbing and deep scrubbing are determined by the cluster’s configuration,
+which is fully under your control and subject to the settings explained below
+in this section.</p>
+<p>Although scrubbing is important for maintaining data integrity, it can reduce
+the performance of the Ceph cluster. You can adjust the following settings to
+increase or decrease the frequency and depth of scrubbing operations.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_max_scrubs">
+<span class="sig-name descname"><span class="pre">osd_max_scrubs</span></span><a class="headerlink" href="#confval-osd_max_scrubs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of simultaneous scrub operations for a Ceph OSD
+Daemon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_begin_hour">
+<span class="sig-name descname"><span class="pre">osd_scrub_begin_hour</span></span><a class="headerlink" href="#confval-osd_scrub_begin_hour" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This restricts scrubbing to this hour of the day or later. Use
+<code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_hour</span> <span class="pre">=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">osd_scrub_end_hour</span> <span class="pre">=</span> <span class="pre">0</span></code> to allow
+scrubbing the entire day.  Along with <code class="docutils literal notranslate"><span class="pre">osd_scrub_end_hour</span></code> they
+define a time window, only in which will periodic scrubs be initiated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">23]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_scrub_end_hour"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_end_hour</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_end_hour">
+<span class="sig-name descname"><span class="pre">osd_scrub_end_hour</span></span><a class="headerlink" href="#confval-osd_scrub_end_hour" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This restricts scrubbing to the hours earlier than this. Use
+<code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_hour</span> <span class="pre">=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">osd_scrub_end_hour</span> <span class="pre">=</span> <span class="pre">0</span></code> to allow
+scrubbing for the entire day.  Along with <code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_hour</span></code>,
+they define a time window, only in which can periodic scrubs be
+automatically initiated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">23]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_scrub_begin_hour"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_begin_hour</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_begin_week_day">
+<span class="sig-name descname"><span class="pre">osd_scrub_begin_week_day</span></span><a class="headerlink" href="#confval-osd_scrub_begin_week_day" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This restricts scrubbing to this day of the week or later. 0  =
+Sunday, 1 = Monday, etc. Use <code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_week_day</span> <span class="pre">=</span> <span class="pre">0</span></code> and
+<code class="docutils literal notranslate"><span class="pre">osd_scrub_end_week_day</span> <span class="pre">=</span> <span class="pre">0</span></code> to allow scrubbing for the entire week.
+Along with <code class="docutils literal notranslate"><span class="pre">osd_scrub_end_week_day</span></code>, they define a time window in
+which periodic scrubs can be automatically initiated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">6]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_scrub_end_week_day"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_end_week_day</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_end_week_day">
+<span class="sig-name descname"><span class="pre">osd_scrub_end_week_day</span></span><a class="headerlink" href="#confval-osd_scrub_end_week_day" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This restricts scrubbing to days of the week earlier than this. 0 =
+Sunday, 1 = Monday, etc.  Use <code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_week_day</span> <span class="pre">=</span> <span class="pre">0</span></code> and
+<code class="docutils literal notranslate"><span class="pre">osd_scrub_end_week_day</span> <span class="pre">=</span> <span class="pre">0</span></code> to allow scrubbing for the entire week.
+Along with <code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_week_day</span></code>, they define a time window, in
+which periodic scrubs can be automatically initiated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">6]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_scrub_begin_week_day"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_begin_week_day</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_during_recovery">
+<span class="sig-name descname"><span class="pre">osd_scrub_during_recovery</span></span><a class="headerlink" href="#confval-osd_scrub_during_recovery" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Allow scrub during recovery. Setting this to <code class="docutils literal notranslate"><span class="pre">false</span></code> will disable
+scheduling new scrub (and deep--scrub) while there is active recovery.
+Already running scrubs will be continued. This might be useful to
+reduce load on busy clusters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_load_threshold">
+<span class="sig-name descname"><span class="pre">osd_scrub_load_threshold</span></span><a class="headerlink" href="#confval-osd_scrub_load_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The normalized maximum load. Ceph will not initiate periodic (regular)
+scrubs when the system load (as defined by <code class="docutils literal notranslate"><span class="pre">getloadavg()</span> <span class="pre">/</span> <span class="pre">number</span> <span class="pre">of</span>
+<span class="pre">online</span> <span class="pre">CPUs</span></code>) is higher than this number. The default is set high
+enough to allow periodic scrubbing under most load conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_min_interval">
+<span class="sig-name descname"><span class="pre">osd_scrub_min_interval</span></span><a class="headerlink" href="#confval-osd_scrub_min_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The desired interval in seconds between scrubs of a specific PG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">day</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_scrub_max_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_max_interval</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_max_interval">
+<span class="sig-name descname"><span class="pre">osd_scrub_max_interval</span></span><a class="headerlink" href="#confval-osd_scrub_max_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum interval in seconds for scrubbing each PG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">7</span> <span class="pre">days</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_scrub_min_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_min_interval</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_chunk_min">
+<span class="sig-name descname"><span class="pre">osd_scrub_chunk_min</span></span><a class="headerlink" href="#confval-osd_scrub_chunk_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimal number of object store chunks to scrub during single
+operation. Ceph blocks writes to single chunk during scrub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_scrub_chunk_max"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_chunk_max</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_shallow_scrub_chunk_min">
+<span class="sig-name descname"><span class="pre">osd_shallow_scrub_chunk_min</span></span><a class="headerlink" href="#confval-osd_shallow_scrub_chunk_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum number of object store chunks to scrub during single
+operation. Not applicable to deep scrubs. Ceph blocks writes to single
+chunk during scrub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_shallow_scrub_chunk_max"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_shallow_scrub_chunk_max</span></code></a>, <a class="reference internal" href="#confval-osd_scrub_chunk_min"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_chunk_min</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_chunk_max">
+<span class="sig-name descname"><span class="pre">osd_scrub_chunk_max</span></span><a class="headerlink" href="#confval-osd_scrub_chunk_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of objects to deep-scrub during single internal
+scrub operation. Large values would improve scrubbing performance but
+may adversely affect client operations’ latency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">15</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_scrub_chunk_min"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_chunk_min</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_shallow_scrub_chunk_max">
+<span class="sig-name descname"><span class="pre">osd_shallow_scrub_chunk_max</span></span><a class="headerlink" href="#confval-osd_shallow_scrub_chunk_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of object store chunks to scrub during single
+operation. Not applicable to deep scrubs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_shallow_scrub_chunk_min"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_shallow_scrub_chunk_min</span></code></a>, <a class="reference internal" href="#confval-osd_scrub_chunk_max"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_chunk_max</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_sleep">
+<span class="sig-name descname"><span class="pre">osd_scrub_sleep</span></span><a class="headerlink" href="#confval-osd_scrub_sleep" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Sleep time in seconds before scrubbing the next group of objects (the
+next chunk). Increasing this value will slow down the overall rate of
+scrubbing, reducing scrub impact on client operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_deep_scrub_interval">
+<span class="sig-name descname"><span class="pre">osd_deep_scrub_interval</span></span><a class="headerlink" href="#confval-osd_deep_scrub_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The interval for “deep” scrubbing (fully reading all data).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">7</span> <span class="pre">days</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_interval_randomize_ratio">
+<span class="sig-name descname"><span class="pre">osd_scrub_interval_randomize_ratio</span></span><a class="headerlink" href="#confval-osd_scrub_interval_randomize_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Add a random delay to <code class="docutils literal notranslate"><span class="pre">osd_scrub_min_interval</span></code> when scheduling the
+next scrub job for a PG. The delay is a random value less than
+<code class="docutils literal notranslate"><span class="pre">osd_scrub_min_interval</span></code> * <code class="docutils literal notranslate"><span class="pre">osd_scrub_interval_randomized_ratio</span></code>.
+The default setting spreads scrubs throughout the allowed time window
+of <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">1.5]</span></code> * <code class="docutils literal notranslate"><span class="pre">osd_scrub_min_interval</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_scrub_min_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_min_interval</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_deep_scrub_stride">
+<span class="sig-name descname"><span class="pre">osd_deep_scrub_stride</span></span><a class="headerlink" href="#confval-osd_deep_scrub_stride" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Read size when doing a deep scrub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">512Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_auto_repair">
+<span class="sig-name descname"><span class="pre">osd_scrub_auto_repair</span></span><a class="headerlink" href="#confval-osd_scrub_auto_repair" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Setting this to <code class="docutils literal notranslate"><span class="pre">true</span></code> will enable automatic PG repair when errors
+are found by scrubs or deep-scrubs.  However, if more than
+<code class="docutils literal notranslate"><span class="pre">osd_scrub_auto_repair_num_errors</span></code> errors are found a repair is NOT
+performed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_auto_repair_num_errors">
+<span class="sig-name descname"><span class="pre">osd_scrub_auto_repair_num_errors</span></span><a class="headerlink" href="#confval-osd_scrub_auto_repair_num_errors" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Auto repair will not occur if more than this many errors are found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_scrub_auto_repair"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_scrub_auto_repair</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="operations">
+<span id="index-5"></span><h2>Operations<a class="headerlink" href="#operations" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_num_shards">
+<span class="sig-name descname"><span class="pre">osd_op_num_shards</span></span><a class="headerlink" href="#confval-osd_op_num_shards" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of shards allocated for a given OSD. Each shard has its own
+processing queue. PGs on the OSD are distributed evenly in the shard.
+This setting overrides _ssd and _hdd if non-zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_num_shards_hdd">
+<span class="sig-name descname"><span class="pre">osd_op_num_shards_hdd</span></span><a class="headerlink" href="#confval-osd_op_num_shards_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>the number of shards allocated for a given OSD (for rotational media).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_num_shards"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_shards</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_num_shards_ssd">
+<span class="sig-name descname"><span class="pre">osd_op_num_shards_ssd</span></span><a class="headerlink" href="#confval-osd_op_num_shards_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>the number of shards allocated for a given OSD (for solid state
+media).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">8</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_num_shards"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_shards</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_num_threads_per_shard">
+<span class="sig-name descname"><span class="pre">osd_op_num_threads_per_shard</span></span><a class="headerlink" href="#confval-osd_op_num_threads_per_shard" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of worker threads spawned per OSD shard for a given OSD.
+Each worker thread when operational processes items in the shard
+queue. This setting overrides _ssd and _hdd if non-zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_num_threads_per_shard_hdd">
+<span class="sig-name descname"><span class="pre">osd_op_num_threads_per_shard_hdd</span></span><a class="headerlink" href="#confval-osd_op_num_threads_per_shard_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of worker threads spawned per OSD shard for a given OSD
+(for rotational media).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_num_threads_per_shard"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_threads_per_shard</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_num_threads_per_shard_ssd">
+<span class="sig-name descname"><span class="pre">osd_op_num_threads_per_shard_ssd</span></span><a class="headerlink" href="#confval-osd_op_num_threads_per_shard_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of worker threads spawned per OSD shard for a given OSD
+(for solid state media).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_num_threads_per_shard"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_threads_per_shard</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_queue">
+<span class="sig-name descname"><span class="pre">osd_op_queue</span></span><a class="headerlink" href="#confval-osd_op_queue" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This sets the type of queue to be used for prioritizing ops within
+each OSD. Both queues feature a strict sub-queue which is dequeued
+before the normal queue. The normal queue is different between
+implementations. The WeightedPriorityQueue (<code class="docutils literal notranslate"><span class="pre">wpq</span></code>) dequeues
+operations in relation to their priorities to prevent starvation of
+any queue. WPQ should help in cases where a few OSDs are more
+overloaded than others. The mClockQueue (<code class="docutils literal notranslate"><span class="pre">mclock_scheduler</span></code>)
+prioritizes operations based on which class they belong to (recovery,
+scrub, snaptrim, client op, osd subop). See <a class="reference internal" href="#qos-based-on-mclock">QoS Based on mClock</a>.
+Requires a restart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">mclock_scheduler</span></code></p>
+</dd>
+<dt class="field-odd">valid choices<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">wpq</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mclock_scheduler</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debug_random</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue_cut_off"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue_cut_off</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_queue_cut_off">
+<span class="sig-name descname"><span class="pre">osd_op_queue_cut_off</span></span><a class="headerlink" href="#confval-osd_op_queue_cut_off" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This selects which priority ops will be sent to the strict queue
+verses the normal queue. The <code class="docutils literal notranslate"><span class="pre">low</span></code> setting sends all replication ops
+and higher to the strict queue, while the <code class="docutils literal notranslate"><span class="pre">high</span></code> option sends only
+replication acknowledgment ops and higher to the strict queue. Setting
+this to <code class="docutils literal notranslate"><span class="pre">high</span></code> should help when a few OSDs in the cluster are very
+busy especially when combined with <code class="docutils literal notranslate"><span class="pre">wpq</span></code> in the <code class="docutils literal notranslate"><span class="pre">osd_op_queue</span></code>
+setting. OSDs that are very busy handling replication traffic could
+starve primary client traffic on these OSDs without these settings.
+Requires a restart.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">high</span></code></p>
+</dd>
+<dt class="field-odd">valid choices<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">low</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">high</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debug_random</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_client_op_priority">
+<span class="sig-name descname"><span class="pre">osd_client_op_priority</span></span><a class="headerlink" href="#confval-osd_client_op_priority" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The priority set for client operations.  This value is relative to
+that of <code class="docutils literal notranslate"><span class="pre">osd_recovery_op_priority</span></code> below.  The default strongly
+favors client ops over recovery.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">63</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_op_priority">
+<span class="sig-name descname"><span class="pre">osd_recovery_op_priority</span></span><a class="headerlink" href="#confval-osd_recovery_op_priority" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The priority of recovery operations vs client operations, if not
+specified by the pool’s <code class="docutils literal notranslate"><span class="pre">recovery_op_priority</span></code>.  The default value
+prioritizes client ops (see above) over recovery ops.  You may adjust
+the tradeoff of client impact against the time to restore cluster
+health by lowering this value for increased prioritization of client
+ops, or by increasing it to favor recovery.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_scrub_priority">
+<span class="sig-name descname"><span class="pre">osd_scrub_priority</span></span><a class="headerlink" href="#confval-osd_scrub_priority" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default work queue priority for scheduled scrubs when the pool
+doesn’t specify a value of <code class="docutils literal notranslate"><span class="pre">scrub_priority</span></code>.  This can be boosted to
+the value of <code class="docutils literal notranslate"><span class="pre">osd_client_op_priority</span></code> when scrubs are blocking
+client operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_requested_scrub_priority">
+<span class="sig-name descname"><span class="pre">osd_requested_scrub_priority</span></span><a class="headerlink" href="#confval-osd_requested_scrub_priority" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>deprecated.  Use <code class="docutils literal notranslate"><span class="pre">osd_scrub_priority</span></code> instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_snap_trim_priority">
+<span class="sig-name descname"><span class="pre">osd_snap_trim_priority</span></span><a class="headerlink" href="#confval-osd_snap_trim_priority" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The priority set for the snap trim work queue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_snap_trim_sleep">
+<span class="sig-name descname"><span class="pre">osd_snap_trim_sleep</span></span><a class="headerlink" href="#confval-osd_snap_trim_sleep" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next snap trim op. Increasing this
+value will slow down snap trimming. This option overrides backend
+specific variants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_snap_trim_sleep_hdd">
+<span class="sig-name descname"><span class="pre">osd_snap_trim_sleep_hdd</span></span><a class="headerlink" href="#confval-osd_snap_trim_sleep_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next snap trim for HDDs</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_snap_trim_sleep_ssd">
+<span class="sig-name descname"><span class="pre">osd_snap_trim_sleep_ssd</span></span><a class="headerlink" href="#confval-osd_snap_trim_sleep_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next snap trim op for SSD OSDs
+(including NVMe).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_snap_trim_sleep_hybrid">
+<span class="sig-name descname"><span class="pre">osd_snap_trim_sleep_hybrid</span></span><a class="headerlink" href="#confval-osd_snap_trim_sleep_hybrid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next snap trim op when OSD data is on
+an HDD and the OSD journal or WAL+DB is on an SSD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_thread_timeout">
+<span class="sig-name descname"><span class="pre">osd_op_thread_timeout</span></span><a class="headerlink" href="#confval-osd_op_thread_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The Ceph OSD Daemon operation thread timeout in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">15</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_complaint_time">
+<span class="sig-name descname"><span class="pre">osd_op_complaint_time</span></span><a class="headerlink" href="#confval-osd_op_complaint_time" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>An operation becomes complaint worthy after the specified number of
+seconds have elapsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_history_size">
+<span class="sig-name descname"><span class="pre">osd_op_history_size</span></span><a class="headerlink" href="#confval-osd_op_history_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of completed operations to track.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">20</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_history_duration">
+<span class="sig-name descname"><span class="pre">osd_op_history_duration</span></span><a class="headerlink" href="#confval-osd_op_history_duration" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The oldest completed operation to track.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">600</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_log_threshold">
+<span class="sig-name descname"><span class="pre">osd_op_log_threshold</span></span><a class="headerlink" href="#confval-osd_op_log_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How many operations logs to display at once.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_op_thread_suicide_timeout">
+<span class="sig-name descname"><span class="pre">osd_op_thread_suicide_timeout</span></span><a class="headerlink" href="#confval-osd_op_thread_suicide_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">150</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See <a class="reference external" href="https://old.ceph.com/planet/dealing-with-some-osd-timeouts/">https://old.ceph.com/planet/dealing-with-some-osd-timeouts/</a> for
+more on <code class="docutils literal notranslate"><span class="pre">osd_op_thread_suicide_timeout</span></code>. Be aware that this is a link to a
+reworking of a blog post from 2017, and that its conclusion will direct you
+back to this page “for more information”.</p>
+</div>
+<section id="qos-based-on-mclock">
+<span id="dmclock-qos"></span><h3>QoS Based on mClock<a class="headerlink" href="#qos-based-on-mclock" title="Link to this heading"></a></h3>
+<p>Ceph’s use of mClock is now more refined and can be used by following the
+steps as described in <a class="reference external" href="../mclock-config-ref">mClock Config Reference</a>.</p>
+<section id="core-concepts">
+<h4>Core Concepts<a class="headerlink" href="#core-concepts" title="Link to this heading"></a></h4>
+<p>Ceph’s QoS support is implemented using a queueing scheduler
+based on <a class="reference external" href="https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Gulati.pdf">the dmClock algorithm</a>. This algorithm allocates the I/O
+resources of the Ceph cluster in proportion to weights, and enforces
+the constraints of minimum reservation and maximum limitation, so that
+the services can compete for the resources fairly. Currently the
+<em>mclock_scheduler</em> operation queue divides Ceph services involving I/O
+resources into following buckets:</p>
+<ul class="simple">
+<li><p>client op: the iops issued by client</p></li>
+<li><p>osd subop: the iops issued by primary OSD</p></li>
+<li><p>snap trim: the snap trimming related requests</p></li>
+<li><p>pg recovery: the recovery related requests</p></li>
+<li><p>pg scrub: the scrub related requests</p></li>
+</ul>
+<p>And the resources are partitioned using following three sets of tags. In other
+words, the share of each type of service is controlled by three tags:</p>
+<ol class="arabic simple">
+<li><p>reservation: the minimum IOPS allocated for the service.</p></li>
+<li><p>limitation: the maximum IOPS allocated for the service.</p></li>
+<li><p>weight: the proportional share of capacity if extra capacity or system
+oversubscribed.</p></li>
+</ol>
+<p>In Ceph, operations are graded with “cost”. And the resources allocated
+for serving various services are consumed by these “costs”. So, for
+example, the more reservation a services has, the more resource it is
+guaranteed to possess, as long as it requires. Assuming there are 2
+services: recovery and client ops:</p>
+<ul class="simple">
+<li><p>recovery: (r:1, l:5, w:1)</p></li>
+<li><p>client ops: (r:2, l:0, w:9)</p></li>
+</ul>
+<p>The settings above ensure that the recovery won’t get more than 5
+requests per second serviced, even if it requires so (see CURRENT
+IMPLEMENTATION NOTE below), and no other services are competing with
+it. But if the clients start to issue large amount of I/O requests,
+neither will they exhaust all the I/O resources. 1 request per second
+is always allocated for recovery jobs as long as there are any such
+requests. So the recovery jobs won’t be starved even in a cluster with
+high load. And in the meantime, the client ops can enjoy a larger
+portion of the I/O resource, because its weight is “9”, while its
+competitor “1”. In the case of client ops, it is not clamped by the
+limit setting, so it can make use of all the resources if there is no
+recovery ongoing.</p>
+<p>CURRENT IMPLEMENTATION NOTE: the current implementation enforces the limit
+values. Therefore, if a service crosses the enforced limit, the op remains
+in the operation queue until the limit is restored.</p>
+</section>
+<section id="subtleties-of-mclock">
+<h4>Subtleties of mClock<a class="headerlink" href="#subtleties-of-mclock" title="Link to this heading"></a></h4>
+<p>The reservation and limit values have a unit of requests per
+second. The weight, however, does not technically have a unit and the
+weights are relative to one another. So if one class of requests has a
+weight of 1 and another a weight of 9, then the latter class of
+requests should get 9 executed at a 9 to 1 ratio as the first class.
+However that will only happen once the reservations are met and those
+values include the operations executed under the reservation phase.</p>
+<p>Even though the weights do not have units, one must be careful in
+choosing their values due how the algorithm assigns weight tags to
+requests. If the weight is <em>W</em>, then for a given class of requests,
+the next one that comes in will have a weight tag of <em>1/W</em> plus the
+previous weight tag or the current time, whichever is larger. That
+means if <em>W</em> is sufficiently large and therefore <em>1/W</em> is sufficiently
+small, the calculated tag may never be assigned as it will get a value
+of the current time. The ultimate lesson is that values for weight
+should not be too large. They should be under the number of requests
+one expects to be serviced each second.</p>
+</section>
+<section id="caveats">
+<span id="dmclock-qos-caveats"></span><h4>Caveats<a class="headerlink" href="#caveats" title="Link to this heading"></a></h4>
+<p>There are some factors that can reduce the impact of the mClock op
+queues within Ceph. First, requests to an OSD are sharded by their
+placement group identifier. Each shard has its own mClock queue and
+these queues neither interact nor share information among them. The
+number of shards can be controlled with the configuration options
+<a class="reference internal" href="#confval-osd_op_num_shards"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_shards</span></code></a>, <a class="reference internal" href="#confval-osd_op_num_shards_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_shards_hdd</span></code></a>, and
+<a class="reference internal" href="#confval-osd_op_num_shards_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_shards_ssd</span></code></a>. A lower number of shards will increase the
+impact of the mClock queues, but may have other deleterious effects.
+This is especially the case if there are insufficient shard worker
+threads. The number of shard worker threads can be controlled with the
+configuration options <a class="reference internal" href="#confval-osd_op_num_threads_per_shard"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_threads_per_shard</span></code></a>,
+<a class="reference internal" href="#confval-osd_op_num_threads_per_shard_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_threads_per_shard_hdd</span></code></a> and
+<a class="reference internal" href="#confval-osd_op_num_threads_per_shard_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_num_threads_per_shard_ssd</span></code></a>.</p>
+<p>Second, requests are transferred from the operation queue to the
+operation sequencer, in which they go through the phases of
+execution. The operation queue is where mClock resides and mClock
+determines the next op to transfer to the operation sequencer. The
+number of operations allowed in the operation sequencer is a complex
+issue. In general we want to keep enough operations in the sequencer
+so it’s always getting work done on some operations while it’s waiting
+for disk and network access to complete on other operations. On the
+other hand, once an operation is transferred to the operation
+sequencer, mClock no longer has control over it. Therefore to maximize
+the impact of mClock, we want to keep as few operations in the
+operation sequencer as possible. So we have an inherent tension.</p>
+<p>The configuration options that influence the number of operations in
+the operation sequencer are <a class="reference internal" href="bluestore-config-ref.html#confval-bluestore_throttle_bytes"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_bytes</span></code></a>,
+<a class="reference internal" href="bluestore-config-ref.html#confval-bluestore_throttle_deferred_bytes"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_deferred_bytes</span></code></a>,
+<a class="reference internal" href="bluestore-config-ref.html#confval-bluestore_throttle_cost_per_io"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_cost_per_io</span></code></a>,
+<a class="reference internal" href="bluestore-config-ref.html#confval-bluestore_throttle_cost_per_io_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_cost_per_io_hdd</span></code></a>, and
+<a class="reference internal" href="bluestore-config-ref.html#confval-bluestore_throttle_cost_per_io_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_cost_per_io_ssd</span></code></a>.</p>
+<p>A third factor that affects the impact of the mClock algorithm is that
+we’re using a distributed system, where requests are made to multiple
+OSDs and each OSD has (can have) multiple shards. Yet we’re currently
+using the mClock algorithm, which is not distributed (note: dmClock is
+the distributed version of mClock).</p>
+<p>Various organizations and individuals are currently experimenting with
+mClock as it exists in this code base along with their modifications
+to the code base. We hope you’ll share you’re experiences with your
+mClock and dmClock experiments on the <code class="docutils literal notranslate"><span class="pre">ceph-devel</span></code> mailing list.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_async_recovery_min_cost">
+<span class="sig-name descname"><span class="pre">osd_async_recovery_min_cost</span></span><a class="headerlink" href="#confval-osd_async_recovery_min_cost" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>A mixture measure of number of current log entries difference and
+historical missing objects,  above which we switch to use asynchronous
+recovery when appropriate</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_push_per_object_cost">
+<span class="sig-name descname"><span class="pre">osd_push_per_object_cost</span></span><a class="headerlink" href="#confval-osd_push_per_object_cost" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>the overhead for serving a push op</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1000B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_client_res">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_client_res</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_client_res" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO proportion reserved for each client (default).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1.0]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_client_wgt">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_client_wgt</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_client_wgt" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO share for each client (default) over reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_client_lim">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_client_lim</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_client_lim" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO limit for each client (default) over reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1.0]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_background_recovery_res">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_background_recovery_res</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_background_recovery_res" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO proportion reserved for background recovery (default).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1.0]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_background_recovery_wgt">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_background_recovery_wgt</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_background_recovery_wgt" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO share for each background recovery over reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_background_recovery_lim">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_background_recovery_lim</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_background_recovery_lim" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO limit for background recovery over reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1.0]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_background_best_effort_res">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_background_best_effort_res</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_background_best_effort_res" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO proportion reserved for background best_effort (default).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1.0]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_background_best_effort_wgt">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_background_best_effort_wgt</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_background_best_effort_wgt" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO share for each background best_effort over reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_mclock_scheduler_background_best_effort_lim">
+<span class="sig-name descname"><span class="pre">osd_mclock_scheduler_background_best_effort_lim</span></span><a class="headerlink" href="#confval-osd_mclock_scheduler_background_best_effort_lim" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>IO limit for background best_effort over reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1.0]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-osd_op_queue"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_op_queue</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+</section>
+<section id="backfilling">
+<span id="index-6"></span><h2>Backfilling<a class="headerlink" href="#backfilling" title="Link to this heading"></a></h2>
+<p>When you add or remove Ceph OSD Daemons to a cluster, CRUSH will
+rebalance the cluster by moving placement groups to or from Ceph OSDs
+to restore balanced utilization. The process of migrating placement groups and
+the objects they contain can reduce the cluster’s operational performance
+considerably. To maintain operational performance, Ceph performs this migration
+with ‘backfilling’, which allows Ceph to set backfill operations to a lower
+priority than requests to read or write data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some of these settings are automatically reset if the <a class="reference external" href="../mclock-config-ref.rst">mClock</a>
+scheduler is active, see <a class="reference external" href="../mclock-config-ref.rst#recovery-backfill-options">mClock backfill</a>.</p>
+</div>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_max_backfills">
+<span class="sig-name descname"><span class="pre">osd_max_backfills</span></span><a class="headerlink" href="#confval-osd_max_backfills" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of backfills allowed to or from a single OSD. Note
+that this is applied separately for read and write operations. This
+setting is automatically reset when the mClock scheduler is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="mclock-config-ref.html#confval-osd_mclock_override_recovery_settings"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_mclock_override_recovery_settings</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_backfill_scan_min">
+<span class="sig-name descname"><span class="pre">osd_backfill_scan_min</span></span><a class="headerlink" href="#confval-osd_backfill_scan_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum number of objects per backfill scan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_backfill_scan_max">
+<span class="sig-name descname"><span class="pre">osd_backfill_scan_max</span></span><a class="headerlink" href="#confval-osd_backfill_scan_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of objects per backfill scan.p</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">512</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_backfill_retry_interval">
+<span class="sig-name descname"><span class="pre">osd_backfill_retry_interval</span></span><a class="headerlink" href="#confval-osd_backfill_retry_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of seconds to wait before retrying backfill requests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="osd-map">
+<span id="index-7"></span><h2>OSD Map<a class="headerlink" href="#osd-map" title="Link to this heading"></a></h2>
+<p>OSD maps reflect the OSD daemons operating in the cluster. Over time, the
+number of map epochs increases. Ceph provides some settings to ensure that
+Ceph performs well as the OSD map grows larger.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_map_dedup">
+<span class="sig-name descname"><span class="pre">osd_map_dedup</span></span><a class="headerlink" href="#confval-osd_map_dedup" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enable removing duplicates in the OSD map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_map_cache_size">
+<span class="sig-name descname"><span class="pre">osd_map_cache_size</span></span><a class="headerlink" href="#confval-osd_map_cache_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of OSD maps to keep cached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_map_message_max">
+<span class="sig-name descname"><span class="pre">osd_map_message_max</span></span><a class="headerlink" href="#confval-osd_map_message_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum map entries allowed per MOSDMap message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">40</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="recovery">
+<span id="index-8"></span><h2>Recovery<a class="headerlink" href="#recovery" title="Link to this heading"></a></h2>
+<p>When the cluster starts or when a Ceph OSD Daemon crashes and restarts, the OSD
+begins peering with other Ceph OSD Daemons before writes can occur.  See
+<a class="reference external" href="../../operations/monitoring-osd-pg#peering">Monitoring OSDs and PGs</a> for details.</p>
+<p>If a Ceph OSD Daemon crashes and comes back online, usually it will be out of
+sync with other Ceph OSD Daemons containing more recent versions of objects in
+the placement groups. When this happens, the Ceph OSD Daemon goes into recovery
+mode and seeks to get the latest copy of the data and bring its map back up to
+date. Depending upon how long the Ceph OSD Daemon was down, the OSD’s objects
+and placement groups may be significantly out of date. Also, if a failure domain
+went down (e.g., a rack), more than one Ceph OSD Daemon may come back online at
+the same time. This can make the recovery process time consuming and resource
+intensive.</p>
+<p>To maintain operational performance, Ceph performs recovery with limitations on
+the number recovery requests, threads and object chunk sizes which allows Ceph
+perform well in a degraded state.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some of these settings are automatically reset if the <a class="reference external" href="../mclock-config-ref.rst">mClock</a>
+scheduler is active, see <a class="reference external" href="../mclock-config-ref.rst#recovery-backfill-options">mClock backfill</a>.</p>
+</div>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_delay_start">
+<span class="sig-name descname"><span class="pre">osd_recovery_delay_start</span></span><a class="headerlink" href="#confval-osd_recovery_delay_start" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>After peering completes, Ceph will delay for the specified number of
+seconds before starting to recover RADOS objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_max_active">
+<span class="sig-name descname"><span class="pre">osd_recovery_max_active</span></span><a class="headerlink" href="#confval-osd_recovery_max_active" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of active recovery requests per OSD at one time. More
+requests will accelerate recovery, but the requests places an
+increased load on the cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_max_active_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_max_active_hdd</span></code></a>, <a class="reference internal" href="#confval-osd_recovery_max_active_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_max_active_ssd</span></code></a>, <a class="reference internal" href="mclock-config-ref.html#confval-osd_mclock_override_recovery_settings"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_mclock_override_recovery_settings</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This value is only used if it is non-zero. Normally it is <code class="docutils literal notranslate"><span class="pre">0</span></code>, which means that the <code class="docutils literal notranslate"><span class="pre">hdd</span></code> or <code class="docutils literal notranslate"><span class="pre">ssd</span></code> values (below) are used, depending on the type of the primary device backing the OSD. This setting is automatically reset when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_max_active_hdd">
+<span class="sig-name descname"><span class="pre">osd_recovery_max_active_hdd</span></span><a class="headerlink" href="#confval-osd_recovery_max_active_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of active recovery requests per OSD at one time, if the
+primary device is rotational.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_max_active"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_max_active</span></code></a>, <a class="reference internal" href="#confval-osd_recovery_max_active_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_max_active_ssd</span></code></a>, <a class="reference internal" href="mclock-config-ref.html#confval-osd_mclock_override_recovery_settings"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_mclock_override_recovery_settings</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is automatically reset when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_max_active_ssd">
+<span class="sig-name descname"><span class="pre">osd_recovery_max_active_ssd</span></span><a class="headerlink" href="#confval-osd_recovery_max_active_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of active recovery requests per OSD at one time, if the
+primary device is non-rotational (i.e., an SSD).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_max_active"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_max_active</span></code></a>, <a class="reference internal" href="#confval-osd_recovery_max_active_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_max_active_hdd</span></code></a>, <a class="reference internal" href="mclock-config-ref.html#confval-osd_mclock_override_recovery_settings"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_mclock_override_recovery_settings</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is automatically reset when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_max_chunk">
+<span class="sig-name descname"><span class="pre">osd_recovery_max_chunk</span></span><a class="headerlink" href="#confval-osd_recovery_max_chunk" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>the maximum total size of data chunks a recovery op can carry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">8Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_max_single_start">
+<span class="sig-name descname"><span class="pre">osd_recovery_max_single_start</span></span><a class="headerlink" href="#confval-osd_recovery_max_single_start" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of recovery operations per OSD that will be newly
+started when an OSD is recovering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recover_clone_overlap">
+<span class="sig-name descname"><span class="pre">osd_recover_clone_overlap</span></span><a class="headerlink" href="#confval-osd_recover_clone_overlap" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Preserves clone overlap during recovery. Should always be set to
+<code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep</span></span><a class="headerlink" href="#confval-osd_recovery_sleep" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next recovery or backfill op.
+Increasing this value will slow down recovery operation while client
+operations will be less impacted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_hdd">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_hdd</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next recovery or backfill op for HDDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.1</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_ssd">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_ssd</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next recovery or backfill op for
+SSDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_sleep"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_sleep</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_hybrid">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_hybrid</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_hybrid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next recovery or backfill op when
+OSD data is on HDD and OSD journal / WAL+DB is on SSD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.025</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_sleep"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_sleep</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_degraded">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_degraded</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_degraded" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next recovery or backfill op when
+PGs are degraded. Increasing this value will slow down recovery ops
+while client ops will be less impacted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_degraded_hdd">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_degraded_hdd</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_degraded_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next recovery or backfill op for HDDs
+when PGs are degraded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_degraded_ssd">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_degraded_ssd</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_degraded_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next recovery or backfill op for
+SSDs when PGs are degraded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_sleep_degraded"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_sleep_degraded</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_sleep_degraded_hybrid">
+<span class="sig-name descname"><span class="pre">osd_recovery_sleep_degraded_hybrid</span></span><a class="headerlink" href="#confval-osd_recovery_sleep_degraded_hybrid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next recovery or backfill op when
+PGs are degraded and OSD data is on HDD and OSD journal / WAL+DB is on
+SSD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.025</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-osd_recovery_sleep_degraded"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_recovery_sleep_degraded</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_recovery_priority">
+<span class="sig-name descname"><span class="pre">osd_recovery_priority</span></span><a class="headerlink" href="#confval-osd_recovery_priority" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default priority set for recovery work queue.  Not related to a
+pool’s <code class="docutils literal notranslate"><span class="pre">recovery_priority</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="tiering">
+<h2>Tiering<a class="headerlink" href="#tiering" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_agent_max_ops">
+<span class="sig-name descname"><span class="pre">osd_agent_max_ops</span></span><a class="headerlink" href="#confval-osd_agent_max_ops" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of simultaneous flushing ops per tiering agent in
+the high speed mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_agent_max_low_ops">
+<span class="sig-name descname"><span class="pre">osd_agent_max_low_ops</span></span><a class="headerlink" href="#confval-osd_agent_max_low_ops" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of simultaneous flushing ops per tiering agent in
+the low speed mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>See <a class="reference external" href="../../operations/pools#cache-target-dirty-high-ratio">cache target dirty high ratio</a> for when the tiering agent flushes dirty
+objects within the high speed mode.</p>
+</section>
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_default_notify_timeout">
+<span class="sig-name descname"><span class="pre">osd_default_notify_timeout</span></span><a class="headerlink" href="#confval-osd_default_notify_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The OSD default notification timeout (in seconds).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_check_for_log_corruption">
+<span class="sig-name descname"><span class="pre">osd_check_for_log_corruption</span></span><a class="headerlink" href="#confval-osd_check_for_log_corruption" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Check log files for corruption. Can be computationally expensive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_delete_sleep">
+<span class="sig-name descname"><span class="pre">osd_delete_sleep</span></span><a class="headerlink" href="#confval-osd_delete_sleep" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before the next removal transaction. This
+throttles the PG deletion process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_delete_sleep_hdd">
+<span class="sig-name descname"><span class="pre">osd_delete_sleep_hdd</span></span><a class="headerlink" href="#confval-osd_delete_sleep_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next removal transaction for HDDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_delete_sleep_ssd">
+<span class="sig-name descname"><span class="pre">osd_delete_sleep_ssd</span></span><a class="headerlink" href="#confval-osd_delete_sleep_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next removal transaction for SSDs</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_delete_sleep_hybrid">
+<span class="sig-name descname"><span class="pre">osd_delete_sleep_hybrid</span></span><a class="headerlink" href="#confval-osd_delete_sleep_hybrid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Time in seconds to sleep before next removal transaction when OSD data
+is on HDD and OSD journal or WAL+DB is on SSD</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This setting is ignored when the mClock scheduler is used.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_command_max_records">
+<span class="sig-name descname"><span class="pre">osd_command_max_records</span></span><a class="headerlink" href="#confval-osd_command_max_records" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Limits the number of lost objects to return.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">256</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_fast_fail_on_connection_refused">
+<span class="sig-name descname"><span class="pre">osd_fast_fail_on_connection_refused</span></span><a class="headerlink" href="#confval-osd_fast_fail_on_connection_refused" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>If this option is enabled, crashed OSDs are marked down immediately by
+connected peers and MONs (assuming that the crashed OSD host
+survives). Disable it to restore old behavior, at the expense of
+possible long I/O stalls when OSDs crash in the middle of I/O
+operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mon-osd-interaction.html" class="btn btn-neutral float-left" title="Configuring Monitor/OSD Interaction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mclock-config-ref.html" class="btn btn-neutral float-right" title="mClock Config Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lua Scripting &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="D3N RGW Data Cache" href="d3n_datacache.html" />
+    <link rel="prev" title="Ceph s3 select" href="s3select.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lua Scripting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#script-management-via-cli">Script Management via CLI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-management-via-cli">Package Management via CLI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#context-free-functions">Context Free Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#debug-log">Debug Log</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#request-fields">Request Fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request-functions">Request Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#operations-log">Operations Log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tracing">Tracing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#background-context">Background Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-context">Data Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#global-rgw-table">Global RGW Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#increment-decrement-functions">Increment/Decrement Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#lua-code-samples">Lua Code Samples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">Lua Scripting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/lua-scripting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="lua-scripting">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">Lua Scripting</a><a class="headerlink" href="#lua-scripting" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Pacific.</span></p>
+</div>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#lua-scripting" id="id1">Lua Scripting</a></p>
+<ul>
+<li><p><a class="reference internal" href="#script-management-via-cli" id="id2">Script Management via CLI</a></p></li>
+<li><p><a class="reference internal" href="#package-management-via-cli" id="id3">Package Management via CLI</a></p></li>
+<li><p><a class="reference internal" href="#context-free-functions" id="id4">Context Free Functions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#debug-log" id="id5">Debug Log</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#request-fields" id="id6">Request Fields</a></p></li>
+<li><p><a class="reference internal" href="#request-functions" id="id7">Request Functions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#operations-log" id="id8">Operations Log</a></p></li>
+<li><p><a class="reference internal" href="#tracing" id="id9">Tracing</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#background-context" id="id10">Background Context</a></p></li>
+<li><p><a class="reference internal" href="#data-context" id="id11">Data Context</a></p></li>
+<li><p><a class="reference internal" href="#global-rgw-table" id="id12">Global RGW Table</a></p>
+<ul>
+<li><p><a class="reference internal" href="#increment-decrement-functions" id="id13">Increment/Decrement Functions</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#lua-code-samples" id="id14">Lua Code Samples</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>This feature allows users to assign execution context to Lua scripts. The supported contexts are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">prerequest</span></code> which will execute a script before each operation is performed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">postrequest</span></code> which will execute after each operation is performed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">background</span></code> which will execute within a specified time interval</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getdata</span></code> which will execute on objects’ data when objects are downloaded</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">putdata</span></code> which will execute on objects’ data when objects are uploaded</p></li>
+</ul>
+</div></blockquote>
+<p>A request (pre or post) or data (get or put) context script may be constrained to operations belonging to a specific tenant’s users.
+The request context script can also access fields in the request and modify certain fields, as well as the <a class="reference internal" href="#global-rgw-table">Global RGW Table</a>.
+The data context script can access the content of the object as well as the request fields and the <a class="reference internal" href="#global-rgw-table">Global RGW Table</a>.
+All Lua language features can be used in all contexts.
+An execution of a script in a context can use up to 500K byte of memory. This include all libraries used by Lua, but not the memory which is managed by the RGW itself, and may be accessed from Lua.
+To change this default value, use the <code class="docutils literal notranslate"><span class="pre">rgw_lua_max_memory_per_state</span></code> configuration parameter. Note that the basic overhead of Lua with its standard libraries is ~32K bytes. To disable the limit, use zero.
+By default, the execution of a Lua script is limited to a maximum runtime of 1000 milliseconds. This limit can be changed using the <code class="docutils literal notranslate"><span class="pre">rgw_lua_max_runtime_per_state</span></code> configuration parameter. If a Lua script exceeds this runtime, it will be terminated. To disable the runtime limit, use zero.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Be cautious when modifying the memory limit. If the current memory usage exceeds the newly set limit, all previously stored data in the background state will be lost.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Disabling the runtime limit may result in unbounded script execution, which can lead to excessive resource consumption and potentially impact the RADOS Gateway’s availability.</p>
+</div>
+<p>By default, all Lua standard libraries are available in the script, however, in order to allow for additional Lua modules to be used in the script, we support adding packages to an allowlist:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Make sure that the <code class="docutils literal notranslate"><span class="pre">luarocks</span></code> package manager is installed on the host.</p></li>
+<li><p>Adding a Lua package to the allowlist, or removing a packge from it does not install or remove it. For the changes to take affect a “reload” command should be called.</p></li>
+<li><p>In addition all packages in the allowlist are being re-installed using the luarocks package manager on radosgw restart.</p></li>
+<li><p>To add a package that contains C source code that needs to be compiled, use the <code class="docutils literal notranslate"><span class="pre">--allow-compilation</span></code> flag. In this case a C compiler needs to be available on the host</p></li>
+<li><p>Lua packages are installed in, and used from, a directory local to the radosgw. Meaning that Lua packages in the allowlist are separated from any Lua packages available on the host.
+By default, this directory would be <code class="docutils literal notranslate"><span class="pre">/tmp/luarocks/&lt;entity</span> <span class="pre">name&gt;</span></code>. Its prefix part (<code class="docutils literal notranslate"><span class="pre">/tmp/luarocks/</span></code>) could be set to a different location via the <code class="docutils literal notranslate"><span class="pre">rgw_luarocks_location</span></code> configuration parameter.
+Note that this parameter should not be set to one of the default locations where luarocks install packages (e.g. <code class="docutils literal notranslate"><span class="pre">$HOME/.luarocks</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/lib64/lua</span></code>, <code class="docutils literal notranslate"><span class="pre">/usr/share/lua</span></code>).</p></li>
+</ul>
+</div></blockquote>
+<div class="toctree-wrapper compound">
+</div>
+<section id="script-management-via-cli">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Script Management via CLI</a><a class="headerlink" href="#script-management-via-cli" title="Link to this heading"></a></h2>
+<p>To upload a script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script put --infile={lua-file-path} --context={prerequest|postrequest|background|getdata|putdata} [--tenant={tenant-name}]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>When uploading a script with the <code class="docutils literal notranslate"><span class="pre">background</span></code> context, a tenant name should not be specified.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cephadm shell radosgw-admin script put --infile=/rootfs/{lua-file-path} --context={prerequest|postrequest|background|getdata|putdata} [--tenant={tenant-name}]</span>
+</pre></div>
+</div>
+<p>To print the content of the script to standard output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script get --context={preRequest|postRequest|background|getdata|putdata} [--tenant={tenant-name}]</span>
+</pre></div>
+</div>
+<p>To remove the script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script rm --context={preRequest|postRequest|background|getdata|putdata} [--tenant={tenant-name}]</span>
+</pre></div>
+</div>
+</section>
+<section id="package-management-via-cli">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Package Management via CLI</a><a class="headerlink" href="#package-management-via-cli" title="Link to this heading"></a></h2>
+<p>To add a package to the allowlist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package add --package={package name} [--allow-compilation]</span>
+</pre></div>
+</div>
+<p>To add a specific version of a package to the allowlist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package add --package=&#39;{package name} {package version}&#39; [--allow-compilation]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>When adding a different version of a package which already exists in the list, the newly
+added version will override the existing one.</p></li>
+<li><p>When adding a package without a version specified, the latest version of the package
+will be added.</p></li>
+</ul>
+<p>To remove a package from the allowlist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package rm --package={package name}</span>
+</pre></div>
+</div>
+<p>To remove a specific version of a package from the allowlist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package rm --package=&#39;{package name} {package version}&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>When removing a package without a version specified, any existing versions of the
+package will be removed.</p></li>
+</ul>
+<p>To print the list of packages in the allowlist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package list</span>
+</pre></div>
+</div>
+<p>To apply changes from the allowlist to all RGWs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package reload</span>
+</pre></div>
+</div>
+</section>
+<section id="context-free-functions">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Context Free Functions</a><a class="headerlink" href="#context-free-functions" title="Link to this heading"></a></h2>
+<section id="debug-log">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Debug Log</a><a class="headerlink" href="#debug-log" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">RGWDebugLog()</span></code> function accepts a string and prints it to the debug log with priority 20.
+Each log message is prefixed <code class="docutils literal notranslate"><span class="pre">Lua</span> <span class="pre">INFO:</span></code>. This function has no return value.</p>
+</section>
+</section>
+<section id="request-fields">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Request Fields</a><a class="headerlink" href="#request-fields" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This feature is experimental. Fields may be removed or renamed in the future.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Although Lua is a case-sensitive language, field names provided by the radosgw are case-insensitive. Function names remain case-sensitive.</p></li>
+<li><p>Fields marked “optional” can have a nil value.</p></li>
+<li><p>Fields marked as “iterable” can be used by the pairs() function and with the # length operator.</p></li>
+<li><p>All table fields can be used with the bracket operator <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code> fields are strings with the following format: <code class="docutils literal notranslate"><span class="pre">%Y-%m-%d</span> <span class="pre">%H:%M:%S</span></code>.</p></li>
+</ul>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Iterable</p></th>
+<th class="head"><p>Writeable</p></th>
+<th class="head"><p>Optional</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.RGWOp</span></code></p></td>
+<td><p>string</p></td>
+<td><p>radosgw operation</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.DecodedURI</span></code></p></td>
+<td><p>string</p></td>
+<td><p>decoded URI</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ContentLength</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>size of the request</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.GenericAttributes</span></code></p></td>
+<td><p>table</p></td>
+<td><p>string to string generic attributes map</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Response</span></code></p></td>
+<td><p>table</p></td>
+<td><p>response to the request</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Response.HTTPStatusCode</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>HTTP status code</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Response.HTTPStatus</span></code></p></td>
+<td><p>string</p></td>
+<td><p>HTTP status text</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Response.RGWCode</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>radosgw error code</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Response.Message</span></code></p></td>
+<td><p>string</p></td>
+<td><p>response message</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.SwiftAccountName</span></code></p></td>
+<td><p>string</p></td>
+<td><p>swift account name</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket</span></code></p></td>
+<td><p>table</p></td>
+<td><p>info on the bucket</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Tenant</span></code></p></td>
+<td><p>string</p></td>
+<td><p>tenant of the bucket</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>bucket name (writeable only in <code class="docutils literal notranslate"><span class="pre">prerequest</span></code> context)</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Marker</span></code></p></td>
+<td><p>string</p></td>
+<td><p>bucket marker (initial id)</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Id</span></code></p></td>
+<td><p>string</p></td>
+<td><p>bucket id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.ZoneGroupId</span></code></p></td>
+<td><p>string</p></td>
+<td><p>zone group of the bucket</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.CreationTime</span></code></p></td>
+<td><p>time</p></td>
+<td><p>creation time of the bucket</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.MTime</span></code></p></td>
+<td><p>time</p></td>
+<td><p>modification time of the bucket</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Quota</span></code></p></td>
+<td><p>table</p></td>
+<td><p>bucket quota</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Quota.MaxSize</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>bucket quota max size</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Quota.MaxObjects</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>bucket quota max number of objects</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Reques.Bucket.Quota.Enabled</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>bucket quota is enabled</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.Quota.Rounded</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>bucket quota is rounded to 4K</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.PlacementRule</span></code></p></td>
+<td><p>table</p></td>
+<td><p>bucket placement rule</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.PlacementRule.Name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>bucket placement rule name</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.PlacementRule.StorageClass</span></code></p></td>
+<td><p>string</p></td>
+<td><p>bucket placement rule storage class</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Bucket.User</span></code></p></td>
+<td><p>string</p></td>
+<td><p>owning user/account id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Object</span></code></p></td>
+<td><p>table</p></td>
+<td><p>info on the object</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Object.Name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>object name</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Object.Instance</span></code></p></td>
+<td><p>string</p></td>
+<td><p>object version</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Object.Id</span></code></p></td>
+<td><p>string</p></td>
+<td><p>object id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Object.Size</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>object size</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Object.MTime</span></code></p></td>
+<td><p>time</p></td>
+<td><p>object mtime</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.CopyFrom</span></code></p></td>
+<td><p>table</p></td>
+<td><p>information on copy operation</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.CopyFrom.Tenant</span></code></p></td>
+<td><p>string</p></td>
+<td><p>tenant of the object copied from</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.CopyFrom.Bucket</span></code></p></td>
+<td><p>string</p></td>
+<td><p>bucket of the object copied from</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.CopyFrom.Object</span></code></p></td>
+<td><p>table</p></td>
+<td><p>object copied from. See: <code class="docutils literal notranslate"><span class="pre">Request.Object</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ObjectOwner</span></code></p></td>
+<td><p>table</p></td>
+<td><p>object owner</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ObjectOwner.DisplayName</span></code></p></td>
+<td><p>string</p></td>
+<td><p>object owner display name</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ObjectOwner.User</span></code></p></td>
+<td><p>string</p></td>
+<td><p>owning user/account id. See: <code class="docutils literal notranslate"><span class="pre">Request.Bucket.User</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ZoneGroup.Name</span></code></p></td>
+<td><p>string</p></td>
+<td><p>name of zone group</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ZoneGroup.Endpoint</span></code></p></td>
+<td><p>string</p></td>
+<td><p>endpoint of zone group</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl</span></code></p></td>
+<td><p>table</p></td>
+<td><p>user ACL</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Owner</span></code></p></td>
+<td><p>table</p></td>
+<td><p>user ACL owner. See: <code class="docutils literal notranslate"><span class="pre">Request.ObjectOwner</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Grants</span></code></p></td>
+<td><p>table</p></td>
+<td><p>user ACL map of string to grant
+note: grants without an Id are not presented when iterated
+and only one of them can be accessed via brackets</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Grants[&quot;&lt;name&gt;&quot;]</span></code></p></td>
+<td><p>table</p></td>
+<td><p>user ACL grant</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Grants[&quot;&lt;name&gt;&quot;].Type</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>user ACL grant type</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Grants[&quot;&lt;name&gt;&quot;].User</span></code></p></td>
+<td><p>string</p></td>
+<td><p>user ACL grant user/account id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Grants[&quot;&lt;name&gt;&quot;].GroupType</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>user ACL grant group type</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserAcl.Grants[&quot;&lt;name&gt;&quot;].Referer</span></code></p></td>
+<td><p>string</p></td>
+<td><p>user ACL grant referer</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.BucketAcl</span></code></p></td>
+<td><p>table</p></td>
+<td><p>bucket ACL. See: <code class="docutils literal notranslate"><span class="pre">Request.UserAcl</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.ObjectAcl</span></code></p></td>
+<td><p>table</p></td>
+<td><p>object ACL. See: <code class="docutils literal notranslate"><span class="pre">Request.UserAcl</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Environment</span></code></p></td>
+<td><p>table</p></td>
+<td><p>string to string environment map</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Policy</span></code></p></td>
+<td><p>table</p></td>
+<td><p>policy</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Policy.Text</span></code></p></td>
+<td><p>string</p></td>
+<td><p>policy text</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Policy.Id</span></code></p></td>
+<td><p>string</p></td>
+<td><p>policy Id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Policy.Statements</span></code></p></td>
+<td><p>table</p></td>
+<td><p>list of string statements</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserPolicies</span></code></p></td>
+<td><p>table</p></td>
+<td><p>list of user policies</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.UserPolicies[&lt;index&gt;]</span></code></p></td>
+<td><p>table</p></td>
+<td><p>user policy. See: <code class="docutils literal notranslate"><span class="pre">Request.Policy</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.RGWId</span></code></p></td>
+<td><p>string</p></td>
+<td><p>radosgw host id: <code class="docutils literal notranslate"><span class="pre">&lt;host&gt;-&lt;zone&gt;-&lt;zonegroup&gt;</span></code></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP</span></code></p></td>
+<td><p>table</p></td>
+<td><p>HTTP header</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.Parameters</span></code></p></td>
+<td><p>table</p></td>
+<td><p>string to string parameter map</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.Resources</span></code></p></td>
+<td><p>table</p></td>
+<td><p>string to string resource map</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.Metadata</span></code></p></td>
+<td><p>table</p></td>
+<td><p>string to string metadata map</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.StorageClass</span></code></p></td>
+<td><p>string</p></td>
+<td><p>storage class</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.Host</span></code></p></td>
+<td><p>string</p></td>
+<td><p>host name</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.Method</span></code></p></td>
+<td><p>string</p></td>
+<td><p>HTTP method</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.URI</span></code></p></td>
+<td><p>string</p></td>
+<td><p>URI</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.QueryString</span></code></p></td>
+<td><p>string</p></td>
+<td><p>HTTP query string</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.HTTP.Domain</span></code></p></td>
+<td><p>string</p></td>
+<td><p>domain name</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Time</span></code></p></td>
+<td><p>time</p></td>
+<td><p>request time</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Dialect</span></code></p></td>
+<td><p>string</p></td>
+<td><p>“S3” or “Swift”</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Id</span></code></p></td>
+<td><p>string</p></td>
+<td><p>request Id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.TransactionId</span></code></p></td>
+<td><p>string</p></td>
+<td><p>transaction Id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Tags</span></code></p></td>
+<td><p>table</p></td>
+<td><p>object tags map</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.User</span></code></p></td>
+<td><p>table</p></td>
+<td><p>user that triggered the request</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.User.Tenant</span></code></p></td>
+<td><p>string</p></td>
+<td><p>triggering user tenant</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.User.Id</span></code></p></td>
+<td><p>string</p></td>
+<td><p>triggering user id</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Trace</span></code></p></td>
+<td><p>table</p></td>
+<td><p>info on trace</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Request.Trace.Enable</span></code></p></td>
+<td><p>boolean</p></td>
+<td><p>tracing is enabled</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="request-functions">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Request Functions</a><a class="headerlink" href="#request-functions" title="Link to this heading"></a></h2>
+<section id="operations-log">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Operations Log</a><a class="headerlink" href="#operations-log" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Request.Log()</span></code> function prints the requests into the operations log. This function has no parameters. It returns 0 for success and an error code if it fails.</p>
+</section>
+<section id="tracing">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Tracing</a><a class="headerlink" href="#tracing" title="Link to this heading"></a></h3>
+<p>Tracing functions can be used only in the <code class="docutils literal notranslate"><span class="pre">postrequest</span></code> context.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Request.Trace.SetAttribute(&lt;key&gt;,</span> <span class="pre">&lt;value&gt;)</span></code> - sets the attribute for the request’s trace.
+The function takes two arguments: the first is the <code class="docutils literal notranslate"><span class="pre">key</span></code>, which should be a string, and the second is the <code class="docutils literal notranslate"><span class="pre">value</span></code>, which can either be a string or a number (integer or double).
+You may then locate specific traces by using this attribute.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Request.Trace.AddEvent(&lt;name&gt;,</span> <span class="pre">&lt;attributes&gt;)</span></code> - adds an event to the first span of the request’s trace
+An event is defined by event name, event time, and zero or more event attributes.
+The function accepts one or two arguments: A string containing the event <code class="docutils literal notranslate"><span class="pre">name</span></code> should be the first argument, followed by the event <code class="docutils literal notranslate"><span class="pre">attributes</span></code>, which is optional for events without attributes.
+An event’s attributes must be a table of strings.</p></li>
+</ul>
+</section>
+</section>
+<section id="background-context">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Background Context</a><a class="headerlink" href="#background-context" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">background</span></code> context may be used for purposes that include analytics, monitoring, caching data for other context executions.
+- Background script execution default interval is 5 seconds.</p>
+</section>
+<section id="data-context">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Data Context</a><a class="headerlink" href="#data-context" title="Link to this heading"></a></h2>
+<p>Both <code class="docutils literal notranslate"><span class="pre">getdata</span></code> and <code class="docutils literal notranslate"><span class="pre">putdata</span></code> contexts have the following fields:
+- <code class="docutils literal notranslate"><span class="pre">Data</span></code> which is read-only and iterable (byte by byte). In case that an object is uploaded or retrieved in multiple chunks, the <code class="docutils literal notranslate"><span class="pre">Data</span></code> field will hold data of one chunk at a time.
+- <code class="docutils literal notranslate"><span class="pre">Offset</span></code> which is holding the offset of the chunk within the entire object.
+- The <code class="docutils literal notranslate"><span class="pre">Request</span></code> fields and the background <code class="docutils literal notranslate"><span class="pre">RGW</span></code> table are also available in these contexts.</p>
+</section>
+<section id="global-rgw-table">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Global RGW Table</a><a class="headerlink" href="#global-rgw-table" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">RGW</span></code> Lua table is accessible from all contexts and saves data written to it
+during execution so that it may be read and used later during other executions, from the same context of a different one.
+- Each RGW instance has its own private and ephemeral <code class="docutils literal notranslate"><span class="pre">RGW</span></code> Lua table that is lost when the daemon restarts. Note that <code class="docutils literal notranslate"><span class="pre">background</span></code> context scripts will run on every instance.
+- The maximum number of entries in the table is 100,000. Each entry has a string key a value with a combined length of no more than 1KB.
+A Lua script will abort with an error if the number of entries or entry size exceeds these limits.
+- The <code class="docutils literal notranslate"><span class="pre">RGW</span></code> Lua table uses string indices and can store values of type: string, integer, double and boolean</p>
+<section id="increment-decrement-functions">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Increment/Decrement Functions</a><a class="headerlink" href="#increment-decrement-functions" title="Link to this heading"></a></h3>
+<p>Since entries in the <code class="docutils literal notranslate"><span class="pre">RGW</span></code> table could be accessed from multiple places at the same time we need a way
+to atomically increment and decrement numeric values in it. For that the following functions should be used:
+- <code class="docutils literal notranslate"><span class="pre">RGW.increment(&lt;key&gt;,</span> <span class="pre">[value])</span></code> would increment the value of <code class="docutils literal notranslate"><span class="pre">key</span></code> by <code class="docutils literal notranslate"><span class="pre">value</span></code> if value is provided or by 1 if not
+- <code class="docutils literal notranslate"><span class="pre">RGW.decrement(&lt;key&gt;,</span> <span class="pre">[value])</span></code> would decrement the value of <code class="docutils literal notranslate"><span class="pre">key</span></code> by <code class="docutils literal notranslate"><span class="pre">value</span></code> if value is provided or by 1 if not
+- if the value of <code class="docutils literal notranslate"><span class="pre">key</span></code> is not numeric, the execution of the script would fail
+- if we try to increment or decrement by non-numeric values, the execution of the script would fail</p>
+</section>
+</section>
+<section id="lua-code-samples">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Lua Code Samples</a><a class="headerlink" href="#lua-code-samples" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Print information on source and destination objects in case of copy:</p></li>
+</ul>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span><span class="w"> </span><span class="nf">print_object</span><span class="p">(</span><span class="nv">object</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Name: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">object</span><span class="p">.</span><span class="py">Name</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Instance: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">object</span><span class="p">.</span><span class="py">Instance</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Id: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">object</span><span class="p">.</span><span class="py">Id</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Size: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">object</span><span class="p">.</span><span class="py">Size</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  MTime: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">object</span><span class="p">.</span><span class="py">MTime</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">CopyFrom</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Object</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">CopyFrom</span><span class="p">.</span><span class="py">Object</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;copy from object:&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">print_object</span><span class="p">(</span><span class="nv">Request</span><span class="p">.</span><span class="py">CopyFrom</span><span class="p">.</span><span class="py">Object</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;to object:&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">print_object</span><span class="p">(</span><span class="nv">Request</span><span class="p">.</span><span class="py">Object</span><span class="p">)</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Print ACLs via a “generic function”:</p></li>
+</ul>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span><span class="w"> </span><span class="nf">print_owner</span><span class="p">(</span><span class="nv">owner</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;Owner:&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Display Name: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">owner</span><span class="p">.</span><span class="py">DisplayName</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Id: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">owner</span><span class="p">.</span><span class="py">User</span><span class="p">.</span><span class="py">Id</span><span class="p">)</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  Tenant: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">owner</span><span class="p">.</span><span class="py">User</span><span class="p">.</span><span class="py">Tenant</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nf">print_acl</span><span class="p">(</span><span class="nv">acl_type</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">acl_type</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;ACL&quot;</span>
+<span class="w">  </span><span class="nv">acl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">[</span><span class="nv">index</span><span class="p">]</span>
+<span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">acl</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="nv">acl_type</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;ACL Owner&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="nf">print_owner</span><span class="p">(</span><span class="nv">acl</span><span class="p">.</span><span class="py">Owner</span><span class="p">)</span>
+<span class="w">    </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;  there are &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="o">#</span><span class="nv">acl</span><span class="p">.</span><span class="py">Grants</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; grant for owner&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="nv">v</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">acl</span><span class="p">.</span><span class="py">Grants</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">      </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;    Grant Key: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">k</span><span class="p">)</span>
+<span class="w">      </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;    Grant Type: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">Type</span><span class="p">)</span>
+<span class="w">      </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;    Grant Group Type: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">GroupType</span><span class="p">)</span>
+<span class="w">      </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;    Grant Referer: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">Referer</span><span class="p">)</span>
+<span class="w">      </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;    Grant User Tenant: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">User</span><span class="p">.</span><span class="py">Tenant</span><span class="p">)</span>
+<span class="w">      </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;    Grant User Id: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">v</span><span class="p">.</span><span class="py">User</span><span class="p">.</span><span class="py">Id</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="w">  </span><span class="kr">else</span>
+<span class="w">    </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;no &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">acl_type</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; ACL in request: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Id</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">end</span>
+<span class="kr">end</span>
+
+<span class="nf">print_acl</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">)</span>
+<span class="nf">print_acl</span><span class="p">(</span><span class="s2">&quot;Bucket&quot;</span><span class="p">)</span>
+<span class="nf">print_acl</span><span class="p">(</span><span class="s2">&quot;Object&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use of operations log only in case of errors:</p></li>
+</ul>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Response</span><span class="p">.</span><span class="py">HTTPStatusCode</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;request is bad, use ops log&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">rc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="nf">Log</span><span class="p">()</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;ops log return code: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">rc</span><span class="p">)</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Set values into the error message:</p></li>
+</ul>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Response</span><span class="p">.</span><span class="py">HTTPStatusCode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">500</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nv">Request</span><span class="p">.</span><span class="py">Response</span><span class="p">.</span><span class="py">Message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;Message&gt; something bad happened :-( &lt;/Message&gt;&quot;</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Add metadata to objects that was not originally sent by the client:</p></li>
+</ul>
+<p>In the <code class="docutils literal notranslate"><span class="pre">prerequest</span></code> context we should add:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">RGWOp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;put_obj&#39;</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nv">Request</span><span class="p">.</span><span class="py">HTTP</span><span class="p">.</span><span class="py">Metadata</span><span class="p">[</span><span class="s2">&quot;x-amz-meta-mydata&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;my value&quot;</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">postrequest</span></code> context we look at the metadata:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;number of metadata entries is: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="o">#</span><span class="nv">Request</span><span class="p">.</span><span class="py">HTTP</span><span class="p">.</span><span class="py">Metadata</span><span class="p">)</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">Request</span><span class="p">.</span><span class="py">HTTP</span><span class="p">.</span><span class="py">Metadata</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;key=&quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">k</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;, &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;value=&quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">v</span><span class="p">)</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use modules to create Unix socket based, JSON encoded, “access log”:</p></li>
+</ul>
+<p>First we should add the following packages to the allowlist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># radosgw-admin script-package add --package=lua-cjson --allow-compilation</span>
+<span class="c1"># radosgw-admin script-package add --package=luasocket --allow-compilation</span>
+</pre></div>
+</div>
+<p>Then, run a server to listen on the Unix socket. For example, use “netcat”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># rm -f /tmp/socket</span>
+<span class="c1"># nc -vklU /tmp/socket</span>
+</pre></div>
+</div>
+<p>And last, do a restart for the radosgw and upload the following script to the <code class="docutils literal notranslate"><span class="pre">postrequest</span></code> context:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">RGWOp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;get_obj&quot;</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;cjson&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">unix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">require</span><span class="p">(</span><span class="s2">&quot;socket.unix&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">assert</span><span class="p">(</span><span class="nf">unix</span><span class="p">())</span>
+<span class="w">  </span><span class="nv">E</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">  </span><span class="nv">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="nv">bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nv">Request</span><span class="p">.</span><span class="py">Bucket</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="p">(</span><span class="nv">Request</span><span class="p">.</span><span class="py">CopyFrom</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">E</span><span class="p">).</span><span class="nv">Bucket</span><span class="p">).</span><span class="nv">Name</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Time</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">operation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">RGWOp</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">http_status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Response</span><span class="p">.</span><span class="py">HTTPStatusCode</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">error_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Response</span><span class="p">.</span><span class="py">HTTPStatus</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">object_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Object</span><span class="p">.</span><span class="py">Size</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">trans_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">TransactionId</span><span class="p">}</span>
+
+<span class="w">  </span><span class="nb">assert</span><span class="p">(</span><span class="nv">s</span><span class="p">:</span><span class="nf">connect</span><span class="p">(</span><span class="s2">&quot;/tmp/socket&quot;</span><span class="p">))</span>
+<span class="w">  </span><span class="nb">assert</span><span class="p">(</span><span class="nv">s</span><span class="p">:</span><span class="nf">send</span><span class="p">(</span><span class="nv">json</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="nv">msg</span><span class="p">)..</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="w">  </span><span class="nb">assert</span><span class="p">(</span><span class="nv">s</span><span class="p">:</span><span class="nf">close</span><span class="p">())</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Trace only requests of specific bucket</p></li>
+</ul>
+<p>Tracing is disabled by default, so we should enable tracing for this specific bucket</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Bucket</span><span class="p">.</span><span class="py">Name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;my-bucket&quot;</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">Request</span><span class="p">.</span><span class="py">Trace</span><span class="p">.</span><span class="py">Enable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>If <a class="reference external" href="https://docs.ceph.com/en/latest/jaegertracing/#how-to-enable-tracing-in-ceph/">tracing is enabled</a> on the RGW, the value of Request.Trace.Enable is true, so we should disable tracing for all other requests that do not match the bucket name.
+In the <code class="docutils literal notranslate"><span class="pre">prerequest</span></code> context:</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">if</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Bucket</span><span class="p">.</span><span class="py">Name</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="s2">&quot;my-bucket&quot;</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">Request</span><span class="p">.</span><span class="py">Trace</span><span class="p">.</span><span class="py">Enable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="kr">end</span>
+</pre></div>
+</div>
+<p>Note that changing <code class="docutils literal notranslate"><span class="pre">Request.Trace.Enable</span></code> does not change the tracer’s state, but disables or enables the tracing for the request only.</p>
+<ul class="simple">
+<li><p>Add Information for requests traces</p></li>
+</ul>
+<p>in <code class="docutils literal notranslate"><span class="pre">postrequest</span></code> context, we can add attributes and events to the request’s trace.</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="nv">Request</span><span class="p">.</span><span class="py">Trace</span><span class="p">.</span><span class="nf">AddEvent</span><span class="p">(</span><span class="s2">&quot;lua script execution started&quot;</span><span class="p">)</span>
+
+<span class="nv">Request</span><span class="p">.</span><span class="py">Trace</span><span class="p">.</span><span class="nf">SetAttribute</span><span class="p">(</span><span class="s2">&quot;HTTPStatusCode&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Response</span><span class="p">.</span><span class="py">HTTPStatusCode</span><span class="p">)</span>
+
+<span class="nv">event_attrs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="nv">v</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">Request</span><span class="p">.</span><span class="py">GenericAttributes</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nv">event_attrs</span><span class="p">[</span><span class="nv">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">v</span>
+<span class="kr">end</span>
+
+<span class="nv">Request</span><span class="p">.</span><span class="py">Trace</span><span class="p">.</span><span class="nf">AddEvent</span><span class="p">(</span><span class="s2">&quot;second event&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">event_attrs</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The entropy value of an object could be used to detect whether the object is encrypted.
+The following script calculates the entropy and size of uploaded objects and print to debug log</p></li>
+</ul>
+<p>in the <code class="docutils literal notranslate"><span class="pre">putdata</span></code> context, add the following script</p>
+<div class="highlight-lua notranslate"><div class="highlight"><pre><span></span><span class="kr">function</span><span class="w"> </span><span class="nf">object_entropy</span><span class="p">()</span>
+<span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">byte_hist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">byte_hist_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">256</span>
+<span class="w">        </span><span class="kr">for</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="nv">byte_hist_size</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">                </span><span class="nv">byte_hist</span><span class="p">[</span><span class="nv">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">        </span><span class="kr">end</span>
+<span class="w">        </span><span class="kd">local</span><span class="w"> </span><span class="nv">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="w">        </span><span class="kr">for</span><span class="w"> </span><span class="nv">i</span><span class="p">,</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">Data</span><span class="p">)</span><span class="w">  </span><span class="kr">do</span>
+<span class="w">                </span><span class="kd">local</span><span class="w"> </span><span class="nv">byte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">c</span><span class="p">:</span><span class="nf">byte</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="nv">byte_hist</span><span class="p">[</span><span class="nv">byte</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">byte_hist</span><span class="p">[</span><span class="nv">byte</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                </span><span class="nv">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">total</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">        </span><span class="kr">end</span>
+
+<span class="w">        </span><span class="nv">entropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+
+<span class="w">        </span><span class="kr">for</span><span class="w"> </span><span class="nv">_</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">byte_hist</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">                </span><span class="kr">if</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">                        </span><span class="kd">local</span><span class="w"> </span><span class="nv">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nv">total</span>
+<span class="w">                        </span><span class="nv">entropy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">entropy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="nv">p</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">math.log</span><span class="p">(</span><span class="nv">p</span><span class="p">)</span><span class="o">/</span><span class="nb">math.log</span><span class="p">(</span><span class="nv">byte_hist_size</span><span class="p">))</span>
+<span class="w">                </span><span class="kr">end</span>
+<span class="w">        </span><span class="kr">end</span>
+
+<span class="w">        </span><span class="kr">return</span><span class="w"> </span><span class="nv">entropy</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">full_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Request</span><span class="p">.</span><span class="py">Bucket</span><span class="p">.</span><span class="py">Name</span><span class="o">..</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">..</span><span class="nv">Request</span><span class="p">.</span><span class="py">Object</span><span class="p">.</span><span class="py">Name</span>
+<span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;entropy of chunk of: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">full_name</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; at offset:&quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nv">Offset</span><span class="p">)</span><span class="w">  </span><span class="o">..</span><span class="w">  </span><span class="s2">&quot; is: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nb">tostring</span><span class="p">(</span><span class="nf">object_entropy</span><span class="p">()))</span>
+<span class="nf">RGWDebugLog</span><span class="p">(</span><span class="s2">&quot;payload size of chunk of: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">full_name</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; is: &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="o">#</span><span class="nv">Data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="s3select.html" class="btn btn-neutral float-left" title="Ceph s3 select" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="d3n_datacache.html" class="btn btn-neutral float-right" title="D3N RGW Data Cache" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

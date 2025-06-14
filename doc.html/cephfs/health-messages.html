@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CephFS health messages &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Upgrading the MDS Cluster" href="upgrading.html" />
+    <link rel="prev" title="CephFS Quotas" href="quota.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#administration">Administration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="createfs.html"> Create a CephFS file system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="administration.html"> Administrative commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multifs.html"> Creating Multiple File Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-remove-mds.html"> Provision/Add/Remove MDS(s)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#referring-to-mds-daemons">Referring to MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#managing-failover">Managing failover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-standby-replay">Configuring standby-replay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-mds-file-system-affinity">Configuring MDS file system affinity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-configuration.html"> MDS Cache Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds-config-ref.html"> MDS Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-mds.html"> Manual: ceph-mds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nfs.html"> Export over NFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-best-practices.html"> Application best practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs-volumes.html"> FS volume and subvolumes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quota.html"> CephFS Quotas</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Health messages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cluster-health-checks">Cluster health checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#daemon-reported-health-checks">Daemon-reported health checks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html">Upgrading the MDS Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#upgrading-pre-firefly-file-systems-past-jewel">Upgrading pre-Firefly file systems past Jewel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-top.html"> CephFS Top Utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snap-schedule.html"> Scheduled Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html"> CephFS Snapshot Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="purge-queue.html"> Purge Queue</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">CephFS health messages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/health-messages.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="cephfs-health-messages">
+<span id="id1"></span><h1>CephFS health messages<a class="headerlink" href="#cephfs-health-messages" title="Link to this heading"></a></h1>
+<section id="cluster-health-checks">
+<h2>Cluster health checks<a class="headerlink" href="#cluster-health-checks" title="Link to this heading"></a></h2>
+<p>The Ceph monitor daemons will generate health messages in response
+to certain states of the file system map structure (and the enclosed MDS maps).</p>
+<p>Message: mds rank(s) <em>ranks</em> have failed
+Description: One or more MDS ranks are not currently assigned to
+an MDS daemon; the cluster will not recover until a suitable replacement
+daemon starts.</p>
+<p>Message: mds rank(s) <em>ranks</em> are damaged
+Description: One or more MDS ranks has encountered severe damage to
+its stored metadata, and cannot start again until it is repaired.</p>
+<p>Message: mds cluster is degraded
+Description: One or more MDS ranks are not currently up and running, clients
+may pause metadata IO until this situation is resolved.  This includes
+ranks being failed or damaged, and additionally includes ranks
+which are running on an MDS but have not yet made it to the <em>active</em>
+state (e.g. ranks currently in <em>replay</em> state).</p>
+<p>Message: mds <em>names</em> are laggy
+Description: The named MDS daemons have failed to send beacon messages
+to the monitor for at least <code class="docutils literal notranslate"><span class="pre">mds_beacon_grace</span></code> (default 15s), while
+they are supposed to send beacon messages every <code class="docutils literal notranslate"><span class="pre">mds_beacon_interval</span></code>
+(default 4s).  The daemons may have crashed.  The Ceph monitor will
+automatically replace laggy daemons with standbys if any are available.</p>
+<p>Message: insufficient standby daemons available
+Description: One or more file systems are configured to have a certain number
+of standby daemons available (including daemons in standby-replay) but the
+cluster does not have enough standby daemons. The standby daemons not in replay
+count towards any file system (i.e. they may overlap). This warning can
+configured by setting <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">fs</span> <span class="pre">set</span> <span class="pre">&lt;fs&gt;</span> <span class="pre">standby_count_wanted</span> <span class="pre">&lt;count&gt;</span></code>.  Use
+zero for <code class="docutils literal notranslate"><span class="pre">count</span></code> to disable.</p>
+</section>
+<section id="daemon-reported-health-checks">
+<h2>Daemon-reported health checks<a class="headerlink" href="#daemon-reported-health-checks" title="Link to this heading"></a></h2>
+<p>MDS daemons can identify a variety of unwanted conditions, and
+indicate these to the operator in the output of <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">status</span></code>.
+These conditions have human readable messages, and additionally
+a unique code starting with <code class="docutils literal notranslate"><span class="pre">MDS_</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">health</span> <span class="pre">detail</span></code> shows the details of the conditions. Following
+is a typical health report from a cluster experiencing MDS related
+performance issues:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ceph<span class="w"> </span>health<span class="w"> </span>detail
+<span class="go">HEALTH_WARN 1 MDSs report slow metadata IOs; 1 MDSs report slow requests</span>
+<span class="go">MDS_SLOW_METADATA_IO 1 MDSs report slow metadata IOs</span>
+<span class="go">   mds.fs-01(mds.0): 3 slow metadata IOs are blocked &gt; 30 secs, oldest blocked for 51123 secs</span>
+<span class="go">MDS_SLOW_REQUEST 1 MDSs report slow requests</span>
+<span class="go">   mds.fs-01(mds.0): 5 slow requests are blocked &gt; 30 secs</span>
+</pre></div>
+</div>
+<p>Where, for instance, <code class="docutils literal notranslate"><span class="pre">MDS_SLOW_REQUEST</span></code> is the unique code representing the
+condition where requests are taking long time to complete. And the following
+description shows its severity and the MDS daemons which are serving these
+slow requests.</p>
+<p>This page lists the health checks raised by MDS daemons. For the checks from
+other daemons, please see <a class="reference internal" href="../rados/operations/health-checks.html#health-checks"><span class="std std-ref">Health checks</span></a>.</p>
+<section id="mds-trim">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_TRIM</span></code><a class="headerlink" href="#mds-trim" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Behind on trimming…”</p>
+</dd>
+<dt>Description</dt><dd><p>CephFS maintains a metadata journal that is divided into
+<em>log segments</em>.  The length of journal (in number of segments) is controlled
+by the setting <code class="docutils literal notranslate"><span class="pre">mds_log_max_segments</span></code>, and when the number of segments
+exceeds that setting the MDS starts writing back metadata so that it
+can remove (trim) the oldest segments.  If this writeback is happening
+too slowly, or a software bug is preventing trimming, then this health
+message may appear.  The threshold for this message to appear is controlled by
+the config option <code class="docutils literal notranslate"><span class="pre">mds_log_warn_factor</span></code>, the default is 2.0.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-health-client-late-release-mds-health-client-late-release-many">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_HEALTH_CLIENT_LATE_RELEASE</span></code>, <code class="docutils literal notranslate"><span class="pre">MDS_HEALTH_CLIENT_LATE_RELEASE_MANY</span></code><a class="headerlink" href="#mds-health-client-late-release-mds-health-client-late-release-many" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Client <em>name</em> failing to respond to capability release”</p>
+</dd>
+<dt>Description</dt><dd><p>CephFS clients are issued <em>capabilities</em> by the MDS, which
+are like locks.  Sometimes, for example when another client needs access,
+the MDS will request clients release their capabilities.  If the client
+is unresponsive or buggy, it might fail to do so promptly or fail to do
+so at all.  This message appears if a client has taken longer than
+<code class="docutils literal notranslate"><span class="pre">session_timeout</span></code> (default 60s) to comply.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-client-recall-mds-health-client-recall-many">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_CLIENT_RECALL</span></code>, <code class="docutils literal notranslate"><span class="pre">MDS_HEALTH_CLIENT_RECALL_MANY</span></code><a class="headerlink" href="#mds-client-recall-mds-health-client-recall-many" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Client <em>name</em> failing to respond to cache pressure”</p>
+</dd>
+<dt>Description</dt><dd><p>Clients maintain a metadata cache.  Items (such as inodes) in the
+client cache are also pinned in the MDS cache, so when the MDS needs to shrink
+its cache (to stay within <code class="docutils literal notranslate"><span class="pre">mds_cache_memory_limit</span></code>), it sends messages to
+clients to shrink their caches too.  If the client is unresponsive or buggy,
+this can prevent the MDS from properly staying within its cache limits and it
+may eventually run out of memory and crash.  This message appears if a client
+has failed to release more than
+<code class="docutils literal notranslate"><span class="pre">mds_recall_warning_threshold</span></code> capabilities (decaying with a half-life of
+<code class="docutils literal notranslate"><span class="pre">mds_recall_max_decay_rate</span></code>) within the last
+<code class="docutils literal notranslate"><span class="pre">mds_recall_warning_decay_rate</span></code> second.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-client-oldest-tid-mds-client-oldest-tid-many">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_CLIENT_OLDEST_TID</span></code>, <code class="docutils literal notranslate"><span class="pre">MDS_CLIENT_OLDEST_TID_MANY</span></code><a class="headerlink" href="#mds-client-oldest-tid-mds-client-oldest-tid-many" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Client <em>name</em> failing to advance its oldest client/flush tid”</p>
+</dd>
+<dt>Description</dt><dd><p>The CephFS client-MDS protocol uses a field called the
+<em>oldest tid</em> to inform the MDS of which client requests are fully
+complete and may therefore be forgotten about by the MDS.  If a buggy
+client is failing to advance this field, then the MDS may be prevented
+from properly cleaning up resources used by client requests.  This message
+appears if a client appears to have more than <code class="docutils literal notranslate"><span class="pre">max_completed_requests</span></code>
+(default 100000) requests that are complete on the MDS side but haven’t
+yet been accounted for in the client’s <em>oldest tid</em> value. The last tid
+used by the MDS to trim completed client requests (or flush) is included
+as part of <cite>session ls</cite> (or <cite>client ls</cite>) command as a debug aid.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-damage">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_DAMAGE</span></code><a class="headerlink" href="#mds-damage" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Metadata damage detected”</p>
+</dd>
+<dt>Description</dt><dd><p>Corrupt or missing metadata was encountered when reading
+from the metadata pool.  This message indicates that the damage was
+sufficiently isolated for the MDS to continue operating, although
+client accesses to the damaged subtree will return IO errors.  Use
+the <code class="docutils literal notranslate"><span class="pre">damage</span> <span class="pre">ls</span></code> admin socket command to get more detail on the damage.
+This message appears as soon as any damage is encountered.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-health-read-only">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_HEALTH_READ_ONLY</span></code><a class="headerlink" href="#mds-health-read-only" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“MDS in read-only mode”</p>
+</dd>
+<dt>Description</dt><dd><p>The MDS has gone into readonly mode and will return EROFS
+error codes to client operations that attempt to modify any metadata.  The
+MDS will go into readonly mode if it encounters a write error while
+writing to the metadata pool, or if forced to by an administrator using
+the <em>force_readonly</em> admin socket command.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-slow-request">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_SLOW_REQUEST</span></code><a class="headerlink" href="#mds-slow-request" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“<em>N</em> slow requests are blocked”</p>
+</dd>
+<dt>Description</dt><dd><p>One or more client requests have not been completed promptly,
+indicating that the MDS is either running very slowly, or that the RADOS
+cluster is not acknowledging journal writes promptly, or that there is a bug.
+Use the <code class="docutils literal notranslate"><span class="pre">ops</span></code> admin socket command to list outstanding metadata operations.
+This message appears if any client requests have taken longer than
+<code class="docutils literal notranslate"><span class="pre">mds_op_complaint_time</span></code> (default 30s).</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-cache-oversized">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_CACHE_OVERSIZED</span></code><a class="headerlink" href="#mds-cache-oversized" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Too many inodes in cache”</p>
+</dd>
+<dt>Description</dt><dd><p>The MDS is not succeeding in trimming its cache to comply with the
+limit set by the administrator.  If the MDS cache becomes too large, the daemon
+may exhaust available memory and crash.  By default, this message appears if
+the actual cache size (in memory) is at least 50% greater than
+<code class="docutils literal notranslate"><span class="pre">mds_cache_memory_limit</span></code> (default 4GB). Modify <code class="docutils literal notranslate"><span class="pre">mds_health_cache_threshold</span></code>
+to set the warning ratio.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="fs-with-failed-mds">
+<h3><code class="docutils literal notranslate"><span class="pre">FS_WITH_FAILED_MDS</span></code><a class="headerlink" href="#fs-with-failed-mds" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Some MDS ranks do not have standby replacements”</p>
+</dd>
+<dt>Description</dt><dd><p>Normally, a failed MDS rank will be replaced by a standby MDS. This situation
+is transient and is not considered critical. However, if there are no standby
+MDSs available to replace an active MDS rank, this health warning is generated.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-insufficient-standby">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_INSUFFICIENT_STANDBY</span></code><a class="headerlink" href="#mds-insufficient-standby" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Insufficient number of available standby(-replay) MDS daemons than configured”</p>
+</dd>
+<dt>Description</dt><dd><p>The minimum number of standby(-replay) MDS daemons can be configured by setting
+<code class="docutils literal notranslate"><span class="pre">standby_count_wanted</span></code> configuration variable. This health warning is generated
+when the configured value mismatches the number of standby(-replay) MDS daemons
+available.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="fs-degraded">
+<h3><code class="docutils literal notranslate"><span class="pre">FS_DEGRADED</span></code><a class="headerlink" href="#fs-degraded" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Some MDS ranks have been marked failed or damaged”</p>
+</dd>
+<dt>Description</dt><dd><p>When one or more MDS rank ends up in failed or damaged state due to
+an unrecoverable error. The file system may be partially or fully
+unavailable when one (or more) ranks are offline.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-up-less-than-max">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_UP_LESS_THAN_MAX</span></code><a class="headerlink" href="#mds-up-less-than-max" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Number of active ranks are less than configured number of maximum MDSs”</p>
+</dd>
+<dt>Description</dt><dd><p>The maximum number of MDS ranks can be configured by setting <code class="docutils literal notranslate"><span class="pre">max_mds</span></code>
+configuration variable. This health warning is generated when the number
+of MDS ranks falls below this configured value.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-all-down">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_ALL_DOWN</span></code><a class="headerlink" href="#mds-all-down" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“None of the MDS ranks are available (file system offline)”</p>
+</dd>
+<dt>Description</dt><dd><p>All MDS ranks are unavailable resulting in the file system to be completely
+offline.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-clients-laggy">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_CLIENTS_LAGGY</span></code><a class="headerlink" href="#mds-clients-laggy" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“Client <em>ID</em> is laggy; not evicted because some OSD(s) is/are laggy”</p>
+</dd>
+<dt>Description</dt><dd><p>If OSD(s) is laggy (due to certain conditions like network cut-off, etc)
+then it might make clients laggy(session might get idle or cannot flush
+dirty data for cap revokes). If <code class="docutils literal notranslate"><span class="pre">defer_client_eviction_on_laggy_osds</span></code> is
+set to true (default true), client eviction will not take place and thus
+this health warning will be generated.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-clients-broken-rootsquash">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_CLIENTS_BROKEN_ROOTSQUASH</span></code><a class="headerlink" href="#mds-clients-broken-rootsquash" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl>
+<dt>Message</dt><dd><p>“X client(s) with broken root_squash implementation (MDS_CLIENTS_BROKEN_ROOTSQUASH)”</p>
+</dd>
+<dt>Description</dt><dd><p>A bug was discovered in root_squash which would potentially lose changes made by a
+client restricted with root_squash caps. The fix required a change to the protocol
+and a client upgrade is required.</p>
+<p>This is a HEALTH_ERR warning because of the danger of inconsistency and lost
+data. It is recommended to either upgrade your clients, discontinue using
+root_squash in the interim, or silence the warning if desired.</p>
+<p>To evict and permanently block broken clients from connecting to the
+cluster, set the <code class="docutils literal notranslate"><span class="pre">required_client_feature</span></code> bit <code class="docutils literal notranslate"><span class="pre">client_mds_auth_caps</span></code>.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="mds-estimated-replay-time">
+<h3><code class="docutils literal notranslate"><span class="pre">MDS_ESTIMATED_REPLAY_TIME</span></code><a class="headerlink" href="#mds-estimated-replay-time" title="Link to this heading"></a></h3>
+<blockquote>
+<div><dl class="simple">
+<dt>Message</dt><dd><p>“HEALTH_WARN Replay: x% complete. Estimated time remaining <em>x</em> seconds</p>
+</dd>
+<dt>Description</dt><dd><p>When an MDS journal replay takes more than 30 seconds, this message indicates the estimated time to completion.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quota.html" class="btn btn-neutral float-left" title="CephFS Quotas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="upgrading.html" class="btn btn-neutral float-right" title="Upgrading the MDS Cluster" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

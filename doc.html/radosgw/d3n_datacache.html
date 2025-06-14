@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D3N RGW Data Cache &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cloud Transition" href="cloud-transition.html" />
+    <link rel="prev" title="Lua Scripting" href="lua-scripting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">D3N Data Cache</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#d3n-environment-setup">D3N Environment Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running">Running</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logs">Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#config-reference">Config Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">D3N RGW Data Cache</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/d3n_datacache.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="d3n-rgw-data-cache">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">D3N RGW Data Cache</a><a class="headerlink" href="#d3n-rgw-data-cache" title="Link to this heading"></a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#d3n-rgw-data-cache" id="id1">D3N RGW Data Cache</a></p>
+<ul>
+<li><p><a class="reference internal" href="#architecture" id="id2">Architecture</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id3">Implementation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#requirements" id="id4">Requirements</a></p></li>
+<li><p><a class="reference internal" href="#limitations" id="id5">Limitations</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#d3n-environment-setup" id="id6">D3N Environment Setup</a></p>
+<ul>
+<li><p><a class="reference internal" href="#running" id="id7">Running</a></p></li>
+<li><p><a class="reference internal" href="#logs" id="id8">Logs</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#config-reference" id="id9">Config Reference</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>Datacenter-Data-Delivery Network (D3N) uses high-speed storage such as NVMe flash or DRAM to cache
+datasets on the access side.
+Such caching allows big data jobs to use the compute and fast storage resources available on each
+RADOS Gateway (RGW) node at the edge.</p>
+<p>Many datacenters include low-cost, centralized storage repositories, called data lakes,
+to store and share terabyte and petabyte-scale datasets.
+By necessity most distributed big-data analytic clusters such as Hadoop and Spark must
+depend on accessing a centrally located data lake that is relatively far away.
+Even with a well-designed datacenter network, cluster-to-data lake bandwidth is typically much less
+than the bandwidth of a solid-state storage located at an edge node.</p>
+<div class="line-block">
+<div class="line">D3N improves the performance of big-data jobs running in analysis clusters by speeding up recurring reads from the data lake.</div>
+<div class="line">The RADOS Gateways act as cache servers for the back-end object store (OSDs), storing data locally for reuse.</div>
+</div>
+<section id="architecture">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Architecture</a><a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>D3N improves the performance of big-data jobs by speeding up repeatedly accessed dataset reads from the data lake.
+Cache servers are located in the datacenter on the access side of potential network and storage bottlenecks.
+D3Ns two-layer logical cache forms a traditional caching hierarchy <sup>*</sup>
+where caches nearer the client have the lowest access latency and overhead,
+while caches in higher levels in the hierarchy are slower (requiring multiple hops to access).
+The layer 1 cache server nearest to the client handles object requests by breaking them into blocks,
+returning any blocks which are cached locally, and forwarding missed requests to the block home location
+(as determined by consistent hashing) in the next layer.
+Cache misses are forwarded to successive logical caching layers until a miss at the top layer is resolved
+by a request to the data lake (RADOS)</p>
+<p><sup>*</sup> currently only layer 1 cache has been upstreamed.</p>
+<p>See <a class="reference external" href="https://massopen.cloud/research-and-development/cloud-research/d3n/">MOC D3N (Datacenter-scale Data Delivery Network)</a> and <a class="reference external" href="https://research.redhat.com/blog/research_project/d3n-multilayer-cache/">Red Hat Research D3N Cache for Data Centers</a>.</p>
+</section>
+<section id="implementation">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The D3N cache supports both the <cite>S3</cite> and <cite>Swift</cite> object storage interfaces.</p></li>
+<li><p>D3N currently caches only tail objects, because they are immutable (by default it is parts of objects that are larger than 4MB).
+(the NGINX <a class="reference external" href="../rgw-cache/">RGW Data cache and CDN</a> supports caching of all object sizes)</p></li>
+</ul>
+<section id="requirements">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>An SSD (<code class="docutils literal notranslate"><span class="pre">/dev/nvme</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/pmem</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/shm</span></code>) or similar block storage device, formatted
+(filesystems other than XFS were not tested) and mounted.
+It will be used as the cache backing store.
+(depending on device performance, multiple RGWs may share a single device but each requires
+a discrete directory on the device filesystem)</p></li>
+</ul>
+</section>
+<section id="limitations">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Limitations</a><a class="headerlink" href="#limitations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>D3N will not cache objects compressed by <a class="reference external" href="../compression/">Rados Gateway Compression</a> (OSD level compression is supported).</p></li>
+<li><p>D3N will not cache objects encrypted by <a class="reference external" href="../encryption/">Rados Gateway Encryption</a>.</p></li>
+<li><p>D3N will be disabled if the <code class="docutils literal notranslate"><span class="pre">rgw_max_chunk_size</span></code> config variable value differs from the <code class="docutils literal notranslate"><span class="pre">rgw_obj_stripe_size</span></code> config variable value.</p></li>
+</ul>
+</section>
+</section>
+<section id="d3n-environment-setup">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">D3N Environment Setup</a><a class="headerlink" href="#d3n-environment-setup" title="Link to this heading"></a></h2>
+<section id="running">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Running</a><a class="headerlink" href="#running" title="Link to this heading"></a></h3>
+<p>To enable D3N on existing RGWs the following configuration entries are required
+in the <a class="reference internal" href="../rados/configuration/ceph-conf.html#ceph-conf-database"><span class="std std-ref">Monitor configuration database</span></a>, for example for <code class="docutils literal notranslate"><span class="pre">client.rgw.8000</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>client.rgw.8000<span class="w"> </span>rgw_d3n_l1_local_datacache_enabled<span class="w"> </span><span class="nb">true</span></span>
+<span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>client.rgw.8000<span class="w"> </span>rgw_d3n_l1_datacache_persistent_path<span class="w"> </span>/mnt/nvme0/rgw_datacache/client.rgw.8000/</span>
+<span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>client.rgw.8000<span class="w"> </span>rgw_d3n_l1_datacache_size<span class="w"> </span><span class="m">10737418240</span></span>
+</pre></div></div><p>The above example assumes that the cache backing-store solid state device
+is mounted at <code class="docutils literal notranslate"><span class="pre">/mnt/nvme0</span></code> and has 10 GB of free space available for the cache.</p>
+<p>The directory must exist and be writable before starting the RGW daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir<span class="w"> </span>-p<span class="w"> </span>/mnt/nvme0/rgw_datacache/client.rgw.8000/</span>
+</pre></div></div><p>In containerized deployments the cache directory should be mounted as a volume:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extra_container_args</span><span class="p">:</span>
+  <span class="o">-</span> <span class="s2">&quot;-v&quot;</span>
+  <span class="o">-</span> <span class="s2">&quot;/mnt/nvme0/rgw_datacache/client.rgw.8000/:/mnt/nvme0/rgw_datacache/client.rgw.8000/&quot;</span>
+</pre></div>
+</div>
+<p>(Reference: <a class="reference external" href="../cephadm/services/#mounting-files-with-extra-container-arguments">Service Management - Mounting Files with Extra Container Arguments</a>)</p>
+<p>If another RADOS Gateway is co-located on the same host, configure its persistent
+path to a discrete directory, for example in the case of <code class="docutils literal notranslate"><span class="pre">client.rgw.8001</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>client.rgw.8001<span class="w"> </span>rgw_d3n_l1_datacache_persistent_path<span class="w"> </span>/mnt/nvme0/rgw_datacache/client.rgw.8001/</span>
+</pre></div></div><p>In a multiple co-located RADOS Gateways configuration consider assigning clients with different workloads
+to each RADOS Gateway without a balancer in order to avoid cached data duplication.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each time the RGW daemon is restarted the content of the cache directory is purged.</p>
+</div>
+</section>
+<section id="logs">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Logs</a><a class="headerlink" href="#logs" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>D3N related log lines in <code class="docutils literal notranslate"><span class="pre">radosgw.*.log</span></code> contain the string <code class="docutils literal notranslate"><span class="pre">d3n</span></code> (case insensitive).</p></li>
+<li><p>Low level D3N logs can be enabled by the <code class="docutils literal notranslate"><span class="pre">debug_rgw_datacache</span></code> subsystem (up to <code class="docutils literal notranslate"><span class="pre">debug_rgw_datacache=30</span></code>).</p></li>
+</ul>
+</section>
+</section>
+<section id="config-reference">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Config Reference</a><a class="headerlink" href="#config-reference" title="Link to this heading"></a></h2>
+<p>The following D3N related settings can be added to the Ceph configuration file
+(i.e., usually <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code>) under the <code class="docutils literal notranslate"><span class="pre">[client.rgw.{instance-name}]</span></code> section.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_d3n_l1_local_datacache_enabled">
+<span class="sig-name descname"><span class="pre">rgw_d3n_l1_local_datacache_enabled</span></span><a class="headerlink" href="#confval-rgw_d3n_l1_local_datacache_enabled" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enable datacenter-scale dataset delivery local cache</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_d3n_l1_datacache_persistent_path">
+<span class="sig-name descname"><span class="pre">rgw_d3n_l1_datacache_persistent_path</span></span><a class="headerlink" href="#confval-rgw_d3n_l1_datacache_persistent_path" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>path for the directory for storing the local cache objects data</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/tmp/rgw_datacache/</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_d3n_l1_datacache_size">
+<span class="sig-name descname"><span class="pre">rgw_d3n_l1_datacache_size</span></span><a class="headerlink" href="#confval-rgw_d3n_l1_datacache_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>datacache maximum size on disk in bytes</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1Gi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_d3n_l1_eviction_policy">
+<span class="sig-name descname"><span class="pre">rgw_d3n_l1_eviction_policy</span></span><a class="headerlink" href="#confval-rgw_d3n_l1_eviction_policy" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>select the d3n cache eviction policy</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">lru</span></code></p>
+</dd>
+<dt class="field-odd">valid choices<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lru</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lua-scripting.html" class="btn btn-neutral float-left" title="Lua Scripting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloud-transition.html" class="btn btn-neutral float-right" title="Cloud Transition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

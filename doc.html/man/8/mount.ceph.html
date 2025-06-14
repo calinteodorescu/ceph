@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mount.ceph -- mount a Ceph file system &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="mount.fuse.ceph -- mount ceph-fuse from /etc/fstab." href="mount.fuse.ceph.html" />
+    <link rel="prev" title="ceph-fuse -- FUSE-based client for ceph" href="ceph-fuse.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../cephfs/index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephfs/index.html#administration">Administration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../cephfs/index.html#mounting-cephfs">Mounting CephFS</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/client-config-ref.html"> Client Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/client-auth.html"> Client Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/mount-prerequisites.html"> Mount CephFS: Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/mount-using-kernel-driver.html"> Mount CephFS using Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/mount-using-fuse.html"> Mount CephFS using FUSE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/ceph-dokan.html"> Mount CephFS on Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-shell.html"> Use the CephFS Shell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../cephfs/kernel-features.html"> Supported Features of Kernel Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-fuse.html"> Manual: ceph-fuse</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Manual: mount.ceph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#availability">Availability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feature-availability">Feature Availability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mount.fuse.ceph.html"> Manual: mount.fuse.ceph</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephfs/index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephfs/index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephfs/index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephfs/index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../cephfs/index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">mount.ceph -- mount a Ceph file system</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/man/8/mount.ceph.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="mount-ceph-mount-a-ceph-file-system">
+<h1>mount.ceph -- mount a Ceph file system<a class="headerlink" href="#mount-ceph-mount-a-ceph-file-system" title="Link to this heading"></a></h1>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line"><strong>mount.ceph</strong> <em>name*&#64;*fsid</em>.*fs_name*=/[<em>subdir</em>] <em>dir</em> [-o <em>options</em> ]</div>
+</div>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p><strong>mount.ceph</strong> is a helper for mounting the Ceph file system on a Linux host.
+It serves to resolve monitor hostname(s) into IP addresses and read
+authentication keys from disk; the Linux kernel client component does most of
+the real work. To mount a Ceph file system use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">name</span><span class="o">@</span><span class="mi">07</span><span class="n">fe3187</span><span class="o">-</span><span class="mi">00</span><span class="n">d9</span><span class="o">-</span><span class="mi">42</span><span class="n">a3</span><span class="o">-</span><span class="mi">814</span><span class="n">b</span><span class="o">-</span><span class="mi">72</span><span class="n">a4d5e7d5be</span><span class="o">.</span><span class="n">fs_name</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">mon_addr</span><span class="o">=</span><span class="mf">1.2.3.4</span>
+</pre></div>
+</div>
+<p>where “name” is the RADOS client name (referred to hereafter as “RADOS user”,
+and meaning any individual or system actor such as an application).</p>
+<p>Mount helper can fill in the cluster FSID by reading the ceph configuration file.
+Its recommended to call the mount helper via mount(8) as per:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">ceph</span> <span class="n">name</span><span class="o">@.</span><span class="n">fs_name</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">mon_addr</span><span class="o">=</span><span class="mf">1.2.3.4</span>
+</pre></div>
+</div>
+<p>Note that the dot <code class="docutils literal notranslate"><span class="pre">.</span></code> still needs to be a part of the device string in this case.</p>
+<p>The first argument is the device part of the mount command. It includes the
+RADOS user for authentication, the file system name and a path within CephFS
+that will be mounted at the mount point.</p>
+<p>Monitor addresses can be passed using <code class="docutils literal notranslate"><span class="pre">mon_addr</span></code> mount option. Multiple monitor
+addresses can be passed by separating addresses with a slash (<cite>/</cite>). Only one
+monitor is needed to mount successfully; the client will learn about all monitors
+from any responsive monitor. However, it is a good idea to specify more than one
+in case the one happens to be down at the time of mount. Monitor addresses takes
+the form ip_address[:port]. If the port is not specified, the Ceph default of 6789
+is assumed.</p>
+<p>If monitor addresses are not specified, then <strong>mount.ceph</strong> will attempt to determine
+monitor addresses using local configuration files and/or DNS SRV records. In similar
+way, if authentication is enabled on Ceph cluster (which is done using CephX) and
+options <code class="docutils literal notranslate"><span class="pre">secret</span></code> and <code class="docutils literal notranslate"><span class="pre">secretfile</span></code> are not specified in the command, the mount
+helper will spawn a child process that will use the standard Ceph library routines
+to find a keyring and fetch the secret from it (including the monitor address and
+FSID if those not specified).</p>
+<p>A sub-directory of the file system can be mounted by specifying the (absolute)
+path to the sub-directory right after “=” in the device part of the mount command.</p>
+<p>Mount helper application conventions dictate that the first two options are
+device to be mounted and the mount point for that device. Options must be
+passed only after these fixed arguments.</p>
+</section>
+<section id="options">
+<h2>Options<a class="headerlink" href="#options" title="Link to this heading"></a></h2>
+<section id="basic">
+<h3>Basic<a class="headerlink" href="#basic" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt><strong class="command">conf</strong></dt><dd><p>Path to a ceph.conf file. This is used to initialize the Ceph context
+for autodiscovery of monitor addresses and auth secrets. The default is
+to use the standard search path for ceph.conf files.</p>
+</dd>
+<dt><strong class="command">mount_timeout</strong></dt><dd><p>int (seconds), Default: 60</p>
+</dd>
+<dt><strong class="command">ms_mode=&lt;legacy|crc|secure|prefer-crc|prefer-secure&gt;</strong></dt><dd><p>Set the connection mode that the client uses for transport. The available
+modes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">legacy</span></code>: use messenger v1 protocol to talk to the cluster</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crc</span></code>: use messenger v2, without on-the-wire encryption</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">secure</span></code>: use messenger v2, with on-the-wire encryption</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prefer-crc</span></code>: crc mode, if denied agree to secure mode</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prefer-secure</span></code>: secure mode, if denied agree to crc mode</p></li>
+</ul>
+</dd>
+<dt><strong class="command">mon_addr</strong></dt><dd><p>Monitor address of the cluster in the form of ip_address[:port]</p>
+</dd>
+<dt><strong class="command">fsid</strong></dt><dd><p>Cluster FSID. This can be found using <cite>ceph fsid</cite> command.</p>
+</dd>
+<dt><strong class="command">secret</strong></dt><dd><p>secret key for use with CephX. This option is insecure because it exposes
+the secret on the command line. To avoid this, use the secretfile option.</p>
+</dd>
+<dt><strong class="command">secretfile</strong></dt><dd><p>path to file containing the secret key to use with CephX</p>
+</dd>
+<dt><strong class="command">recover_session=&lt;no|clean&gt;</strong></dt><dd><p>Set auto reconnect mode in the case where the client is blocklisted. The
+available modes are <code class="docutils literal notranslate"><span class="pre">no</span></code> and <code class="docutils literal notranslate"><span class="pre">clean</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">no</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">no</span></code>: never attempt to reconnect when client detects that it has been
+blocklisted. Blocklisted clients will not attempt to reconnect and
+their operations will fail too.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clean</span></code>: client reconnects to the Ceph cluster automatically when it
+detects that it has been blocklisted. During reconnect, client drops
+dirty data/metadata, invalidates page caches and writable file handles.
+After reconnect, file locks become stale because the MDS loses track of
+them. If an inode contains any stale file locks, read/write on the inode
+is not allowed until applications release all stale file locks.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">command<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>fs=&lt;fs-name&gt;</cite>
+Specify the non-default file system to be mounted, when using the old syntax.</p>
+</dd>
+<dt class="field-even">command<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>mds_namespace=&lt;fs-name&gt;</cite>
+A synonym of “fs=” (Deprecated).</p>
+</dd>
+</dl>
+</section>
+<section id="advanced">
+<h3>Advanced<a class="headerlink" href="#advanced" title="Link to this heading"></a></h3>
+<dl>
+<dt><strong class="command">cap_release_safety</strong></dt><dd><p>int, Default: calculated</p>
+</dd>
+<dt><strong class="command">caps_wanted_delay_max</strong></dt><dd><p>int, cap release delay, Default: 60</p>
+</dd>
+<dt><strong class="command">caps_wanted_delay_min</strong></dt><dd><p>int, cap release delay, Default: 5</p>
+</dd>
+<dt><strong class="command">dirstat</strong></dt><dd><p>funky <cite>cat dirname</cite> for stats, Default: off</p>
+</dd>
+<dt><strong class="command">nodirstat</strong></dt><dd><p>no funky <cite>cat dirname</cite> for stats</p>
+</dd>
+<dt><strong class="command">ip</strong></dt><dd><p>my ip</p>
+</dd>
+<dt><strong class="command">noasyncreaddir</strong></dt><dd><p>no dcache readdir</p>
+</dd>
+<dt><strong class="command">nocrc</strong></dt><dd><p>no data crc on writes</p>
+</dd>
+<dt><strong class="command">noshare</strong></dt><dd><p>create a new client instance, instead of sharing an existing instance of
+a client mounting the same cluster</p>
+</dd>
+<dt><strong class="command">osdkeepalive</strong></dt><dd><p>int, Default: 5</p>
+</dd>
+<dt><strong class="command">osd_idle_ttl</strong></dt><dd><p>int (seconds), Default: 60</p>
+</dd>
+<dt><strong class="command">rasize</strong></dt><dd><p>int (bytes), max readahead. Default: 8388608 (8192*1024)</p>
+</dd>
+<dt><strong class="command">rbytes</strong></dt><dd><p>Report the recursive size of the directory contents for st_size on
+directories.  Default: off</p>
+</dd>
+<dt><strong class="command">norbytes</strong></dt><dd><p>Do not report the recursive size of the directory contents for
+st_size on directories.</p>
+</dd>
+<dt><strong class="command">readdir_max_bytes</strong></dt><dd><p>int, Default: 524288 (512*1024)</p>
+</dd>
+<dt><strong class="command">readdir_max_entries</strong></dt><dd><p>int, Default: 1024</p>
+</dd>
+<dt><strong class="command">rsize</strong></dt><dd><p>int (bytes), max read size. Default: 16777216 (16*1024*1024)</p>
+</dd>
+<dt><strong class="command">snapdirname</strong></dt><dd><p>string, set the name of the hidden snapdir. Default: .snap</p>
+</dd>
+<dt><strong class="command">write_congestion_kb</strong></dt><dd><p>int (kb), max writeback in flight. scale with available
+memory. Default: calculated from available memory</p>
+</dd>
+<dt><strong class="command">wsize</strong></dt><dd><p>int (bytes), max write size. Default: 16777216 (16*1024*1024) (writeback
+uses smaller of wsize and stripe unit)</p>
+</dd>
+<dt><strong class="command">wsync</strong></dt><dd><p>Execute all namespace operations synchronously. This ensures that the
+namespace operation will only complete after receiving a reply from
+the MDS.</p>
+</dd>
+<dt><strong class="command">nowsync</strong></dt><dd><p>Allow the client to do namespace operations asynchronously. When this
+option is enabled, a namespace operation may complete before the MDS
+replies, if it has sufficient capabilities to do so. This has been the
+default since kernel version 5.16.</p>
+</dd>
+<dt><strong class="command">crush_location=x</strong></dt><dd><p>Specify the location of the client in terms of CRUSH hierarchy (since 5.8).
+This is a set of key-value pairs separated from each other by ‘|’, with
+keys separated from values by ‘:’.  Note that ‘|’ may need to be quoted
+or escaped to avoid it being interpreted as a pipe by the shell. The key
+is the bucket type name (e.g. rack, datacenter or region with default
+bucket types) and the value is the bucket name. For example, to indicate
+that the client is local to rack “myrack”, data center “mydc” and region
+“myregion”:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crush_location</span><span class="o">=</span><span class="n">rack</span><span class="p">:</span><span class="n">myrack</span><span class="o">|</span><span class="n">datacenter</span><span class="p">:</span><span class="n">mydc</span><span class="o">|</span><span class="n">region</span><span class="p">:</span><span class="n">myregion</span>
+</pre></div>
+</div>
+<p>Each key-value pair stands on its own: “myrack” doesn’t need to reside in
+“mydc”, which in turn doesn’t need to reside in “myregion”.  The location
+is not a path to the root of the hierarchy but rather a set of nodes that
+are matched independently.  “Multipath” locations are supported, so it is
+possible to indicate locality for multiple parallel hierarchies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crush_location</span><span class="o">=</span><span class="n">rack</span><span class="p">:</span><span class="n">myrack1</span><span class="o">|</span><span class="n">rack</span><span class="p">:</span><span class="n">myrack2</span><span class="o">|</span><span class="n">datacenter</span><span class="p">:</span><span class="n">mydc</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong class="command">read_from_replica=&lt;no|balance|localize&gt;</strong></dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">no</span></code>: Disable replica reads, always pick the primary OSD (since 5.8, default).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">balance</span></code>: When a replicated pool receives a read request, pick a random
+OSD from the PG’s acting set to serve it (since 5.8).</p>
+<p>This mode is safe for general use only since Octopus (i.e. after “ceph osd
+require-osd-release octopus”). Otherwise it should be limited to read-only
+workloads such as snapshots.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">localize</span></code>: When a replicated pool receives a read request, pick the most
+local OSD to serve it (since 5.8). The locality metric is calculated against
+the location of the client given with crush_location; a match with the
+lowest-valued bucket type wins.  For example, an OSD in a matching rack
+is closer than an OSD in a matching data center, which in turn is closer
+than an OSD in a matching region.</p>
+<p>This mode is safe for general use only since Octopus (i.e. after “ceph osd
+require-osd-release octopus”).  Otherwise it should be limited to read-only
+workloads such as snapshots.</p>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>Mount the full file system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>Mount only part of the namespace/file system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span><span class="n">some</span><span class="o">/</span><span class="n">directory</span><span class="o">/</span><span class="ow">in</span><span class="o">/</span><span class="n">cephfs</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>Pass the monitor host’s IP address, optionally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">mon_addr</span><span class="o">=</span><span class="mf">192.168.0.1</span>
+</pre></div>
+</div>
+<p>Pass the port along with IP address if it’s running on a non-standard port:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">mon_addr</span><span class="o">=</span><span class="mf">192.168.0.1</span><span class="p">:</span><span class="mi">7000</span>
+</pre></div>
+</div>
+<p>If there are multiple monitors, pass each address separated by a <cite>/</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">mon_addr</span><span class="o">=</span><span class="mf">192.168.0.1</span><span class="o">/</span><span class="mf">192.168.0.2</span><span class="o">/</span><span class="mf">192.168.0.3</span>
+</pre></div>
+</div>
+<p>Pass secret key for CephX user optionally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">secret</span><span class="o">=</span><span class="n">AQATSKdNGBnwLhAAnNDKnH65FmVKpXZJVasUeQ</span><span class="o">==</span>
+</pre></div>
+</div>
+<p>Pass file containing secret key to avoid leaving secret key in shell’s command
+history:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">secretfile</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">fs_username</span><span class="o">.</span><span class="n">secret</span>
+</pre></div>
+</div>
+<p>If authentication is disabled on Ceph cluster, omit the credential related option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span><span class="o">.</span><span class="n">ceph</span> <span class="n">fs_user</span><span class="o">@.</span><span class="n">mycephfs2</span><span class="o">=/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+<p>To mount using the old syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">ceph</span> <span class="mf">192.168.0.1</span><span class="p">:</span><span class="o">/</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">mycephfs</span>
+</pre></div>
+</div>
+</section>
+<section id="availability">
+<h2>Availability<a class="headerlink" href="#availability" title="Link to this heading"></a></h2>
+<p><strong>mount.ceph</strong> is part of Ceph, a massively scalable, open-source, distributed
+storage system. Please refer to the Ceph documentation at <a class="reference external" href="https://docs.ceph.com">https://docs.ceph.com</a>
+for more information.</p>
+</section>
+<section id="feature-availability">
+<h2>Feature Availability<a class="headerlink" href="#feature-availability" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">recover_session=</span></code> option was added to mainline Linux kernels in v5.4.
+<code class="docutils literal notranslate"><span class="pre">wsync</span></code> and <code class="docutils literal notranslate"><span class="pre">nowsync</span></code> were added in v5.7.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="ceph-fuse.html"><span class="doc">ceph-fuse</span></a>(8),
+<a class="reference internal" href="ceph.html"><span class="doc">ceph</span></a>(8)</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ceph-fuse.html" class="btn btn-neutral float-left" title="ceph-fuse -- FUSE-based client for ceph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mount.fuse.ceph.html" class="btn btn-neutral float-right" title="mount.fuse.ceph -- mount ceph-fuse from /etc/fstab." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

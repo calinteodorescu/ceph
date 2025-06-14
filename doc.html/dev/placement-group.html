@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PG (Placement Group) notes &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer Guide (Quick)" href="quick_guide.html" />
+    <link rel="prev" title="Perf histograms" href="perf_histograms.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PG (Placement Group) notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mapping-algorithm-simplified">Mapping algorithm (simplified)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-visible-pg-states">User-visible PG States</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#omap-statistics">OMAP STATISTICS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">PG (Placement Group) notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/placement-group.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="pg-placement-group-notes">
+<h1>PG (Placement Group) notes<a class="headerlink" href="#pg-placement-group-notes" title="Link to this heading"></a></h1>
+<p>Miscellaneous copy-pastes from emails, when this gets cleaned up it
+should move out of /dev.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>PG = “placement group”. When placing data in the cluster, objects are
+mapped into PGs, and those PGs are mapped onto OSDs. We use the
+indirection so that we can group objects, which reduces the amount of
+per-object metadata we need to keep track of and processes we need to
+run (it would be prohibitively expensive to track eg the placement
+history on a per-object basis). Increasing the number of PGs can
+reduce the variance in per-OSD load across your cluster, but each PG
+requires a bit more CPU and memory on the OSDs that are storing it. We
+try and ballpark it at 100 PGs/OSD, although it can vary widely
+without ill effects depending on your cluster. You hit a bug in how we
+calculate the initial PG number from a cluster description.</p>
+<p>There are a couple of different categories of PGs; the 6 that exist
+(in the original emailer’s <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">-s</span></code> output) are “local” PGs which
+are tied to a specific OSD. However, those aren’t actually used in a
+standard Ceph configuration.</p>
+</section>
+<section id="mapping-algorithm-simplified">
+<h2>Mapping algorithm (simplified)<a class="headerlink" href="#mapping-algorithm-simplified" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">&gt; How does the Object-&gt;PG mapping look like, do you map more than one object on</div>
+<div class="line">&gt; one PG, or do you sometimes map an object to more than one PG? How about the</div>
+<div class="line">&gt; mapping of PGs to OSDs, does one PG belong to exactly one OSD?</div>
+<div class="line">&gt;</div>
+<div class="line">&gt; Does one PG represent a fixed amount of storage space?</div>
+</div>
+<p>Many objects map to one PG.</p>
+<p>Each object maps to exactly one PG.</p>
+<p>One PG maps to a single list of OSDs, where the first one in the list
+is the primary and the rest are replicas.</p>
+<p>Many PGs can map to one OSD.</p>
+<p>A PG represents nothing but a grouping of objects; you configure the
+number of PGs you want, number of OSDs * 100 is a good starting point
+, and all of your stored objects are pseudo-randomly evenly distributed
+to the PGs. So a PG explicitly does NOT represent a fixed amount of
+storage; it represents 1/pg_num’th of the storage you happen to have
+on your OSDs.</p>
+<p>Ignoring the finer points of CRUSH and custom placement, it goes
+something like this in pseudocode:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">locator</span> <span class="o">=</span> <span class="n">object_name</span>
+<span class="n">obj_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+<span class="n">pg</span> <span class="o">=</span> <span class="n">obj_hash</span> <span class="o">%</span> <span class="n">num_pg</span>
+<span class="n">OSDs_for_pg</span> <span class="o">=</span> <span class="n">crush</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span>  <span class="c1"># returns a list of OSDs</span>
+<span class="n">primary</span> <span class="o">=</span> <span class="n">osds_for_pg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">replicas</span> <span class="o">=</span> <span class="n">osds_for_pg</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+<p>If you want to understand the crush() part in the above, imagine a
+perfectly spherical datacenter in a vacuum ;) that is, if all OSDs
+have weight 1.0, and there is no topology to the data center (all OSDs
+are on the top level), and you use defaults, etc, it simplifies to
+consistent hashing; you can think of it as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">crush</span><span class="p">(</span><span class="n">pg</span><span class="p">):</span>
+   <span class="n">all_osds</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;osd.0&#39;</span><span class="p">,</span> <span class="s1">&#39;osd.1&#39;</span><span class="p">,</span> <span class="s1">&#39;osd.2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+   <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+   <span class="c1"># size is the number of copies; primary+replicas</span>
+   <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+       <span class="n">r</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">pg</span><span class="p">)</span>
+       <span class="n">chosen</span> <span class="o">=</span> <span class="n">all_osds</span><span class="p">[</span> <span class="n">r</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_osds</span><span class="p">)</span> <span class="p">]</span>
+       <span class="k">if</span> <span class="n">chosen</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+           <span class="c1"># OSD can be picked only once</span>
+           <span class="k">continue</span>
+       <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chosen</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+<section id="user-visible-pg-states">
+<h2>User-visible PG States<a class="headerlink" href="#user-visible-pg-states" title="Link to this heading"></a></h2>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>diagram of states and how they can overlap</p>
+</div>
+<dl class="simple">
+<dt><em>creating</em></dt><dd><p>the PG is still being created</p>
+</dd>
+<dt><em>active</em></dt><dd><p>requests to the PG will be processed</p>
+</dd>
+<dt><em>clean</em></dt><dd><p>all objects in the PG are replicated the correct number of times</p>
+</dd>
+<dt><em>down</em></dt><dd><p>a replica with necessary data is down, so the pg is offline</p>
+</dd>
+<dt><em>recovery_unfound</em></dt><dd><p>recovery could not finish because object(s) are unfound.</p>
+</dd>
+<dt><em>backfill_unfound</em></dt><dd><p>backfill could not finish because object(s) are unfound.</p>
+</dd>
+<dt><em>premerge</em></dt><dd><p>the PG is in a quiesced-IO state due to an impending PG merge.  That
+happens when pg_num_pending &lt; pg_num, and applies to the PGs with
+pg_num_pending &lt;= ps &lt; pg_num as well as the corresponding peer PG
+that it is merging with.</p>
+</dd>
+<dt><em>scrubbing</em></dt><dd><p>the PG is being checked for inconsistencies</p>
+</dd>
+<dt><em>degraded</em></dt><dd><p>some objects in the PG are not replicated enough times yet</p>
+</dd>
+<dt><em>inconsistent</em></dt><dd><p>replicas of the PG are not consistent (e.g. objects are
+the wrong size, objects are missing from one replica <em>after</em> recovery
+finished, etc.)</p>
+</dd>
+<dt><em>peering</em></dt><dd><p>the PG is undergoing the <a class="reference internal" href="peering.html"><span class="doc">Peering</span></a> process</p>
+</dd>
+<dt><em>repair</em></dt><dd><p>the PG is being checked and any inconsistencies found will be repaired (if possible)</p>
+</dd>
+<dt><em>recovering</em></dt><dd><p>objects are being migrated/synchronized with replicas</p>
+</dd>
+<dt><em>backfill_wait</em></dt><dd><p>the PG is waiting in line to start backfill</p>
+</dd>
+<dt><em>incomplete</em></dt><dd><p>a pg is missing a necessary period of history from its
+log.  If you see this state, report a bug, and try to start any
+failed OSDs that may contain the needed information.</p>
+</dd>
+<dt><em>stale</em></dt><dd><p>the PG is in an unknown state - the monitors have not received
+an update for it since the PG mapping changed.</p>
+</dd>
+<dt><em>remapped</em></dt><dd><p>the PG is temporarily mapped to a different set of OSDs from what
+CRUSH specified</p>
+</dd>
+<dt><em>deep</em></dt><dd><p>In conjunction with <em>scrubbing</em> the scrub is a deep scrub</p>
+</dd>
+<dt><em>backfilling</em></dt><dd><p>a special case of recovery, in which the entire contents of
+the PG are scanned and synchronized, instead of inferring what
+needs to be transferred from the PG logs of recent operations</p>
+</dd>
+<dt><em>backfill_toofull</em></dt><dd><p>backfill reservation rejected, OSD too full</p>
+</dd>
+<dt><em>recovery_wait</em></dt><dd><p>the PG is waiting for the local/remote recovery reservations</p>
+</dd>
+<dt><em>undersized</em></dt><dd><p>the PG can’t select enough OSDs given its size</p>
+</dd>
+<dt><em>activating</em></dt><dd><p>the PG is peered but not yet active</p>
+</dd>
+<dt><em>peered</em></dt><dd><p>the PG peered but can’t go active</p>
+</dd>
+<dt><em>snaptrim</em></dt><dd><p>the PG is trimming snaps</p>
+</dd>
+<dt><em>snaptrim_wait</em></dt><dd><p>the PG is queued to trim snaps</p>
+</dd>
+<dt><em>recovery_toofull</em></dt><dd><p>recovery reservation rejected, OSD too full</p>
+</dd>
+<dt><em>snaptrim_error</em></dt><dd><p>the PG could not complete snap trimming due to errors</p>
+</dd>
+<dt><em>forced_recovery</em></dt><dd><p>the PG has been marked for highest priority recovery</p>
+</dd>
+<dt><em>forced_backfill</em></dt><dd><p>the PG has been marked for highest priority backfill</p>
+</dd>
+<dt><em>failed_repair</em></dt><dd><p>an attempt to repair the PG has failed.  Manual intervention is required.</p>
+</dd>
+</dl>
+</section>
+<section id="omap-statistics">
+<h2>OMAP STATISTICS<a class="headerlink" href="#omap-statistics" title="Link to this heading"></a></h2>
+<p>Omap statistics are gathered during deep scrub and displayed in the output of
+the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">pg</span> <span class="n">dump</span>
+<span class="n">ceph</span> <span class="n">pg</span> <span class="n">dump</span> <span class="nb">all</span>
+<span class="n">ceph</span> <span class="n">pg</span> <span class="n">dump</span> <span class="n">summary</span>
+<span class="n">ceph</span> <span class="n">pg</span> <span class="n">dump</span> <span class="n">pgs</span>
+<span class="n">ceph</span> <span class="n">pg</span> <span class="n">dump</span> <span class="n">pools</span>
+<span class="n">ceph</span> <span class="n">pg</span> <span class="n">ls</span>
+</pre></div>
+</div>
+<p>As these statistics are not updated continuously they may be quite inaccurate in
+an environment where deep scrubs are run infrequently and/or there is a lot of
+omap activity. As such they should not be relied on for exact accuracy but
+rather used as a guide. Running a deep scrub and checking these statistics
+immediately afterwards should give a good indication of current omap usage.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="perf_histograms.html" class="btn btn-neutral float-left" title="Perf histograms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quick_guide.html" class="btn btn-neutral float-right" title="Developer Guide (Quick)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bucket Policies &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RGW Dynamic Bucket Index Resharding" href="dynamicresharding.html" />
+    <link rel="prev" title="Encryption" href="encryption.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bucket Policy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creation-and-removal">Creation and Removal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bucket-related-operations">Bucket Related Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#object-related-operations">Object Related Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#swift">Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">Bucket Policies</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/bucketpolicy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="bucket-policies">
+<h1>Bucket Policies<a class="headerlink" href="#bucket-policies" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Luminous.</span></p>
+</div>
+<p>The Ceph Object Gateway supports a subset of the Amazon S3 policy
+language applied to buckets.</p>
+<section id="creation-and-removal">
+<h2>Creation and Removal<a class="headerlink" href="#creation-and-removal" title="Link to this heading"></a></h2>
+<p>Bucket policies are managed through standard S3 operations rather than
+<code class="docutils literal notranslate"><span class="pre">radosgw-admin</span></code>.</p>
+<p>For example, one may use <code class="docutils literal notranslate"><span class="pre">s3cmd</span></code> to set or delete a policy thus:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat &gt; examplepol
+{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [{
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Principal&quot;: {&quot;AWS&quot;: [&quot;arn:aws:iam::usfolks:user/fred:subuser&quot;]},
+    &quot;Action&quot;: &quot;s3:PutObjectAcl&quot;,
+    &quot;Resource&quot;: [
+      &quot;arn:aws:s3:::happybucket/*&quot;
+    ]
+  }]
+}
+
+$ s3cmd setpolicy examplepol s3://happybucket
+$ s3cmd delpolicy s3://happybucket
+</pre></div>
+</div>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<p>Currently, we support only the following actions:</p>
+<ul class="simple">
+<li><p>s3:AbortMultipartUpload</p></li>
+<li><p>s3:CreateBucket</p></li>
+<li><p>s3:DeleteBucketPolicy</p></li>
+<li><p>s3:DeleteBucket</p></li>
+<li><p>s3:DeleteBucketWebsite</p></li>
+<li><p>s3:DeleteObject</p></li>
+<li><p>s3:DeleteObjectVersion</p></li>
+<li><p>s3:DeleteReplicationConfiguration</p></li>
+<li><p>s3:GetAccelerateConfiguration</p></li>
+<li><p>s3:GetBucketAcl</p></li>
+<li><p>s3:GetBucketCORS</p></li>
+<li><p>s3:GetBucketLocation</p></li>
+<li><p>s3:GetBucketLogging</p></li>
+<li><p>s3:GetBucketNotification</p></li>
+<li><p>s3:GetBucketPolicy</p></li>
+<li><p>s3:GetBucketRequestPayment</p></li>
+<li><p>s3:GetBucketTagging</p></li>
+<li><p>s3:GetBucketVersioning</p></li>
+<li><p>s3:GetBucketWebsite</p></li>
+<li><p>s3:GetLifecycleConfiguration</p></li>
+<li><p>s3:GetObjectAcl</p></li>
+<li><p>s3:GetObject</p></li>
+<li><p>s3:GetObjectTorrent</p></li>
+<li><p>s3:GetObjectVersionAcl</p></li>
+<li><p>s3:GetObjectVersion</p></li>
+<li><p>s3:GetObjectVersionTorrent</p></li>
+<li><p>s3:GetReplicationConfiguration</p></li>
+<li><p>s3:IPAddress</p></li>
+<li><p>s3:NotIpAddress</p></li>
+<li><p>s3:ListAllMyBuckets</p></li>
+<li><p>s3:ListBucketMultipartUploads</p></li>
+<li><p>s3:ListBucket</p></li>
+<li><p>s3:ListBucketVersions</p></li>
+<li><p>s3:ListMultipartUploadParts</p></li>
+<li><p>s3:PutAccelerateConfiguration</p></li>
+<li><p>s3:PutBucketAcl</p></li>
+<li><p>s3:PutBucketCORS</p></li>
+<li><p>s3:PutBucketLogging</p></li>
+<li><p>s3:PutBucketNotification</p></li>
+<li><p>s3:PutBucketPolicy</p></li>
+<li><p>s3:PutBucketRequestPayment</p></li>
+<li><p>s3:PutBucketTagging</p></li>
+<li><p>s3:PutBucketVersioning</p></li>
+<li><p>s3:PutBucketWebsite</p></li>
+<li><p>s3:PutLifecycleConfiguration</p></li>
+<li><p>s3:PutObjectAcl</p></li>
+<li><p>s3:PutObject</p></li>
+<li><p>s3:PutObjectVersionAcl</p></li>
+<li><p>s3:PutReplicationConfiguration</p></li>
+<li><p>s3:RestoreObject</p></li>
+</ul>
+<p>We do not yet support setting policies on users, groups, or roles.</p>
+<p>We use the RGW ‘tenant’ identifier in place of the Amazon twelve-digit
+account ID. In the future we may allow you to assign an account ID to
+a tenant, but for now if you want to use policies between AWS S3 and
+RGW S3 you will have to use the Amazon account ID as the tenant ID when
+creating users.</p>
+<p>Under AWS, all tenants share a single namespace. RGW gives every
+tenant its own namespace of buckets. There may be an option to enable
+an AWS-like ‘flat’ bucket namespace in future versions. At present, to
+access a bucket belonging to another tenant, address it as
+<code class="docutils literal notranslate"><span class="pre">tenant:bucket</span></code> in the S3 request.</p>
+<p>In AWS, a bucket policy can grant access to another account, and that
+account owner can then grant access to individual users with user
+permissions. Since we do not yet support user, role, and group
+permissions, account owners will currently need to grant access
+directly to individual users, and granting an entire account access to
+a bucket grants access to all users in that account.</p>
+<p>Bucket policies do not yet support string interpolation.</p>
+<p>For all requests, condition keys we support are:</p>
+<ul class="simple">
+<li><p>aws:CurrentTime</p></li>
+<li><p>aws:EpochTime</p></li>
+<li><p>aws:PrincipalType</p></li>
+<li><p>aws:Referer</p></li>
+<li><p>aws:SecureTransport</p></li>
+<li><p>aws:SourceIp</p></li>
+<li><p>aws:UserAgent</p></li>
+<li><p>aws:username</p></li>
+</ul>
+<p>We support certain S3 condition keys for bucket and object requests.</p>
+<p><em>Support for the following bucket-related operations was added in the Mimic
+release of Ceph.</em></p>
+<section id="bucket-related-operations">
+<h3>Bucket Related Operations<a class="headerlink" href="#bucket-related-operations" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Permission</p></td>
+<td><p>Condition Keys</p></td>
+<td><p>Comments</p></td>
+</tr>
+<tr class="row-even"><td><p>s3:createBucket</p></td>
+<td><p>s3:x-amz-acl
+s3:x-amz-grant-&lt;perm&gt;
+where perm is one of
+read/write/read-acp
+write-acp/
+full-control</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><p>s3:ListBucket &amp;</p>
+<p>s3:ListBucketVersions</p>
+</td>
+<td><p>s3:prefix</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:delimiter</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>s3:max-keys</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:PutBucketAcl</p></td>
+<td><p>s3:x-amz-acl
+s3:x-amz-grant-&lt;perm&gt;</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="object-related-operations">
+<span id="tag-policy"></span><h3>Object Related Operations<a class="headerlink" href="#object-related-operations" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Permission</p></td>
+<td><p>Condition Keys</p></td>
+<td><p>Comments</p></td>
+</tr>
+<tr class="row-even"><td rowspan="7"><p>s3:PutObject</p></td>
+<td><p>s3:x-amz-acl &amp; s3:x-amz-grant-&lt;perm&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>s3:x-amz-copy-source</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:x-amz-server-side-encryption</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>s3:x-amz-server-side-encryption-aws-kms-key-id</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:x-amz-server-side-encryption-customer-algorithm</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>s3:x-amz-metadata-directive</p></td>
+<td><p>PUT &amp; COPY to
+overwrite/preserve
+metadata in COPY
+requests</p></td>
+</tr>
+<tr class="row-even"><td><p>s3:RequestObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>s3:PutObjectAcl
+s3:PutObjectVersionAcl</p></td>
+<td><p>s3:x-amz-acl &amp; s3-amz-grant-&lt;perm&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:ExistingObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><p>s3:PutObjectTagging &amp;
+s3:PutObjectVersionTagging</p></td>
+<td><p>s3:RequestObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:ExistingObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>s3:GetObject &amp;
+s3:GetObjectVersion</p></td>
+<td><p>s3:ExistingObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:GetObjectAcl &amp;
+s3:GetObjectVersionAcl</p></td>
+<td><p>s3:ExistingObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>s3:GetObjectTagging &amp;
+s3:GetObjectVersionTagging</p></td>
+<td><p>s3:ExistingObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>s3:DeleteObjectTagging &amp;
+s3:DeleteObjectVersionTagging</p></td>
+<td><p>s3:ExistingObjectTag/&lt;tag-key&gt;</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>More may be supported soon as we integrate with the recently rewritten
+Authentication/Authorization subsystem.</p>
+</section>
+</section>
+<section id="swift">
+<h2>Swift<a class="headerlink" href="#swift" title="Link to this heading"></a></h2>
+<p>There is no way to set bucket policies under Swift, but bucket
+policies that have been set govern Swift as well as S3 operations.</p>
+<p>Swift credentials are matched against Principals specified in a policy
+in a way specific to whatever backend is being used.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="encryption.html" class="btn btn-neutral float-left" title="Encryption" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dynamicresharding.html" class="btn btn-neutral float-right" title="RGW Dynamic Bucket Index Resharding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

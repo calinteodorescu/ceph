@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RBD Exclusive Locks &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RBD Mirroring" href="rbd-mirroring.html" />
+    <link rel="prev" title="Snapshots" href="rbd-snapshot.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="rbd-operations.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbd-snapshot.html">Snapshots</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Exclusive Locking</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#blocklisting">Blocklisting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-mirroring.html">Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-live-migration.html">Live-Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-persistent-read-only-cache.html">Persistent Read-only Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-persistent-write-log-cache.html">Persistent Write Log Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-encryption.html">Encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-config-ref.html">Config Settings (librbd)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-replay.html">RBD Replay</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-integrations.html">Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="man/index.html">Manpages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="rbd-operations.html">Ceph Block Device Operations</a></li>
+      <li class="breadcrumb-item active">RBD Exclusive Locks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/rbd/rbd-exclusive-locks.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="rbd-exclusive-locks">
+<span id="id1"></span><h1>RBD Exclusive Locks<a class="headerlink" href="#rbd-exclusive-locks" title="Link to this heading"></a></h1>
+<p id="index-0">Exclusive locks are mechanisms designed to prevent multiple processes from
+accessing the same Rados Block Device (RBD) in an uncoordinated fashion.
+Exclusive locks are used heavily in virtualization (where they prevent VMs from
+clobbering each other’s writes) and in <a class="reference external" href="../rbd-mirroring">RBD mirroring</a> (where they are a
+prerequisite for journaling in journal-based mirroring and fast generation of
+incremental diffs in snapshot-based mirroring).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">exclusive-lock</span></code> feature is enabled on newly created images. This default
+can be overridden via the <code class="docutils literal notranslate"><span class="pre">rbd_default_features</span></code> configuration option or the
+<code class="docutils literal notranslate"><span class="pre">--image-feature</span></code> and <code class="docutils literal notranslate"><span class="pre">--image-shared</span></code> options for <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">create</span></code> command.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Many image features, including <code class="docutils literal notranslate"><span class="pre">object-map</span></code> and <code class="docutils literal notranslate"><span class="pre">fast-diff</span></code>, depend upon
+exclusive locking. Disabling the <code class="docutils literal notranslate"><span class="pre">exclusive-lock</span></code> feature will negatively
+affect the performance of some operations.</p>
+</div>
+<p>To maintain multi-client access, the <code class="docutils literal notranslate"><span class="pre">exclusive-lock</span></code> feature implements
+automatic cooperative lock transitions between clients. It ensures that only
+a single client can write to an RBD image at any given time and thus protects
+internal image structures such as the object map, the journal or the <a class="reference external" href="../rbd-persistent-write-log-cache">PWL
+cache</a> from concurrent modification.</p>
+<p>Exclusive locking is mostly transparent to the user:</p>
+<ul class="simple">
+<li><p>Whenever a client (a <code class="docutils literal notranslate"><span class="pre">librbd</span></code> process or, in case of a <code class="docutils literal notranslate"><span class="pre">krbd</span></code> client,
+a client node’s kernel) needs to handle a write to an RBD image on which
+exclusive locking has been enabled, it first acquires an exclusive lock on
+the image. If the lock is already held by some other client, that client is
+requested to release it.</p></li>
+<li><p>Whenever a client that holds an exclusive lock on an RBD image gets
+a request to release the lock, it stops handling writes, flushes its caches
+and releases the lock.</p></li>
+<li><p>Whenever a client that holds an exclusive lock on an RBD image terminates
+gracefully, the lock is also released gracefully.</p></li>
+<li><p>A graceful release of an exclusive lock on an RBD image (whether by request
+or due to client termination) enables another, subsequent, client to acquire
+the lock and start handling writes.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">exclusive-lock</span></code> feature does not prevent two or more
+concurrently running clients from opening the same RBD image and writing to
+it in turns (whether on the same node or not). In effect, their writes just
+get linearized as the lock is automatically transitioned back and forth in
+a cooperative fashion.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To disable automatic lock transitions between clients, the
+<code class="docutils literal notranslate"><span class="pre">RBD_LOCK_MODE_EXCLUSIVE</span></code> flag may be specified when acquiring the
+exclusive lock. This is exposed by the <code class="docutils literal notranslate"><span class="pre">--exclusive</span></code> option for <code class="docutils literal notranslate"><span class="pre">rbd</span>
+<span class="pre">device</span> <span class="pre">map</span></code> command.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">exclusive-lock</span></code> feature is incompatible with RBD advisory locks
+(the <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">lock</span> <span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">rbd</span> <span class="pre">lock</span> <span class="pre">rm</span></code> commands).</p>
+</div>
+<section id="blocklisting">
+<h2>Blocklisting<a class="headerlink" href="#blocklisting" title="Link to this heading"></a></h2>
+<p>Sometimes a client that previously held an exclusive lock on an RBD image does
+not terminate gracefully, but dies abruptly. This may be because the client
+process received a <code class="docutils literal notranslate"><span class="pre">KILL</span></code> or <code class="docutils literal notranslate"><span class="pre">ABRT</span></code> signal, or because the client node
+underwent a hard reboot or suffered a power failure. In cases like this, the
+lock is never gracefully released. This means that any new client that comes up
+and attempts to write to the image must break the previously held exclusive
+lock.</p>
+<p>However, a process (or kernel thread) may hang or merely lose network
+connectivity to the Ceph cluster for some amount of time. In that case,
+breaking the lock would be potentially catastrophic: the hung process or
+connectivity issue could resolve itself and the original process might then
+compete with one that started in the interim, thus accessing RBD data in an
+uncoordinated and destructive manner.</p>
+<p>In the event that a lock cannot be acquired in the standard graceful manner,
+the overtaking process not only breaks the lock but also blocklists the
+previous lock holder. This is negotiated between the new client process and the
+Ceph Monitor.</p>
+<ul class="simple">
+<li><p>Upon receiving the blocklist request, the monitor instructs the relevant OSDs
+to no longer serve requests from the old client process;</p></li>
+<li><p>after the associated OSD map update is complete, the new client can break the
+previously held lock;</p></li>
+<li><p>after the new client has acquired the lock, it can commence writing
+to the image.</p></li>
+</ul>
+<p>Blocklisting is thus a form of storage-level resource <a class="reference external" href="https://en.wikipedia.org/wiki/Fencing_(computing)">fencing</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order for blocklisting to work, the client must have the <code class="docutils literal notranslate"><span class="pre">osd</span>
+<span class="pre">blocklist</span></code> capability. This capability is included in the <code class="docutils literal notranslate"><span class="pre">profile</span>
+<span class="pre">rbd</span></code> capability profile, which should be set generally on all Ceph
+<a class="reference internal" href="../rados/operations/user-management.html#user-management"><span class="std std-ref">client identities</span></a> using RBD.</p>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rbd-snapshot.html" class="btn btn-neutral float-left" title="Snapshots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbd-mirroring.html" class="btn btn-neutral float-right" title="RBD Mirroring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

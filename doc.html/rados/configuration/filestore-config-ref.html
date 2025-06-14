@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Filestore Config Reference &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Journal Config Reference" href="journal-ref.html" />
+    <link rel="prev" title="BlueStore Configuration Reference" href="bluestore-config-ref.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="storage-devices.html">Storage devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">Configuring Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html">Common Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#networks">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#temporary-directory">Temporary Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#monitors">Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#osds">OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#heartbeats">Heartbeats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#logs-debugging">Logs / Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#example-ceph-conf">Example ceph.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#naming-clusters-deprecated">Naming Clusters (deprecated)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-config-ref.html">Network Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">Messenger v2 protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth-config-ref.html">Auth Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-config-ref.html">Monitor Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-lookup-dns.html">Looking up Monitors through DNS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osd-interaction.html">Heartbeat Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-config-ref.html">OSD Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mclock-config-ref.html">DmClock Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-config-ref.html">BlueStore Settings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">FileStore Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#extended-attributes">Extended Attributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#synchronization-intervals">Synchronization Intervals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flusher">Flusher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#queue">Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timeouts">Timeouts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#b-tree-filesystem">B-Tree Filesystem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#journal">Journal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#misc">Misc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="journal-ref.html">Journal Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pool-pg-config-ref.html">Pool, PG &amp; CRUSH Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-config-ref.html">General Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Filestore Config Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/configuration/filestore-config-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="filestore-config-reference">
+<h1>Filestore Config Reference<a class="headerlink" href="#filestore-config-reference" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the Luminous release of Ceph, Filestore has not been Ceph’s
+default storage back end. Since the Luminous release of Ceph, BlueStore has
+been Ceph’s default storage back end. However, Filestore OSDs are still
+supported up to Quincy. Filestore OSDs are not supported in Reef. See
+<a class="reference internal" href="storage-devices.html#rados-config-storage-devices-osd-backends"><span class="std std-ref">OSD Back Ends</span></a>. See
+<a class="reference internal" href="../operations/bluestore-migration.html#rados-operations-bluestore-migration"><span class="std std-ref">BlueStore Migration</span></a> for
+instructions explaining how to replace an existing Filestore back end with a
+BlueStore back end.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_debug_omap_check</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Debugging check on synchronization. Expensive. For debugging only.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<section id="extended-attributes">
+<span id="index-0"></span><h2>Extended Attributes<a class="headerlink" href="#extended-attributes" title="Link to this heading"></a></h2>
+<p>Extended Attributes (XATTRs) are important for Filestore OSDs. However, Certain
+disadvantages can occur when the underlying file system is used for the storage
+of XATTRs: some file systems have limits on the number of bytes that can be
+stored in XATTRs, and your file system might in some cases therefore run slower
+than would an alternative method of storing XATTRs. For this reason, a method
+of storing XATTRs extrinsic to the underlying file system might improve
+performance. To implement such an extrinsic method, refer to the following
+settings.</p>
+<p>If the underlying file system has no size limit, then Ceph XATTRs are stored as
+<code class="docutils literal notranslate"><span class="pre">inline</span> <span class="pre">xattr</span></code>, using the XATTRs provided by the file system. But if there is
+a size limit (for example, ext4 imposes a limit of 4 KB total), then some Ceph
+XATTRs will be stored in a key/value database when the limit is reached. More
+precisely, this begins to occur when either the
+<code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size</span></code> or <code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs</span></code>
+threshold is reached.</p>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum size per object of an XATTR that can be
+stored in the file system (for example, XFS, Btrfs, ext4). The
+specified size should not be larger than the file system can
+handle. Using the default value of 0 instructs Filestore to use
+the value specific to the file system.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unsigned 32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size_xfs</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum size of an XATTR that can be stored in the
+XFS file system.  This setting is used only if
+<code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size</span></code> == 0.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unsigned 32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">65536</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size_btrfs</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum size of an XATTR that can be stored in the
+Btrfs file system.  This setting is used only if
+<code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size</span></code> == 0.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unsigned 32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2048</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size_other</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum size of an XATTR that can be stored in other file systems.
+This setting is used only if <code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattr_size</span></code> == 0.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unsigned 32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">512</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of XATTRs per object that can be stored in the file system.
+Using the default value of 0 instructs Filestore to use the value specific to the file system.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs_xfs</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of XATTRs per object that can be stored in the XFS file system.
+This setting is used only if <code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs</span></code> == 0.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs_btrfs</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of XATTRs per object that can be stored in the Btrfs file system.
+This setting is used only if <code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs</span></code> == 0.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs_other</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of XATTRs per object that can be stored in other file systems.
+This setting is used only if <code class="docutils literal notranslate"><span class="pre">filestore_max_inline_xattrs</span></code> == 0.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="synchronization-intervals">
+<span id="index-1"></span><h2>Synchronization Intervals<a class="headerlink" href="#synchronization-intervals" title="Link to this heading"></a></h2>
+<p>Filestore must periodically quiesce writes and synchronize the file system.
+Each synchronization creates a consistent commit point. When the commit point
+is created, Filestore is able to free all journal entries up to that point.
+More-frequent synchronization tends to reduce both synchronization time and
+the amount of data that needs to remain in the journal. Less-frequent
+synchronization allows the backing file system to coalesce small writes and
+metadata updates, potentially increasing synchronization
+efficiency but also potentially increasing tail latency.</p>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_max_sync_interval</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum interval (in seconds) for synchronizing Filestore.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_min_sync_interval</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the minimum interval (in seconds) for synchronizing Filestore.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Double</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">.01</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="flusher">
+<span id="index-2"></span><h2>Flusher<a class="headerlink" href="#flusher" title="Link to this heading"></a></h2>
+<p>The Filestore flusher forces data from large writes to be written out using
+<code class="docutils literal notranslate"><span class="pre">sync_file_range</span></code> prior to the synchronization.
+Ideally, this action reduces the cost of the eventual synchronization. In practice, however, disabling
+‘filestore_flusher’ seems in some cases to improve performance.</p>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_flusher</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enables the Filestore flusher.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v.65.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_flusher_max_fds</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of file descriptors for the flusher.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">512</span></code></p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v.65.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_sync_flush</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enables the synchronization flusher.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version v.65.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_fsync_flushes_journal_data</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Flushes journal data during file-system synchronization.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="queue">
+<span id="index-3"></span><h2>Queue<a class="headerlink" href="#queue" title="Link to this heading"></a></h2>
+<p>The following settings define limits on the size of the Filestore queue:</p>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_queue_max_ops</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of in-progress operations that Filestore accepts before it blocks the queueing of any new operations.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. Minimal impact on performance.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_queue_max_bytes</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the maximum number of bytes permitted per operation.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">&lt;&lt;</span> <span class="pre">20</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="timeouts">
+<span id="index-4"></span><h2>Timeouts<a class="headerlink" href="#timeouts" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_op_threads</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the number of file-system operation threads that execute in parallel.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_op_thread_timeout</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the timeout (in seconds) for a file-system operation thread.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">60</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_op_thread_suicide_timeout</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the timeout (in seconds) for a commit operation before the commit is cancelled.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">180</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="b-tree-filesystem">
+<span id="index-5"></span><h2>B-Tree Filesystem<a class="headerlink" href="#b-tree-filesystem" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_btrfs_snap</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enables snapshots for a <code class="docutils literal notranslate"><span class="pre">btrfs</span></code> Filestore.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. Used only for <code class="docutils literal notranslate"><span class="pre">btrfs</span></code>.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_btrfs_clone_range</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enables cloning ranges for a <code class="docutils literal notranslate"><span class="pre">btrfs</span></code> Filestore.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No. Used only for <code class="docutils literal notranslate"><span class="pre">btrfs</span></code>.</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="journal">
+<span id="index-6"></span><h2>Journal<a class="headerlink" href="#journal" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_journal_parallel</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enables parallel journaling, default for <code class="docutils literal notranslate"><span class="pre">btrfs</span></code>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_journal_writeahead</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Enables write-ahead journaling, default for XFS.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_journal_trailing</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Deprecated. <strong>Never use.</strong></p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="misc">
+<h2>Misc<a class="headerlink" href="#misc" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_merge_threshold</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the minimum number of files permitted in a subdirectory before the subdirectory is merged into its parent directory.
+NOTE: A negative value means that subdirectory merging is disabled.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-10</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_split_multiple</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(filestore_split_multiple</span> <span class="pre">*</span> <span class="pre">abs(filestore_merge_threshold)</span> <span class="pre">+</span> <span class="pre">(rand()</span> <span class="pre">%</span> <span class="pre">filestore_split_rand_factor))</span> <span class="pre">*</span> <span class="pre">16</span></code>
+is the maximum number of files permitted in a subdirectory
+before the subdirectory is split into child directories.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_split_rand_factor</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A random factor added to the split threshold to avoid
+too many (expensive) Filestore splits occurring at the same time.
+For details, see <code class="docutils literal notranslate"><span class="pre">filestore_split_multiple</span></code>.
+To change this setting for an existing OSD, it is necessary to take the OSD
+offline before running the <code class="docutils literal notranslate"><span class="pre">ceph-objectstore-tool</span> <span class="pre">apply-layout-settings</span></code> command.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unsigned 32-bit Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">20</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_update_to</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Limits automatic upgrades to a specified version of Filestore. Useful in cases in which you want to avoid upgrading to a specific version.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1000</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_blackhole</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Drops any new transactions on the floor, similar to redirecting to NULL.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_dump_file</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Defines the file that transaction dumps are stored on.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_kill_at</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Injects a failure at the <em>n</em>th opportunity.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">filestore_fail_eio</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Fail/Crash on EIO.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Required<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No</p>
+</dd>
+<dt class="field-even">Default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bluestore-config-ref.html" class="btn btn-neutral float-left" title="BlueStore Configuration Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="journal-ref.html" class="btn btn-neutral float-right" title="Journal Config Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>crushdiff -- ceph crush map test tool &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="crushtool -- CRUSH map manipulation tool" href="crushtool.html" />
+    <link rel="prev" title="ceph-syn -- ceph synthetic workload generator" href="ceph-syn.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../rados/configuration/index.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rados/operations/index.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../rados/man/index.html">Man Pages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume.html">ceph-volume -- Ceph OSD deployment and inspection tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume-systemd.html">ceph-volume-systemd -- systemd ceph-volume helper tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph.html">ceph -- ceph administration tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-authtool.html">ceph-authtool -- ceph keyring manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-clsinfo.html">ceph-clsinfo -- show class object information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">ceph-conf -- ceph conf file tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-debugpack.html">ceph-debugpack -- ceph debug packer utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-dencoder.html">ceph-dencoder -- ceph encoder/decoder utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-mon.html">ceph-mon -- ceph monitor daemon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-osd.html">ceph-osd -- ceph object storage daemon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-kvstore-tool.html">ceph-kvstore-tool -- ceph kvstore manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-run.html">ceph-run -- restart daemon on core dump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-syn.html">ceph-syn -- ceph synthetic workload generator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">crushdiff -- ceph crush map test tool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#availability">Availability</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crushtool.html">crushtool -- CRUSH map manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="librados-config.html">librados-config -- display information about librados</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monmaptool.html">monmaptool -- ceph monitor cluster map manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osdmaptool.html">osdmaptool -- ceph osd cluster map manipulation tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados.html">rados -- rados object storage utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-post-file.html">ceph-post-file -- post files for ceph developers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../rados/troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../rados/api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../rados/index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="../../rados/man/index.html">Object Store Manpages</a></li>
+      <li class="breadcrumb-item active">crushdiff -- ceph crush map test tool</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/man/8/crushdiff.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="crushdiff-ceph-crush-map-test-tool">
+<span id="crushdiff"></span><h1>crushdiff -- ceph crush map test tool<a class="headerlink" href="#crushdiff-ceph-crush-map-test-tool" title="Link to this heading"></a></h1>
+<section id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line"><strong>crushdiff</strong> [ --osdmap <em>osdmap</em> ] [ --pg-dump <em>pg-dump</em> ]
+[ --compiled ] [ --verbose ] <em>command</em> <em>crushmap</em></div>
+</div>
+</section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p><strong>crushdiff</strong> is a utility that lets you test the effect of a crushmap
+change: number of pgs, objects, bytes moved. This is a wrapper around
+<a class="reference internal" href="osdmaptool.html"><span class="doc">osdmaptool</span></a>(8), relying on its <strong>--test-map-pgs-dump</strong>
+option to get the list of changed pgs. Additionally it uses pg stats
+to calculate the numbers of objects and bytes moved.</p>
+<p>By default, <strong>crushdiff</strong> will use the cluster current osdmap and pg
+stats, which requires access to the cluster. Though one can use the
+<strong>--osdmap</strong> and <strong>--pg-dump</strong> options to test against previously
+obtained data.</p>
+</section>
+<section id="options">
+<h2>Options<a class="headerlink" href="#options" title="Link to this heading"></a></h2>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-crushdiff-compiled">
+<span class="sig-name descname"><span class="pre">--compiled</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-crushdiff-compiled" title="Link to this definition"></a></dt>
+<dd><p>The input/output crushmap is compiled. If the options is not
+specified the expected/returned crushmap is in txt (decompiled)
+format.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-crushdiff-pg-dump">
+<span class="sig-name descname"><span class="pre">--pg-dump</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;pg-dump&gt;</span></span><a class="headerlink" href="#cmdoption-crushdiff-pg-dump" title="Link to this definition"></a></dt>
+<dd><p>JSON output of <strong>ceph pg dump</strong>. If not specified <strong>crushdiff</strong>
+will try to get data running the command itself.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-crushdiff-osdmap">
+<span class="sig-name descname"><span class="pre">--osdmap</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;osdmap&gt;</span></span><a class="headerlink" href="#cmdoption-crushdiff-osdmap" title="Link to this definition"></a></dt>
+<dd><p>The cluster osdmap, obtained with <strong>ceph osd getmap</strong> command. If
+not specified <strong>crushdiff</strong> will try to get data running the
+command itself.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-crushdiff-verbose">
+<span class="sig-name descname"><span class="pre">--verbose</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-crushdiff-verbose" title="Link to this definition"></a></dt>
+<dd><p>Produce diagnostic output.</p>
+</dd></dl>
+
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong class="command">compare</strong> <em>crushmap</em></dt><dd><p>Compare the crushmap from <em>crushmap</em> file with the crushmap from
+the cluster osdmap. The output will show the expected number of pgs,
+objects, bytes moved when the new crushmap is installed.</p>
+</dd>
+<dt><strong class="command">export</strong> <em>crushmap</em></dt><dd><p>Export crushmap to <em>crushmap</em> file from the cluster osdmap.</p>
+</dd>
+<dt><strong class="command">import</strong> <em>crushmap</em></dt><dd><p>Import crushmap from <em>crushmap</em> file to the cluster osdmap.</p>
+</dd>
+</dl>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
+<p>Get the current crushmap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crushdiff</span> <span class="n">export</span> <span class="n">cm</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Edit the map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$EDITOR cm.txt
+</pre></div>
+</div>
+<p>Check the result:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crushdiff</span> <span class="n">compare</span> <span class="n">cm</span><span class="o">.</span><span class="n">txt</span>
+
+<span class="mi">79</span><span class="o">/</span><span class="mi">416</span> <span class="p">(</span><span class="mf">18.99</span><span class="o">%</span><span class="p">)</span> <span class="n">pgs</span> <span class="n">affected</span>
+<span class="mi">281</span><span class="o">/</span><span class="mi">1392</span> <span class="p">(</span><span class="mf">20.19</span><span class="o">%</span><span class="p">)</span> <span class="n">objects</span> <span class="n">affected</span>
+<span class="mi">80</span><span class="o">/</span><span class="mi">1248</span> <span class="p">(</span><span class="mf">6.41</span><span class="o">%</span><span class="p">)</span> <span class="n">pg</span> <span class="n">shards</span> <span class="n">to</span> <span class="n">move</span>
+<span class="mi">281</span><span class="o">/</span><span class="mi">4176</span> <span class="p">(</span><span class="mf">6.73</span><span class="o">%</span><span class="p">)</span> <span class="n">pg</span> <span class="nb">object</span> <span class="n">shards</span> <span class="n">to</span> <span class="n">move</span>
+<span class="mf">730.52</span><span class="n">Mi</span><span class="o">/</span><span class="mf">10.55</span><span class="n">Gi</span> <span class="p">(</span><span class="mf">6.76</span><span class="o">%</span><span class="p">)</span> <span class="nb">bytes</span> <span class="n">to</span> <span class="n">move</span>
+</pre></div>
+</div>
+<p>When running with <strong>--verbose</strong> option the output will also contain
+detailed information about the affected pgs, like below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">4.3</span>     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="mf">4.</span><span class="n">b</span>     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="mf">4.</span><span class="n">c</span>     <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>i.e. a pg number, and its old and the new osd active sets.</p>
+<p>If the result is satisfactory install the updated map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crushdiff</span> <span class="kn">import</span><span class="w"> </span><span class="nn">cm.txt</span>
+</pre></div>
+</div>
+</section>
+<section id="availability">
+<h2>Availability<a class="headerlink" href="#availability" title="Link to this heading"></a></h2>
+<p><strong>crushdiff</strong> is part of Ceph, a massively scalable, open-source, distributed storage system.  Please
+refer to the Ceph documentation at <a class="reference external" href="https://docs.ceph.com">https://docs.ceph.com</a> for more
+information.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="ceph.html"><span class="doc">ceph</span></a>(8),
+<a class="reference internal" href="crushtool.html"><span class="doc">crushtool</span></a>(8),
+<a class="reference internal" href="osdmaptool.html"><span class="doc">osdmaptool</span></a>(8),</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ceph-syn.html" class="btn btn-neutral float-left" title="ceph-syn -- ceph synthetic workload generator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crushtool.html" class="btn btn-neutral float-right" title="crushtool -- CRUSH map manipulation tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

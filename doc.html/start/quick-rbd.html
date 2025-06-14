@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Block Device Quick Start &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuring the iSCSI Initiators" href="../rbd/iscsi-initiators.html" />
+    <link rel="prev" title="Manual ceph-iscsi Installation" href="../rbd/iscsi-target-cli-manual-install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../rbd/rados-rbd-cmds.html">Basic Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rbd/rbd-operations.html">Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../rbd/rbd-integrations.html">Integrations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../rbd/rbd-ko.html">Kernel Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/qemu-rbd.html">QEMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/libvirt.html">libvirt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/rbd-kubernetes.html">Kubernetes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/rbd-nomad.html">Nomad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/rbd-openstack.html">OpenStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/rbd-cloudstack.html">CloudStack</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../rbd/iscsi-overview.html">LIO iSCSI Gateway</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../rbd/iscsi-requirements.html">Requirements</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../rbd/iscsi-targets.html">Configuring the iSCSI Target</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rbd/iscsi-initiators.html">Configuring the iSCSI Initiators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../rbd/iscsi-monitoring.html">Monitoring the iSCSI Gateways</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/rbd-windows.html">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/nvmeof-overview.html">Ceph NVMe-oF Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/nvmeof-overview.html#high-availability-with-nvme-of-gateway-group">High Availability with NVMe-oF gateway group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/nvmeof-overview.html#scaling-out-with-nvme-of-gateway">Scaling-out with NVMe-oF gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd/nvmeof-overview.html#nvme-of-gateway-discovery">NVMe-oF gateway Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rbd/man/index.html">Manpages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rbd/api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../rbd/index.html">Ceph Block Device</a></li>
+          <li class="breadcrumb-item"><a href="../rbd/rbd-integrations.html">Ceph Block Device 3rd Party Integration</a></li>
+          <li class="breadcrumb-item"><a href="../rbd/iscsi-overview.html">Ceph iSCSI Gateway</a></li>
+          <li class="breadcrumb-item"><a href="../rbd/iscsi-targets.html">iSCSI Targets</a></li>
+          <li class="breadcrumb-item"><a href="../rbd/iscsi-target-cli.html">Configuring the iSCSI Target using the Command Line Interface</a></li>
+      <li class="breadcrumb-item active">Block Device Quick Start</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/start/quick-rbd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="block-device-quick-start">
+<h1>Block Device Quick Start<a class="headerlink" href="#block-device-quick-start" title="Link to this heading"></a></h1>
+<p>Ensure your <a class="reference internal" href="../glossary.html#term-Ceph-Storage-Cluster"><span class="xref std std-term">Ceph Storage Cluster</span></a> is in an <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span></code> state
+before working with the <a class="reference internal" href="../glossary.html#term-Ceph-Block-Device"><span class="xref std std-term">Ceph Block Device</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Ceph Block Device is also known as <a class="reference internal" href="../glossary.html#term-RBD"><span class="xref std std-term">RBD</span></a> or <a class="reference internal" href="../glossary.html#term-RADOS"><span class="xref std std-term">RADOS</span></a>
+Block Device.</p>
+</div>
+<img alt="../_images/9620869c9c38737ce208fc534cbc389a7ed16f5823672e722239a828f1075bf2.png" class="align-center" src="../_images/9620869c9c38737ce208fc534cbc389a7ed16f5823672e722239a828f1075bf2.png" />
+<p>You may use a virtual machine for your <code class="docutils literal notranslate"><span class="pre">ceph-client</span></code> node, but do not
+execute the following procedures on the same physical node as your Ceph
+Storage Cluster nodes (unless you use a VM). See <a class="reference external" href="http://wiki.ceph.com/How_Can_I_Give_Ceph_a_Try">FAQ</a> for details.</p>
+<section id="create-a-block-device-pool">
+<h2>Create a Block Device Pool<a class="headerlink" href="#create-a-block-device-pool" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>On the admin node, use the <code class="docutils literal notranslate"><span class="pre">ceph</span></code> tool to <a class="reference external" href="../../rados/operations/pools/#create-a-pool">create a pool</a>
+(we recommend the name ‘rbd’).</p></li>
+<li><p>On the admin node, use the <code class="docutils literal notranslate"><span class="pre">rbd</span></code> tool to initialize the pool for use by RBD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rbd</span> <span class="n">pool</span> <span class="n">init</span> <span class="o">&lt;</span><span class="n">pool</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="configure-a-block-device">
+<h2>Configure a Block Device<a class="headerlink" href="#configure-a-block-device" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>On the <code class="docutils literal notranslate"><span class="pre">ceph-client</span></code> node, create a block device image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rbd</span> <span class="n">create</span> <span class="n">foo</span> <span class="o">--</span><span class="n">size</span> <span class="mi">4096</span> <span class="o">--</span><span class="n">image</span><span class="o">-</span><span class="n">feature</span> <span class="n">layering</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="p">{</span><span class="n">mon</span><span class="o">-</span><span class="n">IP</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="p">{</span><span class="n">pool</span><span class="o">-</span><span class="n">name</span><span class="p">}]</span>
+</pre></div>
+</div>
+</li>
+<li><p>On the <code class="docutils literal notranslate"><span class="pre">ceph-client</span></code> node, map the image to a block device.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">rbd</span> <span class="nb">map</span> <span class="n">foo</span> <span class="o">--</span><span class="n">name</span> <span class="n">client</span><span class="o">.</span><span class="n">admin</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="p">{</span><span class="n">mon</span><span class="o">-</span><span class="n">IP</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">k</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">admin</span><span class="o">.</span><span class="n">keyring</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="p">{</span><span class="n">pool</span><span class="o">-</span><span class="n">name</span><span class="p">}]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the block device by creating a file system on the <code class="docutils literal notranslate"><span class="pre">ceph-client</span></code>
+node.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mkfs</span><span class="o">.</span><span class="n">ext4</span> <span class="o">-</span><span class="n">m0</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rbd</span><span class="o">/</span><span class="p">{</span><span class="n">pool</span><span class="o">-</span><span class="n">name</span><span class="p">}</span><span class="o">/</span><span class="n">foo</span>
+
+<span class="n">This</span> <span class="n">may</span> <span class="n">take</span> <span class="n">a</span> <span class="n">few</span> <span class="n">moments</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>Mount the file system on the <code class="docutils literal notranslate"><span class="pre">ceph-client</span></code> node.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">block</span><span class="o">-</span><span class="n">device</span>
+<span class="n">sudo</span> <span class="n">mount</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rbd</span><span class="o">/</span><span class="p">{</span><span class="n">pool</span><span class="o">-</span><span class="n">name</span><span class="p">}</span><span class="o">/</span><span class="n">foo</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">block</span><span class="o">-</span><span class="n">device</span>
+<span class="n">cd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">block</span><span class="o">-</span><span class="n">device</span>
+</pre></div>
+</div>
+</li>
+<li><p>Optionally configure the block device to be automatically mapped and mounted
+at boot (and unmounted/unmapped at shutdown) - see the <a class="reference external" href="../../man/8/rbdmap">rbdmap manpage</a>.</p></li>
+</ol>
+<p>See <a class="reference external" href="../../rbd">block devices</a> for additional details.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rbd/iscsi-target-cli-manual-install.html" class="btn btn-neutral float-left" title="Manual ceph-iscsi Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../rbd/iscsi-initiators.html" class="btn btn-neutral float-right" title="Configuring the iSCSI Initiators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

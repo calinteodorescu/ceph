@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal Config Reference &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Pool, PG and CRUSH Config Reference" href="pool-pg-config-ref.html" />
+    <link rel="prev" title="Filestore Config Reference" href="filestore-config-ref.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="storage-devices.html">Storage devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">Configuring Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html">Common Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#networks">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#temporary-directory">Temporary Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#monitors">Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#osds">OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#heartbeats">Heartbeats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#logs-debugging">Logs / Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#example-ceph-conf">Example ceph.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#naming-clusters-deprecated">Naming Clusters (deprecated)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-config-ref.html">Network Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">Messenger v2 protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth-config-ref.html">Auth Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-config-ref.html">Monitor Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-lookup-dns.html">Looking up Monitors through DNS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osd-interaction.html">Heartbeat Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-config-ref.html">OSD Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mclock-config-ref.html">DmClock Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-config-ref.html">BlueStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="filestore-config-ref.html">FileStore Settings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Journal Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pool-pg-config-ref.html">Pool, PG &amp; CRUSH Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-config-ref.html">General Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Journal Config Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/configuration/journal-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="journal-config-reference">
+<h1>Journal Config Reference<a class="headerlink" href="#journal-config-reference" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Filestore has been deprecated in the Reef release and is no longer supported.</p>
+</div>
+<p id="index-0">Filestore OSDs use a journal for two reasons: speed and consistency.  Note
+that since Luminous, the BlueStore OSD back end has been preferred and default.
+This information is provided for pre-existing OSDs and for rare situations where
+Filestore is preferred for new deployments.</p>
+<ul class="simple">
+<li><p><strong>Speed:</strong> The journal enables the Ceph OSD Daemon to commit small writes
+quickly. Ceph writes small, random i/o to the journal sequentially, which
+tends to speed up bursty workloads by allowing the backing file system more
+time to coalesce writes. The Ceph OSD Daemon’s journal, however, can lead
+to spiky performance with short spurts of high-speed writes followed by
+periods without any write progress as the file system catches up to the
+journal.</p></li>
+<li><p><strong>Consistency:</strong> Ceph OSD Daemons require a file system interface that
+guarantees atomic compound operations. Ceph OSD Daemons write a description
+of the operation to the journal and apply the operation to the file system.
+This enables atomic updates to an object (for example, placement group
+metadata). Every few seconds--between <code class="docutils literal notranslate"><span class="pre">filestore</span> <span class="pre">max</span> <span class="pre">sync</span> <span class="pre">interval</span></code> and
+<code class="docutils literal notranslate"><span class="pre">filestore</span> <span class="pre">min</span> <span class="pre">sync</span> <span class="pre">interval</span></code>--the Ceph OSD Daemon stops writes and
+synchronizes the journal with the file system, allowing Ceph OSD Daemons to
+trim operations from the journal and reuse the space. On failure, Ceph
+OSD Daemons replay the journal starting after the last synchronization
+operation.</p></li>
+</ul>
+<p>Ceph OSD Daemons recognize the following journal settings:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_dio">
+<span class="sig-name descname"><span class="pre">journal_dio</span></span><a class="headerlink" href="#confval-journal_dio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enables direct i/o to the journal. Requires <code class="docutils literal notranslate"><span class="pre">journal</span> <span class="pre">block</span> <span class="pre">align</span></code>
+set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_aio">
+<span class="sig-name descname"><span class="pre">journal_aio</span></span><a class="headerlink" href="#confval-journal_aio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enables using <code class="docutils literal notranslate"><span class="pre">libaio</span></code> for asynchronous writes to the journal.
+Requires <code class="docutils literal notranslate"><span class="pre">journal</span> <span class="pre">dio</span></code> set to <code class="docutils literal notranslate"><span class="pre">true</span></code>. Version 0.61 and later,
+<code class="docutils literal notranslate"><span class="pre">true</span></code>. Version 0.60 and earlier, <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_block_align">
+<span class="sig-name descname"><span class="pre">journal_block_align</span></span><a class="headerlink" href="#confval-journal_block_align" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Block aligns write operations. Required for <code class="docutils literal notranslate"><span class="pre">dio</span></code> and <code class="docutils literal notranslate"><span class="pre">aio</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_max_write_bytes">
+<span class="sig-name descname"><span class="pre">journal_max_write_bytes</span></span><a class="headerlink" href="#confval-journal_max_write_bytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of bytes the journal will write at any one time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_max_write_entries">
+<span class="sig-name descname"><span class="pre">journal_max_write_entries</span></span><a class="headerlink" href="#confval-journal_max_write_entries" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of entries the journal will write at any one time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_align_min_size">
+<span class="sig-name descname"><span class="pre">journal_align_min_size</span></span><a class="headerlink" href="#confval-journal_align_min_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Align data payloads greater than the specified minimum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-journal_zero_on_create">
+<span class="sig-name descname"><span class="pre">journal_zero_on_create</span></span><a class="headerlink" href="#confval-journal_zero_on_create" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Causes the file store to overwrite the entire journal with
+<code class="docutils literal notranslate"><span class="pre">0</span></code>’s during <code class="docutils literal notranslate"><span class="pre">mkfs</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="filestore-config-ref.html" class="btn btn-neutral float-left" title="Filestore Config Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pool-pg-config-ref.html" class="btn btn-neutral float-right" title="Pool, PG and CRUSH Config Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install Virtualization for Block Device &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Manual Deployment" href="manual-deployment.html" />
+    <link rel="prev" title="Install Ceph Storage Cluster" href="install-storage-cluster.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installing Ceph</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#recommended-methods">Recommended methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#other-methods">Other methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index_manual.html">Installation (Manual)</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#get-software">Get Software</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index_manual.html#install-software">Install Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#deploy-a-cluster-manually">Deploy a Cluster Manually</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#upgrade-software">Upgrade Software</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#windows">Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installing Ceph</a></li>
+          <li class="breadcrumb-item"><a href="index_manual.html">Installation (Manual)</a></li>
+      <li class="breadcrumb-item active">Install Virtualization for Block Device</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/install/install-vm-cloud.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="install-virtualization-for-block-device">
+<h1>Install Virtualization for Block Device<a class="headerlink" href="#install-virtualization-for-block-device" title="Link to this heading"></a></h1>
+<p>If you intend to use Ceph Block Devices and the Ceph Storage Cluster as a
+backend for Virtual Machines (VMs) or  <a class="reference internal" href="../glossary.html#term-Cloud-Platforms"><span class="xref std std-term">Cloud Platforms</span></a> the QEMU/KVM and
+<code class="docutils literal notranslate"><span class="pre">libvirt</span></code> packages are important for enabling VMs and cloud platforms.
+Examples of VMs include: QEMU/KVM, XEN, VMWare, LXC, VirtualBox, etc. Examples
+of Cloud Platforms include OpenStack, CloudStack, OpenNebula, etc.</p>
+<img alt="../_images/695c571bee8be98d46d62725013224a2902df18dc52481d7b7572c4a8a91119d.png" class="align-center" src="../_images/695c571bee8be98d46d62725013224a2902df18dc52481d7b7572c4a8a91119d.png" />
+<section id="install-qemu">
+<h2>Install QEMU<a class="headerlink" href="#install-qemu" title="Link to this heading"></a></h2>
+<p>QEMU KVM can interact with Ceph Block Devices via <code class="docutils literal notranslate"><span class="pre">librbd</span></code>, which is an
+important feature for using Ceph with cloud platforms. Once you install QEMU,
+see <a class="reference external" href="../../rbd/qemu-rbd">QEMU and Block Devices</a> for usage.</p>
+<section id="debian-packages">
+<h3>Debian Packages<a class="headerlink" href="#debian-packages" title="Link to this heading"></a></h3>
+<p>QEMU packages are incorporated into Ubuntu 12.04 Precise Pangolin and later
+versions. To  install QEMU, execute the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">qemu</span>
+</pre></div>
+</div>
+</section>
+<section id="rpm-packages">
+<h3>RPM Packages<a class="headerlink" href="#rpm-packages" title="Link to this heading"></a></h3>
+<p>To install QEMU, execute the following:</p>
+<ol class="arabic">
+<li><p>Update your repositories.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">update</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install QEMU for Ceph.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">qemu</span><span class="o">-</span><span class="n">kvm</span> <span class="n">qemu</span><span class="o">-</span><span class="n">kvm</span><span class="o">-</span><span class="n">tools</span> <span class="n">qemu</span><span class="o">-</span><span class="n">img</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install additional QEMU packages (optional):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">qemu</span><span class="o">-</span><span class="n">guest</span><span class="o">-</span><span class="n">agent</span> <span class="n">qemu</span><span class="o">-</span><span class="n">guest</span><span class="o">-</span><span class="n">agent</span><span class="o">-</span><span class="n">win32</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="building-qemu">
+<h3>Building QEMU<a class="headerlink" href="#building-qemu" title="Link to this heading"></a></h3>
+<p>To build QEMU from source, use the following procedure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="p">{</span><span class="n">your</span><span class="o">-</span><span class="n">development</span><span class="o">-</span><span class="n">directory</span><span class="p">}</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">.</span><span class="n">qemu</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">qemu</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">qemu</span>
+<span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">rbd</span>
+<span class="n">make</span><span class="p">;</span> <span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="install-libvirt">
+<h2>Install libvirt<a class="headerlink" href="#install-libvirt" title="Link to this heading"></a></h2>
+<p>To use <code class="docutils literal notranslate"><span class="pre">libvirt</span></code> with Ceph, you must have a running Ceph Storage Cluster, and
+you must have installed and configured QEMU. See <a class="reference external" href="../../rbd/libvirt">Using libvirt with Ceph Block
+Device</a> for usage.</p>
+<section id="id1">
+<h3>Debian Packages<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">libvirt</span></code> packages are incorporated into Ubuntu 12.04 Precise Pangolin and
+later versions of Ubuntu. To install <code class="docutils literal notranslate"><span class="pre">libvirt</span></code> on these distributions,
+execute the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libvirt</span><span class="o">-</span><span class="nb">bin</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>RPM Packages<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>To use <code class="docutils literal notranslate"><span class="pre">libvirt</span></code> with a Ceph Storage Cluster, you must  have a running Ceph
+Storage Cluster and you must also install a version of QEMU with <code class="docutils literal notranslate"><span class="pre">rbd</span></code> format
+support.  See <a class="reference internal" href="#install-qemu">Install QEMU</a> for details.</p>
+<p><code class="docutils literal notranslate"><span class="pre">libvirt</span></code> packages are incorporated into the recent CentOS/RHEL distributions.
+To install <code class="docutils literal notranslate"><span class="pre">libvirt</span></code>, execute the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">libvirt</span>
+</pre></div>
+</div>
+</section>
+<section id="building-libvirt">
+<h3>Building <code class="docutils literal notranslate"><span class="pre">libvirt</span></code><a class="headerlink" href="#building-libvirt" title="Link to this heading"></a></h3>
+<p>To build <code class="docutils literal notranslate"><span class="pre">libvirt</span></code> from source, clone the <code class="docutils literal notranslate"><span class="pre">libvirt</span></code> repository and use
+<a class="reference external" href="http://www.gnu.org/software/autogen/">AutoGen</a> to generate the build. Then, execute <code class="docutils literal notranslate"><span class="pre">make</span></code> and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> to
+complete the installation. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">libvirt</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">libvirt</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">libvirt</span>
+<span class="o">./</span><span class="n">autogen</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">make</span>
+<span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="http://www.libvirt.org/compiling.html">libvirt Installation</a> for details.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install-storage-cluster.html" class="btn btn-neutral float-left" title="Install Ceph Storage Cluster" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manual-deployment.html" class="btn btn-neutral float-right" title="Manual Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

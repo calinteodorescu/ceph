@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ceph Internals &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Balancing in Ceph" href="balancer-design.html" />
+    <link rel="prev" title="GDB - The GNU Project Debugger" href="developer_guide/debugging-gdb.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ceph Internals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Ceph Internals</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/internals.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-internals">
+<h1>Ceph Internals<a class="headerlink" href="#ceph-internals" title="Link to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For information on how to use Ceph as a library (from your own
+software), see <a class="reference internal" href="../api/index.html"><span class="doc">API Documentation</span></a>.</p>
+</div>
+<section id="starting-a-development-mode-ceph-cluster">
+<h2>Starting a Development-mode Ceph Cluster<a class="headerlink" href="#starting-a-development-mode-ceph-cluster" title="Link to this heading"></a></h2>
+<p>Compile the source and then run the following commands to start a
+development-mode Ceph cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span>
+<span class="n">OSD</span><span class="o">=</span><span class="mi">3</span> <span class="n">MON</span><span class="o">=</span><span class="mi">3</span> <span class="n">MGR</span><span class="o">=</span><span class="mi">3</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">x</span>
+<span class="c1"># check that it&#39;s there</span>
+<span class="nb">bin</span><span class="o">/</span><span class="n">ceph</span> <span class="n">health</span>
+</pre></div>
+</div>
+<p class="rubric">Mailing list</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dev&#64;ceph.io</span></code> list is for discussion about the development of Ceph,
+its interoperability with other technology, and the operations of the
+project itself.  Subscribe by sending a message to <code class="docutils literal notranslate"><span class="pre">dev-join&#64;ceph.io</span></code>
+with the word <cite>subscribe</cite> in the subject.</p>
+<p>Alternatively you can visit <a class="reference external" href="https://lists.ceph.io">https://lists.ceph.io</a> and register.</p>
+<p>The <a class="reference external" href="mailto:ceph-devel&#37;&#52;&#48;vger&#46;kernel&#46;org">ceph-devel<span>&#64;</span>vger<span>&#46;</span>kernel<span>&#46;</span>org</a> list is for discussion
+and patch review for the Linux kernel Ceph client component.
+Subscribe by sending a message to <code class="docutils literal notranslate"><span class="pre">majordomo&#64;vger.kernel.org</span></code> with the line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subscribe</span> <span class="n">ceph</span><span class="o">-</span><span class="n">devel</span>
+</pre></div>
+</div>
+<p>in the body of the message.</p>
+<!---<p class="rubric">Contents</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="balancer-design.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="balancer-design.html#upmap-balancing">Upmap Balancing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html#importance-in-a-cluster">Importance in a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html#how-to-balance-capacity-in-ceph">How to Balance Capacity in Ceph</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="balancer-design.html#read-balancing">Read Balancing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html#how-to-balance-reads-in-ceph">How to Balance Reads in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html#plans-for-the-next-version">Plans for the Next Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blkin.html#configuring-ceph-with-lttng">Configuring Ceph with LTTng</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blkin.html#testing-trace">Testing Trace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blkin.html#configuring-ceph-with-blkin">Configuring Ceph with Blkin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blkin.html#testing-blkin">Testing Blkin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blkin.html#install-zipkin">Install  Zipkin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blkin.html#show-ceph-s-blkin-traces-in-zipkin-web">Show Ceph’s Blkin Traces in Zipkin-web</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bluestore.html">BlueStore Internals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bluestore.html#small-write-strategies">Small write strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bluestore.html#possible-future-modes">Possible future modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bluestore.html#mapping">Mapping</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ceph_krb_auth.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ceph_krb_auth.html#before-we-start">Before We Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ceph_krb_auth.html#the-ceph-side-of-the-things">The ‘Ceph side’ of the things</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html#for-ceph-developers-only">** <em>For Ceph Developers Only</em> **</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ceph_krb_auth.html#kerberos-server-setup">** <em>Kerberos Server Setup</em> **</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#key-idea">Key Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#creating-users">Creating Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#starting-mirror-daemon">Starting Mirror Daemon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#mirroring-design">Mirroring Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#snapshot-synchronization-order">Snapshot Synchronization Order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#snapshot-incarnation">Snapshot Incarnation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#interfaces">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#mirroring-module-and-interface">Mirroring Module and Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#bootstrap-peers">Bootstrap Peers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#mirror-daemon-status">Mirror Daemon Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#re-adding-peers">Re-adding Peers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-mirroring.html#feature-status">Feature Status</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-reclaim.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-reclaim.html#setting-the-uuid">Setting the UUID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-reclaim.html#starting-reclaim">Starting Reclaim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-reclaim.html#finishing-reclaim">Finishing Reclaim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-reclaim.html#setting-session-timeout-optional">Setting Session Timeout (Optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-reclaim.html#example-1-reset-old-session">Example 1: Reset Old Session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#important-data-structures">Important Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#creating-a-snapshot">Creating a snapshot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#updating-a-snapshot">Updating a snapshot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#generating-a-snapcontext">Generating a SnapContext</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#storing-snapshot-data">Storing snapshot data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#storing-snapshot-metadata">Storing snapshot metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#snapshot-writeback">Snapshot writeback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#deleting-snapshots">Deleting snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#hard-links">Hard links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephfs-snapshots.html#multi-fs">Multi-FS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cephx.html">Cephx</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#intro">Intro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#other-references">Other references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#terms">Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#context">Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#phase-i-obtaining-auth-ticket">Phase I: obtaining auth ticket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#phase-ii-obtaining-service-tickets-pre-nautilus">Phase II: Obtaining service tickets (pre-nautilus)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#phase-iii-opening-a-connection-to-a-service">Phase III: Opening a connection to a service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx.html#rotating-service-secrets">Rotating service secrets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cephx_protocol.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx_protocol.html#getting-started-with-authorization">Getting Started With Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx_protocol.html#phase-i">Phase I:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cephx_protocol.html#phase-ii">Phase II</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration Management System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#the-configuration-file">The Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#metavariables">Metavariables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#reading-configuration-values">Reading configuration values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#changing-configuration-values">Changing configuration values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#defining-config-options">Defining config options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config.html#level">level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#desc-long-desc-and-fmt-desc"><code class="docutils literal notranslate"><span class="pre">desc</span></code>, <code class="docutils literal notranslate"><span class="pre">long_desc</span></code> and <code class="docutils literal notranslate"><span class="pre">fmt_desc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#default-values">Default values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#service">Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#tags">Tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#enums">Enums</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#flags">Flags</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config-key.html">config-key layout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config-key.html#osd-dm-crypt-keys">OSD dm-crypt keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-key.html#ceph-mgr-modules">ceph-mgr modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-key.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="continuous-integration.html#ceph-pull-requests">ceph-pull-requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuous-integration.html#build-dependencies">build dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuous-integration.html#uploading-dependencies">Uploading Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuous-integration.html#update-install-deps-sh">Update <code class="docutils literal notranslate"><span class="pre">install-deps.sh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="corpus.html">Corpus structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="corpus.html#how-to-generate-an-object-corpus">How to generate an object corpus</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cpu-profiler.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cpu-profiler.html#compiling-ceph-for-profiling">Compiling Ceph for Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cpu-profiler.html#ceph-configuration">Ceph Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="crush-msr.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crush-msr.html#msr">MSR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crush-msr.html#rule-structure">Rule Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crush-msr.html#working-space">Working Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crush-msr.html#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deduplication.html">Deduplication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#key-idea">Key Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#design">Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#usage-patterns">Usage Patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html#radosgw">RadosGW</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html#rbd-cephfs">RBD/Cephfs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#rados-machinery">RADOS Machinery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#status-and-future-work">Status and Future Work</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deduplication.html#how-to-use-deduplication">How to use deduplication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html#prerequisite">Prerequisite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html#deatiled-instructions">Deatiled Instructions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="deduplication.html#estimate-space-saving-ratio-of-a-target-pool-using-ceph-dedup-tool">1. Estimate space saving ratio of a target pool using <code class="docutils literal notranslate"><span class="pre">ceph-dedup-tool</span></code>.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deduplication.html#create-chunk-pool">2. Create chunk pool.</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deduplication.html#run-dedup-command-there-are-two-ways">3. Run dedup command (there are two ways).</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deduplication.html#read-write-i-os">4. Read/write I/Os</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deduplication.html#run-scrub-to-fix-reference-count">5. Run scrub to fix reference count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deduplication.html#repair-a-mismatched-chunk-reference">6. Repair a mismatched chunk reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev_cluster_deployment.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_cluster_deployment.html#options">Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_cluster_deployment.html#environment-variables">Environment variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev_cluster_deployment.html#id1">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="development-workflow.html">Development workflows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#release-cycle">Release Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#merging-bug-fixes-or-features">Merging bug fixes or features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#resolving-bug-reports-and-implementing-features">Resolving bug reports and implementing features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#running-and-interpreting-teuthology-integration-tests">Running and interpreting teuthology integration tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#preparing-a-new-release">Preparing a new release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#cutting-a-new-stable-release">Cutting a new stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#cutting-a-new-development-release">Cutting a new development release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development-workflow.html#publishing-point-releases-and-backporting">Publishing point releases and backporting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documenting.html">Documenting Ceph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="documenting.html#user-documentation">User documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documenting.html#code-documentation">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documenting.html#drawing-diagrams">Drawing diagrams</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html#graphviz">Graphviz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html#ditaa">Ditaa</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html#blockdiag">Blockdiag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html#inkscape">Inkscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpdk.html#compiling-dpdkstack">Compiling DPDKStack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpdk.html#setting-the-dpdk-network-adapter">Setting the DPDK Network Adapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpdk.html#configuring-osd-dpdkstack">Configuring OSD DPDKStack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpdk.html#debug-and-optimization">Debug and Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpdk.html#status-and-future-work">Status and Future Work</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="encoding.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.html#principles-for-format-change">Principles for format change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.html#frameworks">Frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encoding.html#adding-a-field-to-a-structure">Adding a field to a structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="erasure-coded-pool.html#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="erasure-coded-pool.html#use-cases">Use cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html#cold-storage">Cold storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html#cheap-multidatacenter-storage">Cheap multidatacenter storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="erasure-coded-pool.html#interface">Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="file-striping.html">File striping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file-striping.html#ceph-file-layout">ceph_file_layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="freebsd.html#disk-layout">Disk layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="freebsd.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="freebsd.html#mon-creation">MON creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="freebsd.html#osd-creation">OSD creation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generatedocs.html#clone-the-ceph-repository">Clone the Ceph Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generatedocs.html#install-the-required-tools">Install the Required Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generatedocs.html#build-the-documents">Build the Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generatedocs.html#demo-the-documents">Demo the Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="health-reports.html">Health Reports</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="health-reports.html#how-to-get-reports">How to Get Reports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="health-reports.html#where-are-the-reports-generated">Where are the Reports Generated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html#aggregator-of-aggregators">Aggregator of Aggregators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html#ceph-mgr-a-delegate-aggregator">ceph-mgr -- A Delegate Aggregator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iana.html">IANA Numbers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iana.html#private-enterprise-number-pen-assignment">Private Enterprise Number (PEN) Assignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iana.html#port-number-monitor">Port number (monitor)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kclient.html#step-four-mounting-a-cephfs-file-system-in-your-vm">Step Four: mounting a CephFS file system in your VM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kclient.html#step-five-testing-kernel-changes-in-teuthology">Step Five: testing kernel changes in teuthology</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#tl-dr-for-hacking-on-mgr-modules">TL;DR for hacking on MGR modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#build-a-kubernetes-cluster">1. Build a kubernetes cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html#some-tips">Some Tips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html#hosted-elsewhere">Hosted elsewhere</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#run-a-docker-registry">2. Run a docker registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#build-rook">3. Build Rook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#build-ceph">4. Build Ceph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#run-kubejacker">5. Run Kubejacker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#run-a-rook-cluster">5. Run a Rook cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kubernetes.html#cheat-sheet">Cheat sheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="libcephfs_proxy.html#description-of-the-problem">Description of the problem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="libcephfs_proxy.html#proposed-solution">Proposed solution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html#high-level-approach">High level approach</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html#design-of-common-components">Design of common components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="libcephfs_proxy.html#network-protocol">Network protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html#design-of-the-libcephfs-proxy-so-library">Design of the <em>libcephfs_proxy.so</em> library</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="libcephfs_proxy.html#local-caching">Local caching</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html#design-of-the-libcephfsd-daemon">Design of the <em>libcephfsd</em> daemon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="libcephfs_proxy.html#process-maintenance">Process maintenance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html#special-functions">Special functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="libcephfs_proxy.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Use of the cluster log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#severity">Severity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#frequency">Frequency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#language-and-formatting">Language and formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logs.html">Debug logs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logs.html#performance-counters">Performance counters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mempool_accounting.html#check-mempools-usage">Check mempools usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="messenger.html">Messenger notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="messenger.html#ceph-perf-msgr">ceph_perf_msgr</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#logical-id">Logical id</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#secret-keys">Secret keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#cluster-fsid">Cluster fsid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#monitor-address">Monitor address</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#peers">Peers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#cluster-creation">Cluster creation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html#names-and-addresses">Names and addresses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html#addresses-only">Addresses only</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html#names-only">Names only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mon-bootstrap.html#cluster-expansion">Cluster expansion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html#initially-peerless-expansion">Initially peerless expansion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html#expanding-with-initial-members">Expanding with initial members</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mon-elections.html">Monitor Elections</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mon-elections.html#the-original-algorithm">The Original Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-elections.html#the-problems">The Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-elections.html#the-new-algorithms">The New Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-elections.html#algorithm-disallow">Algorithm: disallow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-elections.html#algorithm-connectivity">Algorithm: connectivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mon-elections.html#connection-scoring">Connection Scoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mon-on-disk-formats.html#upgrade-path">UPGRADE PATH</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html#auth-monitor">AUTH MONITOR</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mon-on-disk-formats.html#versions">versions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mon-on-disk-formats.html#callstack">callstack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mon-on-disk-formats.html#boil-down">boil down</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mon-osdmap-prune.html#algorithm">ALGORITHM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html#map-trimming">MAP TRIMMING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html#configuration-options-sanity-checks">CONFIGURATION OPTIONS SANITY CHECKS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html#requirements-conditions-invariants">REQUIREMENTS, CONDITIONS &amp; INVARIANTS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mon-osdmap-prune.html#requirements">REQUIREMENTS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mon-osdmap-prune.html#conditions-invariants">CONDITIONS &amp; INVARIANTS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#goals">Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#phases">Phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#banner">Banner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#frame-format">Frame format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#hello">Hello</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#post-auth-frame-format">Post-auth frame format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#compression">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#post-compression-frame-format">Post-compression frame format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#message-flow-handshake">Message flow handshake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="msgr2.html#message-exchange">Message exchange</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html#example-of-protocol-interaction-wip">Example of protocol interaction (WIP)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="network-encoding.html">Network Encoding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="network-encoding.html#conventions">Conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#integers">Integers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#complex-types">Complex Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#variable-arrays">Variable Arrays</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#primitive-aliases">Primitive Aliases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="network-encoding.html#structures">Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#optional">Optional</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#pair">Pair</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#triple">Triple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#list">List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#blob">Blob</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#map">Map</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="network-encoding.html#id1">Complex Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#utime-t">utime_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html#ceph-entity-name">ceph_entity_name</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="network-protocol.html">Network Protocol</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="network-protocol.html#hello">Hello</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#banner">Banner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#connect">Connect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#connect-reply">Connect Reply</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="network-protocol.html#msgr-protocol">MSGR Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#ceph-msgr-tag-close-0x06">CEPH_MSGR_TAG_CLOSE (0x06)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#ceph-msgr-tag-msg-0x07">CEPH_MSGR_TAG_MSG (0x07)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#ceph-msgr-tag-ack-0x08">CEPH_MSGR_TAG_ACK (0x08)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#ceph-msgr-tag-keepalive-0x09">CEPH_MSGR_TAG_KEEPALIVE (0x09)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#ceph-msgr-tag-keepalive2-0x0e">CEPH_MSGR_TAG_KEEPALIVE2 (0x0E)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html#ceph-msgr-tag-keepalive2-ack-0x0f">CEPH_MSGR_TAG_KEEPALIVE2_ACK (0x0F)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="peering.html">Peering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="peering.html#concepts">Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="peering.html#description-of-the-peering-process">Description of the Peering Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="peering.html#generate-a-state-model">Generate a State Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="perf.html">Using perf</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="perf.html#common-issues">Common Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf.html#flamegraphs">Flamegraphs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="perf_counters.html">Perf counters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="perf_counters.html#access">Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_counters.html#collections">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_counters.html#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_counters.html#dump">Dump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_counters.html#labeled-perf-counters">Labeled Perf Counters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="perf_histograms.html">Perf histograms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="perf_histograms.html#access">Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_histograms.html#collections">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_histograms.html#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_histograms.html#dump">Dump</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="placement-group.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement-group.html#mapping-algorithm-simplified">Mapping algorithm (simplified)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement-group.html#user-visible-pg-states">User-visible PG States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement-group.html#omap-statistics">OMAP STATISTICS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quick_guide.html#development">Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_guide.html#running-a-development-deployment">Running a development deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_guide.html#resetting-your-vstart-environment">Resetting your vstart environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_guide.html#running-a-radosgw-development-environment">Running a RadosGW development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_guide.html#run-unit-tests">Run unit tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rados-client-protocol.html#basics">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rados-client-protocol.html#resends">Resends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rados-client-protocol.html#backoff">Backoff</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#header">Header</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#metadata-records">Metadata records</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#from-snap">From snap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#to-snap">To snap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#size">Size</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#data-records">Data Records</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#updated-data">Updated data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#zero-data">Zero data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#final-record">Final Record</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#end">End</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#id1">Header</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#id2">Metadata records</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#id3">From snap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#id4">To snap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#id5">Size</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#id6">Data Records</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#id7">Updated data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#id8">Zero data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-diff.html#id9">Final Record</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html#id10">End</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rbd-export.html#header">Header</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-export.html#metadata-records">Metadata records</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#image-order">Image order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#image-format">Image format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#image-features">Image Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#image-stripe-unit">Image Stripe unit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#image-stripe-count">Image Stripe count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#imagemeta-key-and-value">ImageMeta Key and Value</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-export.html#final-record">Final Record</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#end">End</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-export.html#diffs-records">Diffs records</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#snap-protection-status">Snap Protection status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html#others">Others</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rbd-layering.html">RBD Layering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rbd-layering.html#command-line-interface">Command line interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-layering.html#implementation">Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#data-flow">Data Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#parent-child-relationships">Parent/Child relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#protection">Protection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#resizing">Resizing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#renaming">Renaming</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rbd-layering.html#header-changes">Header changes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#cls-rbd">cls_rbd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html#librbd">librbd</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-checklists.html">Release checklists</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release-checklists.html#dev-kickoff">Dev Kickoff</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#versions-and-tags">Versions and tags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#define-release-names-and-constants">Define release names and constants</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="release-checklists.html#scripts">Scripts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="release-checklists.html#misc">Misc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#feature-bits">Feature bits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#compatsets">Compatsets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#mon">Mon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#osdmap">OSDMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#code-cleanup">Code cleanup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#qa-suite">QA suite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html#ceph-build">ceph-build</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release-checklists.html#after-dev-freeze">After dev freeze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-checklists.html#first-release-candidate">First release candidate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-checklists.html#first-stable-release">First stable release</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-process.html">Ceph Release Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html#signing-machine">Signing Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html#new-major-releases">New Major Releases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#summarized-build-process">Summarized build process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html#hotfix-release-process-deviation">Hotfix Release Process Deviation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html#security-release-process-deviation">Security Release Process Deviation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#preparing-the-release-branch">1. Preparing the release branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#starting-the-build">2. Starting the build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#release-notes">3. Release Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#signing-and-publishing-the-build">4. Signing and Publishing the Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#build-containers">5. Build Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process.html#announce-the-release">6. Announce the Release</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html#version-commit-pr">Version Commit PR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html#announcing">Announcing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="seastore.html">SeaStore</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="seastore.html#goals-and-basics">Goals and Basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#motivation-and-background">Motivation and background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#data-layout-basics">Data layout basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#persistent-memory">Persistent Memory</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="seastore.html#design">Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#segment-layout">Segment Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#journal-and-atomicity">Journal and Atomicity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#block-cache">Block Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#gc">GC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="seastore.html#logical-layout">Logical Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#lbamanager-btreelbamanager">LBAManager/BtreeLBAManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#transactionmanager">TransactionManager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="seastore.html#next-steps">Next Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#journal">Journal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#cache">Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#lbamanager">LBAManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#id1">GC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="seastore.html#objectstore-considerations">ObjectStore considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html#splits-merges-and-sharding">Splits, merges, and sharding</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#storing-the-key">Storing the Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#signing-messages">Signing Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#checking-signatures">Checking Signatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#adding-new-session-authentication-methods">Adding New Session Authentication Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#adding-encryption-to-sessions">Adding Encryption to Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_authentication.html#session-security-statistics">Session Security Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#build-integration-branch">build-integration-branch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="testing.html#setup">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html#using">Using</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vstart-ganesha.html#configuring-nfs-ganesha-to-export-cephfs-with-vstart">Configuring NFS Ganesha to export CephFS with vstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vstart-ganesha.html#configuring-nfs-ganesha-to-export-rgw-with-vstart">Configuring NFS Ganesha to export RGW with vstart</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="wireshark.html#using">Using</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wireshark.html#developing">Developing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/async_recovery.html">Asynchronous Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/backfill_reservation.html">Backfill Reservation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/erasure_coding.html">Erasure Coded Placement Groups</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/erasure_coding.html#glossary">Glossary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/erasure_coding.html#table-of-contents">Table of contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/erasure_coding/developer_notes.html">Developer notes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/developer_notes.html#introduction">Introduction</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/developer_notes.html#reading-and-writing-encoded-chunks-from-and-to-osds">Reading and writing encoded chunks from and to OSDs</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/developer_notes.html#erasure-code-library">Erasure code library</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/developer_notes.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/erasure_coding/jerasure.html">Jerasure plugin</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/jerasure.html#introduction">Introduction</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html">ECBackend Implementation Strategy</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#miscellaneous-initial-design-notes">Miscellaneous initial design notes</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#pgtemp-and-crush">PGTemp and Crush</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#distinguished-acting-set-positions">Distinguished acting set positions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#object-classes">Object Classes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#scrub">Scrub</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#crush">Crush</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#ecbackend">ECBackend</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#main-operation-overview">MAIN OPERATION OVERVIEW</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#whole-stripe-write">WHOLE STRIPE WRITE</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#read-modify-write">READ-MODIFY-WRITE</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#osd-object-write-and-consistency">OSD Object Write and Consistency</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#extentcache">ExtentCache</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/ecbackend.html#pipeline">Pipeline</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html">Erasure coding enhancements design document</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#objectives">Objectives</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#current-read-implementation">Current Read Implementation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#partial-reads">Partial Reads</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#current-overwrite-implementation">Current Overwrite Implementation</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#partial-overwrites">Partial Overwrites</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#parity-delta-write">Parity-delta-write</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-read-i-o">Direct Read I/O</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#distributed-processing-of-writes">Distributed processing of writes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-write-i-o">Direct Write I/O</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#larger-chunk-size">Larger chunk size</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#design">Design</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#test-tools">Test tools</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#i-o-path-changes">I/O path changes</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#avoid-unnecessary-reads-and-writes">Avoid unnecessary reads and writes</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#id1">Parity-delta-write</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-reads">Direct reads</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-writes">Direct writes</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#i-o-serialization-recovery-backfill-and-other-error-scenarios">I/O serialization, recovery/backfill and other error scenarios</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#stripe-cache">Stripe cache</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#automatically-choose-chunk-size">Automatically choose chunk size</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#deep-scrub-support">Deep scrub support</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#metadata-changes">Metadata changes</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#how-many-copies-of-metadata-are-required">How many copies of metadata are required?</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#m-1-arbitrarily-distributed-copies">M+1 arbitrarily distributed copies</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#m-1-copies-on-known-shards">M+1 copies on known shards</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#partial-writes-and-the-pg-log">Partial Writes and the PG log</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#backfill">Backfill</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#code-references">Code references</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#version-number-and-last-modification-time-for-clients">Version number and last modification time for clients</a></li>
+<li class="toctree-l7"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-write-with-metadata-updates">Direct Write with Metadata updates</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#upgrade-and-backwards-compatibility">Upgrade and backwards compatibility</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#not-under-consideration">Not under consideration</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#stories">Stories</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#test-tools-enhanced-i-o-generator-for-testing-erasure-coding">Test tools - enhanced I/O generator for testing erasure coding</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#test-tools-offline-consistency-checking-tool">Test tools - offline consistency checking tool</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#test-tools-online-consistency-checking-tool">Test tools - online consistency checking tool</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#switch-for-jerasure-to-isa-l">Switch for JErasure to ISA-L</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#sub-stripe-reads">Sub Stripe Reads</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#simple-optimizations-to-overwrite">Simple Optimizations to Overwrite</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#eliminate-unnecessary-chunk-writes-but-keep-metadata-transactions">Eliminate unnecessary chunk writes but keep metadata transactions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#avoid-zero-padding-objects-to-a-full-stripe">Avoid zero padding objects to a full stripe</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#erasure-coding-plugin-changes-to-support-distributed-partial-writes">Erasure coding plugin changes to support distributed partial writes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#erasure-coding-interface-to-allow-rados-clients-to-direct-i-os-to-osd-storing-the-data">Erasure coding interface to allow RADOS clients to direct I/Os to OSD storing the data</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#changes-to-object-info-t">Changes to object_info_t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#changes-to-pglog-and-peering-to-support-updating-a-subset-of-osds">Changes to PGLog and Peering to support updating a subset of OSDs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#change-to-selection-of-acting-primary">Change to selection of (acting) primary</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#implement-parity-delta-write-with-all-computation-on-the-primary">Implement parity-delta-write with all computation on the primary</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#upgrades-and-backwards-compatibility">Upgrades and backwards compatibility</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#changes-to-backfill-to-use-the-vector-in-object-info-t">Changes to Backfill to use the vector in object_info_t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#test-tools-offline-metadata-validation-tool">Test tools - offline metadata validation tool</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#eliminate-transactions-on-osds-not-updating-data-chunks">Eliminate transactions on OSDs not updating data chunks</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-reads-to-osds-single-chunk-only">Direct reads to OSDs (single chunk only)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-reads-to-osds-multiple-chunks">Direct reads to OSDs (multiple chunks)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#implement-distributed-parity-delta-write">Implement distributed parity-delta-write</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#test-tools-ec-error-injection-thrasher">Test tools - EC error injection thrasher</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#implement-prefetch-message-mosdecsubopprefetch-and-modify-extent-cache">Implement prefetch message MOSDEcSubOpPrefetch and modify extent cache</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#implement-sequencing-message-mosdecsubopsequence">Implement sequencing message MOSDEcSubOpSequence</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-writes-to-osd-single-chunk-only">Direct writes to OSD (single chunk only)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#direct-writes-to-osd-multiple-chunks">Direct writes to OSD (multiple chunks)</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#deep-scrub-crc">Deep scrub / CRC</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#variable-chunk-size-erasure-coding">Variable chunk size erasure coding</a></li>
+<li class="toctree-l6"><a class="reference internal" href="osd_internals/erasure_coding/enhancements.html#clay-erasure-codes">CLAY Erasure Codes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/last_epoch_started.html">last_epoch_started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/log_based_pg.html">Log Based PG</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/log_based_pg.html#background">Background</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#why-primarylogpg">Why PrimaryLogPG?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#primary-log-based-replication">Primary log-based replication</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/log_based_pg.html#replicatedbackend-ecbackend-unification-strategy">ReplicatedBackend/ECBackend unification strategy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#pgbackend">PGBackend</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/log_based_pg.html#pgbackend-interface-explanation">PGBackend Interface Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#readable-vs-degraded">Readable vs Degraded</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#client-reads">Client Reads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#scrubs">Scrubs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/log_based_pg.html#recovery">Recovery</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/manifest.html">Manifest</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#intended-usage-model">Intended Usage Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/manifest.html#rbd">RBD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/manifest.html#radosgw">RadosGW</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#status-and-future-work">Status and Future Work</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/manifest.html#cleanups">Cleanups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/manifest.html#testing">Testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/manifest.html#snapshots">Snapshots</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#data-structures">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#request-handling">Request Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#rados-interface">RADOS Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/manifest.html#ceph-dedup-tool">ceph-dedup-tool</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/map_message_handling.html">Map and PG Message handling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/map_message_handling.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/map_message_handling.html#mosdmap">MOSDMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/map_message_handling.html#mosdpgop-mosdpgsubop">MOSDPGOp/MOSDPGSubOp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/map_message_handling.html#ceph-msg-osd-op-processing">CEPH_MSG_OSD_OP processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/map_message_handling.html#peering-messages">Peering Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html">QoS Study with mClock and WPQ Schedulers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-environment">Test Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-methodology">Test Methodology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#establish-baseline-client-throughput-iops">Establish Baseline Client Throughput (IOPS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#mclock-profile-allocations">MClock Profile Allocations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#high-client-ops-default">high_client_ops(default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#balanced">balanced</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#high-recovery-ops">high_recovery_ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#custom">custom</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#recovery-test-steps">Recovery Test Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-steps-using-cbt">Test Steps(Using cbt)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#non-default-ceph-recovery-options">Non-Default Ceph Recovery Options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-results">Test Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-results-with-nvme-ssds">Test Results With NVMe SSDs</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#client-throughput-comparison">Client Throughput Comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#client-latency-comparison">Client Latency Comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#recovery-statistics-comparison">Recovery Statistics Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-results-with-hdds-wal-and-db-configured">Test Results With HDDs (WAL and dB configured)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#client-throughput-latency-comparison">Client Throughput &amp; latency Comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#id1">Recovery Statistics Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#test-results-with-hdds-no-wal-and-db-configured">Test Results With HDDs (No WAL and dB configured)</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#id2">Client Throughput &amp; latency Comparison</a></li>
+<li class="toctree-l5"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#id3">Recovery Statistics Comparison</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/mclock_wpq_cmp_study.html#key-takeaways-and-conclusion">Key Takeaways and Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/osd_overview.html">OSD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/osd_overview.html#concepts">Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/osd_overview.html#overview">Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/partial_object_recovery.html">Partial Object Recovery</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/partial_object_recovery.html#procedures-for-partial-object-recovery">Procedures for Partial Object Recovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/past_intervals.html">OSDMap Trimming and PastIntervals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/past_intervals.html#pastintervals">PastIntervals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/past_intervals.html#maintenance-and-trimming">Maintenance and Trimming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/past_intervals.html#osdmap-trimming">OSDMap Trimming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/past_intervals.html#back-to-pastintervals">Back to PastIntervals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/past_intervals.html#osdsuperblock-maps">OSDSuperblock::maps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/pg.html">PG</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/pg.html#concepts">Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/pg.html#peering-details-and-gotchas">Peering Details and Gotchas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/pg_removal.html">PG Removal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/pgpool.html">PGPool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/recovery_reservation.html">Recovery Reservation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/recovery_reservation.html#dump-reservations">Dump Reservations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/recovery_reservation.html#things-to-note">Things to Note</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/recovery_reservation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/refcount.html">Refcount</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/refcount.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/refcount.html#class-interface">Class Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/scrub.html">Scrub internals and diagnostics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/scrub.html#scrubbing-behavior-table">Scrubbing Behavior Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/scrub.html#state-variables">State variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/scrub.html#scrub-reservations">Scrub Reservations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/snaps.html">Snaps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#ondisk-structures">Ondisk Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#snap-removal">Snap Removal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#recovery">Recovery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#snapmapper">SnapMapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#split">Split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/snaps.html#clone-overlap">clone_overlap</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/stale_read.html">Preventing Stale Reads</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/stale_read.html#readable-until">readable_until</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/stale_read.html#prior-intervals">Prior Intervals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/stale_read.html#pg-laggy-state">PG “laggy” state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/stale_read.html#pg-wait-state">PG “wait” state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/stale_read.html#dead-osds">Dead OSDs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/watch_notify.html">Watch Notify</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/watch_notify.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/watch_notify.html#watch-lifecycle">Watch Lifecycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/watch_notify.html#notify-lifecycle">Notify Lifecycle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="osd_internals/wbthrottle.html">Writeback Throttle</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mds_internals/data-structures.html">MDS internal data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mds_internals/exports.html">Subtree exports</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/exports.html#normal-migration">Normal Migration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mds_internals/locking.html">Ceph MDS Locker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/locking.html#why-use-locks">Why use locks?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/locking.html#lock-types">Lock Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/locking.html#lock-classes">Lock Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/locking.html#read-write-and-exclusive-locks">Read, Write and Exclusive Locks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/locking.html#lock-states-and-lock-state-machine">Lock States and Lock State Machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/locking.html#lock-transition">Lock Transition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mds_internals/quiesce.html">MDS Quiesce Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/quiesce.html#mechanism">Mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/quiesce.html#inode-quiescelock">Inode Quiescelock</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/quiesce.html#lookups-and-exports">Lookups and Exports</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="radosgw/usage.html">Usage Design Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/usage.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html">Admin Ops Nonimplemented</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#get-object">Get Object</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#request-parameters">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#response-entities">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#special-error-responses">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#head-object">Head Object</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id1">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id2">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id3">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id4">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#get-zone-info">Get Zone Info</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id5">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id6">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id7">Special Error Responses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#example-response">Example Response</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#add-placement-pool">Add Placement Pool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id8">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id9">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id10">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id11">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#remove-placement-pool">Remove Placement Pool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id12">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id13">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id14">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id15">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#list-available-data-placement-pools">List Available Data Placement Pools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id16">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id17">Response Entities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#list-expired-garbage-collection-items">List Expired Garbage Collection Items</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id18">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id19">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id20">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id21">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#manually-processes-garbage-collection-items">Manually Processes Garbage Collection Items</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id22">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id23">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id24">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id25">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#show-log-objects">Show Log Objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id26">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id27">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id28">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#id29">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/admin/adminops_nonimplemented.html#standard-error-responses">Standard Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="radosgw/s3_compliance.html">Rados Gateway S3 API Compliance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/s3_compliance.html#naming-code-reference">Naming code reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/s3_compliance.html#common-request-headers">Common Request Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/s3_compliance.html#common-response-headers">Common Response Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/s3_compliance.html#operations-on-the-service">Operations on the Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/s3_compliance.html#operations-on-buckets">Operations on Buckets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/s3_compliance.html#operations-on-objects">Operations on Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="radosgw/bucket_index.html">Rados Bucket Index</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/bucket_index.html#consistency-guarantee">Consistency Guarantee</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/bucket_index.html#rados-object-model">Rados Object Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/bucket_index.html#sharding-and-resharding">Sharding and Resharding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/bucket_index.html#index-transaction">Index Transaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/bucket_index.html#listing">Listing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/bucket_index.html#s3-object-versioning">S3 Object Versioning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ceph-volume/plugins.html">Plugins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/plugins.html#adding-plugins">Adding Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ceph-volume/lvm.html">LVM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#tag-api">Tag API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#type"><code class="docutils literal notranslate"><span class="pre">type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#cluster-fsid"><code class="docutils literal notranslate"><span class="pre">cluster_fsid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#data-device"><code class="docutils literal notranslate"><span class="pre">data_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#data-uuid"><code class="docutils literal notranslate"><span class="pre">data_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#journal-device"><code class="docutils literal notranslate"><span class="pre">journal_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#journal-uuid"><code class="docutils literal notranslate"><span class="pre">journal_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#encrypted"><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#osd-fsid"><code class="docutils literal notranslate"><span class="pre">osd_fsid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#osd-id"><code class="docutils literal notranslate"><span class="pre">osd_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#block-device"><code class="docutils literal notranslate"><span class="pre">block_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#block-uuid"><code class="docutils literal notranslate"><span class="pre">block_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#db-device"><code class="docutils literal notranslate"><span class="pre">db_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#db-uuid"><code class="docutils literal notranslate"><span class="pre">db_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#wal-device"><code class="docutils literal notranslate"><span class="pre">wal_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#wal-uuid"><code class="docutils literal notranslate"><span class="pre">wal_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/lvm.html#vdo"><code class="docutils literal notranslate"><span class="pre">vdo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ceph-volume/zfs.html">ZFS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#tag-api">Tag API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#type"><code class="docutils literal notranslate"><span class="pre">type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#cluster-fsid"><code class="docutils literal notranslate"><span class="pre">cluster_fsid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#data-device"><code class="docutils literal notranslate"><span class="pre">data_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#data-uuid"><code class="docutils literal notranslate"><span class="pre">data_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#journal-device"><code class="docutils literal notranslate"><span class="pre">journal_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#journal-uuid"><code class="docutils literal notranslate"><span class="pre">journal_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#osd-fsid"><code class="docutils literal notranslate"><span class="pre">osd_fsid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#osd-id"><code class="docutils literal notranslate"><span class="pre">osd_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#block-device"><code class="docutils literal notranslate"><span class="pre">block_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#block-uuid"><code class="docutils literal notranslate"><span class="pre">block_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#db-device"><code class="docutils literal notranslate"><span class="pre">db_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#db-uuid"><code class="docutils literal notranslate"><span class="pre">db_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#wal-device"><code class="docutils literal notranslate"><span class="pre">wal_device</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#wal-uuid"><code class="docutils literal notranslate"><span class="pre">wal_uuid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/zfs.html#compression"><code class="docutils literal notranslate"><span class="pre">compression</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ceph-volume/systemd.html">systemd</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="crimson/crimson.html">Crimson</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#building-crimson">Building Crimson</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#testing-crimson-with-cephadm">Testing crimson with cephadm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#configure-crimson-with-bluestore">Configure Crimson with Bluestore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#running-crimson">Running Crimson</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#enabling-crimson">Enabling Crimson</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#vstart-sh">vstart.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#object-store-backend">Object Store Backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#daemonize">daemonize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#logging">logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#pg-stats-reported-to-mgr">PG stats reported to mgr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#asock-command">Asock command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#prometheus-text-protocol">Prometheus text protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#profiling-crimson">Profiling Crimson</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#fio">Fio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#cbt">CBT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#hacking-crimson">Hacking Crimson</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#seastar-documents">Seastar Documents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#debugging-crimson">Debugging Crimson</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#debugging-with-gdb">Debugging with GDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/crimson.html#human-readable-backtraces-with-addr2line">Human-readable backtraces with addr2line</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/crimson.html#code-walkthroughs">Code Walkthroughs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="crimson/osd.html">OSDState</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crimson/pipeline.html">The ClientRequest Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crimson/error-handling.html">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crimson/backfillmachine.html">BackfillMachine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crimson/poseidonstore.html">PoseidonStore</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="crimson/poseidonstore.html#key-concepts-and-goals">Key concepts and goals</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#background">Background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#motivation-and-key-idea">Motivation and Key idea</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#observation">Observation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/poseidonstore.html#design">Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#i-o-procedure">I/O procedure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#crash-consistency">Crash consistency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#comparison">Comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/poseidonstore.html#detailed-design">Detailed Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#wal">WAL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#partition-and-reactor-thread">Partition and Reactor thread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#cache">Cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#sharded-partitions-with-cross-sp-transaction">Sharded partitions (with cross-SP transaction)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="crimson/poseidonstore.html#cow-clone">CoW/Clone</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/poseidonstore.html#plans">Plans</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+---></section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="developer_guide/debugging-gdb.html" class="btn btn-neutral float-left" title="GDB - The GNU Project Debugger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="balancer-design.html" class="btn btn-neutral float-right" title="Balancing in Ceph" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

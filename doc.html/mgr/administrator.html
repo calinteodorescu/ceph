@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ceph-mgr administrator’s guide &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ceph-mgr module developer’s guide" href="modules.html" />
+    <link rel="prev" title="Ceph Manager Daemon" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Manager Daemon</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installation and Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#manual-setup">Manual setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#client-authentication">Client authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#high-availability">High availability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-and-scalability">Performance and Scalability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-modules">Using modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pool">Module Pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calling-module-commands">Calling module commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Writing modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestrator_modules.html">Writing orchestrator plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard.html">Dashboard module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ceph_api/index.html">Ceph RESTful API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alerts.html">Alerts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diskprediction.html">DiskPrediction module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="localpool.html">Local pool module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="influx.html">Influx module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello.html">Hello module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telegraf.html">Telegraf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry.html">Telemetry module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iostat.html">Iostat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crash.html">Crash module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="insights.html">Insights module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestrator.html">Orchestrator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rook.html">Rook module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw.html">RGW module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mds_autoscaler.html">MDS Autoscaler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">NFS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smb.html">SMB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="progress.html">Progress Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_api.html">CLI API Commands module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Manager Daemon</a></li>
+      <li class="breadcrumb-item active">ceph-mgr administrator’s guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/mgr/administrator.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-mgr-administrator-s-guide">
+<span id="mgr-administrator-guide"></span><h1>ceph-mgr administrator’s guide<a class="headerlink" href="#ceph-mgr-administrator-s-guide" title="Link to this heading"></a></h1>
+<section id="manual-setup">
+<h2>Manual setup<a class="headerlink" href="#manual-setup" title="Link to this heading"></a></h2>
+<p>Usually, you would set up a ceph-mgr daemon using a tool such
+as ceph-ansible.  These instructions describe how to set up
+a ceph-mgr daemon manually.</p>
+<p>First, create an authentication key for your daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="sb">``</span>ceph<span class="w"> </span>auth<span class="w"> </span>get-or-create<span class="w"> </span>mgr.<span class="nv">$name</span><span class="w"> </span>mon<span class="w"> </span><span class="s1">&#39;allow profile mgr&#39;</span><span class="w"> </span>osd<span class="w"> </span><span class="s1">&#39;allow *&#39;</span><span class="w"> </span>mds<span class="w"> </span><span class="s1">&#39;allow *&#39;</span><span class="sb">``</span></span>
+</pre></div></div><p>Place that key as file named <code class="docutils literal notranslate"><span class="pre">keyring</span></code> into <code class="docutils literal notranslate"><span class="pre">mgr</span> <span class="pre">data</span></code> path, which for a
+cluster “ceph” and mgr $name “foo” would be <code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/mgr/ceph-foo</span></code>
+respective <code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/mgr/ceph-foo/keyring</span></code>.</p>
+<p>Start the ceph-mgr daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-mgr<span class="w"> </span>-i<span class="w"> </span><span class="nv">$name</span></span>
+</pre></div></div><p>Check that the mgr has come up by looking at the output of <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">status</span></code>,
+which should now include a mgr status line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mgr active: $name
+</pre></div>
+</div>
+</section>
+<section id="client-authentication">
+<h2>Client authentication<a class="headerlink" href="#client-authentication" title="Link to this heading"></a></h2>
+<p>The manager is a new daemon which requires new CephX capabilities. If you
+upgrade a cluster from an old version of Ceph, or use the default
+install/deploy tools, your admin client should get this capability
+automatically. If you use tooling from elsewhere, you may get EACCES errors
+when invoking certain ceph cluster commands.  To fix that, add a <code class="docutils literal notranslate"><span class="pre">mgr</span> <span class="pre">allow</span>
+<span class="pre">\*</span></code> stanza to your client’s cephx capabilities by <a class="reference external" href="../../rados/operations/user-management/#modify-user-capabilities">Modifying User
+Capabilities</a>.</p>
+</section>
+<section id="high-availability">
+<h2>High availability<a class="headerlink" href="#high-availability" title="Link to this heading"></a></h2>
+<p>In general, you should set up a ceph-mgr on each of the hosts
+running a ceph-mon daemon to achieve the same level of availability.</p>
+<p>By default, whichever ceph-mgr instance comes up first will be made
+active by the monitors, and the others will be standbys.  There is
+no requirement for quorum among the ceph-mgr daemons.</p>
+<p>If the active daemon fails to send a beacon to the monitors for
+more than <a class="reference internal" href="#confval-mon_mgr_beacon_grace"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_mgr_beacon_grace</span></code></a>, then it will be replaced
+by a standby.</p>
+<p>If you want to preempt failover, you can explicitly mark a ceph-mgr
+daemon as failed using <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">fail</span> <span class="pre">&lt;mgr</span> <span class="pre">name&gt;</span></code>.</p>
+</section>
+<section id="performance-and-scalability">
+<h2>Performance and Scalability<a class="headerlink" href="#performance-and-scalability" title="Link to this heading"></a></h2>
+<p>All the mgr modules share a cache that can be enabled with
+<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">mgr</span> <span class="pre">mgr_ttl_cache_expire_seconds</span> <span class="pre">&lt;seconds&gt;</span></code>, where seconds
+is the time to live of the cached python objects.</p>
+<p>It is recommended to enable the cache with a 10 seconds TTL when there are 500+
+osds or 10k+ pgs as internal structures might increase in size, and cause latency
+issues when requesting large structures. As an example, an OSDMap with 1000 osds
+has a approximate size of 4MiB. With heavy load, on a 3000 osd cluster there has
+been a 1.5x improvement enabling the cache.</p>
+<p>Furthermore, you can run <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">daemon</span> <span class="pre">mgr.${MGRNAME}</span> <span class="pre">perf</span> <span class="pre">dump</span></code> to retrieve
+perf counters of a mgr module. In <code class="docutils literal notranslate"><span class="pre">mgr.cache_hit</span></code> and <code class="docutils literal notranslate"><span class="pre">mgr.cache_miss</span></code>
+you’ll find the hit/miss ratio of the mgr cache.</p>
+</section>
+<section id="using-modules">
+<h2>Using modules<a class="headerlink" href="#using-modules" title="Link to this heading"></a></h2>
+<p>Use the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">module</span> <span class="pre">ls</span></code> to see which modules are available, and
+which are currently enabled. Use <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">module</span> <span class="pre">ls</span> <span class="pre">--format=json-pretty</span></code> to
+view detailed metadata about disabled modules. Enable or disable modules using
+the commands <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">module</span> <span class="pre">enable</span> <span class="pre">&lt;module&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">module</span> <span class="pre">disable</span>
+<span class="pre">&lt;module&gt;</span></code> respectively.</p>
+<p>If a module is <em>enabled</em> then the active ceph-mgr daemon will load and execute
+it.  In the case of modules that provide a service, such as an HTTP server, the
+module may publish its address when it is loaded.  To see the addresses of such
+modules, use the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mgr</span> <span class="pre">services</span></code>.</p>
+<p>Some modules may also implement a special standby mode which runs on standby
+ceph-mgr daemons as well as the active daemon.  This enables modules that
+provide services to redirect their clients to the active daemon, if the client
+tries to connect to a standby.</p>
+<p>Consult the documentation pages for individual manager modules for more
+information about what functionality each module provides.</p>
+<p>Here is an example of enabling the <a class="reference internal" href="../glossary.html#term-Dashboard"><span class="xref std std-term">Dashboard</span></a> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mgr<span class="w"> </span>module<span class="w"> </span>ls</span>
+</pre></div></div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">        &quot;enabled_modules&quot;: [</span>
+<span class="go">                &quot;status&quot;</span>
+<span class="go">        ],</span>
+<span class="go">        &quot;disabled_modules&quot;: [</span>
+<span class="go">                &quot;dashboard&quot;</span>
+<span class="go">        ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mgr<span class="w"> </span>module<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>dashboard</span>
+<span class="prompt2">ceph<span class="w"> </span>mgr<span class="w"> </span>module<span class="w"> </span>ls</span>
+</pre></div></div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">        &quot;enabled_modules&quot;: [</span>
+<span class="go">                &quot;status&quot;,</span>
+<span class="go">                &quot;dashboard&quot;</span>
+<span class="go">        ],</span>
+<span class="go">        &quot;disabled_modules&quot;: [</span>
+<span class="go">        ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>mgr<span class="w"> </span>services</span>
+</pre></div></div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">        &quot;dashboard&quot;: &quot;http://myserver.com:7789/&quot;</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>The first time the cluster starts, it uses the <a class="reference internal" href="#confval-mgr_initial_modules"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mgr_initial_modules</span></code></a>
+setting to override which modules to enable.  However, this setting is ignored
+through the rest of the lifetime of the cluster: only use it for bootstrapping.
+For example, before starting your monitor daemons for the first time, you might
+add a section like this to your <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code>:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[mon]</span>
+<span class="w">    </span><span class="na">mgr_initial_modules</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">dashboard balancer</span>
+</pre></div>
+</div>
+</section>
+<section id="module-pool">
+<h2>Module Pool<a class="headerlink" href="#module-pool" title="Link to this heading"></a></h2>
+<p>The manager creates a pool for use by its module to store state. The name of
+this pool is <code class="docutils literal notranslate"><span class="pre">.mgr</span></code> (with the leading <code class="docutils literal notranslate"><span class="pre">.</span></code> indicating a reserved pool
+name).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prior to Quincy, the <code class="docutils literal notranslate"><span class="pre">devicehealth</span></code> module created a
+<code class="docutils literal notranslate"><span class="pre">device_health_metrics</span></code> pool to store device SMART statistics. With
+Quincy, this pool is automatically renamed to be the common manager module
+pool.</p>
+</div>
+</section>
+<section id="calling-module-commands">
+<h2>Calling module commands<a class="headerlink" href="#calling-module-commands" title="Link to this heading"></a></h2>
+<p>Where a module implements command line hooks, the commands will
+be accessible as ordinary Ceph commands.  Ceph will automatically incorporate
+module commands into the standard CLI interface and route them appropriately to
+the module.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>&lt;<span class="nb">command</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>help&gt;</span>
+</pre></div></div></section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mgr_module_path">
+<span class="sig-name descname"><span class="pre">mgr_module_path</span></span><a class="headerlink" href="#confval-mgr_module_path" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Path to load modules from</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mgr_initial_modules">
+<span class="sig-name descname"><span class="pre">mgr_initial_modules</span></span><a class="headerlink" href="#confval-mgr_initial_modules" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This list of module names is read by the monitor when the cluster is
+first started after installation, to populate the list of enabled
+manager modules.  Subsequent updates are done using the ‘mgr module
+[enable|disable]’ commands.  List may be comma or space separated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">iostat</span> <span class="pre">nfs</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mgr_disabled_modules">
+<span class="sig-name descname"><span class="pre">mgr_disabled_modules</span></span><a class="headerlink" href="#confval-mgr_disabled_modules" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>A comma delimited list of module names. This list is read by manager
+when it starts. By default, manager loads all modules found in
+specified ‘mgr_module_path’, and it starts the enabled ones as
+instructed. The modules in this list will not be loaded at all.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-mgr_module_path"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mgr_module_path</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mgr_standby_modules">
+<span class="sig-name descname"><span class="pre">mgr_standby_modules</span></span><a class="headerlink" href="#confval-mgr_standby_modules" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>By default, the standby modules will answer incoming requests with a
+HTTP redirect to the active manager, allowing users to point their
+browser at any mgr node and find their way to an active mgr.  However,
+this mode is problematic when using a load balancer because (1) the
+redirect locations are usually private IPs and (2) the load balancer
+can’t identify which mgr is the right one to send traffic to. If a
+load balancer is being used, set this to false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mgr_data">
+<span class="sig-name descname"><span class="pre">mgr_data</span></span><a class="headerlink" href="#confval-mgr_data" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Path to load daemon data (such as keyring)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/mgr/$cluster-$id</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mgr_tick_period">
+<span class="sig-name descname"><span class="pre">mgr_tick_period</span></span><a class="headerlink" href="#confval-mgr_tick_period" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How many seconds between mgr beacons to monitors, and other periodic
+checks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_mgr_beacon_grace">
+<span class="sig-name descname"><span class="pre">mon_mgr_beacon_grace</span></span><a class="headerlink" href="#confval-mon_mgr_beacon_grace" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Period in seconds from last beacon to monitor marking a manager daemon
+as failed</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Ceph Manager Daemon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="ceph-mgr module developer’s guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

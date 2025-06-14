@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CephFS Distributed Metadata Cache &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CephFS Dynamic Metadata Management" href="dynamic-metadata-management.html" />
+    <link rel="prev" title="File layouts" href="file-layouts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mds-states.html"> MDS States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posix.html"> POSIX compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds-journaling.html"> MDS Journaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-layouts.html"> File layouts</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Distributed Metadata Cache</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#client-metadata-requests">Client Metadata Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distributed-locks-in-an-mds-cluster">Distributed Locks in an MDS Cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dynamic-metadata-management.html"> Dynamic Metadata Management in CephFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-io-path.html"> CephFS IO Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="charmap.html"> Case Sensitivity and Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazyio.html"> LazyIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dirfrags.html"> Directory fragmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multimds.html"> Multiple active MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snapshots.html"> Snapshots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">CephFS Distributed Metadata Cache</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/mdcache.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="cephfs-distributed-metadata-cache">
+<h1>CephFS Distributed Metadata Cache<a class="headerlink" href="#cephfs-distributed-metadata-cache" title="Link to this heading"></a></h1>
+<p>While the data for inodes in a Ceph file system is stored in RADOS and
+accessed by the clients directly, inode metadata and directory
+information is managed by the Ceph metadata server (MDS). The MDS’s
+act as mediator for all metadata related activity, storing the resulting
+information in a separate RADOS pool from the file data.</p>
+<p>CephFS clients can request that the MDS fetch or change inode metadata
+on its behalf, but an MDS can also grant the client <strong>capabilities</strong>
+(aka <strong>caps</strong>) for each inode (see <a class="reference internal" href="capabilities.html"><span class="doc">Capabilities in CephFS</span></a>).</p>
+<p>A capability grants the client the ability to cache and possibly
+manipulate some portion of the data or metadata associated with the
+inode. When another client needs access to the same information, the MDS
+will revoke the capability and the client will eventually return it,
+along with an updated version of the inode’s metadata (in the event that
+it made changes to it while it held the capability).</p>
+<p>Clients can request capabilities and will generally get them, but when
+there is competing access or memory pressure on the MDS, they may be
+<strong>revoked</strong>. When a capability is revoked, the client is responsible for
+returning it as soon as it is able. Clients that fail to do so in a
+timely fashion may end up <strong>blocklisted</strong> and unable to communicate with
+the cluster.</p>
+<p>Since the cache is distributed, the MDS must take great care to ensure
+that no client holds capabilities that may conflict with other clients’
+capabilities, or operations that it does itself. This allows cephfs
+clients to rely on much greater cache coherence than a filesystem like
+NFS, where the client may cache data and metadata beyond the point where
+it has changed on the server.</p>
+<section id="client-metadata-requests">
+<h2>Client Metadata Requests<a class="headerlink" href="#client-metadata-requests" title="Link to this heading"></a></h2>
+<p>When a client needs to query/change inode metadata or perform an
+operation on a directory, it has two options. It can make a request to
+the MDS directly, or serve the information out of its cache. With
+CephFS, the latter is only possible if the client has the necessary
+caps.</p>
+<p>Clients can send simple requests to the MDS to query or request changes
+to certain metadata. The replies to these requests may also grant the
+client a certain set of caps for the inode, allowing it to perform
+subsequent requests without consulting the MDS.</p>
+<p>Clients can also request caps directly from the MDS, which is necessary
+in order to read or write file data.</p>
+</section>
+<section id="distributed-locks-in-an-mds-cluster">
+<h2>Distributed Locks in an MDS Cluster<a class="headerlink" href="#distributed-locks-in-an-mds-cluster" title="Link to this heading"></a></h2>
+<p>When an MDS wants to read or change information about an inode, it must
+gather the appropriate locks for it. The MDS cluster may have a series
+of different types of locks on the given inode and each MDS may have
+disjoint sets of locks.</p>
+<p>If there are outstanding caps that would conflict with these locks, then
+they must be revoked before the lock can be acquired. Once the competing
+caps are returned to the MDS, then it can get the locks and do the
+operation.</p>
+<p>On a filesystem served by multiple MDS’, the metadata cache is also
+distributed among the MDS’ in the cluster. For every inode, at any given
+time, only one MDS in the cluster is considered <strong>authoritative</strong>. Any
+requests to change that inode must be done by the authoritative MDS,
+though non-authoritative MDS can forward requests to the authoritative
+one.</p>
+<p>Non-auth MDS’ can also obtain read locks that prevent the auth MDS from
+changing the data until the lock is dropped, so that they can serve
+inode info to the clients.</p>
+<p>The auth MDS for an inode can change over time as well. The MDS’ will
+actively balance responsibility for the inode cache amongst
+themselves, but this can be overridden by <strong>pinning</strong> certain subtrees
+to a single MDS.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="file-layouts.html" class="btn btn-neutral float-left" title="File layouts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dynamic-metadata-management.html" class="btn btn-neutral float-right" title="CephFS Dynamic Metadata Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor Config Reference &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Looking up Monitors through DNS" href="mon-lookup-dns.html" />
+    <link rel="prev" title="CephX Config Reference" href="auth-config-ref.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="storage-devices.html">Storage devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">Configuring Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html">Common Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#networks">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#temporary-directory">Temporary Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#monitors">Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#osds">OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#heartbeats">Heartbeats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#logs-debugging">Logs / Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#example-ceph-conf">Example ceph.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#naming-clusters-deprecated">Naming Clusters (deprecated)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-config-ref.html">Network Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">Messenger v2 protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth-config-ref.html">Auth Settings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Monitor Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-monitors">Configuring Monitors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pool-settings">Pool settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mon-lookup-dns.html">Looking up Monitors through DNS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osd-interaction.html">Heartbeat Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-config-ref.html">OSD Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mclock-config-ref.html">DmClock Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-config-ref.html">BlueStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="filestore-config-ref.html">FileStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="journal-ref.html">Journal Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pool-pg-config-ref.html">Pool, PG &amp; CRUSH Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-config-ref.html">General Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Monitor Config Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/configuration/mon-config-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="monitor-config-reference">
+<span id="id1"></span><h1>Monitor Config Reference<a class="headerlink" href="#monitor-config-reference" title="Link to this heading"></a></h1>
+<p>Understanding how to configure a <a class="reference internal" href="../../glossary.html#term-Ceph-Monitor"><span class="xref std std-term">Ceph Monitor</span></a> is an important part of
+building a reliable <a class="reference internal" href="../../glossary.html#term-Ceph-Storage-Cluster"><span class="xref std std-term">Ceph Storage Cluster</span></a>. <strong>All Ceph Storage Clusters
+have at least one monitor</strong>. The monitor complement usually remains fairly
+consistent, but you can add, remove or replace a monitor in a cluster. See
+<a class="reference external" href="../../operations/add-or-rm-mons">Adding/Removing a Monitor</a> for details.</p>
+<section id="background">
+<span id="index-0"></span><h2>Background<a class="headerlink" href="#background" title="Link to this heading"></a></h2>
+<p>Ceph Monitors maintain a “master copy” of the <a class="reference internal" href="../../glossary.html#term-Cluster-Map"><span class="xref std std-term">Cluster Map</span></a>.</p>
+<p>The <a class="reference internal" href="../../glossary.html#term-Cluster-Map"><span class="xref std std-term">Cluster Map</span></a> makes it possible for <a class="reference internal" href="../../glossary.html#term-Ceph-Client"><span class="xref std std-term">Ceph client</span></a>s to
+determine the location of all Ceph Monitors, Ceph OSD Daemons, and Ceph
+Metadata Servers. Clients do this by connecting to one Ceph Monitor and
+retrieving a current cluster map. Ceph clients must connect to a Ceph Monitor
+before they can read from or write to Ceph OSD Daemons or Ceph Metadata
+Servers. A Ceph client that has a current copy of the cluster map and the CRUSH
+algorithm can compute the location of any RADOS object within the cluster. This
+makes it possible for Ceph clients to talk directly to Ceph OSD Daemons. Direct
+communication between clients and Ceph OSD Daemons improves upon traditional
+storage architectures that required clients to communicate with a central
+component.  See <a class="reference external" href="../../../architecture#scalability-and-high-availability">Scalability and High Availability</a> for more on this subject.</p>
+<p>The Ceph Monitor’s primary function is to maintain a master copy of the cluster
+map. Monitors also provide authentication and logging services. All changes in
+the monitor services are written by the Ceph Monitor to a single Paxos
+instance, and Paxos writes the changes to a key/value store. This provides
+strong consistency. Ceph Monitors are able to query the most recent version of
+the cluster map during sync operations, and they use the key/value store’s
+snapshots and iterators (using RocksDB) to perform store-wide synchronization.</p>
+<section id="cluster-maps">
+<span id="index-1"></span><h3>Cluster Maps<a class="headerlink" href="#cluster-maps" title="Link to this heading"></a></h3>
+<p>The cluster map is a composite of maps, including the monitor map, the OSD map,
+the placement group map and the metadata server map. The cluster map tracks a
+number of important things: which processes are <code class="docutils literal notranslate"><span class="pre">in</span></code> the Ceph Storage Cluster;
+which processes that are <code class="docutils literal notranslate"><span class="pre">in</span></code> the Ceph Storage Cluster are <code class="docutils literal notranslate"><span class="pre">up</span></code> and running
+or <code class="docutils literal notranslate"><span class="pre">down</span></code>; whether, the placement groups are <code class="docutils literal notranslate"><span class="pre">active</span></code> or <code class="docutils literal notranslate"><span class="pre">inactive</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">clean</span></code> or in some other state; and, other details that reflect the current
+state of the cluster such as the total amount of storage space, and the amount
+of storage used.</p>
+<p>When there is a significant change in the state of the cluster--e.g., a Ceph OSD
+Daemon goes down, a placement group falls into a degraded state, etc.--the
+cluster map gets updated to reflect the current state of the cluster.
+Additionally, the Ceph Monitor also maintains a history of the prior states of
+the cluster. The monitor map, OSD map, placement group map and metadata server
+map each maintain a history of their map versions. We call each version an
+“epoch.”</p>
+<p>When operating your Ceph Storage Cluster, keeping track of these states is an
+important part of your system administration duties. See <a class="reference external" href="../../operations/monitoring">Monitoring a Cluster</a>
+and <a class="reference external" href="../../operations/monitoring-osd-pg">Monitoring OSDs and PGs</a> for additional details.</p>
+</section>
+<section id="monitor-quorum">
+<span id="index-2"></span><h3>Monitor Quorum<a class="headerlink" href="#monitor-quorum" title="Link to this heading"></a></h3>
+<p>Our Configuring ceph section provides a trivial <a class="reference external" href="../ceph-conf/#monitors">Ceph configuration file</a> that
+provides for one monitor in the test cluster. A cluster will run fine with a
+single monitor; however, <strong>a single monitor is a single-point-of-failure</strong>. To
+ensure high availability in a production Ceph Storage Cluster, you should run
+Ceph with multiple monitors so that the failure of a single monitor <strong>WILL NOT</strong>
+bring down your entire cluster.</p>
+<p>When a Ceph Storage Cluster runs multiple Ceph Monitors for high availability,
+Ceph Monitors use <a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a> to establish consensus about the master cluster map.
+A consensus requires a majority of monitors running to establish a quorum for
+consensus about the cluster map (e.g., 1; 2 out of 3; 3 out of 5; 4 out of 6;
+etc.).</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_force_quorum_join">
+<span class="sig-name descname"><span class="pre">mon_force_quorum_join</span></span><a class="headerlink" href="#confval-mon_force_quorum_join" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Force monitor to join quorum even if it has been previously removed
+from the map</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="consistency">
+<span id="index-3"></span><h3>Consistency<a class="headerlink" href="#consistency" title="Link to this heading"></a></h3>
+<p>When you add monitor settings to your Ceph configuration file, you need to be
+aware of some of the architectural aspects of Ceph Monitors. <strong>Ceph imposes
+strict consistency requirements</strong> for a Ceph monitor when discovering another
+Ceph Monitor within the cluster. Although Ceph Clients and other Ceph daemons
+use the Ceph configuration file to discover monitors, monitors discover each
+other using the monitor map (monmap), not the Ceph configuration file.</p>
+<p>A Ceph Monitor always refers to the local copy of the monmap when discovering
+other Ceph Monitors in the Ceph Storage Cluster. Using the monmap instead of the
+Ceph configuration file avoids errors that could break the cluster (e.g., typos
+in <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> when specifying a monitor address or port). Since monitors use
+monmaps for discovery and they share monmaps with clients and other Ceph
+daemons, <strong>the monmap provides monitors with a strict guarantee that their
+consensus is valid.</strong></p>
+<p>Strict consistency also applies to updates to the monmap. As with any other
+updates on the Ceph Monitor, changes to the monmap always run through a
+distributed consensus algorithm called <a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a>. The Ceph Monitors must agree on
+each update to the monmap, such as adding or removing a Ceph Monitor, to ensure
+that each monitor in the quorum has the same version of the monmap. Updates to
+the monmap are incremental so that Ceph Monitors have the latest agreed upon
+version, and a set of previous versions. Maintaining a history enables a Ceph
+Monitor that has an older version of the monmap to catch up with the current
+state of the Ceph Storage Cluster.</p>
+<p>If Ceph Monitors were to discover each other through the Ceph configuration file
+instead of through the monmap, additional risks would be introduced because
+Ceph configuration files are not updated and distributed automatically. Ceph
+Monitors might inadvertently use an older Ceph configuration file, fail to
+recognize a Ceph Monitor, fall out of a quorum, or develop a situation where
+<a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a> is not able to determine the current state of the system accurately.</p>
+</section>
+<section id="bootstrapping-monitors">
+<span id="index-4"></span><h3>Bootstrapping Monitors<a class="headerlink" href="#bootstrapping-monitors" title="Link to this heading"></a></h3>
+<p>In most configuration and deployment cases, tools that deploy Ceph help
+bootstrap the Ceph Monitors by generating a monitor map for you (e.g.,
+<code class="docutils literal notranslate"><span class="pre">cephadm</span></code>, etc). A Ceph Monitor requires a few explicit
+settings:</p>
+<ul class="simple">
+<li><p><strong>Filesystem ID</strong>: The <code class="docutils literal notranslate"><span class="pre">fsid</span></code> is the unique identifier for your
+object store. Since you can run multiple clusters on the same
+hardware, you must specify the unique ID of the object store when
+bootstrapping a monitor.  Deployment tools usually do this for you
+(e.g., <code class="docutils literal notranslate"><span class="pre">cephadm</span></code> can call a tool like <code class="docutils literal notranslate"><span class="pre">uuidgen</span></code>), but you
+may specify the <code class="docutils literal notranslate"><span class="pre">fsid</span></code> manually too.</p></li>
+<li><p><strong>Monitor ID</strong>: A monitor ID is a unique ID assigned to each monitor within
+the cluster. It is an alphanumeric value, and by convention the identifier
+usually follows an alphabetical increment (e.g., <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, etc.). This
+can be set in a Ceph configuration file (e.g., <code class="docutils literal notranslate"><span class="pre">[mon.a]</span></code>, <code class="docutils literal notranslate"><span class="pre">[mon.b]</span></code>, etc.),
+by a deployment tool, or using the <code class="docutils literal notranslate"><span class="pre">ceph</span></code> commandline.</p></li>
+<li><p><strong>Keys</strong>: The monitor must have secret keys. A deployment tool such as
+<code class="docutils literal notranslate"><span class="pre">cephadm</span></code> usually does this for you, but you may
+perform this step manually too. See <a class="reference external" href="../../../dev/mon-bootstrap#secret-keys">Monitor Keyrings</a> for details.</p></li>
+</ul>
+<p>For additional details on bootstrapping, see <a class="reference external" href="../../../dev/mon-bootstrap">Bootstrapping a Monitor</a>.</p>
+</section>
+</section>
+<section id="configuring-monitors">
+<span id="index-5"></span><h2>Configuring Monitors<a class="headerlink" href="#configuring-monitors" title="Link to this heading"></a></h2>
+<p>To apply configuration settings to the entire cluster, enter the configuration
+settings under <code class="docutils literal notranslate"><span class="pre">[global]</span></code>. To apply configuration settings to all monitors in
+your cluster, enter the configuration settings under <code class="docutils literal notranslate"><span class="pre">[mon]</span></code>. To apply
+configuration settings to specific monitors, specify the monitor instance
+(e.g., <code class="docutils literal notranslate"><span class="pre">[mon.a]</span></code>). By convention, monitor instance names use alpha notation.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[global]</span>
+
+<span class="k">[mon]</span>
+
+<span class="k">[mon.a]</span>
+
+<span class="k">[mon.b]</span>
+
+<span class="k">[mon.c]</span>
+</pre></div>
+</div>
+<section id="minimum-configuration">
+<h3>Minimum Configuration<a class="headerlink" href="#minimum-configuration" title="Link to this heading"></a></h3>
+<p>The bare minimum monitor settings for a Ceph monitor via the Ceph configuration
+file include a hostname and a network address for each monitor. You can configure
+these under <code class="docutils literal notranslate"><span class="pre">[mon]</span></code> or under the entry for a specific monitor.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[global]</span>
+<span class="w">        </span><span class="na">mon_host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10.0.0.2,10.0.0.3,10.0.0.4</span>
+</pre></div>
+</div>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[mon.a]</span>
+<span class="w">        </span><span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hostname1</span>
+<span class="w">        </span><span class="na">mon_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10.0.0.10:6789</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="../network-config-ref">Network Configuration Reference</a> for details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This minimum configuration for monitors assumes that a deployment
+tool generates the <code class="docutils literal notranslate"><span class="pre">fsid</span></code> and the <code class="docutils literal notranslate"><span class="pre">mon.</span></code> key for you.</p>
+</div>
+<p>Once you deploy a Ceph cluster, you <strong>SHOULD NOT</strong> change the IP addresses of
+monitors. However, if you decide to change the monitor’s IP address, you
+must follow a specific procedure. See <a class="reference internal" href="../operations/add-or-rm-mons.html#changing-a-monitor-s-ip-address"><span class="std std-ref">Changing a Monitor’s IP Address</span></a> for
+details.</p>
+<p>Monitors can also be found by clients by using DNS SRV records. See <a class="reference external" href="../mon-lookup-dns">Monitor lookup through DNS</a> for details.</p>
+</section>
+<section id="cluster-id">
+<h3>Cluster ID<a class="headerlink" href="#cluster-id" title="Link to this heading"></a></h3>
+<p>Each Ceph Storage Cluster has a unique identifier (<code class="docutils literal notranslate"><span class="pre">fsid</span></code>). If specified, it
+usually appears under the <code class="docutils literal notranslate"><span class="pre">[global]</span></code> section of the configuration file.
+Deployment tools usually generate the <code class="docutils literal notranslate"><span class="pre">fsid</span></code> and store it in the monitor map,
+so the value may not appear in a configuration file. The <code class="docutils literal notranslate"><span class="pre">fsid</span></code> makes it
+possible to run daemons for multiple clusters on the same hardware.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-fsid">
+<span class="sig-name descname"><span class="pre">fsid</span></span><a class="headerlink" href="#confval-fsid" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The cluster ID. One per cluster. May be generated by a deployment tool
+if not specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uuid</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not set this value if you use a deployment tool that does it for you.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="initial-members">
+<span id="index-6"></span><h3>Initial Members<a class="headerlink" href="#initial-members" title="Link to this heading"></a></h3>
+<p>We recommend running a production Ceph Storage Cluster with at least three Ceph
+Monitors to ensure high availability. When you run multiple monitors, you may
+specify the initial monitors that must be members of the cluster in order to
+establish a quorum. This may reduce the time it takes for your cluster to come
+online.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[mon]</span>
+<span class="w">        </span><span class="na">mon_initial_members</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">a,b,c</span>
+</pre></div>
+</div>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_initial_members">
+<span class="sig-name descname"><span class="pre">mon_initial_members</span></span><a class="headerlink" href="#confval-mon_initial_members" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The IDs of initial monitors in a cluster during startup. If specified,
+Ceph requires an odd number of monitors to form an initial quorum
+(e.g., 3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <em>majority</em> of monitors in your cluster must be able to reach each other in order to establish a quorum. You can decrease the initial number of monitors to establish a quorum with this setting.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="data">
+<span id="index-7"></span><h3>Data<a class="headerlink" href="#data" title="Link to this heading"></a></h3>
+<p>Ceph provides a default path where Ceph Monitors store data. For optimal
+performance in a production Ceph Storage Cluster, we recommend running Ceph
+Monitors on separate hosts and drives from Ceph OSD Daemons. As RocksDB uses
+<code class="docutils literal notranslate"><span class="pre">mmap()</span></code> for writing the data, Ceph Monitors flush their data from memory to disk
+very often, which can interfere with Ceph OSD Daemon workloads if the data
+store is co-located with the OSD Daemons.</p>
+<p>In Ceph versions 0.58 and earlier, Ceph Monitors store their data in plain files. This
+approach allows users to inspect monitor data with common tools like <code class="docutils literal notranslate"><span class="pre">ls</span></code>
+and <code class="docutils literal notranslate"><span class="pre">cat</span></code>. However, this approach didn’t provide strong consistency.</p>
+<p>In Ceph versions 0.59 and later, Ceph Monitors store their data as key/value
+pairs. Ceph Monitors require <a class="reference external" href="https://en.wikipedia.org/wiki/ACID">ACID</a> transactions. Using a data store prevents
+recovering Ceph Monitors from running corrupted versions through Paxos, and it
+enables multiple modification operations in one single atomic batch, among other
+advantages.</p>
+<p>Generally, we do not recommend changing the default data location. If you modify
+the default location, we recommend that you make it uniform across Ceph Monitors
+by setting it in the <code class="docutils literal notranslate"><span class="pre">[mon]</span></code> section of the configuration file.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_data">
+<span class="sig-name descname"><span class="pre">mon_data</span></span><a class="headerlink" href="#confval-mon_data" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The monitor’s data location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/mon/$cluster-$id</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_data_size_warn">
+<span class="sig-name descname"><span class="pre">mon_data_size_warn</span></span><a class="headerlink" href="#confval-mon_data_size_warn" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> status when a monitor’s data store grows to be
+larger than this size, 15GB by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">15Gi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_data_avail_warn">
+<span class="sig-name descname"><span class="pre">mon_data_avail_warn</span></span><a class="headerlink" href="#confval-mon_data_avail_warn" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> status when the filesystem that houses a
+monitor’s data store reports that its available capacity is less than
+or equal to this percentage .</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_data_avail_crit">
+<span class="sig-name descname"><span class="pre">mon_data_avail_crit</span></span><a class="headerlink" href="#confval-mon_data_avail_crit" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_ERR</span></code> status when the filesystem that houses a
+monitor’s data store reports that its available capacity is less than
+or equal to this percentage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_warn_on_crush_straw_calc_version_zero">
+<span class="sig-name descname"><span class="pre">mon_warn_on_crush_straw_calc_version_zero</span></span><a class="headerlink" href="#confval-mon_warn_on_crush_straw_calc_version_zero" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> when the CRUSH <code class="docutils literal notranslate"><span class="pre">straw_calc_version</span></code> is zero.
+See <a class="reference internal" href="../operations/crush-map.html#crush-map-tunables"><span class="std std-ref">CRUSH map tunables</span></a> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_warn_on_legacy_crush_tunables">
+<span class="sig-name descname"><span class="pre">mon_warn_on_legacy_crush_tunables</span></span><a class="headerlink" href="#confval-mon_warn_on_legacy_crush_tunables" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> when CRUSH tunables are too old (older than
+<code class="docutils literal notranslate"><span class="pre">mon_min_crush_required_version</span></code>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_crush_min_required_version"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_crush_min_required_version</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_crush_min_required_version">
+<span class="sig-name descname"><span class="pre">mon_crush_min_required_version</span></span><a class="headerlink" href="#confval-mon_crush_min_required_version" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum tunable profile required by the cluster. See <a class="reference internal" href="../operations/crush-map.html#crush-map-tunables"><span class="std std-ref">CRUSH
+map tunables</span></a> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">hammer</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_warn_on_legacy_crush_tunables"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_warn_on_legacy_crush_tunables</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_warn_on_osd_down_out_interval_zero">
+<span class="sig-name descname"><span class="pre">mon_warn_on_osd_down_out_interval_zero</span></span><a class="headerlink" href="#confval-mon_warn_on_osd_down_out_interval_zero" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> when <code class="docutils literal notranslate"><span class="pre">mon_osd_down_out_interval</span></code> is zero.
+Having this option set to zero on the leader acts much like the
+<code class="docutils literal notranslate"><span class="pre">noout</span></code> flag. It’s hard to figure out what’s going wrong with
+clusters without the <code class="docutils literal notranslate"><span class="pre">noout</span></code> flag set but acting like that just the
+same, so we report a warning in this case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="mon-osd-interaction.html#confval-mon_osd_down_out_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_osd_down_out_interval</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_warn_on_slow_ping_ratio">
+<span class="sig-name descname"><span class="pre">mon_warn_on_slow_ping_ratio</span></span><a class="headerlink" href="#confval-mon_warn_on_slow_ping_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> when any heartbeat between OSDs exceeds
+<code class="docutils literal notranslate"><span class="pre">mon_warn_on_slow_ping_ratio</span></code> of <code class="docutils literal notranslate"><span class="pre">osd_heartbeat_grace</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="mon-osd-interaction.html#confval-osd_heartbeat_grace"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_heartbeat_grace</span></code></a>, <a class="reference internal" href="#confval-mon_warn_on_slow_ping_time"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_warn_on_slow_ping_time</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_warn_on_slow_ping_time">
+<span class="sig-name descname"><span class="pre">mon_warn_on_slow_ping_time</span></span><a class="headerlink" href="#confval-mon_warn_on_slow_ping_time" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Override <code class="docutils literal notranslate"><span class="pre">mon_warn_on_slow_ping_ratio</span></code> with a specific value. Raise
+<code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> if any heartbeat between OSDs exceeds
+<code class="docutils literal notranslate"><span class="pre">mon_warn_on_slow_ping_time</span></code> milliseconds.  The default is 0
+(disabled).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_warn_on_slow_ping_ratio"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_warn_on_slow_ping_ratio</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_warn_on_pool_no_redundancy">
+<span class="sig-name descname"><span class="pre">mon_warn_on_pool_no_redundancy</span></span><a class="headerlink" href="#confval-mon_warn_on_pool_no_redundancy" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Raise <code class="docutils literal notranslate"><span class="pre">HEALTH_WARN</span></code> if any pool is configured with no replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pool-pg-config-ref.html#confval-osd_pool_default_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_pool_default_size</span></code></a>, <a class="reference internal" href="pool-pg-config-ref.html#confval-osd_pool_default_min_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_pool_default_min_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cache_target_full_warn_ratio">
+<span class="sig-name descname"><span class="pre">mon_cache_target_full_warn_ratio</span></span><a class="headerlink" href="#confval-mon_cache_target_full_warn_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Position between pool’s <code class="docutils literal notranslate"><span class="pre">cache_target_full</span></code> and
+<code class="docutils literal notranslate"><span class="pre">target_max_object</span></code> where we start warning</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.66</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_health_to_clog">
+<span class="sig-name descname"><span class="pre">mon_health_to_clog</span></span><a class="headerlink" href="#confval-mon_health_to_clog" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enable sending a health summary to the cluster log periodically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_health_to_clog_tick_interval">
+<span class="sig-name descname"><span class="pre">mon_health_to_clog_tick_interval</span></span><a class="headerlink" href="#confval-mon_health_to_clog_tick_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How often (in seconds) the monitor sends a health summary to the
+cluster log (a non-positive number disables). If current health
+summary is empty or identical to the last time, monitor will not send
+it to cluster log.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">minute</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_health_to_clog_interval">
+<span class="sig-name descname"><span class="pre">mon_health_to_clog_interval</span></span><a class="headerlink" href="#confval-mon_health_to_clog_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How often (in seconds) the monitor sends a health summary to the
+cluster log (a non-positive number disables). Monitors will always
+send a summary to the cluster log whether or not it differs from the
+previous summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">minutes</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../troubleshooting/log-and-debug.html#confval-mon_health_to_clog"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_health_to_clog</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="storage-capacity">
+<span id="index-8"></span><span id="id2"></span><h3>Storage Capacity<a class="headerlink" href="#storage-capacity" title="Link to this heading"></a></h3>
+<p>When a Ceph Storage Cluster gets close to its maximum capacity
+(see``mon_osd_full ratio``), Ceph prevents you from writing to or reading from OSDs
+as a safety measure to prevent data loss. Therefore, letting a
+production Ceph Storage Cluster approach its full ratio is not a good practice,
+because it sacrifices high availability. The default full ratio is <code class="docutils literal notranslate"><span class="pre">.95</span></code>, or
+95% of capacity. This a very aggressive setting for a test cluster with a small
+number of OSDs.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When monitoring your cluster, be alert to warnings related to the
+<code class="docutils literal notranslate"><span class="pre">nearfull</span></code> ratio. This means that a failure of some OSDs could result
+in a temporary service disruption if one or more OSDs fails. Consider adding
+more OSDs to increase storage capacity.</p>
+</div>
+<p>A common scenario for test clusters involves a system administrator removing an
+OSD from the Ceph Storage Cluster, watching the cluster rebalance, then removing
+another OSD, and another, until at least one OSD eventually reaches the full
+ratio and the cluster locks up. We recommend a bit of capacity
+planning even with a test cluster. Planning enables you to gauge how much spare
+capacity you will need in order to maintain high availability. Ideally, you want
+to plan for a series of Ceph OSD Daemon failures where the cluster can recover
+to an <code class="docutils literal notranslate"><span class="pre">active+clean</span></code> state without replacing those OSDs
+immediately. Cluster operation continues in the <code class="docutils literal notranslate"><span class="pre">active+degraded</span></code> state, but this
+is not ideal for normal operation and should be addressed promptly.</p>
+<p>The following diagram depicts a simplistic Ceph Storage Cluster containing 33
+Ceph Nodes with one OSD per host, each OSD reading from
+and writing to a 3TB drive. So this exemplary Ceph Storage Cluster has a maximum
+actual capacity of 99TB. With a <code class="docutils literal notranslate"><span class="pre">mon</span> <span class="pre">osd</span> <span class="pre">full</span> <span class="pre">ratio</span></code> of <code class="docutils literal notranslate"><span class="pre">0.95</span></code>, if the Ceph
+Storage Cluster falls to 5TB of remaining capacity, the cluster will not allow
+Ceph Clients to read and write data. So the Ceph Storage Cluster’s operating
+capacity is 95TB, not 99TB.</p>
+<p>It is normal in such a cluster for one or two OSDs to fail. A less frequent but
+reasonable scenario involves a rack’s router or power supply failing, which
+brings down multiple OSDs simultaneously (e.g., OSDs 7-12). In such a scenario,
+you should still strive for a cluster that can remain operational and achieve an
+<code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span></code> state--even if that means adding a few hosts with additional
+OSDs in short order. If your capacity utilization is too high, you may not lose
+data, but you could still sacrifice data availability while resolving an outage
+within a failure domain if capacity utilization of the cluster exceeds the full
+ratio. For this reason, we recommend at least some rough capacity planning.</p>
+<p>Identify two numbers for your cluster:</p>
+<ol class="arabic simple">
+<li><p>The number of OSDs.</p></li>
+<li><p>The total capacity of the cluster</p></li>
+</ol>
+<p>If you divide the total capacity of your cluster by the number of OSDs in your
+cluster, you will find the mean average capacity of an OSD within your cluster.
+Consider multiplying that number by the number of OSDs you expect will fail
+simultaneously during normal operations (a relatively small number). Finally
+multiply the capacity of the cluster by the full ratio to arrive at a maximum
+operating capacity; then, subtract the number of amount of data from the OSDs
+you expect to fail to arrive at a reasonable full ratio. Repeat the foregoing
+process with a higher number of OSD failures (e.g., a rack of OSDs) to arrive at
+a reasonable number for a near full ratio.</p>
+<p>The following settings only apply on cluster creation and are then stored in
+the OSDMap. To clarify, in normal operation the values that are used by OSDs
+are those found in the OSDMap, not those in the configuration file or central
+config store.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[global]</span>
+<span class="w">        </span><span class="na">mon_osd_full_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">.80</span>
+<span class="w">        </span><span class="na">mon_osd_backfillfull_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">.75</span>
+<span class="w">        </span><span class="na">mon_osd_nearfull_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">.70</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">mon_osd_full_ratio</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The threshold percentage of device space utilized before an OSD is
+considered <code class="docutils literal notranslate"><span class="pre">full</span></code>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Float</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.95</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">mon_osd_backfillfull_ratio</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The threshold percentage of device space utilized before an OSD is
+considered too <code class="docutils literal notranslate"><span class="pre">full</span></code> to backfill.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Float</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.90</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">mon_osd_nearfull_ratio</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The threshold percentage of device space used before an OSD is
+considered <code class="docutils literal notranslate"><span class="pre">nearfull</span></code>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Float</p>
+</dd>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.85</span></code></p>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If some OSDs are nearfull, but others have plenty of capacity, you
+may have an inaccurate CRUSH weight set for the nearfull OSDs.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>These settings only apply during cluster creation. Afterwards they need
+to be changed in the OSDMap using <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">set-nearfull-ratio</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">set-full-ratio</span></code></p>
+</div>
+</section>
+<section id="heartbeat">
+<span id="index-9"></span><h3>Heartbeat<a class="headerlink" href="#heartbeat" title="Link to this heading"></a></h3>
+<p>Ceph monitors know about the cluster by requiring reports from each OSD, and by
+receiving reports from OSDs about the status of their neighboring OSDs. Ceph
+provides reasonable default settings for monitor/OSD interaction; however,  you
+may modify them as needed. See <a class="reference external" href="../mon-osd-interaction">Monitor/OSD Interaction</a> for details.</p>
+</section>
+<section id="monitor-store-synchronization">
+<span id="index-10"></span><h3>Monitor Store Synchronization<a class="headerlink" href="#monitor-store-synchronization" title="Link to this heading"></a></h3>
+<p>When you run a production cluster with multiple monitors (recommended), each
+monitor checks to see if a neighboring monitor has a more recent version of the
+cluster map (e.g., a map in a neighboring monitor with one or more epoch numbers
+higher than the most current epoch in the map of the instant monitor).
+Periodically, one monitor in the cluster may fall behind the other monitors to
+the point where it must leave the quorum, synchronize to retrieve the most
+current information about the cluster, and then rejoin the quorum. For the
+purposes of synchronization, monitors may assume one of three roles:</p>
+<ol class="arabic simple">
+<li><p><strong>Leader</strong>: The <cite>Leader</cite> is the first monitor to achieve the most recent
+Paxos version of the cluster map.</p></li>
+<li><p><strong>Provider</strong>: The <cite>Provider</cite> is a monitor that has the most recent version
+of the cluster map, but wasn’t the first to achieve the most recent version.</p></li>
+<li><p><strong>Requester:</strong> A <cite>Requester</cite> is a monitor that has fallen behind the leader
+and must synchronize in order to retrieve the most recent information about
+the cluster before it can rejoin the quorum.</p></li>
+</ol>
+<p>These roles enable a leader to delegate synchronization duties to a provider,
+which prevents synchronization requests from overloading the leader--improving
+performance. In the following diagram, the requester has learned that it has
+fallen behind the other monitors. The requester asks the leader to synchronize,
+and the leader tells the requester to synchronize with a provider.</p>
+<p>Synchronization always occurs when a new monitor joins the cluster. During
+runtime operations, monitors may receive updates to the cluster map at different
+times. This means the leader and provider roles may migrate from one monitor to
+another. If this happens while synchronizing (e.g., a provider falls behind the
+leader), the provider can terminate synchronization with a requester.</p>
+<p>Once synchronization is complete, Ceph performs trimming across the cluster.
+Trimming requires that the placement groups are <code class="docutils literal notranslate"><span class="pre">active+clean</span></code>.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_sync_timeout">
+<span class="sig-name descname"><span class="pre">mon_sync_timeout</span></span><a class="headerlink" href="#confval-mon_sync_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Number of seconds the monitor will wait for the next update message
+from its sync provider before it gives up and bootstrap again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">minute</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_sync_max_payload_size">
+<span class="sig-name descname"><span class="pre">mon_sync_max_payload_size</span></span><a class="headerlink" href="#confval-mon_sync_max_payload_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum size for a sync payload (in bytes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_max_join_drift">
+<span class="sig-name descname"><span class="pre">paxos_max_join_drift</span></span><a class="headerlink" href="#confval-paxos_max_join_drift" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum Paxos iterations before we must first sync the monitor
+data stores. When a monitor finds that its peer is too far ahead of
+it, it will first sync with data stores before moving on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_stash_full_interval">
+<span class="sig-name descname"><span class="pre">paxos_stash_full_interval</span></span><a class="headerlink" href="#confval-paxos_stash_full_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How often (in commits) to stash a full copy of the PaxosService state.
+Current this setting only affects <code class="docutils literal notranslate"><span class="pre">mds</span></code>, <code class="docutils literal notranslate"><span class="pre">mon</span></code>, <code class="docutils literal notranslate"><span class="pre">auth</span></code> and
+<code class="docutils literal notranslate"><span class="pre">mgr</span></code> PaxosServices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">25</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_propose_interval">
+<span class="sig-name descname"><span class="pre">paxos_propose_interval</span></span><a class="headerlink" href="#confval-paxos_propose_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Gather updates for this time interval before proposing a map update.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_min">
+<span class="sig-name descname"><span class="pre">paxos_min</span></span><a class="headerlink" href="#confval-paxos_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum number of Paxos states to keep around</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_min_wait">
+<span class="sig-name descname"><span class="pre">paxos_min_wait</span></span><a class="headerlink" href="#confval-paxos_min_wait" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum amount of time to gather updates after a period of
+inactivity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_trim_min">
+<span class="sig-name descname"><span class="pre">paxos_trim_min</span></span><a class="headerlink" href="#confval-paxos_trim_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Number of extra proposals tolerated before trimming</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">250</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_trim_max">
+<span class="sig-name descname"><span class="pre">paxos_trim_max</span></span><a class="headerlink" href="#confval-paxos_trim_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of extra proposals to trim at a time</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_service_trim_min">
+<span class="sig-name descname"><span class="pre">paxos_service_trim_min</span></span><a class="headerlink" href="#confval-paxos_service_trim_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum amount of versions to trigger a trim (0 disables it)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">250</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_service_trim_max">
+<span class="sig-name descname"><span class="pre">paxos_service_trim_max</span></span><a class="headerlink" href="#confval-paxos_service_trim_max" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum amount of versions to trim during a single proposal (0
+disables it)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-paxos_service_trim_max_multiplier">
+<span class="sig-name descname"><span class="pre">paxos_service_trim_max_multiplier</span></span><a class="headerlink" href="#confval-paxos_service_trim_max_multiplier" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>factor by which paxos_service_trim_max will be multiplied to get a new
+upper bound when trim sizes are high  (0 disables it)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">20</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_mds_force_trim_to">
+<span class="sig-name descname"><span class="pre">mon_mds_force_trim_to</span></span><a class="headerlink" href="#confval-mon_mds_force_trim_to" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Force monitor to trim mdsmaps up to but not including this FSMap
+epoch. A value of 0 disables (the default) this config. This command
+is potentially dangerous, use with care.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_force_trim_to">
+<span class="sig-name descname"><span class="pre">mon_osd_force_trim_to</span></span><a class="headerlink" href="#confval-mon_osd_force_trim_to" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Force monitor to trim osdmaps to this point, even if there is PGs not
+clean at the specified epoch (0 disables it. dangerous, use with care)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_cache_size">
+<span class="sig-name descname"><span class="pre">mon_osd_cache_size</span></span><a class="headerlink" href="#confval-mon_osd_cache_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The size of osdmaps cache, not to rely on underlying store’s cache</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_election_timeout">
+<span class="sig-name descname"><span class="pre">mon_election_timeout</span></span><a class="headerlink" href="#confval-mon_election_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>On election proposer, maximum waiting time for all ACKs in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_lease">
+<span class="sig-name descname"><span class="pre">mon_lease</span></span><a class="headerlink" href="#confval-mon_lease" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The length (in seconds) of the lease on the monitor’s versions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_lease_renew_interval_factor">
+<span class="sig-name descname"><span class="pre">mon_lease_renew_interval_factor</span></span><a class="headerlink" href="#confval-mon_lease_renew_interval_factor" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">mon_lease</span></code> * <code class="docutils literal notranslate"><span class="pre">mon_lease_renew_interval_factor</span></code> will be the
+interval for the Leader to renew the other monitor’s leases. The
+factor should be less than <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.6</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0.9999999]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-mon_lease"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_lease</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_lease_ack_timeout_factor">
+<span class="sig-name descname"><span class="pre">mon_lease_ack_timeout_factor</span></span><a class="headerlink" href="#confval-mon_lease_ack_timeout_factor" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The Leader will wait <code class="docutils literal notranslate"><span class="pre">mon_lease</span></code> * <code class="docutils literal notranslate"><span class="pre">mon_lease_ack_timeout_factor</span></code>
+for the Providers to acknowledge the lease extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2.0</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[1.0001,</span> <span class="pre">100]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-mon_lease"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_lease</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_accept_timeout_factor">
+<span class="sig-name descname"><span class="pre">mon_accept_timeout_factor</span></span><a class="headerlink" href="#confval-mon_accept_timeout_factor" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The Leader will wait <code class="docutils literal notranslate"><span class="pre">mon_lease</span></code> * <code class="docutils literal notranslate"><span class="pre">mon_accept_timeout_factor</span></code>
+for the Requester(s) to accept a Paxos update. It is also used during
+the Paxos recovery phase for similar purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_lease"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_lease</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_min_osdmap_epochs">
+<span class="sig-name descname"><span class="pre">mon_min_osdmap_epochs</span></span><a class="headerlink" href="#confval-mon_min_osdmap_epochs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Minimum number of OSD map epochs to keep at all times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_max_log_epochs">
+<span class="sig-name descname"><span class="pre">mon_max_log_epochs</span></span><a class="headerlink" href="#confval-mon_max_log_epochs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Maximum number of Log epochs the monitor should keep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="clock">
+<span id="mon-config-ref-clock"></span><span id="index-11"></span><h3>Clock<a class="headerlink" href="#clock" title="Link to this heading"></a></h3>
+<p>Ceph daemons pass critical messages to each other, which must be processed
+before daemons reach a timeout threshold. If the clocks in Ceph monitors
+are not synchronized, it can lead to a number of anomalies. For example:</p>
+<ul class="simple">
+<li><p>Daemons ignoring received messages (e.g., timestamps outdated)</p></li>
+<li><p>Timeouts triggered too soon/late when a message wasn’t received in time.</p></li>
+</ul>
+<p>See <a class="reference internal" href="#monitor-store-synchronization">Monitor Store Synchronization</a> for details.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You must configure NTP or PTP daemons on your Ceph monitor hosts to
+ensure that the monitor cluster operates with synchronized clocks.
+It can be advantageous to have monitor hosts sync with each other
+as well as with multiple quality upstream time sources.</p>
+</div>
+<p>Clock drift may still be noticeable with NTP even though the discrepancy is not
+yet harmful. Ceph’s clock drift / clock skew warnings may get triggered even
+though NTP maintains a reasonable level of synchronization. Increasing your
+clock drift may be tolerable under such circumstances; however, a number of
+factors such as workload, network latency, configuring overrides to default
+timeouts and the <a class="reference internal" href="#monitor-store-synchronization">Monitor Store Synchronization</a> settings may influence
+the level of acceptable clock drift without compromising Paxos guarantees.</p>
+<p>Ceph provides the following tunable options to allow you to find
+acceptable values.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_tick_interval">
+<span class="sig-name descname"><span class="pre">mon_tick_interval</span></span><a class="headerlink" href="#confval-mon_tick_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>A monitor’s tick interval in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_clock_drift_allowed">
+<span class="sig-name descname"><span class="pre">mon_clock_drift_allowed</span></span><a class="headerlink" href="#confval-mon_clock_drift_allowed" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>allowed clock drift (in seconds) between mons before issuing a health
+warning</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_clock_drift_warn_backoff">
+<span class="sig-name descname"><span class="pre">mon_clock_drift_warn_backoff</span></span><a class="headerlink" href="#confval-mon_clock_drift_warn_backoff" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>exponential backoff factor for logging clock drift warnings in the
+cluster log</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_timecheck_interval">
+<span class="sig-name descname"><span class="pre">mon_timecheck_interval</span></span><a class="headerlink" href="#confval-mon_timecheck_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The time check interval (clock drift check) in seconds for the Leader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">minutes</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_timecheck_skew_interval">
+<span class="sig-name descname"><span class="pre">mon_timecheck_skew_interval</span></span><a class="headerlink" href="#confval-mon_timecheck_skew_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The time check interval (clock drift check) in seconds when in
+presence of a skew in seconds for the Leader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mon_timecheck_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_timecheck_interval</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="client">
+<h3>Client<a class="headerlink" href="#client" title="Link to this heading"></a></h3>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_client_hunt_interval">
+<span class="sig-name descname"><span class="pre">mon_client_hunt_interval</span></span><a class="headerlink" href="#confval-mon_client_hunt_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The client will try a new monitor every <code class="docutils literal notranslate"><span class="pre">N</span></code> seconds until it
+establishes a connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_client_ping_interval">
+<span class="sig-name descname"><span class="pre">mon_client_ping_interval</span></span><a class="headerlink" href="#confval-mon_client_ping_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The client will ping the monitor every <code class="docutils literal notranslate"><span class="pre">N</span></code> seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_client_max_log_entries_per_message">
+<span class="sig-name descname"><span class="pre">mon_client_max_log_entries_per_message</span></span><a class="headerlink" href="#confval-mon_client_max_log_entries_per_message" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of log entries a monitor will generate per client
+message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_client_bytes">
+<span class="sig-name descname"><span class="pre">mon_client_bytes</span></span><a class="headerlink" href="#confval-mon_client_bytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The amount of client message data allowed in memory (in bytes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+<section id="pool-settings">
+<span id="id3"></span><h2>Pool settings<a class="headerlink" href="#pool-settings" title="Link to this heading"></a></h2>
+<p>Since version v0.94 there is support for pool flags which allow or disallow changes to be made to pools.
+Monitors can also disallow removal of pools if appropriately configured. The inconvenience of this guardrail
+is far outweighed by the number of accidental pool (and thus data) deletions it prevents.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_allow_pool_delete">
+<span class="sig-name descname"><span class="pre">mon_allow_pool_delete</span></span><a class="headerlink" href="#confval-mon_allow_pool_delete" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Should monitors allow pools to be removed, regardless of what the pool
+flags say?</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_pool_default_ec_fast_read">
+<span class="sig-name descname"><span class="pre">osd_pool_default_ec_fast_read</span></span><a class="headerlink" href="#confval-osd_pool_default_ec_fast_read" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Whether to turn on fast read on the pool or not. It will be used as
+the default setting of newly created erasure coded pools if
+<code class="docutils literal notranslate"><span class="pre">fast_read</span></code> is not specified at create time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_pool_default_flag_hashpspool">
+<span class="sig-name descname"><span class="pre">osd_pool_default_flag_hashpspool</span></span><a class="headerlink" href="#confval-osd_pool_default_flag_hashpspool" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>set hashpspool (better hashing scheme) flag on new pools</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_pool_default_flag_nodelete">
+<span class="sig-name descname"><span class="pre">osd_pool_default_flag_nodelete</span></span><a class="headerlink" href="#confval-osd_pool_default_flag_nodelete" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the <code class="docutils literal notranslate"><span class="pre">nodelete</span></code> flag on new pools, which prevents pool removal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_pool_default_flag_nopgchange">
+<span class="sig-name descname"><span class="pre">osd_pool_default_flag_nopgchange</span></span><a class="headerlink" href="#confval-osd_pool_default_flag_nopgchange" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the <code class="docutils literal notranslate"><span class="pre">nopgchange</span></code> flag on new pools. Does not allow the number of
+PGs to be changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_pool_default_flag_nosizechange">
+<span class="sig-name descname"><span class="pre">osd_pool_default_flag_nosizechange</span></span><a class="headerlink" href="#confval-osd_pool_default_flag_nosizechange" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Set the <code class="docutils literal notranslate"><span class="pre">nosizechange</span></code> flag on new pools. Does not allow the
+<code class="docutils literal notranslate"><span class="pre">size</span></code> to be changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>For more information about the pool flags see <a class="reference internal" href="../operations/pools.html#setpoolvalues"><span class="std std-ref">Pool values</span></a>.</p>
+</section>
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_max_osd">
+<span class="sig-name descname"><span class="pre">mon_max_osd</span></span><a class="headerlink" href="#confval-mon_max_osd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of OSDs allowed in the cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_globalid_prealloc">
+<span class="sig-name descname"><span class="pre">mon_globalid_prealloc</span></span><a class="headerlink" href="#confval-mon_globalid_prealloc" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of global IDs to pre-allocate for clients and daemons in
+the cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_subscribe_interval">
+<span class="sig-name descname"><span class="pre">mon_subscribe_interval</span></span><a class="headerlink" href="#confval-mon_subscribe_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The refresh interval (in seconds) for subscriptions. The subscription
+mechanism enables obtaining cluster maps and log information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">day</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_stat_smooth_intervals">
+<span class="sig-name descname"><span class="pre">mon_stat_smooth_intervals</span></span><a class="headerlink" href="#confval-mon_stat_smooth_intervals" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ceph will smooth statistics over the last <code class="docutils literal notranslate"><span class="pre">N</span></code> PG maps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">6</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_probe_timeout">
+<span class="sig-name descname"><span class="pre">mon_probe_timeout</span></span><a class="headerlink" href="#confval-mon_probe_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Number of seconds the monitor will wait to find peers before
+bootstrapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_daemon_bytes">
+<span class="sig-name descname"><span class="pre">mon_daemon_bytes</span></span><a class="headerlink" href="#confval-mon_daemon_bytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The message memory cap for metadata server and OSD messages (in
+bytes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">400Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_max_log_entries_per_event">
+<span class="sig-name descname"><span class="pre">mon_max_log_entries_per_event</span></span><a class="headerlink" href="#confval-mon_max_log_entries_per_event" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of log entries per event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4096</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_prime_pg_temp">
+<span class="sig-name descname"><span class="pre">mon_osd_prime_pg_temp</span></span><a class="headerlink" href="#confval-mon_osd_prime_pg_temp" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enables or disables priming the PGMap with the previous OSDs when an
+<code class="docutils literal notranslate"><span class="pre">out</span></code> OSD comes back into the cluster. With the <code class="docutils literal notranslate"><span class="pre">true</span></code> setting,
+clients will continue to use the previous OSDs until the newly <code class="docutils literal notranslate"><span class="pre">in</span></code>
+OSDs for a PG have peered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_prime_pg_temp_max_time">
+<span class="sig-name descname"><span class="pre">mon_osd_prime_pg_temp_max_time</span></span><a class="headerlink" href="#confval-mon_osd_prime_pg_temp_max_time" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How much time in seconds the monitor should spend trying to prime the
+PGMap when an out OSD comes back into the cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_prime_pg_temp_max_estimate">
+<span class="sig-name descname"><span class="pre">mon_osd_prime_pg_temp_max_estimate</span></span><a class="headerlink" href="#confval-mon_osd_prime_pg_temp_max_estimate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Maximum estimate of time spent on each PG before we prime all PGs in
+parallel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.25</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_mds_skip_sanity">
+<span class="sig-name descname"><span class="pre">mon_mds_skip_sanity</span></span><a class="headerlink" href="#confval-mon_mds_skip_sanity" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Skip safety assertions on FSMap (in case of bugs where we want to
+continue anyway). Monitor terminates if the FSMap sanity check fails,
+but we can disable it by enabling this option.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_max_mdsmap_epochs">
+<span class="sig-name descname"><span class="pre">mon_max_mdsmap_epochs</span></span><a class="headerlink" href="#confval-mon_max_mdsmap_epochs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of mdsmap epochs to trim during a single proposal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_config_key_max_entry_size">
+<span class="sig-name descname"><span class="pre">mon_config_key_max_entry_size</span></span><a class="headerlink" href="#confval-mon_config_key_max_entry_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum size of config-key entry (in bytes)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_scrub_interval">
+<span class="sig-name descname"><span class="pre">mon_scrub_interval</span></span><a class="headerlink" href="#confval-mon_scrub_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>How often the monitor scrubs its store by comparing the stored
+checksums with the computed ones for all stored keys. (0 disables it.
+dangerous, use with care)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">secs</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">day</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_scrub_max_keys">
+<span class="sig-name descname"><span class="pre">mon_scrub_max_keys</span></span><a class="headerlink" href="#confval-mon_scrub_max_keys" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The maximum number of keys to scrub each time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_compact_on_start">
+<span class="sig-name descname"><span class="pre">mon_compact_on_start</span></span><a class="headerlink" href="#confval-mon_compact_on_start" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Compact the database used as Ceph Monitor store on <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code> start.
+A manual compaction helps to shrink the monitor database and improve
+the performance of it if the regular compaction fails to work.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_compact_on_bootstrap">
+<span class="sig-name descname"><span class="pre">mon_compact_on_bootstrap</span></span><a class="headerlink" href="#confval-mon_compact_on_bootstrap" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Compact the database used as Ceph Monitor store on bootstrap. Monitors
+probe each other to establish a quorum after bootstrap. If a monitor
+times out before joining the quorum, it will start over and bootstrap
+again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_compact_on_trim">
+<span class="sig-name descname"><span class="pre">mon_compact_on_trim</span></span><a class="headerlink" href="#confval-mon_compact_on_trim" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Compact a certain prefix (including paxos) when we trim its old
+states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_cpu_threads">
+<span class="sig-name descname"><span class="pre">mon_cpu_threads</span></span><a class="headerlink" href="#confval-mon_cpu_threads" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Number of threads for performing CPU intensive work on monitor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_mapping_pgs_per_chunk">
+<span class="sig-name descname"><span class="pre">mon_osd_mapping_pgs_per_chunk</span></span><a class="headerlink" href="#confval-mon_osd_mapping_pgs_per_chunk" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>We calculate the mapping from placement group to OSDs in chunks. This
+option specifies the number of placement groups per chunk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4096</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_session_timeout">
+<span class="sig-name descname"><span class="pre">mon_session_timeout</span></span><a class="headerlink" href="#confval-mon_session_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Monitor will terminate inactive sessions stay idle over this time
+limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">minutes</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_osd_cache_size_min">
+<span class="sig-name descname"><span class="pre">mon_osd_cache_size_min</span></span><a class="headerlink" href="#confval-mon_osd_cache_size_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The minimum amount of bytes to be kept mapped in memory for osd
+monitor caches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_memory_target">
+<span class="sig-name descname"><span class="pre">mon_memory_target</span></span><a class="headerlink" href="#confval-mon_memory_target" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The amount of bytes pertaining to OSD monitor caches and KV cache to
+be kept mapped in memory with cache auto-tuning enabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">2Gi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mon_memory_autotune">
+<span class="sig-name descname"><span class="pre">mon_memory_autotune</span></span><a class="headerlink" href="#confval-mon_memory_autotune" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Autotune the cache memory used for OSD monitors and KV database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="auth-config-ref.html" class="btn btn-neutral float-left" title="CephX Config Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mon-lookup-dns.html" class="btn btn-neutral float-right" title="Looking up Monitors through DNS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

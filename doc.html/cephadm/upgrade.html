@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upgrading Ceph &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cephadm Operations" href="operations.html" />
+    <link rel="prev" title="Certificate Management" href="certmgr.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Cephadm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compatibility.html">Compatibility and Stability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.html">Using cephadm to Deploy a New Ceph Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adoption.html">Converting an existing cluster to cephadm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host-management.html">Host Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services/index.html">Service Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="certmgr.html">Certificate Management</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Upgrading Ceph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#starting-the-upgrade">Starting the upgrade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-the-upgrade">Monitoring the upgrade</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#watching-the-progress-bar-during-a-ceph-upgrade">Watching the progress bar during a Ceph upgrade</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#watching-the-cephadm-log-during-an-upgrade">Watching the cephadm log during an upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#canceling-an-upgrade">Canceling an upgrade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-upgrade-actions">Post upgrade actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#potential-problems">Potential problems</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#error-enoent-module-not-found">Error: ENOENT: Module not found</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upgrade-no-standby-mgr">UPGRADE_NO_STANDBY_MGR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upgrade-failed-pull">UPGRADE_FAILED_PULL</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#using-customized-container-images">Using customized container images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#staggered-upgrade">Staggered Upgrade</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#upgrading-to-a-version-that-supports-staggered-upgrade-from-one-that-doesn-t">Upgrading to a version that supports staggered upgrade from one that doesn’t</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-a-non-ceph-image-service-with-custom-image">Updating a non-Ceph image service with custom image</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Cephadm operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-setup.html">Client Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/cephadm/index.html">Cephadm Feature Planning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cephadm</a></li>
+      <li class="breadcrumb-item active">Upgrading Ceph</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephadm/upgrade.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="upgrading-ceph">
+<h1>Upgrading Ceph<a class="headerlink" href="#upgrading-ceph" title="Link to this heading"></a></h1>
+<p>Cephadm can safely upgrade Ceph from one point release to the next.  For
+example, you can upgrade from v15.2.0 (the first Octopus release) to the next
+point release, v15.2.1.</p>
+<p>The automated upgrade process follows Ceph best practices.  For example:</p>
+<ul class="simple">
+<li><p>The upgrade order starts with managers, monitors, then other daemons.</p></li>
+<li><p>Each daemon is restarted only after Ceph indicates that the cluster
+will remain available.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Ceph cluster health status is likely to switch to
+<code class="docutils literal notranslate"><span class="pre">HEALTH_WARNING</span></code> during the upgrade.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a cluster host is or becomes unavailable the upgrade will be paused
+until it is restored.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When the PG autoscaler mode for <strong>any</strong> pool is set to <code class="docutils literal notranslate"><span class="pre">on</span></code>, we recommend
+disabling the autoscaler for the duration of the upgrade.  This is so that
+PG splitting or merging in the middle of an upgrade does not unduly delay
+upgrade progress.  In a very large cluster this could easily increase the
+time to complete by a day or more, especially if the upgrade happens to
+change PG autoscaler behavior by e.g. changing the default value
+of <code class="xref std std-confval docutils literal notranslate"><span class="pre">mon_target_pg_per_osd</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>noautoscale</span>
+<span class="prompt1"><span class="c1"># Perform the upgrade</span></span>
+<span class="prompt1">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>noautoscale</span>
+</pre></div></div><p>When pausing autoscaler activity in this fashion, the existing values for
+each pool’s mode, <code class="docutils literal notranslate"><span class="pre">off</span></code>, <code class="docutils literal notranslate"><span class="pre">on</span></code>, or <code class="docutils literal notranslate"><span class="pre">warn</span></code>, are expected to remain.
+If the new release changes the above target value, there may be splitting
+or merging of PGs when unsetting after the upgrade.</p>
+</div>
+<section id="starting-the-upgrade">
+<h2>Starting the upgrade<a class="headerlink" href="#starting-the-upgrade" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#staggered-upgrade">Staggered Upgrade</a> of the Monitors and Managers may be necessary to use
+the below CephFS upgrade feature.</p>
+</div>
+<p>Cephadm by default reduces <code class="docutils literal notranslate"><span class="pre">max_mds</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code>. This can be disruptive for large
+scale CephFS deployments because the cluster cannot quickly reduce active MDS(s)
+to <cite>1</cite> and a single active MDS cannot easily handle the load of all clients
+even for a short time. Therefore, to upgrade MDS(s) without reducing <code class="docutils literal notranslate"><span class="pre">max_mds</span></code>,
+the <code class="docutils literal notranslate"><span class="pre">fail_fs</span></code> option can to be set to <code class="docutils literal notranslate"><span class="pre">true</span></code> (default value is <code class="docutils literal notranslate"><span class="pre">false</span></code>) prior
+to initiating the upgrade:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>mgr<span class="w"> </span>mgr/orchestrator/fail_fs<span class="w"> </span><span class="nb">true</span></span>
+</pre></div></div><dl class="simple">
+<dt>This would:</dt><dd><ol class="arabic simple">
+<li><p>Fail CephFS filesystems, bringing active MDS daemon(s) to
+<code class="docutils literal notranslate"><span class="pre">up:standby</span></code> state.</p></li>
+<li><p>Upgrade MDS daemons safely.</p></li>
+<li><p>Bring CephFS filesystems back up, bringing the state of active
+MDS daemon(s) from <code class="docutils literal notranslate"><span class="pre">up:standby</span></code> to <cite>up:active`</cite>.</p></li>
+</ol>
+</dd>
+</dl>
+</div>
+<p>Before you use cephadm to upgrade Ceph, verify that all hosts are currently online and that your cluster is healthy by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>-s</span>
+</pre></div></div><p>To upgrade to a specific release, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--ceph-version<span class="w"> </span>&lt;version&gt;</span>
+</pre></div></div><p>For example, to upgrade to v16.2.6, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--ceph-version<span class="w"> </span><span class="m">16</span>.2.6</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>From version v16.2.6 the Docker Hub registry is no longer used, so if you use Docker you have to point it to the image in the quay.io registry:</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--image<span class="w"> </span>quay.io/ceph/ceph:v16.2.6</span>
+</pre></div></div></section>
+<section id="monitoring-the-upgrade">
+<h2>Monitoring the upgrade<a class="headerlink" href="#monitoring-the-upgrade" title="Link to this heading"></a></h2>
+<p>Determine (1) whether an upgrade is in progress and (2) which version the
+cluster is upgrading to by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>status</span>
+</pre></div></div><section id="watching-the-progress-bar-during-a-ceph-upgrade">
+<h3>Watching the progress bar during a Ceph upgrade<a class="headerlink" href="#watching-the-progress-bar-during-a-ceph-upgrade" title="Link to this heading"></a></h3>
+<p>During the upgrade, a progress bar is visible in the ceph status output. It
+looks like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>ceph<span class="w"> </span>-s
+
+<span class="go">[...]</span>
+<span class="go">  progress:</span>
+<span class="go">    Upgrade to docker.io/ceph/ceph:v15.2.1 (00h 20m 12s)</span>
+<span class="go">      [=======.....................] (time remaining: 01h 43m 31s)</span>
+</pre></div>
+</div>
+</section>
+<section id="watching-the-cephadm-log-during-an-upgrade">
+<h3>Watching the cephadm log during an upgrade<a class="headerlink" href="#watching-the-cephadm-log-during-an-upgrade" title="Link to this heading"></a></h3>
+<p>Watch the cephadm log by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>-W<span class="w"> </span>cephadm</span>
+</pre></div></div></section>
+</section>
+<section id="canceling-an-upgrade">
+<h2>Canceling an upgrade<a class="headerlink" href="#canceling-an-upgrade" title="Link to this heading"></a></h2>
+<p>You can stop the upgrade process at any time by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>stop</span>
+</pre></div></div></section>
+<section id="post-upgrade-actions">
+<h2>Post upgrade actions<a class="headerlink" href="#post-upgrade-actions" title="Link to this heading"></a></h2>
+<p>In case the new version is based on <code class="docutils literal notranslate"><span class="pre">cephadm</span></code>, once done with the upgrade the user
+has to update the <code class="docutils literal notranslate"><span class="pre">cephadm</span></code> package (or ceph-common package in case the user
+doesn’t use <code class="docutils literal notranslate"><span class="pre">cephadm</span> <span class="pre">shell</span></code>) to a version compatible with the new version.</p>
+</section>
+<section id="potential-problems">
+<h2>Potential problems<a class="headerlink" href="#potential-problems" title="Link to this heading"></a></h2>
+<section id="error-enoent-module-not-found">
+<h3>Error: ENOENT: Module not found<a class="headerlink" href="#error-enoent-module-not-found" title="Link to this heading"></a></h3>
+<p>The message <code class="docutils literal notranslate"><span class="pre">Error</span> <span class="pre">ENOENT:</span> <span class="pre">Module</span> <span class="pre">not</span> <span class="pre">found</span></code> appears in response to the command <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">orch</span> <span class="pre">upgrade</span> <span class="pre">status</span></code> if the orchestrator has crashed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>status</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="n">ENOENT</span><span class="p">:</span> <span class="n">Module</span> <span class="ow">not</span> <span class="n">found</span>
+</pre></div>
+</div>
+<p>This is possibly caused by invalid JSON in a mgr config-key.
+See <a class="reference external" href="https://tracker.ceph.com/issues/67329">Redmine tracker Issue #67329</a>
+and <a class="reference external" href="https://www.spinics.net/lists/ceph-users/msg83667.html">this discussion on the ceph-users mailing list</a>.</p>
+</section>
+<section id="upgrade-no-standby-mgr">
+<h3>UPGRADE_NO_STANDBY_MGR<a class="headerlink" href="#upgrade-no-standby-mgr" title="Link to this heading"></a></h3>
+<p>This alert (<code class="docutils literal notranslate"><span class="pre">UPGRADE_NO_STANDBY_MGR</span></code>) means that Ceph does not detect an
+active standby Manager daemon. In order to proceed with the upgrade, Ceph
+requires an active standby Manager daemon (which you can think of in this
+context as “a second manager”).</p>
+<p>You can ensure that Cephadm is configured to run two (or more) Managers by
+running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>apply<span class="w"> </span>mgr<span class="w"> </span><span class="m">2</span><span class="w">  </span><span class="c1"># or more</span></span>
+</pre></div></div><p>You can check the status of existing Manager daemons by running the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>ps<span class="w"> </span>--daemon-type<span class="w"> </span>mgr</span>
+</pre></div></div><p>If an existing Manager daemon has stopped, you can try to restart it by running the
+following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>daemon<span class="w"> </span>restart<span class="w"> </span>&lt;name&gt;</span>
+</pre></div></div></section>
+<section id="upgrade-failed-pull">
+<h3>UPGRADE_FAILED_PULL<a class="headerlink" href="#upgrade-failed-pull" title="Link to this heading"></a></h3>
+<p>This alert (<code class="docutils literal notranslate"><span class="pre">UPGRADE_FAILED_PULL</span></code>) means that Ceph was unable to pull the
+container image for the target version. This can happen if you specify a
+version or container image that does not exist (e.g. “1.2.3”), or if the
+container registry can not be reached by one or more hosts in the cluster.</p>
+<p>To cancel the existing upgrade and to specify a different target version, run
+the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>stop</span>
+<span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--ceph-version<span class="w"> </span>&lt;version&gt;</span>
+</pre></div></div></section>
+</section>
+<section id="using-customized-container-images">
+<h2>Using customized container images<a class="headerlink" href="#using-customized-container-images" title="Link to this heading"></a></h2>
+<p>For most users, upgrading requires nothing more complicated than specifying the
+Ceph version to which to upgrade.  In such cases, cephadm locates the specific
+Ceph container image to use by combining the <code class="docutils literal notranslate"><span class="pre">container_image_base</span></code>
+configuration option (default: <code class="docutils literal notranslate"><span class="pre">docker.io/ceph/ceph</span></code>) with a tag of
+<code class="docutils literal notranslate"><span class="pre">vX.Y.Z</span></code>.</p>
+<p>But it is possible to upgrade to an arbitrary container image, if that’s what
+you need. For example, the following command upgrades to a development build:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--image<span class="w"> </span>quay.ceph.io/ceph-ci/ceph:recent-git-branch-name</span>
+</pre></div></div><p>For more information about available container images, see <a class="reference internal" href="../install/containers.html#containers"><span class="std std-ref">Ceph Container Images</span></a>.</p>
+</section>
+<section id="staggered-upgrade">
+<h2>Staggered Upgrade<a class="headerlink" href="#staggered-upgrade" title="Link to this heading"></a></h2>
+<p>Some users may prefer to upgrade components in phases rather than all at once.
+The upgrade command, starting in 16.2.11 and 17.2.1 allows parameters
+to limit which daemons are upgraded by a single upgrade command. The options in
+include <code class="docutils literal notranslate"><span class="pre">daemon_types</span></code>, <code class="docutils literal notranslate"><span class="pre">services</span></code>, <code class="docutils literal notranslate"><span class="pre">hosts</span></code> and <code class="docutils literal notranslate"><span class="pre">limit</span></code>. <code class="docutils literal notranslate"><span class="pre">daemon_types</span></code>
+takes a comma-separated list of daemon types and will only upgrade daemons of those
+types. <code class="docutils literal notranslate"><span class="pre">services</span></code> is mutually exclusive with <code class="docutils literal notranslate"><span class="pre">daemon_types</span></code>, only takes services
+of one type at a time (e.g. can’t provide an OSD and RGW service at the same time), and
+will only upgrade daemons belonging to those services. <code class="docutils literal notranslate"><span class="pre">hosts</span></code> can be combined
+with <code class="docutils literal notranslate"><span class="pre">daemon_types</span></code> or <code class="docutils literal notranslate"><span class="pre">services</span></code> or provided on its own. The <code class="docutils literal notranslate"><span class="pre">hosts</span></code> parameter
+follows the same format as the command line options for <a class="reference internal" href="services/index.html#orchestrator-cli-placement-spec"><span class="std std-ref">Daemon Placement</span></a>.
+<code class="docutils literal notranslate"><span class="pre">limit</span></code> takes an integer &gt; 0 and provides a numerical limit on the number of
+daemons cephadm will upgrade. <code class="docutils literal notranslate"><span class="pre">limit</span></code> can be combined with any of the other
+parameters. For example, if you specify to upgrade daemons of type osd on host
+Host1 with <code class="docutils literal notranslate"><span class="pre">limit</span></code> set to 3, cephadm will upgrade (up to) 3 osd daemons on
+Host1.</p>
+<p>Example: specifying daemon types and hosts:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--image<span class="w"> </span>&lt;image-name&gt;<span class="w"> </span>--daemon-types<span class="w"> </span>mgr,mon<span class="w"> </span>--hosts<span class="w"> </span>host1,host2</span>
+</pre></div></div><p>Example: specifying services and using limit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--image<span class="w"> </span>&lt;image-name&gt;<span class="w"> </span>--services<span class="w"> </span>rgw.example1,rgw.example2<span class="w"> </span>--limit<span class="w"> </span><span class="m">2</span></span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cephadm strictly enforces an order to the upgrade of daemons that is still present
+in staggered upgrade scenarios. The current upgrade ordering is:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mgr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mon</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crash</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">osd</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mds</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rgw</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rbd-mirror</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cephfs-mirror</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph-exporter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iscsi</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nfs</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvmeof</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">smb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">node-exporter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prometheus</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alertmanager</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">grafana</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loki</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">promtail</span></code></p></li>
+</ul>
+<p>If you specify parameters that would upgrade daemons out of order, the upgrade
+command will block and note which daemons will be missed if you proceed.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Upgrade commands with limiting parameters will validate the options before beginning the
+upgrade, which may require pulling the new container image. Do not be surprised
+if the upgrade start command takes a while to return when limiting parameters are provided.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In staggered upgrade scenarios (when a limiting parameter is provided) monitoring
+stack daemons including Prometheus and node-exporter are refreshed after the Manager
+daemons have been upgraded. Do not be surprised if Manager upgrades thus take longer
+than expected. Note that the versions of monitoring stack daemons may not change between
+Ceph releases, in which case they are only redeployed.</p>
+</div>
+<section id="upgrading-to-a-version-that-supports-staggered-upgrade-from-one-that-doesn-t">
+<h3>Upgrading to a version that supports staggered upgrade from one that doesn’t<a class="headerlink" href="#upgrading-to-a-version-that-supports-staggered-upgrade-from-one-that-doesn-t" title="Link to this heading"></a></h3>
+<p>While upgrading from a version that already supports staggered upgrades the process
+simply requires providing the necessary arguments. However, if you wish to upgrade
+to a version that supports staggered upgrade from one that does not, there is a
+workaround. It requires first manually upgrading the Manager daemons and then passing
+the limiting parameters as usual.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure you have multiple running mgr daemons before attempting this procedure.</p>
+</div>
+<p>To start with, determine which Manager is your active one and which are standby. This
+can be done in a variety of ways such as looking at the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">-s</span></code> output. Then,
+manually upgrade each standby mgr daemon with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>daemon<span class="w"> </span>redeploy<span class="w"> </span>mgr.example1.abcdef<span class="w"> </span>--image<span class="w"> </span>&lt;new-image-name&gt;</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are on a very early version of cephadm (early Octopus) the <code class="docutils literal notranslate"><span class="pre">orch</span> <span class="pre">daemon</span> <span class="pre">redeploy</span></code>
+command may not have the <code class="docutils literal notranslate"><span class="pre">--image</span></code> flag. In that case, you must manually set the
+Manager container image <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">mgr</span> <span class="pre">container_image</span> <span class="pre">&lt;new-image-name&gt;</span></code> and then
+redeploy the Manager <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">orch</span> <span class="pre">daemon</span> <span class="pre">redeploy</span> <span class="pre">mgr.example1.abcdef</span></code></p>
+</div>
+<p>At this point, a Manager fail over should allow us to have the active Manager be one
+running the new version.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>mgr<span class="w"> </span>fail</span>
+</pre></div></div><p>Verify the active Manager is now one running the new version. To complete the Manager
+upgrading:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>upgrade<span class="w"> </span>start<span class="w"> </span>--image<span class="w"> </span>&lt;new-image-name&gt;<span class="w"> </span>--daemon-types<span class="w"> </span>mgr</span>
+</pre></div></div><p>You should now have all your Manager daemons on the new version and be able to
+specify the limiting parameters for the rest of the upgrade.</p>
+</section>
+</section>
+<section id="updating-a-non-ceph-image-service-with-custom-image">
+<h2>Updating a non-Ceph image service with custom image<a class="headerlink" href="#updating-a-non-ceph-image-service-with-custom-image" title="Link to this heading"></a></h2>
+<p>To update a non-Ceph image service, run a command of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>update<span class="w"> </span>service<span class="w"> </span>&lt;service_type&gt;<span class="w"> </span>&lt;image&gt;</span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>update<span class="w"> </span>service<span class="w"> </span>prometheus<span class="w"> </span>quay.io/prometheus/prometheus:v2.55.1</span>
+</pre></div></div></section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="certmgr.html" class="btn btn-neutral float-left" title="Certificate Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="operations.html" class="btn btn-neutral float-right" title="Cephadm Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

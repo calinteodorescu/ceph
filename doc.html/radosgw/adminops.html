@@ -1,0 +1,3825 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Operations &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="librgw (Python)" href="api.html" />
+    <link rel="prev" title="Ruby Swift Examples" href="swift/ruby.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Admin Ops API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#info">Info</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#request-parameters">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#response-entities">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#special-error-responses">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-usage">Get Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#trim-usage">Trim Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-user-info">Get User Info</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id8">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-user">Create User</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id12">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id14">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modify-user">Modify User</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id16">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id18">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id19">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-user">Remove User</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id20">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id21">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id22">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id23">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-subuser">Create Subuser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id24">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id25">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id26">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id27">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modify-subuser">Modify Subuser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id28">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id29">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id30">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id31">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-subuser">Remove Subuser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id32">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id33">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id34">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id35">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-key">Create Key</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id36">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id37">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id38">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id39">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-key">Remove Key</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id40">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id41">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id42">Special Error Responses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id43">Response Entities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-bucket-info">Get Bucket Info</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id44">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id45">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id46">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id47">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#check-bucket-index">Check Bucket Index</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id48">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id49">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id50">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id51">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-bucket">Remove Bucket</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id52">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id53">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id54">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id55">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#unlink-bucket">Unlink Bucket</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id56">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id57">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id58">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id59">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#link-bucket">Link Bucket</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id60">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id61">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id62">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id63">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-object">Remove Object</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id64">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id65">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id66">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id67">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#get-bucket-or-object-policy">Get Bucket or Object Policy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id68">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id69">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id70">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id71">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#add-a-user-capability">Add A User Capability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id72">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id73">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id74">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id75">Special Error Responses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-request">Example Request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#remove-a-user-capability">Remove A User Capability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id76">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id77">Request Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id78">Response Entities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id79">Special Error Responses</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quotas">Quotas</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-user-quota">Get User Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-user-quota">Set User Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-bucket-quota">Get Bucket Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-bucket-quota">Set Bucket Quota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-quota-for-an-individual-bucket">Set Quota for an Individual Bucket</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rate-limit">Rate Limit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-user-rate-limit">Get User Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-user-rate-limit">Set User Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-bucket-rate-limit">Get Bucket Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-rate-limit-for-an-individual-bucket">Set Rate Limit for an Individual Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-global-rate-limit">Get Global Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-global-user-rate-limit">Set Global User Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-global-rate-limit-bucket">Set Global Rate Limit Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-global-anonymous-user-rate-limit">Set Global Anonymous User Rate Limit</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#standard-error-responses">Standard Error Responses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binding-libraries">Binding libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">Admin Operations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/adminops.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="admin-operations">
+<span id="radosgw-admin-ops"></span><h1>Admin Operations<a class="headerlink" href="#admin-operations" title="Link to this heading"></a></h1>
+<p>An admin API request will be done on a URI that starts with the configurable ‘admin’
+resource entry point. Authorization for the admin API duplicates the S3 authorization
+mechanism. Some operations require that the user holds special administrative capabilities.
+The response entity type (XML or JSON) may be specified as the ‘format’ option in the
+request and defaults to JSON if not specified.</p>
+<section id="info">
+<h2>Info<a class="headerlink" href="#info" title="Link to this heading"></a></h2>
+<p>Get RGW cluster/endpoint information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>info=read</p>
+</dd>
+</dl>
+<section id="syntax">
+<h3>Syntax<a class="headerlink" href="#syntax" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/info?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="request-parameters">
+<h3>Request Parameters<a class="headerlink" href="#request-parameters" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="response-entities">
+<h3>Response Entities<a class="headerlink" href="#response-entities" title="Link to this heading"></a></h3>
+<p>If successful, the response contains an <code class="docutils literal notranslate"><span class="pre">info</span></code> section.</p>
+<p><code class="docutils literal notranslate"><span class="pre">info</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for all returned information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">cluster_id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The (typically unique) identifier for the controlling
+backing store for the RGW cluster.  In the typical case,
+this is value returned from librados::rados::cluster_fsid().</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">info</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="special-error-responses">
+<h3>Special Error Responses<a class="headerlink" href="#special-error-responses" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+</section>
+<section id="get-usage">
+<h2>Get Usage<a class="headerlink" href="#get-usage" title="Link to this heading"></a></h2>
+<p>Request bandwidth usage information.</p>
+<p>Note: this feature is disabled by default, can be enabled by setting <code class="docutils literal notranslate"><span class="pre">rgw</span>
+<span class="pre">enable</span> <span class="pre">usage</span> <span class="pre">log</span> <span class="pre">=</span> <span class="pre">true</span></code> in the appropriate section of ceph.conf. For changes
+in ceph.conf to take effect, radosgw process restart is needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>usage=read</p>
+</dd>
+</dl>
+<section id="id1">
+<h3>Syntax<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/usage?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Request Parameters<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user for which the information is requested. If not specified will apply to all users.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">start</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Date and (optional) time that specifies the start time of the requested data.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2012-09-25</span> <span class="pre">16:00:00</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">end</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Date and (optional) time that specifies the end time of the requested data (non-inclusive).</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2012-09-25</span> <span class="pre">16:00:00</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">show-entries</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specifies whether data entries should be returned.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [True]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">show-summary</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specifies whether data summary should be returned.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [True]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h3>Response Entities<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the requested information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">usage</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the usage information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">entries</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the usage entries information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the user data information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">owner</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the user that owns the buckets.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket name.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">time</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Time lower bound for which data is being specified (rounded to the beginning of the first relevant hour).</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">epoch</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The time specified in seconds since 1/1/1970.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">categories</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for stats categories.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">entry</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for stats entry.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">category</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of request category for which the stats are provided.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">bytes_sent</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of bytes sent by the RADOS Gateway.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">bytes_received</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of bytes received by the RADOS Gateway.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">ops</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of operations.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">successful_ops</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of successful operations.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">summary</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for stats summary.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">total</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for stats summary aggregated total.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h3>Special Error Responses<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>TBD.</p>
+</section>
+</section>
+<section id="trim-usage">
+<h2>Trim Usage<a class="headerlink" href="#trim-usage" title="Link to this heading"></a></h2>
+<p>Remove usage information. With no dates specified, removes all usage
+information.</p>
+<p>Note: this feature is disabled by default, can be enabled by setting <code class="docutils literal notranslate"><span class="pre">rgw</span>
+<span class="pre">enable</span> <span class="pre">usage</span> <span class="pre">log</span> <span class="pre">=</span> <span class="pre">true</span></code> in the appropriate section of ceph.conf. For changes
+in ceph.conf to take effect, radosgw process restart is needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>usage=write</p>
+</dd>
+</dl>
+<section id="id5">
+<h3>Syntax<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/usage?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3>Request Parameters<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user for which the information is requested. If not specified will apply to all users.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">start</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Date and (optional) time that specifies the start time of the requested data.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2012-09-25</span> <span class="pre">16:00:00</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">end</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Date and (optional) time that specifies the end time of the requested data (none inclusive).</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2012-09-25</span> <span class="pre">16:00:00</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">remove-all</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Required when uid is not specified, in order to acknowledge multi user data removal.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Special Error Responses<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p>TBD.</p>
+</section>
+</section>
+<section id="get-user-info">
+<h2>Get User Info<a class="headerlink" href="#get-user-info" title="Link to this heading"></a></h2>
+<p>Get user information. Cap <code class="docutils literal notranslate"><span class="pre">users</span></code> or <code class="docutils literal notranslate"><span class="pre">user-info-without-keys</span></code> must be set to <code class="docutils literal notranslate"><span class="pre">read</span></code> to run this operation.
+If cap <code class="docutils literal notranslate"><span class="pre">user-info-without-keys</span></code> is set to <code class="docutils literal notranslate"><span class="pre">read</span></code> or <code class="docutils literal notranslate"><span class="pre">*</span></code>, S3 keys and Swift keys will not be
+included in the response unless the user running this operation is the system user, an admin user, or the cap <code class="docutils literal notranslate"><span class="pre">users</span></code> is set to <code class="docutils literal notranslate"><span class="pre">read</span></code>.</p>
+<p>Either a <code class="docutils literal notranslate"><span class="pre">uid</span></code> or <code class="docutils literal notranslate"><span class="pre">access-key</span></code> must be supplied as a request parameter. We recommend supplying uid.
+If both are provided but correspond to different users, the info for the user specified with <code class="docutils literal notranslate"><span class="pre">uid</span></code> will be returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=read or user-info-without-keys=read</p>
+</dd>
+</dl>
+<section id="id8">
+<h3>Syntax<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/user?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3>Request Parameters<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user for which the information is requested.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The S3 access key of the user for which the information is requested.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ABCD0EF12GHIJ2K34LMN</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Response Entities<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the user information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the user data information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user_id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">display_name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Display name for the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">suspended</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the user is suspended.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">max_buckets</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of buckets to be owned by the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subusers associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>S3 keys associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">swift_keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Swift keys associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User capabilities.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h3>Special Error Responses<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+</section>
+<section id="create-user">
+<h2>Create User<a class="headerlink" href="#create-user" title="Link to this heading"></a></h2>
+<p>Create a new user. By default, a S3 key pair will be created automatically
+and returned in the response. If only one of <code class="docutils literal notranslate"><span class="pre">access-key</span></code> or <code class="docutils literal notranslate"><span class="pre">secret-key</span></code>
+is provided, the omitted key will be automatically generated. By default, a
+generated key is added to the keyring without replacing an existing key pair.
+If <code class="docutils literal notranslate"><span class="pre">access-key</span></code> is specified and refers to an existing key owned by the user
+then it will be modified.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Luminous.</span></p>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">tenant</span></code> may either be specified as a part of uid or as an additional
+request param.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id12">
+<h3>Syntax<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /{admin}/user?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3>Request Parameters<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to be created.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p>A tenant name may also specified as a part of <code class="docutils literal notranslate"><span class="pre">uid</span></code>, by following the syntax
+<code class="docutils literal notranslate"><span class="pre">tenant$user</span></code>, refer to <a class="reference internal" href="multitenancy.html#rgw-multitenancy"><span class="std std-ref">Multitenancy</span></a> for more details.</p>
+<p><code class="docutils literal notranslate"><span class="pre">display-name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The display name of the user to be created.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">email</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The email address associated with the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo&#64;bar.com</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">key-type</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key type to be generated, options are: swift, s3 (default).</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">s3</span></code> [<code class="docutils literal notranslate"><span class="pre">s3</span></code>]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify access key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ABCD0EF12GHIJ2K34LMN</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">secret-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify secret key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0AbCDEFg1h2i34JklM5nop6QrSTUV+WxyzaBC7D8</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user-caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User capabilities.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">usage=read,</span> <span class="pre">write;</span> <span class="pre">users=read</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">generate-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate a new key pair and add to the existing keyring.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [True]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">max-buckets</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify the maximum number of buckets the user can own.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>500 [1000]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">suspended</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify whether the user should be suspended.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Jewel.</span></p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">tenant</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the Tenant under which a user is a part of.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tenant1</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">default-placement</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>default placement for the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>default-placement</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">default-storage-class</span></code>
+:Description: default storage class for the user, default-placement must be defined when setting this option.
+:Type: string
+:Example: STANDARD-1A
+:Required: No</p>
+</section>
+<section id="id14">
+<h3>Response Entities<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the user information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the user data information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">tenant</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tenant which user is a part of.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user_id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">display_name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Display name for the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">suspended</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the user is suspended.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">max_buckets</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of buckets to be owned by the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subusers associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>S3 keys associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">swift_keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Swift keys associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User capabilities.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h3>Special Error Responses<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">UserExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attempt to create existing user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidAccessKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid access key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidSecretKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid secret key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">KeyExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Provided access key exists and belongs to another user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">EmailExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Provided email address exists.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidCapability</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attempt to grant invalid admin capability.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="modify-user">
+<h2>Modify User<a class="headerlink" href="#modify-user" title="Link to this heading"></a></h2>
+<p>Modify a user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id16">
+<h3>Syntax<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/user?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h3>Request Parameters<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to be modified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">display-name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The display name of the user to be modified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">email</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The email address to be associated with the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo&#64;bar.com</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">generate-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate a new key pair and add to the existing keyring.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify access key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ABCD0EF12GHIJ2K34LMN</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">secret-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify secret key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0AbCDEFg1h2i34JklM5nop6QrSTUV+WxyzaBC7D8</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">key-type</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key type to be generated, options are: swift, s3 (default).</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">s3</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">max-buckets</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify the maximum number of buckets the user can own.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>500 [1000]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">suspended</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify whether the user should be suspended.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">op-mask</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The op-mask of the user to be modified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">read,</span> <span class="pre">write,</span> <span class="pre">delete,</span> <span class="pre">*</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">default-placement</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>default placement for the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>default-placement</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">default-storage-class</span></code>
+:Description: default storage class for the user, default-placement must be defined when setting this option.
+:Type: string
+:Example: STANDARD-1A
+:Required: No</p>
+</section>
+<section id="id18">
+<h3>Response Entities<a class="headerlink" href="#id18" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the user information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the user data information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user_id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">display_name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Display name for the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">suspended</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the user is suspended.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">max_buckets</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The maximum number of buckets to be owned by the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subusers associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>S3 keys associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">swift_keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Swift keys associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User capabilities.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h3>Special Error Responses<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidAccessKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid access key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidSecretKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid secret key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">KeyExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Provided access key exists and belongs to another user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">EmailExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Provided email address exists.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidCapability</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attempt to grant invalid admin capability.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="remove-user">
+<h2>Remove User<a class="headerlink" href="#remove-user" title="Link to this heading"></a></h2>
+<p>Remove an existing user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id20">
+<h3>Syntax<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/user?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id21">
+<h3>Request Parameters<a class="headerlink" href="#id21" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to be removed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">purge-data</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>When specified the buckets and objects belonging
+to the user will also be removed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h3>Response Entities<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<p>None</p>
+</section>
+<section id="id23">
+<h3>Special Error Responses<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+</section>
+<section id="create-subuser">
+<h2>Create Subuser<a class="headerlink" href="#create-subuser" title="Link to this heading"></a></h2>
+<p>Create a new subuser (primarily useful for clients using the Swift API).
+Note that in general for a subuser to be useful, it must be granted
+permissions by specifying <code class="docutils literal notranslate"><span class="pre">access</span></code>. As with user creation if
+<code class="docutils literal notranslate"><span class="pre">subuser</span></code> is specified without <code class="docutils literal notranslate"><span class="pre">secret</span></code>, then a secret key will
+be automatically generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id24">
+<h3>Syntax<a class="headerlink" href="#id24" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /{admin}/user?subuser&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id25">
+<h3>Request Parameters<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID under which a subuser is to  be created.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subuser</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify the subuser ID to be created.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sub_foo</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">secret-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify secret key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0AbCDEFg1h2i34JklM5nop6QrSTUV+WxyzaBC7D8</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">key-type</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key type to be generated, options are: swift (default), s3.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">swift</span></code> [<code class="docutils literal notranslate"><span class="pre">swift</span></code>]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set access permissions for sub-user, should be one
+of <code class="docutils literal notranslate"><span class="pre">read,</span> <span class="pre">write,</span> <span class="pre">readwrite,</span> <span class="pre">full</span></code>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">read</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">generate-secret</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate the secret key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id26">
+<h3>Response Entities<a class="headerlink" href="#id26" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the subuser information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subusers associated with the user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subuser id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">permissions</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subuser access to user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h3>Special Error Responses<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">SubuserExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specified subuser exists.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidSecretKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid secret key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidAccess</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid subuser access specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="modify-subuser">
+<h2>Modify Subuser<a class="headerlink" href="#modify-subuser" title="Link to this heading"></a></h2>
+<p>Modify an existing subuser</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id28">
+<h3>Syntax<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/user?subuser&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id29">
+<h3>Request Parameters<a class="headerlink" href="#id29" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID under which the subuser is to be modified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subuser</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The subuser ID to be modified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sub_foo</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">generate-secret</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate a new secret key for the subuser,
+replacing the existing key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">secret</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify secret key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0AbCDEFg1h2i34JklM5nop6QrSTUV+WxyzaBC7D8</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">key-type</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key type to be generated, options are: swift (default), s3 .</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">swift</span></code> [<code class="docutils literal notranslate"><span class="pre">swift</span></code>]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Set access permissions for sub-user, should be one
+of <code class="docutils literal notranslate"><span class="pre">read,</span> <span class="pre">write,</span> <span class="pre">readwrite,</span> <span class="pre">full</span></code>.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">read</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h3>Response Entities<a class="headerlink" href="#id30" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the subuser information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subusers associated with the user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subuser id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">permissions</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Subuser access to user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">subusers</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id31">
+<h3>Special Error Responses<a class="headerlink" href="#id31" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidSecretKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid secret key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidAccess</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid subuser access specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="remove-subuser">
+<h2>Remove Subuser<a class="headerlink" href="#remove-subuser" title="Link to this heading"></a></h2>
+<p>Remove an existing subuser</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id32">
+<h3>Syntax<a class="headerlink" href="#id32" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/user?subuser&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id33">
+<h3>Request Parameters<a class="headerlink" href="#id33" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID under which the subuser is to be removed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subuser</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The subuser ID to be removed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sub_foo</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">purge-keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Remove keys belonging to the subuser.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [True]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id34">
+<h3>Response Entities<a class="headerlink" href="#id34" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="id35">
+<h3>Special Error Responses<a class="headerlink" href="#id35" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+</section>
+<section id="create-key">
+<h2>Create Key<a class="headerlink" href="#create-key" title="Link to this heading"></a></h2>
+<p>Create a new key. If a <code class="docutils literal notranslate"><span class="pre">subuser</span></code> is specified then by default created keys
+will be swift type. If only one of <code class="docutils literal notranslate"><span class="pre">access-key</span></code> or <code class="docutils literal notranslate"><span class="pre">secret-key</span></code> is provided the
+committed key will be automatically generated, that is if only <code class="docutils literal notranslate"><span class="pre">secret-key</span></code> is
+specified then <code class="docutils literal notranslate"><span class="pre">access-key</span></code> will be automatically generated. By default, a
+generated key is added to the keyring without replacing an existing key pair.
+If <code class="docutils literal notranslate"><span class="pre">access-key</span></code> is specified and refers to an existing key owned by the user
+then it will be modified. The response is a container listing all keys of the same
+type as the key created. Note that when creating a swift key, specifying the option
+<code class="docutils literal notranslate"><span class="pre">access-key</span></code> will have no effect. Additionally, only one swift key may be held by
+each user or subuser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id36">
+<h3>Syntax<a class="headerlink" href="#id36" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /{admin}/user?key&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id37">
+<h3>Request Parameters<a class="headerlink" href="#id37" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to receive the new key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subuser</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The subuser ID to receive the new key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sub_foo</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">key-type</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key type to be generated, options are: swift, s3 (default).</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">s3</span></code> [<code class="docutils literal notranslate"><span class="pre">s3</span></code>]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify the access key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">AB01C2D3EF45G6H7IJ8K</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">secret-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specify the secret key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0ab/CdeFGhij1klmnopqRSTUv1WxyZabcDEFgHij</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">generate-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Generate a new key pair and add to the existing keyring.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [True]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">active</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Activate or deactivate a key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [True]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h3>Response Entities<a class="headerlink" href="#id38" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Keys of type created associated with this user account.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user account associated with the key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">access-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The access key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">secret-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The secret key</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">keys</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h3>Special Error Responses<a class="headerlink" href="#id39" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidAccessKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid access key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidSecretKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid secret key specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidKeyType</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Invalid key type specified.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">KeyExists</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Provided access key exists and belongs to another user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="remove-key">
+<h2>Remove Key<a class="headerlink" href="#remove-key" title="Link to this heading"></a></h2>
+<p>Remove an existing key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id40">
+<h3>Syntax<a class="headerlink" href="#id40" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/user?key&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id41">
+<h3>Request Parameters<a class="headerlink" href="#id41" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">access-key</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The S3 access key belonging to the S3 key pair to remove.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">AB01C2D3EF45G6H7IJ8K</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user to remove the key from.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">subuser</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The subuser to remove the key from.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sub_foo</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">key-type</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key type to be removed, options are: swift, s3.
+NOTE: Required to remove swift key.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">swift</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id42">
+<h3>Special Error Responses<a class="headerlink" href="#id42" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="id43">
+<h3>Response Entities<a class="headerlink" href="#id43" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+</section>
+<section id="get-bucket-info">
+<h2>Get Bucket Info<a class="headerlink" href="#get-bucket-info" title="Link to this heading"></a></h2>
+<p>Get information about a subset of the existing buckets. If <code class="docutils literal notranslate"><span class="pre">uid</span></code> is specified
+without <code class="docutils literal notranslate"><span class="pre">bucket</span></code> then all buckets belonging to the user will be returned. If
+<code class="docutils literal notranslate"><span class="pre">bucket</span></code> alone is specified, information for that particular bucket will be
+retrieved.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">max-entries</span></code> is specified to limit the number of buckets returned, the
+response body will change and contain the keys <code class="docutils literal notranslate"><span class="pre">buckets</span></code>, <code class="docutils literal notranslate"><span class="pre">count</span></code> and
+<code class="docutils literal notranslate"><span class="pre">truncated</span></code>. If <code class="docutils literal notranslate"><span class="pre">truncated</span></code> is true the <code class="docutils literal notranslate"><span class="pre">marker</span></code> key will also be added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=read</p>
+</dd>
+</dl>
+<section id="id44">
+<h3>Syntax<a class="headerlink" href="#id44" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/bucket?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id45">
+<h3>Request Parameters<a class="headerlink" href="#id45" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket to return info on.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user to retrieve bucket information for.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">stats</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return bucket statistics.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">max-entries</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of bucket list entries to return.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>100</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">marker</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The marker to use when listing buckets.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String (bucket name)</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>my-bucket</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id46">
+<h3>Response Entities<a class="headerlink" href="#id46" title="Link to this heading"></a></h3>
+<p>If successful the request returns a buckets container containing
+the desired bucket information.</p>
+<p><code class="docutils literal notranslate"><span class="pre">stats</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Per bucket information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">buckets</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Contains a list of one or more bucket containers.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Container for single bucket information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">buckets</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the bucket.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">pool</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pool the bucket is stored in.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The unique bucket id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">marker</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal bucket tag.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">owner</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id of the bucket owner.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">usage</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Storage usage information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">index</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Status of bucket index.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">count</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of returned buckets, only if <code class="docutils literal notranslate"><span class="pre">max-entries</span></code> is specified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Integer</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">truncated</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Reported if the response is truncated when <code class="docutils literal notranslate"><span class="pre">max-entries</span></code> is specified.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">marker</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If <code class="docutils literal notranslate"><span class="pre">truncated</span></code> is true the <code class="docutils literal notranslate"><span class="pre">marker</span></code> key is returned with
+the marker (bucket name) to use to continue pagination.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</section>
+<section id="id47">
+<h3>Special Error Responses<a class="headerlink" href="#id47" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">IndexRepairFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bucket index repair failed.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="check-bucket-index">
+<h2>Check Bucket Index<a class="headerlink" href="#check-bucket-index" title="Link to this heading"></a></h2>
+<p>Check the index of an existing bucket. NOTE: to check multipart object
+accounting with <code class="docutils literal notranslate"><span class="pre">check-objects</span></code>, <code class="docutils literal notranslate"><span class="pre">fix</span></code> must be set to True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=write</p>
+</dd>
+</dl>
+<section id="id48">
+<h3>Syntax<a class="headerlink" href="#id48" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/bucket?index&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id49">
+<h3>Request Parameters<a class="headerlink" href="#id49" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket to return info on.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">check-objects</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Check multipart object accounting.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">fix</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Also fix the bucket index when checking.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id50">
+<h3>Response Entities<a class="headerlink" href="#id50" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">index</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Status of bucket index.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+</dl>
+</section>
+<section id="id51">
+<h3>Special Error Responses<a class="headerlink" href="#id51" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">IndexRepairFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bucket index repair failed.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="remove-bucket">
+<h2>Remove Bucket<a class="headerlink" href="#remove-bucket" title="Link to this heading"></a></h2>
+<p>Delete an existing bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=write</p>
+</dd>
+</dl>
+<section id="id52">
+<h3>Syntax<a class="headerlink" href="#id52" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/bucket?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id53">
+<h3>Request Parameters<a class="headerlink" href="#id53" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket to remove.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">tenant</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tenant under which the bucket is to be removed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">tenant1</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">purge-objects</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Remove a buckets objects before deletion.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">bypass-gc</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bypass garbage collection.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True [False]</p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id54">
+<h3>Response Entities<a class="headerlink" href="#id54" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="id55">
+<h3>Special Error Responses<a class="headerlink" href="#id55" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BucketNotEmpty</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attempted to delete non-empty bucket.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">ObjectRemovalFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unable to remove objects.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="unlink-bucket">
+<h2>Unlink Bucket<a class="headerlink" href="#unlink-bucket" title="Link to this heading"></a></h2>
+<p>Unlink a bucket from a specified user. Primarily useful for changing
+bucket ownership.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=write</p>
+</dd>
+</dl>
+<section id="id56">
+<h3>Syntax<a class="headerlink" href="#id56" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/bucket?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id57">
+<h3>Request Parameters<a class="headerlink" href="#id57" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket to unlink.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to unlink the bucket from.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+</section>
+<section id="id58">
+<h3>Response Entities<a class="headerlink" href="#id58" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="id59">
+<h3>Special Error Responses<a class="headerlink" href="#id59" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BucketUnlinkFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unable to unlink bucket from specified user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="link-bucket">
+<h2>Link Bucket<a class="headerlink" href="#link-bucket" title="Link to this heading"></a></h2>
+<p>Link a bucket to a specified user, unlinking the bucket from
+any previous user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=write</p>
+</dd>
+</dl>
+<section id="id60">
+<h3>Syntax<a class="headerlink" href="#id60" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /{admin}/bucket?format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id61">
+<h3>Request Parameters<a class="headerlink" href="#id61" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket name to unlink.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">bucket-id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket id to unlink.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">dev.6607669.420</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to link the bucket to.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+</section>
+<section id="id62">
+<h3>Response Entities<a class="headerlink" href="#id62" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Container for single bucket information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the bucket.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">pool</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pool the bucket is stored in.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The unique bucket id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">marker</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal bucket tag.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">owner</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id of the bucket owner.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">usage</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Storage usage information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">index</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Status of bucket index.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id63">
+<h3>Special Error Responses<a class="headerlink" href="#id63" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">BucketUnlinkFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unable to unlink bucket from specified user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">BucketLinkFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unable to link bucket to specified user.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="remove-object">
+<h2>Remove Object<a class="headerlink" href="#remove-object" title="Link to this heading"></a></h2>
+<p>Remove an existing object. NOTE: Does not require owner to be non-suspended.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=write</p>
+</dd>
+</dl>
+<section id="id64">
+<h3>Syntax<a class="headerlink" href="#id64" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/bucket?object&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id65">
+<h3>Request Parameters<a class="headerlink" href="#id65" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket containing the object to be removed.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The object to remove.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo.txt</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+</section>
+<section id="id66">
+<h3>Response Entities<a class="headerlink" href="#id66" title="Link to this heading"></a></h3>
+<p>None.</p>
+</section>
+<section id="id67">
+<h3>Special Error Responses<a class="headerlink" href="#id67" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">NoSuchObject</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Specified object does not exist.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>404 Not Found</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">ObjectRemovalFailed</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unable to remove objects.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>409 Conflict</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="get-bucket-or-object-policy">
+<h2>Get Bucket or Object Policy<a class="headerlink" href="#get-bucket-or-object-policy" title="Link to this heading"></a></h2>
+<p>Read the policy of an object or bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>buckets=read</p>
+</dd>
+</dl>
+<section id="id68">
+<h3>Syntax<a class="headerlink" href="#id68" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/bucket?policy&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id69">
+<h3>Request Parameters<a class="headerlink" href="#id69" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The bucket to read the policy from.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_bucket</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The object to read the policy from.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo.txt</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>No</p>
+</dd>
+</dl>
+</section>
+<section id="id70">
+<h3>Response Entities<a class="headerlink" href="#id70" title="Link to this heading"></a></h3>
+<p>If successful, returns the object or bucket policy</p>
+<p><code class="docutils literal notranslate"><span class="pre">policy</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Access control policy.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+</dl>
+</section>
+<section id="id71">
+<h3>Special Error Responses<a class="headerlink" href="#id71" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">IncompleteBody</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Either bucket was not specified for a bucket policy request or bucket
+and object were not specified for an object policy request.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="add-a-user-capability">
+<h2>Add A User Capability<a class="headerlink" href="#add-a-user-capability" title="Link to this heading"></a></h2>
+<p>Add an administrative capability to a specified user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id72">
+<h3>Syntax<a class="headerlink" href="#id72" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /{admin}/user?caps&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id73">
+<h3>Request Parameters<a class="headerlink" href="#id73" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to add an administrative capability to.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user-caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The administrative capability to add to the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">usage=read,write;user=write</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+</section>
+<section id="id74">
+<h3>Response Entities<a class="headerlink" href="#id74" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the user’s capabilities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the user data information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user_id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User capabilities.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id75">
+<h3>Special Error Responses<a class="headerlink" href="#id75" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidCapability</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attempt to grant invalid admin capability.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+</section>
+<section id="example-request">
+<h3>Example Request<a class="headerlink" href="#example-request" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /{admin}/user?caps&amp;user-caps=usage=read,write;user=write&amp;format=json HTTP/1.1
+Host: {fqdn}
+Content-Type: text/plain
+Authorization: {your-authorization-token}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="remove-a-user-capability">
+<h2>Remove A User Capability<a class="headerlink" href="#remove-a-user-capability" title="Link to this heading"></a></h2>
+<p>Remove an administrative capability from a specified user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">caps<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users=write</p>
+</dd>
+</dl>
+<section id="id76">
+<h3>Syntax<a class="headerlink" href="#id76" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /{admin}/user?caps&amp;format=json HTTP/1.1
+Host: {fqdn}
+</pre></div>
+</div>
+</section>
+<section id="id77">
+<h3>Request Parameters<a class="headerlink" href="#id77" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uid</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user ID to remove an administrative capability from.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">foo_user</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user-caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The administrative capabilities to remove from the user.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Example<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">usage=read,</span> <span class="pre">write</span></code></p>
+</dd>
+<dt class="field-even">Required<span class="colon">:</span></dt>
+<dd class="field-even"><p>Yes</p>
+</dd>
+</dl>
+</section>
+<section id="id78">
+<h3>Response Entities<a class="headerlink" href="#id78" title="Link to this heading"></a></h3>
+<p>If successful, the response contains the user’s capabilities.</p>
+<p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A container for the user data information.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">user_id</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The user id.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>String</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">caps</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User capabilities.</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container</p>
+</dd>
+<dt class="field-odd">Parent<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">user</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id79">
+<h3>Special Error Responses<a class="headerlink" href="#id79" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">InvalidCapability</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Attempt to remove an invalid admin capability.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>400 Bad Request</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">NoSuchCap</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User does not possess specified capability.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>404 Not Found</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="quotas">
+<h2>Quotas<a class="headerlink" href="#quotas" title="Link to this heading"></a></h2>
+<p>The Admin Operations API enables you to set quotas on users and on bucket owned
+by users. See <a class="reference external" href="../admin#quota-management">Quota Management</a> for additional details. Quotas include the
+maximum number of objects in a bucket and the maximum storage size in megabytes.</p>
+<p>To view quotas, the user must have a <code class="docutils literal notranslate"><span class="pre">users=read</span></code> capability. To set,
+modify or disable a quota, the user must have <code class="docutils literal notranslate"><span class="pre">users=write</span></code> capability.
+See the <a class="reference external" href="../admin">Admin Guide</a> for details.</p>
+<p>Valid parameters for quotas include:</p>
+<ul class="simple">
+<li><p><strong>Bucket:</strong> The <code class="docutils literal notranslate"><span class="pre">bucket</span></code> option allows you to specify a quota for
+buckets owned by a user.</p></li>
+<li><p><strong>Maximum Objects:</strong> The <code class="docutils literal notranslate"><span class="pre">max-objects</span></code> setting allows you to specify
+the maximum number of objects. A negative value disables this setting.</p></li>
+<li><p><strong>Maximum Size:</strong> The <code class="docutils literal notranslate"><span class="pre">max-size</span></code> option allows you to specify a quota
+for the maximum number of bytes. The <code class="docutils literal notranslate"><span class="pre">max-size-kb</span></code> option allows you
+to specify it in KiB. A negative value disables this setting.</p></li>
+<li><p><strong>Quota Type:</strong> The <code class="docutils literal notranslate"><span class="pre">quota-type</span></code> option sets the scope for the quota.
+The options are <code class="docutils literal notranslate"><span class="pre">bucket</span></code> and <code class="docutils literal notranslate"><span class="pre">user</span></code>.</p></li>
+<li><p><strong>Enable/Disable Quota:</strong> The <code class="docutils literal notranslate"><span class="pre">enabled</span></code> option specifies whether the
+quota should be enabled. The value should be either ‘True’ or ‘False’.</p></li>
+</ul>
+<section id="get-user-quota">
+<h3>Get User Quota<a class="headerlink" href="#get-user-quota" title="Link to this heading"></a></h3>
+<p>To get a quota, the user must have <code class="docutils literal notranslate"><span class="pre">users</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">read</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /admin/user?quota&amp;uid=&lt;uid&gt;&amp;quota-type=user
+</pre></div>
+</div>
+</section>
+<section id="set-user-quota">
+<h3>Set User Quota<a class="headerlink" href="#set-user-quota" title="Link to this heading"></a></h3>
+<p>To set a quota, the user must have <code class="docutils literal notranslate"><span class="pre">users</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /admin/user?quota&amp;uid=&lt;uid&gt;&amp;quota-type=user
+</pre></div>
+</div>
+<p>The content must include a JSON representation of the quota settings
+as encoded in the corresponding read operation.</p>
+</section>
+<section id="get-bucket-quota">
+<h3>Get Bucket Quota<a class="headerlink" href="#get-bucket-quota" title="Link to this heading"></a></h3>
+<p>To get a quota, the user must have <code class="docutils literal notranslate"><span class="pre">users</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">read</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /admin/user?quota&amp;uid=&lt;uid&gt;&amp;quota-type=bucket
+</pre></div>
+</div>
+</section>
+<section id="set-bucket-quota">
+<h3>Set Bucket Quota<a class="headerlink" href="#set-bucket-quota" title="Link to this heading"></a></h3>
+<p>To set a quota, the user must have <code class="docutils literal notranslate"><span class="pre">users</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /admin/user?quota&amp;uid=&lt;uid&gt;&amp;quota-type=bucket
+</pre></div>
+</div>
+<p>The content must include a JSON representation of the quota settings
+as encoded in the corresponding read operation.</p>
+</section>
+<section id="set-quota-for-an-individual-bucket">
+<h3>Set Quota for an Individual Bucket<a class="headerlink" href="#set-quota-for-an-individual-bucket" title="Link to this heading"></a></h3>
+<p>To set a quota, the user must have <code class="docutils literal notranslate"><span class="pre">buckets</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PUT /admin/bucket?quota&amp;uid=&lt;uid&gt;&amp;bucket=&lt;bucket-name&gt;
+</pre></div>
+</div>
+<p>The content must include a JSON representation of the quota settings
+as mentioned in Set Bucket Quota section above.</p>
+</section>
+</section>
+<section id="rate-limit">
+<h2>Rate Limit<a class="headerlink" href="#rate-limit" title="Link to this heading"></a></h2>
+<p>The Admin Operations API enables you to set and get ratelimit configurations on users and on bucket and global rate limit configurations. See <a class="reference external" href="../admin#rate-limit-management">Rate Limit Management</a> for additional details.
+Rate Limit includes the maximum number of operations and/or bytes per minute, separated by read and/or write, to a bucket and/or by a user and the maximum storage size in megabytes.</p>
+<p>To view rate limit, the user must have a <code class="docutils literal notranslate"><span class="pre">ratelimit=read</span></code> capability. To set,
+modify or disable a ratelimit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit=write</span></code> capability.
+See the <a class="reference external" href="../admin">Admin Guide</a> for details.</p>
+<p>Valid parameters for quotas include:</p>
+<ul class="simple">
+<li><p><strong>Bucket:</strong> The <code class="docutils literal notranslate"><span class="pre">bucket</span></code> option allows you to specify a rate limit for
+a bucket.</p></li>
+<li><p><strong>User:</strong> The <code class="docutils literal notranslate"><span class="pre">uid</span></code> option allows you to specify a rate limit for a user.</p></li>
+<li><p><strong>Maximum Read Bytes:</strong> The <code class="docutils literal notranslate"><span class="pre">max-read-bytes</span></code> setting allows you to specify
+the maximum number of read bytes per minute. A 0 value disables this setting.</p></li>
+<li><p><strong>Maximum Write Bytes:</strong> The <code class="docutils literal notranslate"><span class="pre">max-write-bytes</span></code> setting allows you to specify
+the maximum number of write bytes per minute. A 0 value disables this setting.</p></li>
+<li><p><strong>Maximum Read Ops:</strong> The <code class="docutils literal notranslate"><span class="pre">max-read-ops</span></code> setting allows you to specify
+the maximum number of read ops per minute. A 0 value disables this setting.</p></li>
+<li><p><strong>Maximum Write Ops:</strong> The <code class="docutils literal notranslate"><span class="pre">max-write-ops</span></code> setting allows you to specify
+the maximum number of write ops per minute. A 0 value disables this setting.</p></li>
+<li><p><strong>Global:</strong> The <code class="docutils literal notranslate"><span class="pre">global</span></code> option allows you to specify a global rate limit.
+The value should be either ‘True’ or ‘False’.</p></li>
+<li><p><strong>Rate Limit Scope:</strong> The <code class="docutils literal notranslate"><span class="pre">ratelimit-scope</span></code> option sets the scope for the rate limit.
+The options are <code class="docutils literal notranslate"><span class="pre">bucket</span></code> , <code class="docutils literal notranslate"><span class="pre">user</span></code> and <code class="docutils literal notranslate"><span class="pre">anonymous</span></code>.
+<code class="docutils literal notranslate"><span class="pre">anonymous</span></code> is only valid for setting global configuration</p></li>
+<li><p><strong>Enable/Disable Rate Limit:</strong> The <code class="docutils literal notranslate"><span class="pre">enabled</span></code> option specifies whether the
+rate limit should be enabled.  The value should be either ‘True’ or ‘False’.</p></li>
+</ul>
+<section id="get-user-rate-limit">
+<h3>Get User Rate Limit<a class="headerlink" href="#get-user-rate-limit" title="Link to this heading"></a></h3>
+<p>To get a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">read</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/ratelimit?ratelimit-scope=user&amp;uid=&lt;uid&gt;
+</pre></div>
+</div>
+</section>
+<section id="set-user-rate-limit">
+<h3>Set User Rate Limit<a class="headerlink" href="#set-user-rate-limit" title="Link to this heading"></a></h3>
+<p>To set a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/ratelimit?ratelimit-scope=user&amp;uid=&lt;uid&gt;&lt;[&amp;max-read-bytes=&lt;bytes&gt;][&amp;max-write-bytes=&lt;bytes&gt;][&amp;max-read-ops=&lt;ops&gt;][&amp;max-write-ops=&lt;ops&gt;][enabled=&lt;True|False&gt;]&gt;
+</pre></div>
+</div>
+</section>
+<section id="get-bucket-rate-limit">
+<h3>Get Bucket Rate Limit<a class="headerlink" href="#get-bucket-rate-limit" title="Link to this heading"></a></h3>
+<p>To get a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">users</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">read</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/ratelimit?bucket=&lt;bucket&gt;&amp;ratelimit-scope=bucket
+</pre></div>
+</div>
+</section>
+<section id="set-rate-limit-for-an-individual-bucket">
+<h3>Set Rate Limit for an Individual Bucket<a class="headerlink" href="#set-rate-limit-for-an-individual-bucket" title="Link to this heading"></a></h3>
+<p>To set a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/ratelimit?bucket=&lt;bucket-name&gt;&amp;ratelimit-scope=bucket&lt;[&amp;max-read-bytes=&lt;bytes&gt;][&amp;max-write-bytes=&lt;bytes&gt;][&amp;max-read-ops=&lt;ops&gt;][&amp;max-write-ops=&lt;ops&gt;]&gt;
+</pre></div>
+</div>
+</section>
+<section id="get-global-rate-limit">
+<h3>Get Global Rate Limit<a class="headerlink" href="#get-global-rate-limit" title="Link to this heading"></a></h3>
+<p>To get a global rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">read</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{admin}/ratelimit?global=&lt;True|False&gt;
+</pre></div>
+</div>
+</section>
+<section id="set-global-user-rate-limit">
+<h3>Set Global User Rate Limit<a class="headerlink" href="#set-global-user-rate-limit" title="Link to this heading"></a></h3>
+<p>To set a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/ratelimit?ratelimit-scope=user&amp;global=&lt;True|False&gt;&lt;[&amp;max-read-bytes=&lt;bytes&gt;][&amp;max-write-bytes=&lt;bytes&gt;][&amp;max-read-ops=&lt;ops&gt;][&amp;max-write-ops=&lt;ops&gt;][enabled=&lt;True|False&gt;]&gt;
+</pre></div>
+</div>
+</section>
+<section id="set-global-rate-limit-bucket">
+<h3>Set Global Rate Limit Bucket<a class="headerlink" href="#set-global-rate-limit-bucket" title="Link to this heading"></a></h3>
+<p>To set a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/ratelimit?ratelimit-scope=bucket&amp;global=&lt;True|False&gt;&lt;[&amp;max-read-bytes=&lt;bytes&gt;][&amp;max-write-bytes=&lt;bytes&gt;][&amp;max-read-ops=&lt;ops&gt;][&amp;max-write-ops=&lt;ops&gt;]&gt;
+</pre></div>
+</div>
+</section>
+<section id="set-global-anonymous-user-rate-limit">
+<h3>Set Global Anonymous User Rate Limit<a class="headerlink" href="#set-global-anonymous-user-rate-limit" title="Link to this heading"></a></h3>
+<p>To set a rate limit, the user must have <code class="docutils literal notranslate"><span class="pre">ratelimit</span></code> capability set with <code class="docutils literal notranslate"><span class="pre">write</span></code>
+permission.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{admin}/ratelimit?ratelimit-scope=anon&amp;global=&lt;True|False&gt;&lt;[&amp;max-read-bytes=&lt;bytes&gt;][&amp;max-write-bytes=&lt;bytes&gt;][&amp;max-read-ops=&lt;ops&gt;][&amp;max-write-ops=&lt;ops&gt;][enabled=&lt;True|False&gt;]&gt;
+</pre></div>
+</div>
+</section>
+</section>
+<section id="standard-error-responses">
+<h2>Standard Error Responses<a class="headerlink" href="#standard-error-responses" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">AccessDenied</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Access denied.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>403 Forbidden</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">InternalError</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Internal server error.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>500 Internal Server Error</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">NoSuchUser</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>User does not exist.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>404 Not Found</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">NoSuchBucket</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bucket does not exist.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>404 Not Found</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">NoSuchKey</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No such access key.</p>
+</dd>
+<dt class="field-even">Code<span class="colon">:</span></dt>
+<dd class="field-even"><p>404 Not Found</p>
+</dd>
+</dl>
+</section>
+<section id="binding-libraries">
+<h2>Binding libraries<a class="headerlink" href="#binding-libraries" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Golang</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ceph/go-ceph/">ceph/go-ceph</a></p></li>
+<li><p><a class="reference external" href="https://github.com/IrekFasikhov/go-rgwadmin">IrekFasikhov/go-rgwadmin</a></p></li>
+<li><p><a class="reference external" href="https://github.com/QuentinPerez/go-radosgw">QuentinPerez/go-radosgw</a></p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">Java</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/twonote/radosgw-admin4j">twonote/radosgw-admin4j</a></p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">PHP</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/lbausch/php-ceph-radosgw-admin">lbausch/php-ceph-radosgw-admin</a></p></li>
+<li><p><a class="reference external" href="https://github.com/myENA/php-rgw-api">myENA/php-rgw-api</a></p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">Python</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/UMIACS/rgwadmin">UMIACS/rgwadmin</a></p></li>
+<li><p><a class="reference external" href="https://github.com/valerytschopp/python-radosgw-admin">valerytschopp/python-radosgw-admin</a></p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="swift/ruby.html" class="btn btn-neutral float-left" title="Ruby Swift Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="librgw (Python)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

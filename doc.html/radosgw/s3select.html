@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ceph s3 select &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Lua Scripting" href="lua-scripting.html" />
+    <link rel="prev" title="QAT Acceleration for Encryption and Compression" href="qat-accel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">S3-select</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-workflow">Basic Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#basic-functionalities">Basic Functionalities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#features-support">Features Support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#null">NULL</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#s3-select-function-interfaces">S3-select Function Interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#timestamp-functions">Timestamp Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#to-string-parameters">to_string parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aggregation-functions">Aggregation Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#string-functions">String Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sql-limit-operator">SQL Limit Operator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alias">Alias</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#additional-syntax-support">Additional Syntax Support</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sending-query-to-rgw">Sending Query to RGW</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#input-serialization">Input Serialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#output-serialization">Output Serialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scan-range-option">Scan Range Option</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#csv-parsing-behavior">CSV Parsing Behavior</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#json">JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-json-query-example">A JSON Query Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boto3">BOTO3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s3-select-responses">S3 SELECT Responses</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#error-response">Error Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#report-response">Report Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#response-description">Response Description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">Ceph s3 select</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/s3select.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="ceph-s3-select">
+<h1><a class="toc-backref" href="#id1" role="doc-backlink">Ceph s3 select</a><a class="headerlink" href="#ceph-s3-select" title="Link to this heading"></a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ceph-s3-select" id="id1">Ceph s3 select</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id2">Overview</a></p></li>
+<li><p><a class="reference internal" href="#basic-workflow" id="id3">Basic Workflow</a></p>
+<ul>
+<li><p><a class="reference internal" href="#basic-functionalities" id="id4">Basic Functionalities</a></p></li>
+<li><p><a class="reference internal" href="#error-handling" id="id5">Error Handling</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#features-support" id="id6">Features Support</a></p>
+<ul>
+<li><p><a class="reference internal" href="#null" id="id7">NULL</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#s3-select-function-interfaces" id="id8">S3-select Function Interfaces</a></p>
+<ul>
+<li><p><a class="reference internal" href="#timestamp-functions" id="id9">Timestamp Functions</a></p></li>
+<li><p><a class="reference internal" href="#to-string-parameters" id="id10">to_string parameters</a></p></li>
+<li><p><a class="reference internal" href="#aggregation-functions" id="id11">Aggregation Functions</a></p></li>
+<li><p><a class="reference internal" href="#string-functions" id="id12">String Functions</a></p></li>
+<li><p><a class="reference internal" href="#sql-limit-operator" id="id13">SQL Limit Operator</a></p></li>
+<li><p><a class="reference internal" href="#alias" id="id14">Alias</a></p></li>
+<li><p><a class="reference internal" href="#testing" id="id15">Testing</a></p></li>
+<li><p><a class="reference internal" href="#additional-syntax-support" id="id16">Additional Syntax Support</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#sending-query-to-rgw" id="id17">Sending Query to RGW</a></p>
+<ul>
+<li><p><a class="reference internal" href="#input-serialization" id="id18">Input Serialization</a></p></li>
+<li><p><a class="reference internal" href="#output-serialization" id="id19">Output Serialization</a></p></li>
+<li><p><a class="reference internal" href="#scan-range-option" id="id20">Scan Range Option</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#csv-parsing-behavior" id="id21">CSV Parsing Behavior</a></p></li>
+<li><p><a class="reference internal" href="#json" id="id22">JSON</a></p></li>
+<li><p><a class="reference internal" href="#a-json-query-example" id="id23">A JSON Query Example</a></p></li>
+<li><p><a class="reference internal" href="#boto3" id="id24">BOTO3</a></p></li>
+<li><p><a class="reference internal" href="#s3-select-responses" id="id25">S3 SELECT Responses</a></p>
+<ul>
+<li><p><a class="reference internal" href="#error-response" id="id26">Error Response</a></p></li>
+<li><p><a class="reference internal" href="#report-response" id="id27">Report Response</a></p></li>
+<li><p><a class="reference internal" href="#response-description" id="id28">Response Description</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The <strong>S3 Select</strong> engine creates an efficient pipe between clients and Ceph
+back end nodes. The S3 Select engine works best when implemented as closely as
+possible to back end storage.</p>
+<p>The S3 Select engine makes it possible to use an SQL-like syntax to select a
+restricted subset of data stored in an S3 object. The S3 Select engine
+facilitates the use of higher level, analytic applications (for example:
+SPARK-SQL). The ability of the S3 Select engine to target a proper subset of
+structed data within an S3 object decreases latency and increases throughput.</p>
+<p>For example: assume that a user needs to extract a single column that is
+filtered by another column, and that these colums are stored in a CSV file in
+an S3 object that is several GB in size. The following query performs this
+extraction: <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">customer-id</span> <span class="pre">from</span> <span class="pre">s3Object</span> <span class="pre">where</span> <span class="pre">age&gt;30</span> <span class="pre">and</span> <span class="pre">age&lt;65;</span></code></p>
+<p>Without the use of S3 Select, the whole S3 object must be retrieved from an OSD
+via RGW before the data is filtered and extracted. Significant network and CPU
+overhead are saved by “pushing down” the query into radosgw.</p>
+<p><strong>The bigger the object and the more accurate the query,
+the better the performance of s3select</strong>.</p>
+</section>
+<section id="basic-workflow">
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Basic Workflow</a><a class="headerlink" href="#basic-workflow" title="Link to this heading"></a></h2>
+<p>S3 Select queries are sent to RGW via <a class="reference external" href="https://docs.aws.amazon.com/cli/latest/reference/s3api/select-object-content.html">AWS-CLI</a></p>
+<p>S3 Select passes the authentication and permission parameters as an incoming
+message (POST). <code class="docutils literal notranslate"><span class="pre">RGWSelectObj_ObjStore_S3::send_response_data</span></code> is the entry
+point and handles each fetched chunk according to the object key that was
+input.  <code class="docutils literal notranslate"><span class="pre">send_response_data</span></code> is the first to handle the input query: it
+extracts the query and other CLI parameters.</p>
+<p>RGW executes an S3 Select query on each new fetched chunk (up to 4 MB). The
+current implementation supports CSV objects. CSV rows are sometimes “cut” in
+the middle by the limits of the chunks, and those broken-lines (the first or
+last per chunk) are skipped while processing the query. Such broken lines are
+stored and later merged with the next broken line (which belongs to the next
+chunk), and only then processed.</p>
+<p>For each processed chunk, an output message is formatted according to <a class="reference external" href="https://docs.aws.amazon.com/amazons3/latest/api/archive-restobjectselectcontent.html#archive-restobjectselectcontent-responses">aws
+specification</a>
+and sent back to the client. RGW supports the following response:
+<code class="docutils literal notranslate"><span class="pre">{:event-type,records}</span> <span class="pre">{:content-type,application/octet-stream}</span>
+<span class="pre">{:message-type,event}</span></code>. For aggregation queries, the last chunk should be
+identified as the end of input.</p>
+<section id="basic-functionalities">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Basic Functionalities</a><a class="headerlink" href="#basic-functionalities" title="Link to this heading"></a></h3>
+<p><strong>S3select</strong> has a definite set of functionalities compliant with AWS.</p>
+<p>The implemented software architecture supports basic arithmetic expressions,
+logical and compare expressions, including nested function calls and casting
+operators, which enables the user great flexibility.</p>
+<p>review the below <a class="reference internal" href="#s3-select-feature-table">s3-select-feature-table</a>.</p>
+</section>
+<section id="error-handling">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Error Handling</a><a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<p>Upon an error being detected, RGW returns 400-Bad-Request and a specific error message sends back to the client.
+Currently, there are 2 main types of error.</p>
+<p><strong>Syntax error</strong>: the s3select parser rejects user requests that are not aligned with parser syntax definitions, as
+described in this documentation.
+Upon Syntax Error, the engine creates an error message that points to the location of the error.
+RGW sends back the error message in a specific error response.</p>
+<p><strong>Processing Time error</strong>: the runtime engine may detect errors that occur only on processing time, for that type of
+error, a different error message would describe that.
+RGW sends back the error message in a specific error response.</p>
+</section>
+</section>
+<section id="features-support">
+<span id="s3-select-feature-table"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Features Support</a><a class="headerlink" href="#features-support" title="Link to this heading"></a></h2>
+<p>Currently only part of <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-select.html">AWS select command</a>
+is implemented, table below describes what is currently supported.</p>
+<p>The following table describes the current implementation for s3-select
+functionalities:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Detailed</p></th>
+<th class="head"><p>Example  / Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Arithmetic operators</p></td>
+<td><p>^ * % / + - ( )</p></td>
+<td><p>select (int(_1)+int(_2))*int(_9) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">%</span></code> modulo</p></td>
+<td><p>select count(*) from s3object where cast(_1 as int)%2 = 0;</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">^</span></code> power-of</p></td>
+<td><p>select cast(2^10 as int) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>Compare operators</p></td>
+<td><p>&gt; &lt; &gt;= &lt;= = !=</p></td>
+<td><p>select _1,_2 from s3object where (int(_1)+int(_3))&gt;int(_5);</p></td>
+</tr>
+<tr class="row-even"><td><p>logical operator</p></td>
+<td><p>AND OR NOT</p></td>
+<td><p>select count(*) from s3object where not (int(_1)&gt;123 and int(_5)&lt;200);</p></td>
+</tr>
+<tr class="row-odd"><td><p>logical operator</p></td>
+<td><p>is null</p></td>
+<td><p>return true/false for null indication in expression</p></td>
+</tr>
+<tr class="row-even"><td><p>logical operator</p></td>
+<td><p>is not null</p></td>
+<td><p>return true/false for null indication in expression</p></td>
+</tr>
+<tr class="row-odd"><td><p>logical operator and NULL</p></td>
+<td><p>unknown state</p></td>
+<td><p>review <a class="reference internal" href="#null-handle">null-handle</a> observe how logical operator result with null.
+the following query return <strong>0</strong>.</p>
+<p>select count(*) from s3object where null and (3&gt;2);</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>Arithmetic operator with NULL</p></td>
+<td><p>unknown state</p></td>
+<td><p>review <a class="reference internal" href="#null-handle">null-handle</a> observe the results of binary operations with NULL
+the following query return <strong>0</strong>.</p>
+<p>select count(*) from s3object where (null+1) and (3&gt;2);</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>compare with NULL</p></td>
+<td><p>unknown state</p></td>
+<td><p>review <a class="reference internal" href="#null-handle">null-handle</a> observe results of compare operations with NULL
+the following query return <strong>0</strong>.</p>
+<p>select count(*) from s3object where (null*1.5) != 3;</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>missing column</p></td>
+<td><p>unknown state</p></td>
+<td><p>select count(*) from s3object where _1 is null;</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>query is filtering rows where predicate
+is returning non null results.
+this predicate will return null
+upon _1 or _2 is null</p></td>
+<td><p>select count(*) from s3object where (_1 &gt; 12 and _2 = 0) is not null;</p></td>
+</tr>
+<tr class="row-even"><td><p>projection column</p></td>
+<td><p>similar to
+switch/case
+default</p></td>
+<td><p>select case
+cast(_1 as int) + 1
+when 2 then “a”
+when 3  then “b”
+else “c” end from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>projection column</p></td>
+<td><p>similar to
+if/then/else</p></td>
+<td><p>select case
+when (1+1=(2+1)*3) then ‘case_1’
+when ((4*3)=(12)) then ‘case_2’
+else ‘case_else’ end,
+age*2 from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>logical operator</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">coalesce</span> <span class="pre">{expression,expression</span> <span class="pre">...}</span> <span class="pre">::</span> <span class="pre">return</span> <span class="pre">first</span> <span class="pre">non-null</span> <span class="pre">argument</span></code></p>
+<p>select coalesce(nullif(5,5),nullif(1,1.0),age+12) from s3object;</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>logical operator</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">nullif</span> <span class="pre">{expr1,expr2}</span> <span class="pre">::return</span> <span class="pre">null</span> <span class="pre">in</span> <span class="pre">case</span> <span class="pre">both</span> <span class="pre">arguments</span> <span class="pre">are</span> <span class="pre">equal,</span></code>
+<code class="docutils literal notranslate"><span class="pre">or</span> <span class="pre">else</span> <span class="pre">the</span> <span class="pre">first</span> <span class="pre">one</span></code></p>
+<p>select nullif(cast(_1 as int),cast(_2 as int)) from s3object;</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>logical operator</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">{expression}</span> <span class="pre">in</span> <span class="pre">(</span> <span class="pre">..</span> <span class="pre">{expression}</span> <span class="pre">..)</span></code></p>
+<p>select count(*) from s3object
+where ‘ben’ in (trim(_5),substring(_1,char_length(_1)-3,3),last_name);</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>logical operator</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">{expression}</span> <span class="pre">between</span> <span class="pre">{expression}</span> <span class="pre">and</span> <span class="pre">{expression}</span></code></p>
+<p>select count(*) from s3object
+where substring(_3,char_length(_3),1) between “x” and trim(_1)
+and substring(_3,char_length(_3)-1,1) = “:”;</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>logical operator</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">{expression}</span> <span class="pre">like</span> <span class="pre">{match-pattern}</span></code></p>
+<p>select count(*) from s3object where first_name like ‘%de_’;</p>
+<p>select count(*) from s3object where _1 like &quot;%a[r-s];</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>logical operator</p></td>
+<td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">{expression}</span> <span class="pre">like</span> <span class="pre">{match-pattern}</span> <span class="pre">escape</span> <span class="pre">{char}</span></code></p>
+<p>select count(*) from s3object where  “jok_ai” like “%#_ai” escape “#”;</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>true / false
+predicate as a projection</p></td>
+<td colspan="2"><p>select (cast(_1 as int)&gt;123 = true) from s3object
+where address like ‘%new-york%’;</p></td>
+</tr>
+<tr class="row-odd"><td><p>an alias to
+predicate as a projection</p></td>
+<td colspan="2"><p>select (_1 like “_3_”) as <em>likealias</em>,_1 from s3object
+where <em>likealias</em> = true and cast(_1 as int) between 800 and 900;</p></td>
+</tr>
+<tr class="row-even"><td><p>casting operator</p></td>
+<td colspan="2"><p>select cast(123 as int)%2 from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>casting operator</p></td>
+<td colspan="2"><p>select cast(123.456 as float)%2 from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>casting operator</p></td>
+<td colspan="2"><p>select cast(‘ABC0-9’ as string),cast(substr(‘ab12cd’,3,2) as int)*4  from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>casting operator</p></td>
+<td colspan="2"><p>select cast(5 as bool) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>casting operator</p></td>
+<td colspan="2"><p>select cast(substring(‘publish on 2007-01-01’,12,10) as timestamp) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>non AWS casting operator</p></td>
+<td colspan="2"><p>select int(_1),int( 1.2 + 3.4) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>non AWS casting operator</p></td>
+<td colspan="2"><p>select float(1.2) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>not AWS casting operator</p></td>
+<td colspan="2"><p>select to_timestamp(‘1999-10-10T12:23:44Z’) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>Aggregation Function</p></td>
+<td><p>sum</p></td>
+<td><p>select sum(int(_1)) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>Aggregation Function</p></td>
+<td><p>avg</p></td>
+<td><p>select avg(cast(_1 a float) + cast(_2 as int)) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>Aggregation Function</p></td>
+<td><p>min</p></td>
+<td><p>select min( int(_1) * int(_5) ) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>Aggregation Function</p></td>
+<td><p>max</p></td>
+<td><p>select max(float(_1)),min(int(_5)) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>Aggregation Function</p></td>
+<td><p>count</p></td>
+<td><p>select count(*) from s3object where (int(_1)+int(_3))&gt;int(_5);</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timestamp Functions</p></td>
+<td><p>extract</p></td>
+<td><p>select count(*) from s3object where
+extract(year from to_timestamp(_2)) &gt; 1950
+and extract(year from to_timestamp(_1)) &lt; 1960;</p></td>
+</tr>
+<tr class="row-even"><td><p>Timestamp Functions</p></td>
+<td><p>date_add</p></td>
+<td><p>select count(0) from s3object where
+date_diff(year,to_timestamp(_1),date_add(day,366,
+to_timestamp(_1))) = 1;</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timestamp Functions</p></td>
+<td><p>date_diff</p></td>
+<td><p>select count(0) from s3object where
+date_diff(month,to_timestamp(_1),to_timestamp(_2))) = 2;</p></td>
+</tr>
+<tr class="row-even"><td><p>Timestamp Functions</p></td>
+<td><p>utcnow</p></td>
+<td><p>select count(0) from s3object where
+date_diff(hours,utcnow(),date_add(day,1,utcnow())) = 24;</p></td>
+</tr>
+<tr class="row-odd"><td><p>Timestamp Functions</p></td>
+<td><p>to_string</p></td>
+<td><p>select to_string(
+to_timestamp(“2009-09-17T17:56:06.234567Z”),
+“yyyyMMdd-H:m:s”) from s3object;</p>
+<p><code class="docutils literal notranslate"><span class="pre">result:</span> <span class="pre">&quot;20090917-17:56:6&quot;</span></code></p>
+</td>
+</tr>
+<tr class="row-even"><td><p>String Functions</p></td>
+<td><p>substring</p></td>
+<td><p>select count(0) from s3object where
+int(substring(_1,1,4))&gt;1950 and int(substring(_1,1,4))&lt;1960;</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>substring with <code class="docutils literal notranslate"><span class="pre">from</span></code> negative number is valid
+considered as first</p></td>
+<td><p>select substring(“123456789” from -4) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>substring with <code class="docutils literal notranslate"><span class="pre">from</span></code> zero <code class="docutils literal notranslate"><span class="pre">for</span></code> out-of-bound
+number is valid just as (first,last)</p></td>
+<td><p>select substring(“123456789” from 0 for 100) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>String Functions</p></td>
+<td><p>trim</p></td>
+<td><p>select trim(’   foobar   ‘) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>String Functions</p></td>
+<td><p>trim</p></td>
+<td><p>select trim(trailing from ‘   foobar   ‘) from s3object;</p></td>
+</tr>
+<tr class="row-odd"><td><p>String Functions</p></td>
+<td><p>trim</p></td>
+<td><p>select trim(leading from ‘   foobar   ‘) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>String Functions</p></td>
+<td><p>trim</p></td>
+<td><p>select trim(both ‘12’ from  ‘1112211foobar22211122’) from s3objects;</p></td>
+</tr>
+<tr class="row-odd"><td><p>String Functions</p></td>
+<td><p>lower/upper</p></td>
+<td><p>select lower(‘ABcD12#$e’) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>String Functions</p></td>
+<td><p>char_length
+character_length</p></td>
+<td><p>select count(*) from s3object where char_length(_3)=3;</p></td>
+</tr>
+<tr class="row-odd"><td><p>Complex queries</p></td>
+<td colspan="2"><p>select sum(cast(_1 as int)),
+max(cast(_3 as int)),
+substring(‘abcdefghijklm’,(2-1)*3+sum(cast(_1 as int))/sum(cast(_1 as int))+1,
+(count() + count(0))/count(0)) from s3object;</p></td>
+</tr>
+<tr class="row-even"><td><p>alias support</p></td>
+<td></td>
+<td><p>select int(_1) as a1, int(_2) as a2 , (a1+a2) as a3
+from s3object where a3&gt;100 and a3&lt;300;</p></td>
+</tr>
+</tbody>
+</table>
+<section id="null">
+<span id="null-handle"></span><h3><a class="toc-backref" href="#id7" role="doc-backlink">NULL</a><a class="headerlink" href="#null" title="Link to this heading"></a></h3>
+<p>NULL is a legit value in ceph-s3select systems similar to other DB systems, i.e. systems needs to handle the case where a value is NULL.</p>
+<p>The definition of NULL in our context, is missing/unknown, in that sense <strong>NULL can not produce a value on ANY arithmetic operations</strong> ( a + NULL will produce NULL value).</p>
+<p>The Same is with arithmetic comparison, <strong>any comparison to NULL is NULL</strong>, i.e. unknown.
+Below is a truth table contains the NULL use-case.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A is NULL</p></th>
+<th class="head"><p>Result (NULL=UNKNOWN)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NOT A</p></td>
+<td><p>NULL</p></td>
+</tr>
+<tr class="row-odd"><td><p>A OR False</p></td>
+<td><p>NULL</p></td>
+</tr>
+<tr class="row-even"><td><p>A OR True</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-odd"><td><p>A OR A</p></td>
+<td><p>NULL</p></td>
+</tr>
+<tr class="row-even"><td><p>A AND False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-odd"><td><p>A AND True</p></td>
+<td><p>NULL</p></td>
+</tr>
+<tr class="row-even"><td><p>A and A</p></td>
+<td><p>NULL</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="s3-select-function-interfaces">
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">S3-select Function Interfaces</a><a class="headerlink" href="#s3-select-function-interfaces" title="Link to this heading"></a></h2>
+<section id="timestamp-functions">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Timestamp Functions</a><a class="headerlink" href="#timestamp-functions" title="Link to this heading"></a></h3>
+<p>The timestamp functionalities as described in <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-glacier-select-sql-reference-date.html">AWS-specs</a>
+is fully implemented.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">to_timestamp(</span> <span class="pre">string</span> <span class="pre">)</span></code> : The casting operator converts string to timestamp
+basic type.  to_timestamp operator is able to convert the following
+<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm:ss.SSSSSS+/-HH:mm</span></code> , <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm:ss.SSSSSSZ</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm:ss+/-HH:mm</span></code> , <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm:ssZ</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mm+/-HH:mm</span></code> , <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDTHH:mmZ</span></code> , <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DDT</span></code> or
+<code class="docutils literal notranslate"><span class="pre">YYYYT</span></code> string formats into timestamp.  Where time (or part of it) is
+missing in the string format, zero’s are replacing the missing parts. And for
+missing month and day, 1 is default value for them.  Timezone part is in
+format <code class="docutils literal notranslate"><span class="pre">+/-HH:mm</span></code> or <code class="docutils literal notranslate"><span class="pre">Z</span></code> , where the letter “Z” indicates Coordinated
+Universal Time (UTC). Value of timezone can range between -12:00 and +14:00.</p>
+<p><code class="docutils literal notranslate"><span class="pre">extract(date-part</span> <span class="pre">from</span> <span class="pre">timestamp)</span></code> : The function extracts date-part from
+input timestamp and returns it as integer.  Supported date-part : year, month,
+week, day, hour, minute, second, timezone_hour, timezone_minute.</p>
+<p><code class="docutils literal notranslate"><span class="pre">date_add(date-part,</span> <span class="pre">quantity,</span> <span class="pre">timestamp)</span></code> : The function adds quantity
+(integer) to date-part of timestamp and returns result as timestamp. It also
+includes timezone in calculation.  Supported data-part : year, month, day,
+hour, minute, second.</p>
+<p><code class="docutils literal notranslate"><span class="pre">date_diff(date-part,</span> <span class="pre">timestamp,</span> <span class="pre">timestamp)</span></code> : The function returns an
+integer, a calculated result for difference between 2 timestamps according to
+date-part. It includes timezone in calculation.  supported date-part : year,
+month, day, hour, minute, second.</p>
+<p><code class="docutils literal notranslate"><span class="pre">utcnow()</span></code> : return timestamp of current time.</p>
+<p><code class="docutils literal notranslate"><span class="pre">to_string(timestamp,</span> <span class="pre">format_pattern)</span></code> : returns a string representation of
+the input timestamp in the given input string format.</p>
+</div></blockquote>
+</section>
+<section id="to-string-parameters">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">to_string parameters</a><a class="headerlink" href="#to-string-parameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Example</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>yy</p></td>
+<td><p>69</p></td>
+<td><p>2-digit year</p></td>
+</tr>
+<tr class="row-odd"><td><p>y</p></td>
+<td><p>1969</p></td>
+<td><p>4-digit year</p></td>
+</tr>
+<tr class="row-even"><td><p>yyyy</p></td>
+<td><p>1969</p></td>
+<td><p>Zero-padded 4-digit year</p></td>
+</tr>
+<tr class="row-odd"><td><p>M</p></td>
+<td><p>1</p></td>
+<td><p>Month of year</p></td>
+</tr>
+<tr class="row-even"><td><p>MM</p></td>
+<td><p>01</p></td>
+<td><p>Zero-padded month of year</p></td>
+</tr>
+<tr class="row-odd"><td><p>MMM</p></td>
+<td><p>Jan</p></td>
+<td><p>Abbreviated month year name</p></td>
+</tr>
+<tr class="row-even"><td><p>MMMM</p></td>
+<td><p>January</p></td>
+<td><p>Full month of year name</p></td>
+</tr>
+<tr class="row-odd"><td><p>MMMMM</p></td>
+<td><p>J</p></td>
+<td><p>Month of year first letter (NOTE: not valid for use with to_timestamp function)</p></td>
+</tr>
+<tr class="row-even"><td><p>d</p></td>
+<td><p>2</p></td>
+<td><p>Day of month (1-31)</p></td>
+</tr>
+<tr class="row-odd"><td><p>dd</p></td>
+<td><p>02</p></td>
+<td><p>Zero-padded day of month (01-31)</p></td>
+</tr>
+<tr class="row-even"><td><p>a</p></td>
+<td><p>AM</p></td>
+<td><p>AM or PM of day</p></td>
+</tr>
+<tr class="row-odd"><td><p>h</p></td>
+<td><p>3</p></td>
+<td><p>Hour of day (1-12)</p></td>
+</tr>
+<tr class="row-even"><td><p>hh</p></td>
+<td><p>03</p></td>
+<td><p>Zero-padded hour of day (01-12)</p></td>
+</tr>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p>3</p></td>
+<td><p>Hour of day (0-23)</p></td>
+</tr>
+<tr class="row-even"><td><p>HH</p></td>
+<td><p>03</p></td>
+<td><p>Zero-padded hour of day (00-23)</p></td>
+</tr>
+<tr class="row-odd"><td><p>m</p></td>
+<td><p>4</p></td>
+<td><p>Minute of hour (0-59)</p></td>
+</tr>
+<tr class="row-even"><td><p>mm</p></td>
+<td><p>04</p></td>
+<td><p>Zero-padded minute of hour (00-59)</p></td>
+</tr>
+<tr class="row-odd"><td><p>s</p></td>
+<td><p>5</p></td>
+<td><p>Second of minute (0-59)</p></td>
+</tr>
+<tr class="row-even"><td><p>ss</p></td>
+<td><p>05</p></td>
+<td><p>Zero-padded second of minute (00-59)</p></td>
+</tr>
+<tr class="row-odd"><td><p>S</p></td>
+<td><p>0</p></td>
+<td><p>Fraction of second (precision: 0.1, range: 0.0-0.9)</p></td>
+</tr>
+<tr class="row-even"><td><p>SS</p></td>
+<td><p>6</p></td>
+<td><p>Fraction of second (precision: 0.01, range: 0.0-0.99)</p></td>
+</tr>
+<tr class="row-odd"><td><p>SSS</p></td>
+<td><p>60</p></td>
+<td><p>Fraction of second (precision: 0.001, range: 0.0-0.999)</p></td>
+</tr>
+<tr class="row-even"><td><p>SSSSSS</p></td>
+<td><p>60000000</p></td>
+<td><p>Fraction of second (maximum precision: 1 nanosecond, range: 0.0-0999999999)</p></td>
+</tr>
+<tr class="row-odd"><td><p>n</p></td>
+<td><p>60000000</p></td>
+<td><p>Nano of second</p></td>
+</tr>
+<tr class="row-even"><td><p>X</p></td>
+<td><p>+07 or Z</p></td>
+<td><p>Offset in hours or “Z” if the offset is 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>XX or XXXX</p></td>
+<td><p>+0700 or Z</p></td>
+<td><p>Offset in hours and minutes or “Z” if the offset is 0</p></td>
+</tr>
+<tr class="row-even"><td><p>XXX or XXXXX</p></td>
+<td><p>+07:00 or Z</p></td>
+<td><p>Offset in hours and minutes or “Z” if the offset is 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>X</p></td>
+<td><p>7</p></td>
+<td><p>Offset in hours</p></td>
+</tr>
+<tr class="row-even"><td><p>xx or xxxx</p></td>
+<td><p>700</p></td>
+<td><p>Offset in hours and minutes</p></td>
+</tr>
+<tr class="row-odd"><td><p>xxx or xxxxx</p></td>
+<td><p>+07:00</p></td>
+<td><p>Offset in hours and minutes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aggregation-functions">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Aggregation Functions</a><a class="headerlink" href="#aggregation-functions" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">count()</span></code> : return integer according to number of rows matching condition(if such exist).</p>
+<p><code class="docutils literal notranslate"><span class="pre">sum(expression)</span></code> : return a summary of expression per all rows matching condition(if such exist).</p>
+<p><code class="docutils literal notranslate"><span class="pre">avg(expression)</span></code> : return a average  of expression per all rows matching condition(if such exist).</p>
+<p><code class="docutils literal notranslate"><span class="pre">max(expression)</span></code> : return the maximal result for all expressions matching condition(if such exist).</p>
+<p><code class="docutils literal notranslate"><span class="pre">min(expression)</span></code> : return the minimal result for all expressions matching condition(if such exist).</p>
+</section>
+<section id="string-functions">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">String Functions</a><a class="headerlink" href="#string-functions" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">substring(string,from,to)</span></code> : substring( string <code class="docutils literal notranslate"><span class="pre">from</span></code> start [ <code class="docutils literal notranslate"><span class="pre">for</span></code> length ] )
+return a string extract from input string according to from,to inputs.
+<code class="docutils literal notranslate"><span class="pre">substring(string</span> <span class="pre">from</span> <span class="pre">)</span></code>
+<code class="docutils literal notranslate"><span class="pre">substring(string</span> <span class="pre">from</span> <span class="pre">for)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">char_length</span></code> : return a number of characters in string (<code class="docutils literal notranslate"><span class="pre">character_length</span></code> does the same).</p>
+<p><code class="docutils literal notranslate"><span class="pre">trim</span></code> : trim ( [[<code class="docutils literal notranslate"><span class="pre">leading</span></code> | <code class="docutils literal notranslate"><span class="pre">trailing</span></code> | <code class="docutils literal notranslate"><span class="pre">both</span></code> remove_chars] <code class="docutils literal notranslate"><span class="pre">from</span></code>] string )
+trims leading/trailing(or both) characters from target string, the default is blank character.</p>
+<p><code class="docutils literal notranslate"><span class="pre">upper\lower</span></code> : converts characters into lowercase/uppercase.</p>
+</section>
+<section id="sql-limit-operator">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">SQL Limit Operator</a><a class="headerlink" href="#sql-limit-operator" title="Link to this heading"></a></h3>
+<p>The SQL LIMIT operator is used to limit the number of rows processed by the query.
+Upon reaching the limit set by the user, the RGW stops fetching additional chunks.
+TODO : add examples, for aggregation and non-aggregation queries.</p>
+</section>
+<section id="alias">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Alias</a><a class="headerlink" href="#alias" title="Link to this heading"></a></h3>
+<p><strong>Alias</strong> programming-construct is an essential part of s3-select language, it enables much better programming especially with objects containing many columns or in the case of complex queries.</p>
+<p>Upon parsing the statement containing alias construct, it replaces alias with reference to correct projection column, on query execution time the reference is evaluated as any other expression.</p>
+<p>There is a risk that self(or cyclic) reference may occur causing stack-overflow(endless-loop), for that concern upon evaluating an alias, it is validated for cyclic reference.</p>
+<p>Alias also maintains a result cache, meaning that successive uses of a given alias do not evaluate the expression again.  The result is instead returned from the cache.</p>
+<p>With each new row the cache is invalidated as the results may then differ.</p>
+</section>
+<section id="testing">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Testing</a><a class="headerlink" href="#testing" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">s3select</span></code> contains several testing frameworks which provide a large coverage for its functionalities.</p>
+<p>(1) Tests comparison against a trusted engine, meaning,  C/C++ compiler is a trusted expression evaluator,
+since the syntax for arithmetical and logical expressions are identical (s3select compare to C)
+the framework runs equal expressions and validates their results.
+A dedicated expression generator produces different sets of expressions per each new test session.</p>
+<p>(2) Compares results of queries whose syntax is different but which are semantically equivalent.
+This kind of test validates that different runtime flows produce an identical result
+on each run with a different, random dataset.</p>
+<p>For example, on a dataset which contains a random numbers(1-1000)
+the following queries will produce identical results.
+<code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">count(*)</span> <span class="pre">from</span> <span class="pre">s3object</span> <span class="pre">where</span> <span class="pre">char_length(_3)=3;</span></code>
+<code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">count(*)</span> <span class="pre">from</span> <span class="pre">s3object</span> <span class="pre">where</span> <span class="pre">cast(_3</span> <span class="pre">as</span> <span class="pre">int)&gt;99</span> <span class="pre">and</span> <span class="pre">cast(_3</span> <span class="pre">as</span> <span class="pre">int)&lt;1000;</span></code></p>
+<ol class="arabic simple" start="3">
+<li><p>Constant dataset, the conventional way of testing. A query is processing a constant dataset, its result is validated against constant results.</p></li>
+</ol>
+</section>
+<section id="additional-syntax-support">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Additional Syntax Support</a><a class="headerlink" href="#additional-syntax-support" title="Link to this heading"></a></h3>
+<p>S3select syntax supports table-alias <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">s._1</span> <span class="pre">from</span> <span class="pre">s3object</span> <span class="pre">s</span> <span class="pre">where</span> <span class="pre">s._2</span> <span class="pre">=</span> <span class="pre">‘4’;</span></code></p>
+<p>S3select syntax supports case insensitive <code class="docutils literal notranslate"><span class="pre">Select</span> <span class="pre">SUM(Cast(_1</span> <span class="pre">as</span> <span class="pre">int))</span> <span class="pre">FROM</span> <span class="pre">S3Object;</span></code></p>
+<p>S3select syntax supports statements without closing semicolon  <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">count(*)</span> <span class="pre">from</span> <span class="pre">s3object</span></code></p>
+</section>
+</section>
+<section id="sending-query-to-rgw">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">Sending Query to RGW</a><a class="headerlink" href="#sending-query-to-rgw" title="Link to this heading"></a></h2>
+<p>Any HTTP client can send an <code class="docutils literal notranslate"><span class="pre">s3-select</span></code> request to RGW, which must be compliant with <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/API/API_SelectObjectContent.html#API_SelectObjectContent_RequestSyntax">AWS Request syntax</a>.</p>
+<p>When sending an <code class="docutils literal notranslate"><span class="pre">s3-select</span></code> request to RGW using AWS CLI, clients must follow <a class="reference external" href="https://docs.aws.amazon.com/cli/latest/reference/s3api/select-object-content.html">AWS command reference</a>.
+Below is an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aws</span> <span class="o">--</span><span class="n">endpoint</span><span class="o">-</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8000</span> <span class="n">s3api</span> <span class="n">select</span><span class="o">-</span><span class="nb">object</span><span class="o">-</span><span class="n">content</span>
+ <span class="o">--</span><span class="n">bucket</span> <span class="p">{</span><span class="n">BUCKET</span><span class="o">-</span><span class="n">NAME</span><span class="p">}</span>
+ <span class="o">--</span><span class="n">expression</span><span class="o">-</span><span class="nb">type</span> <span class="s1">&#39;SQL&#39;</span>
+ <span class="o">--</span><span class="n">scan</span><span class="o">-</span><span class="nb">range</span> <span class="s1">&#39;{&quot;Start&quot; : 1000, &quot;End&quot; : 1000000}&#39;</span>
+ <span class="o">--</span><span class="nb">input</span><span class="o">-</span><span class="n">serialization</span>
+ <span class="s1">&#39;{&quot;CSV&quot;: {&quot;FieldDelimiter&quot;: &quot;,&quot; , &quot;QuoteCharacter&quot;: &quot;</span><span class="se">\&quot;</span><span class="s1">&quot; , &quot;RecordDelimiter&quot; : &quot;</span><span class="se">\n</span><span class="s1">&quot; , &quot;QuoteEscapeCharacter&quot; : &quot;</span><span class="se">\\</span><span class="s1">&quot; , &quot;FileHeaderInfo&quot;: &quot;USE&quot; }, &quot;CompressionType&quot;: &quot;NONE&quot;}&#39;</span>
+ <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="n">serialization</span> <span class="s1">&#39;{&quot;CSV&quot;: {&quot;FieldDelimiter&quot;: &quot;:&quot;, &quot;RecordDelimiter&quot;:&quot;</span><span class="se">\t</span><span class="s1">&quot;, &quot;QuoteFields&quot;: &quot;ALWAYS&quot;}}&#39;</span>
+ <span class="o">--</span><span class="n">key</span> <span class="p">{</span><span class="n">OBJECT</span><span class="o">-</span><span class="n">NAME</span><span class="p">}</span>
+ <span class="o">--</span><span class="n">request</span><span class="o">-</span><span class="n">progress</span> <span class="s1">&#39;{&quot;Enabled&quot;: True}&#39;</span>
+ <span class="o">--</span><span class="n">expression</span> <span class="s2">&quot;select count(0) from s3object where int(_1)&lt;10;&quot;</span> <span class="n">output</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<section id="input-serialization">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Input Serialization</a><a class="headerlink" href="#input-serialization" title="Link to this heading"></a></h3>
+<p><strong>FileHeaderInfo</strong> -&gt; (string)
+Describes the first line of input. Valid values are:</p>
+<p><strong>NONE</strong> : The first line is not a header.
+<strong>IGNORE</strong> : The first line is a header, but you can’t use the header values to indicate the column in an expression.
+it’s possible to use column position (such as _1, _2, …) to indicate the column (<code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">s._1</span> <span class="pre">FROM</span> <span class="pre">S3OBJECT</span> <span class="pre">s</span></code>).
+<strong>USE</strong> : First line is a header, and you can use the header value to identify a column in an expression (<code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">column_name</span> <span class="pre">FROM</span> <span class="pre">S3OBJECT</span></code>).</p>
+<p><strong>QuoteEscapeCharacter</strong> -&gt; (string)
+A single character used for escaping the quotation mark character inside an already escaped value.</p>
+<p><strong>RecordDelimiter</strong> -&gt; (string)
+A single character is used to separate individual records in the input. Instead of the default value, you can specify an arbitrary delimiter.</p>
+<p><strong>FieldDelimiter</strong> -&gt; (string)
+A single character is used to separate individual fields in a record. You can specify an arbitrary delimiter.</p>
+</section>
+<section id="output-serialization">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Output Serialization</a><a class="headerlink" href="#output-serialization" title="Link to this heading"></a></h3>
+<p><strong>AWS CLI example</strong></p>
+<blockquote>
+<div><p>aws s3api select-object-content --bucket “mybucket” --key keyfile1 --expression “SELECT * FROM s3object s” --expression-type ‘SQL’ --request-progress ‘{“Enabled”: false}’ --input-serialization ‘{“CSV”: {“FieldDelimiter”: “,”}, “CompressionType”: “NONE”}’ --output-serialization ‘{“CSV”: {“FieldDelimiter”: “:”, “RecordDelimiter”:”\t”, “QuoteFields”: “ALWAYS”}}’ /dev/stdout</p>
+<p><strong>QuoteFields</strong> -&gt; (string)
+Indicates whether to use quotation marks around output fields.
+<strong>ALWAYS</strong>: Always use quotation marks for output fields.
+<strong>ASNEEDED</strong> (not implemented): Use quotation marks for output fields when needed.</p>
+<p><strong>RecordDelimiter</strong> -&gt; (string)
+A single character is used to separate individual records in the output. Instead of the default value, you can specify an
+arbitrary delimiter.</p>
+<p><strong>FieldDelimiter</strong> -&gt; (string)
+The value used to separate individual fields in a record. You can specify an arbitrary delimiter.</p>
+</div></blockquote>
+</section>
+<section id="scan-range-option">
+<h3><a class="toc-backref" href="#id20" role="doc-backlink">Scan Range Option</a><a class="headerlink" href="#scan-range-option" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>The scan range option to AWS-CLI enables the client to scan and process only a selected part of the object.
+This option reduces input/output operations and bandwidth by skipping parts of the object that are not of interest.
+TODO : different data-sources (CSV, JSON, Parquet)</p>
+</div></blockquote>
+</section>
+</section>
+<section id="csv-parsing-behavior">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">CSV Parsing Behavior</a><a class="headerlink" href="#csv-parsing-behavior" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">s3-select</span></code> engine contains a CSV parser, which parses s3-objects as follows.
+- Each row ends with <code class="docutils literal notranslate"><span class="pre">row-delimiter</span></code>.
+- <code class="docutils literal notranslate"><span class="pre">field-separator</span></code> separates adjacent columns, successive instances of <code class="docutils literal notranslate"><span class="pre">field</span> <span class="pre">separator</span></code> define a NULL column.
+- <code class="docutils literal notranslate"><span class="pre">quote-character</span></code> overrides <code class="docutils literal notranslate"><span class="pre">field</span> <span class="pre">separator</span></code>, meaning that <code class="docutils literal notranslate"><span class="pre">field</span> <span class="pre">separator</span></code> is treated like any character between quotes.
+- <code class="docutils literal notranslate"><span class="pre">escape</span> <span class="pre">character</span></code> disables interpretation of special characters, except for <code class="docutils literal notranslate"><span class="pre">row</span> <span class="pre">delimiter</span></code>.</p>
+<p>Below are examples of CSV parsing rules.</p>
+</div></blockquote>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>input ==&gt; tokens</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NULL</p></td>
+<td><p>successive
+field delimiter</p></td>
+<td><p>,,1,,2,    ==&gt; {null}{null}{1}{null}{2}{null}</p></td>
+</tr>
+<tr class="row-odd"><td><p>QUOTE</p></td>
+<td><p>quote character
+overrides
+field delimiter</p></td>
+<td><p>11,22,”a,b,c,d”,last ==&gt; {11}{22}{“a,b,c,d”}{last}</p></td>
+</tr>
+<tr class="row-even"><td><p>Escape</p></td>
+<td><p>escape char
+overrides
+meta-character.
+escape removed</p></td>
+<td><p>11,22,str=\”abcd\”\,str2=\”123\”,last
+==&gt; {11}{22}{str=”abcd”,str2=”123”}{last}</p></td>
+</tr>
+<tr class="row-odd"><td><p>row delimiter</p></td>
+<td><p>no close quote,
+row delimiter is
+closing line</p></td>
+<td><p>11,22,a=”str,44,55,66
+==&gt; {11}{22}{a=”str,44,55,66}</p></td>
+</tr>
+<tr class="row-even"><td><p>csv header info</p></td>
+<td><p>FileHeaderInfo
+tag</p></td>
+<td><p>“<strong>USE</strong>” value means each token on first line is column-name,
+“<strong>IGNORE</strong>” value means to skip the first line</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="json">
+<h2><a class="toc-backref" href="#id22" role="doc-backlink">JSON</a><a class="headerlink" href="#json" title="Link to this heading"></a></h2>
+<p>A JSON reader has been integrated with the <code class="docutils literal notranslate"><span class="pre">s3select-engine</span></code>, which allows the client to use SQL statements to scan and extract information from JSON documents.
+It should be noted that the data readers and parsers for CSV, Parquet, and JSON documents are separated from the SQL engine itself, so all of these readers use the same SQL engine.</p>
+<p>It’s important to note that values in a JSON document can be nested in various ways, such as within objects or arrays.
+These objects and arrays can be nested within each other without any limitations.
+When using SQL to query a specific value in a JSON document, the client must specify the location of the value
+via a path in the SELECT statement.</p>
+<p>The SQL engine processes the SELECT statement in a row-based fashion.
+It uses the columns specified in the statement to perform its projection calculation, and each row contains values for these columns.
+In other words, the SQL engine processes each row one at a time (and aggregates results), using the values in the columns to perform SQL calculations.
+However, the generic structure of a JSON document does not have a row-and-column structure like CSV or Parquet.
+Instead, it is the SQL statement itself that defines the rows and columns when querying a JSON document.</p>
+<p>When querying JSON documents using SQL, the FROM clause in the SELECT statement defines the row boundaries.
+A row in a JSON document should be similar to how the row delimiter is used to define rows when querying CSV objects, and how row groups are used to define rows when querying Parquet objects.
+The statement “SELECT … FROM s3object[*].aaa.bb.cc” instructs the reader to search for the path “aaa.bb.cc” and defines the row boundaries based on the occurrence of this path.
+A row begins when the reader encounters the path, and it ends when the reader exits the innermost part of the path, which in this case is the object “cc”.</p>
+<p>NOTE : The semantics of querying JSON document may change and may not be the same as the current methodology described.</p>
+<p>TODO : relevant example for object and array values.</p>
+</section>
+<section id="a-json-query-example">
+<h2><a class="toc-backref" href="#id23" role="doc-backlink">A JSON Query Example</a><a class="headerlink" href="#a-json-query-example" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+ <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jackson&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;twenty&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
+ <span class="s2">&quot;streetAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;101&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;San Diego&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;CA&quot;</span>
+ <span class="p">},</span>
+
+ <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;Joe_2&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jackson_2&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+ <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="p">{</span>
+ <span class="s2">&quot;streetAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;101&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;San Diego&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;CA&quot;</span>
+ <span class="p">},</span>
+
+ <span class="s2">&quot;phoneNumbers&quot;</span><span class="p">:</span> <span class="p">[</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home1&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_1&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">11</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home2&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_2&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">22</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home3&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_3&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">33</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home4&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_4&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">44</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home5&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_5&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">55</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home6&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_6&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">66</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home7&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_7&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">77</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home8&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_8&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">88</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home9&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_9&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">99</span> <span class="p">},</span>
+   <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;home10&quot;</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;734928_10&quot;</span><span class="p">,</span><span class="s2">&quot;addr&quot;</span><span class="p">:</span> <span class="mi">100</span> <span class="p">}</span>
+ <span class="p">],</span>
+
+ <span class="s2">&quot;key_after_array&quot;</span><span class="p">:</span> <span class="s2">&quot;XXX&quot;</span><span class="p">,</span>
+
+ <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;main_desc&quot;</span> <span class="p">:</span> <span class="s2">&quot;value_1&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;second_desc&quot;</span> <span class="p">:</span> <span class="s2">&quot;value_2&quot;</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+
+ <span class="c1"># the from-clause define a single row.</span>
+ <span class="c1"># _1 points to root object level.</span>
+ <span class="c1"># _1.age appears twice in Documnet-row, the last value is used for the operation.</span>
+ <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select _1.firstname,_1.key_after_array,_1.age+4,_1.description.main_desc,_1.description.second_desc from s3object[*];&quot;</span><span class="p">;</span>
+ <span class="n">expected_result</span> <span class="o">=</span> <span class="n">Joe_2</span><span class="p">,</span><span class="n">XXX</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="n">value_1</span><span class="p">,</span><span class="n">value_2</span>
+
+
+ <span class="c1"># the from-clause points the phonenumbers array (it defines the _1)</span>
+ <span class="c1"># each element in phoneNumbers array define a row.</span>
+ <span class="c1"># in this case each element is an object contains 3 keys/values.</span>
+ <span class="c1"># the query &quot;can not access&quot; values outside phonenumbers array, the query can access only values appears on _1.phonenumbers path.</span>
+ <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;select cast(substring(_1.number,1,6) as int) *10 from s3object[*].phonenumbers where _1.type=&#39;home2&#39;;&quot;</span><span class="p">;</span>
+ <span class="n">expected_result</span> <span class="o">=</span> <span class="mi">7349280</span>
+</pre></div>
+</div>
+</section>
+<section id="boto3">
+<h2><a class="toc-backref" href="#id24" role="doc-backlink">BOTO3</a><a class="headerlink" href="#boto3" title="Link to this heading"></a></h2>
+<p>using BOTO3 is “natural” and easy due to AWS-cli support.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pprint</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run_s3select</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">query</span><span class="p">,</span><span class="n">column_delim</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="n">row_delim</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">quot_char</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span><span class="n">esc_char</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">csv_header_info</span><span class="o">=</span><span class="s2">&quot;NONE&quot;</span><span class="p">):</span>
+
+   <span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span>
+       <span class="n">endpoint_url</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
+       <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">access_key</span><span class="p">,</span>
+       <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">,</span>
+       <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">secret_key</span><span class="p">)</span>
+
+   <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+   <span class="k">try</span><span class="p">:</span>
+       <span class="n">r</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">select_object_content</span><span class="p">(</span>
+       <span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span>
+       <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+       <span class="n">ExpressionType</span><span class="o">=</span><span class="s1">&#39;SQL&#39;</span><span class="p">,</span>
+       <span class="n">InputSerialization</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;CSV&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;RecordDelimiter&quot;</span> <span class="p">:</span> <span class="n">row_delim</span><span class="p">,</span> <span class="s2">&quot;FieldDelimiter&quot;</span> <span class="p">:</span> <span class="n">column_delim</span><span class="p">,</span><span class="s2">&quot;QuoteEscapeCharacter&quot;</span><span class="p">:</span> <span class="n">esc_char</span><span class="p">,</span> <span class="s2">&quot;QuoteCharacter&quot;</span><span class="p">:</span> <span class="n">quot_char</span><span class="p">,</span> <span class="s2">&quot;FileHeaderInfo&quot;</span><span class="p">:</span> <span class="n">csv_header_info</span><span class="p">},</span> <span class="s2">&quot;CompressionType&quot;</span><span class="p">:</span> <span class="s2">&quot;NONE&quot;</span><span class="p">},</span>
+       <span class="n">OutputSerialization</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;CSV&quot;</span><span class="p">:</span> <span class="p">{}},</span>
+       <span class="n">Expression</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+       <span class="n">RequestProgress</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Enabled&quot;</span><span class="p">:</span> <span class="n">progress</span><span class="p">})</span>
+
+   <span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">c</span><span class="p">:</span>
+       <span class="n">result</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+       <span class="k">return</span> <span class="n">result</span>
+
+   <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;Payload&#39;</span><span class="p">]:</span>
+           <span class="k">if</span> <span class="s1">&#39;Records&#39;</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+               <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+               <span class="n">records</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;Records&#39;</span><span class="p">][</span><span class="s1">&#39;Payload&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+               <span class="n">result</span> <span class="o">+=</span> <span class="n">records</span>
+           <span class="k">if</span> <span class="s1">&#39;Progress&#39;</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+               <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;progress&quot;</span><span class="p">)</span>
+               <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;Progress&#39;</span><span class="p">],</span><span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+           <span class="k">if</span> <span class="s1">&#39;Stats&#39;</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+               <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Stats&quot;</span><span class="p">)</span>
+               <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;Stats&#39;</span><span class="p">],</span><span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+           <span class="k">if</span> <span class="s1">&#39;End&#39;</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+               <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End&quot;</span><span class="p">)</span>
+               <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s1">&#39;End&#39;</span><span class="p">],</span><span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+   <span class="k">return</span> <span class="n">result</span>
+
+
+
+
+ <span class="n">run_s3select</span><span class="p">(</span>
+ <span class="s2">&quot;my_bucket&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;my_csv_object&quot;</span><span class="p">,</span>
+ <span class="s2">&quot;select int(_1) as a1, int(_2) as a2 , (a1+a2) as a3 from s3object where a3&gt;100 and a3&lt;300;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="s3-select-responses">
+<h2><a class="toc-backref" href="#id25" role="doc-backlink">S3 SELECT Responses</a><a class="headerlink" href="#s3-select-responses" title="Link to this heading"></a></h2>
+<section id="error-response">
+<h3><a class="toc-backref" href="#id26" role="doc-backlink">Error Response</a><a class="headerlink" href="#error-response" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Error&gt;
+  &lt;Code&gt;NoSuchKey&lt;/Code&gt;
+  &lt;Message&gt;The resource you requested does not exist&lt;/Message&gt;
+  &lt;Resource&gt;/mybucket/myfoto.jpg&lt;/Resource&gt;
+  &lt;RequestId&gt;4442587FB7D0A2F9&lt;/RequestId&gt;
+&lt;/Error&gt;
+</pre></div>
+</div>
+</section>
+<section id="report-response">
+<h3><a class="toc-backref" href="#id27" role="doc-backlink">Report Response</a><a class="headerlink" href="#report-response" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP/1.1 200
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Payload&gt;
+   &lt;Records&gt;
+      &lt;Payload&gt;blob&lt;/Payload&gt;
+   &lt;/Records&gt;
+   &lt;Stats&gt;
+      &lt;Details&gt;
+         &lt;BytesProcessed&gt;long&lt;/BytesProcessed&gt;
+         &lt;BytesReturned&gt;long&lt;/BytesReturned&gt;
+         &lt;BytesScanned&gt;long&lt;/BytesScanned&gt;
+      &lt;/Details&gt;
+   &lt;/Stats&gt;
+   &lt;Progress&gt;
+      &lt;Details&gt;
+         &lt;BytesProcessed&gt;long&lt;/BytesProcessed&gt;
+         &lt;BytesReturned&gt;long&lt;/BytesReturned&gt;
+         &lt;BytesScanned&gt;long&lt;/BytesScanned&gt;
+      &lt;/Details&gt;
+   &lt;/Progress&gt;
+   &lt;Cont&gt;
+   &lt;/Cont&gt;
+   &lt;End&gt;
+   &lt;/End&gt;
+&lt;/Payload&gt;
+</pre></div>
+</div>
+</section>
+<section id="response-description">
+<h3><a class="toc-backref" href="#id28" role="doc-backlink">Response Description</a><a class="headerlink" href="#response-description" title="Link to this heading"></a></h3>
+<p>For CEPH S3 Select, responses can be messages of the following types:</p>
+<p><strong>Records message</strong>: Can contain a single record, partial records, or multiple records. Depending on the size of the result, a response can contain one or more of these messages.</p>
+<p><strong>Error message</strong>: Upon an error being detected, RGW returns 400 Bad Request, and a specific error message sends back to the client, according to its type.</p>
+<p><strong>Continuation message</strong>: Ceph S3 periodically sends this message to keep the TCP connection open.
+These messages appear in responses at random. The client must detect the message type and process it accordingly.</p>
+<p><strong>Progress message</strong>: Ceph S3 periodically sends this message if requested. It contains information about the progress of a query that has started but has not yet been completed.</p>
+<p><strong>Stats message</strong>: Ceph S3 sends this message at the end of the request. It contains statistics about the query.</p>
+<p><strong>End message</strong>: Indicates that the request is complete, and no more messages will be sent. You should not assume that request is complete until the client receives an End message.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="qat-accel.html" class="btn btn-neutral float-left" title="QAT Acceleration for Encryption and Compression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lua-scripting.html" class="btn btn-neutral float-right" title="Lua Scripting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

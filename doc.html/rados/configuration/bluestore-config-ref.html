@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlueStore Configuration Reference &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Filestore Config Reference" href="filestore-config-ref.html" />
+    <link rel="prev" title="mClock Config Reference" href="mclock-config-ref.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="storage-devices.html">Storage devices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">Configuring Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html">Common Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#networks">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#temporary-directory">Temporary Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#monitors">Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#osds">OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#heartbeats">Heartbeats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#logs-debugging">Logs / Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#example-ceph-conf">Example ceph.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#naming-clusters-deprecated">Naming Clusters (deprecated)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-config-ref.html">Network Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">Messenger v2 protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth-config-ref.html">Auth Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-config-ref.html">Monitor Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-lookup-dns.html">Looking up Monitors through DNS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osd-interaction.html">Heartbeat Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-config-ref.html">OSD Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mclock-config-ref.html">DmClock Settings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BlueStore Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#devices">Devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sizing">Sizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-cache-sizing">Automatic Cache Sizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-cache-sizing">Manual Cache Sizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#checksums">Checksums</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inline-compression">Inline Compression</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rocksdb-sharding">RocksDB Sharding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#throttling">Throttling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#spdk-usage">SPDK Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#minimum-allocation-size">Minimum Allocation Size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dsa-data-streaming-accelerator-usage">DSA (Data Streaming Accelerator) Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="filestore-config-ref.html">FileStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="journal-ref.html">Journal Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pool-pg-config-ref.html">Pool, PG &amp; CRUSH Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-config-ref.html">General Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">BlueStore Configuration Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/configuration/bluestore-config-ref.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="bluestore-configuration-reference">
+<h1>BlueStore Configuration Reference<a class="headerlink" href="#bluestore-configuration-reference" title="Link to this heading"></a></h1>
+<section id="devices">
+<h2>Devices<a class="headerlink" href="#devices" title="Link to this heading"></a></h2>
+<p>BlueStore manages either one, two, or in certain cases three storage devices.
+These <em>devices</em> are “devices” in the Linux/Unix sense. This means that they are
+assets listed under <code class="docutils literal notranslate"><span class="pre">/dev</span></code> or <code class="docutils literal notranslate"><span class="pre">/devices</span></code>. Each of these devices may be an
+entire storage drive, or a partition of a storage drive, or a logical volume.
+BlueStore does not create or mount a conventional file system on devices that
+it uses; BlueStore reads and writes to the devices directly in a “raw” fashion.</p>
+<p>In the simplest case, BlueStore consumes all of a single storage device. This
+device is known as the <em>primary device</em>. The primary device is identified by
+the <code class="docutils literal notranslate"><span class="pre">block</span></code> symlink in the data directory.</p>
+<p>The data directory is a <code class="docutils literal notranslate"><span class="pre">tmpfs</span></code> mount. When this data directory is booted or
+activated by <code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code>, it is populated with metadata files and links
+that hold information about the OSD: for example, the OSD’s identifier, the
+name of the cluster that the OSD belongs to, and the OSD’s private keyring.</p>
+<p>In more complicated cases, BlueStore is deployed across one or two additional
+devices:</p>
+<ul class="simple">
+<li><p>A <em>write-ahead log (WAL) device</em> (identified as <code class="docutils literal notranslate"><span class="pre">block.wal</span></code> in the data
+directory) can be used to separate out BlueStore’s internal journal or
+write-ahead log. Using a WAL device is advantageous only if the WAL device
+is faster than the primary device (for example, if the WAL device is an SSD
+and the primary device is an HDD).</p></li>
+<li><p>A <em>DB device</em> (identified as <code class="docutils literal notranslate"><span class="pre">block.db</span></code> in the data directory) can be used
+to store BlueStore’s internal metadata. BlueStore (or more precisely, the
+embedded RocksDB) will put as much metadata as it can on the DB device in
+order to improve performance. If the DB device becomes full, metadata will
+spill back onto the primary device (where it would have been located in the
+absence of the DB device). Again, it is advantageous to provision a DB device
+only if it is faster than the primary device.</p></li>
+</ul>
+<p>If there is only a small amount of fast storage available (for example, less
+than a gigabyte), we recommend using the available space as a WAL device. But
+if more fast storage is available, it makes more sense to provision a DB
+device. Because the BlueStore journal is always placed on the fastest device
+available, using a DB device provides the same benefit that using a WAL device
+would, while <em>also</em> allowing additional metadata to be stored off the primary
+device (provided that it fits). DB devices make this possible because whenever
+a DB device is specified but an explicit WAL device is not, the WAL will be
+implicitly colocated with the DB on the faster device.</p>
+<p>To provision a single-device (colocated) BlueStore OSD, run the following
+command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>&lt;device&gt;</span>
+</pre></div></div><p>To specify a WAL device or DB device, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>&lt;device&gt;<span class="w"> </span>--block.wal<span class="w"> </span>&lt;wal-device&gt;<span class="w"> </span>--block.db<span class="w"> </span>&lt;db-device&gt;</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The option <code class="docutils literal notranslate"><span class="pre">--data</span></code> can take as its argument any of the the
+following devices: logical volumes specified using <em>vg/lv</em> notation,
+existing logical volumes, and GPT partitions.</p>
+</div>
+<section id="provisioning-strategies">
+<h3>Provisioning strategies<a class="headerlink" href="#provisioning-strategies" title="Link to this heading"></a></h3>
+<p>BlueStore differs from Filestore in that there are several ways to deploy a
+BlueStore OSD. However, the overall deployment strategy for BlueStore can be
+clarified by examining just these two common arrangements:</p>
+<section id="block-data-only">
+<span id="bluestore-single-type-device-config"></span><h4><strong>block (data) only</strong><a class="headerlink" href="#block-data-only" title="Link to this heading"></a></h4>
+<p>If all devices are of the same type (for example, they are all HDDs), and if
+there are no fast devices available for the storage of metadata, then it makes
+sense to specify the block device only and to leave <code class="docutils literal notranslate"><span class="pre">block.db</span></code> and
+<code class="docutils literal notranslate"><span class="pre">block.wal</span></code> unseparated. The <a class="reference internal" href="../../ceph-volume/lvm/index.html#ceph-volume-lvm"><span class="std std-ref">lvm</span></a> command for a single
+<code class="docutils literal notranslate"><span class="pre">/dev/sda</span></code> device is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>/dev/sda</span>
+</pre></div></div><p>If the devices to be used for a BlueStore OSD are pre-created logical volumes,
+then the <a class="reference internal" href="../../ceph-volume/lvm/index.html#ceph-volume-lvm"><span class="std std-ref">lvm</span></a> call for an logical volume named
+<code class="docutils literal notranslate"><span class="pre">ceph-vg/block-lv</span></code> is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>ceph-vg/block-lv</span>
+</pre></div></div></section>
+<section id="block-and-block-db">
+<span id="bluestore-mixed-device-config"></span><h4><strong>block and block.db</strong><a class="headerlink" href="#block-and-block-db" title="Link to this heading"></a></h4>
+<p>If you have a mix of fast and slow devices (for example, SSD or HDD), then we
+recommend placing <code class="docutils literal notranslate"><span class="pre">block.db</span></code> on the faster device while <code class="docutils literal notranslate"><span class="pre">block</span></code> (that is,
+the data) is stored on the slower device (that is, the rotational drive).</p>
+<p>You must create these volume groups and these logical volumes manually. as The
+<code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code> tool is currently unable to do so [create them?] automatically.</p>
+<p>The following procedure illustrates the manual creation of volume groups and
+logical volumes.  For this example, we shall assume four rotational drives
+(<code class="docutils literal notranslate"><span class="pre">sda</span></code>, <code class="docutils literal notranslate"><span class="pre">sdb</span></code>, <code class="docutils literal notranslate"><span class="pre">sdc</span></code>, and <code class="docutils literal notranslate"><span class="pre">sdd</span></code>) and one (fast) SSD (<code class="docutils literal notranslate"><span class="pre">sdx</span></code>). First,
+to create the volume groups, run the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">vgcreate<span class="w"> </span>ceph-block-0<span class="w"> </span>/dev/sda</span>
+<span class="prompt2">vgcreate<span class="w"> </span>ceph-block-1<span class="w"> </span>/dev/sdb</span>
+<span class="prompt2">vgcreate<span class="w"> </span>ceph-block-2<span class="w"> </span>/dev/sdc</span>
+<span class="prompt2">vgcreate<span class="w"> </span>ceph-block-3<span class="w"> </span>/dev/sdd</span>
+</pre></div></div><p>Next, to create the logical volumes for <code class="docutils literal notranslate"><span class="pre">block</span></code>, run the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">lvcreate<span class="w"> </span>-l<span class="w"> </span><span class="m">100</span>%FREE<span class="w"> </span>-n<span class="w"> </span>block-0<span class="w"> </span>ceph-block-0</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-l<span class="w"> </span><span class="m">100</span>%FREE<span class="w"> </span>-n<span class="w"> </span>block-1<span class="w"> </span>ceph-block-1</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-l<span class="w"> </span><span class="m">100</span>%FREE<span class="w"> </span>-n<span class="w"> </span>block-2<span class="w"> </span>ceph-block-2</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-l<span class="w"> </span><span class="m">100</span>%FREE<span class="w"> </span>-n<span class="w"> </span>block-3<span class="w"> </span>ceph-block-3</span>
+</pre></div></div><p>Because there are four HDDs, there will be four OSDs. Supposing that there is a
+200GB SSD in <code class="docutils literal notranslate"><span class="pre">/dev/sdx</span></code>, we can create four 50GB logical volumes by running
+the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">vgcreate<span class="w"> </span>ceph-db-0<span class="w"> </span>/dev/sdx</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-L<span class="w"> </span>50GB<span class="w"> </span>-n<span class="w"> </span>db-0<span class="w"> </span>ceph-db-0</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-L<span class="w"> </span>50GB<span class="w"> </span>-n<span class="w"> </span>db-1<span class="w"> </span>ceph-db-0</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-L<span class="w"> </span>50GB<span class="w"> </span>-n<span class="w"> </span>db-2<span class="w"> </span>ceph-db-0</span>
+<span class="prompt2">lvcreate<span class="w"> </span>-L<span class="w"> </span>50GB<span class="w"> </span>-n<span class="w"> </span>db-3<span class="w"> </span>ceph-db-0</span>
+</pre></div></div><p>Finally, to create the four OSDs, run the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>ceph-block-0/block-0<span class="w"> </span>--block.db<span class="w"> </span>ceph-db-0/db-0</span>
+<span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>ceph-block-1/block-1<span class="w"> </span>--block.db<span class="w"> </span>ceph-db-0/db-1</span>
+<span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>ceph-block-2/block-2<span class="w"> </span>--block.db<span class="w"> </span>ceph-db-0/db-2</span>
+<span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>ceph-block-3/block-3<span class="w"> </span>--block.db<span class="w"> </span>ceph-db-0/db-3</span>
+</pre></div></div><p>After this procedure is finished, there should be four OSDs, <code class="docutils literal notranslate"><span class="pre">block</span></code> should
+be on the four HDDs, and each HDD should have a 50GB logical volume
+(specifically, a DB device) on the shared SSD.</p>
+</section>
+</section>
+</section>
+<section id="sizing">
+<h2>Sizing<a class="headerlink" href="#sizing" title="Link to this heading"></a></h2>
+<p>When using a <a class="reference internal" href="#bluestore-mixed-device-config"><span class="std std-ref">mixed spinning-and-solid-drive setup</span></a>, it is important to make a large enough
+<code class="docutils literal notranslate"><span class="pre">block.db</span></code> logical volume for BlueStore. The logical volumes associated with
+<code class="docutils literal notranslate"><span class="pre">block.db</span></code> should have logical volumes that are <em>as large as possible</em>.</p>
+<p>It is generally recommended that the size of <code class="docutils literal notranslate"><span class="pre">block.db</span></code> be somewhere between
+1% and 4% of the size of <code class="docutils literal notranslate"><span class="pre">block</span></code>. For RGW workloads, it is recommended that
+the <code class="docutils literal notranslate"><span class="pre">block.db</span></code> be at least 4% of the <code class="docutils literal notranslate"><span class="pre">block</span></code> size, because RGW makes heavy
+use of <code class="docutils literal notranslate"><span class="pre">block.db</span></code> to store metadata (in particular, omap keys). For example,
+if the <code class="docutils literal notranslate"><span class="pre">block</span></code> size is 1TB, then <code class="docutils literal notranslate"><span class="pre">block.db</span></code> should have a size of at least
+40GB. For RBD workloads, however, <code class="docutils literal notranslate"><span class="pre">block.db</span></code> usually needs no more than 1% to
+2% of the <code class="docutils literal notranslate"><span class="pre">block</span></code> size.</p>
+<p>In older releases, internal level sizes are such that the DB can fully utilize
+only those specific partition / logical volume sizes that correspond to sums of
+L0, L0+L1, L1+L2, and so on--that is, given default settings, sizes of roughly
+3GB, 30GB, 300GB, and so on. Most deployments do not substantially benefit from
+sizing that accommodates L3 and higher, though DB compaction can be facilitated
+by doubling these figures to 6GB, 60GB, and 600GB.</p>
+<p>Improvements in Nautilus 14.2.12, Octopus 15.2.6, and subsequent releases allow
+for better utilization of arbitrarily-sized DB devices. Moreover, the Pacific
+release brings experimental dynamic-level support. Because of these advances,
+users of older releases might want to plan ahead by provisioning larger DB
+devices today so that the benefits of scale can be realized when upgrades are
+made in the future.</p>
+<p>When <em>not</em> using a mix of fast and slow devices, there is no requirement to
+create separate logical volumes for <code class="docutils literal notranslate"><span class="pre">block.db</span></code> or <code class="docutils literal notranslate"><span class="pre">block.wal</span></code>. BlueStore
+will automatically colocate these devices within the space of <code class="docutils literal notranslate"><span class="pre">block</span></code>.</p>
+</section>
+<section id="automatic-cache-sizing">
+<h2>Automatic Cache Sizing<a class="headerlink" href="#automatic-cache-sizing" title="Link to this heading"></a></h2>
+<p>BlueStore can be configured to automatically resize its caches, provided that
+certain conditions are met: TCMalloc must be configured as the memory allocator
+and the <code class="docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code> configuration option must be enabled (note
+that it is currently enabled by default). When automatic cache sizing is in
+effect, BlueStore attempts to keep OSD heap-memory usage under a certain target
+size (as determined by <code class="docutils literal notranslate"><span class="pre">osd_memory_target</span></code>). This approach makes use of a
+best-effort algorithm and caches do not shrink smaller than the size defined by
+the value of <code class="docutils literal notranslate"><span class="pre">osd_memory_cache_min</span></code>. Cache ratios are selected in accordance
+with a hierarchy of priorities.  But if priority information is not available,
+the values specified in the <code class="docutils literal notranslate"><span class="pre">bluestore_cache_meta_ratio</span></code> and
+<code class="docutils literal notranslate"><span class="pre">bluestore_cache_kv_ratio</span></code> options are used as fallback cache ratios.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_autotune">
+<span class="sig-name descname"><span class="pre">bluestore_cache_autotune</span></span><a class="headerlink" href="#confval-bluestore_cache_autotune" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Automatically tune the space ratios assigned to various BlueStore
+caches while respecting minimum values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_size</span></code></a>, <a class="reference internal" href="#confval-bluestore_cache_meta_ratio"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_meta_ratio</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_memory_target">
+<span class="sig-name descname"><span class="pre">osd_memory_target</span></span><a class="headerlink" href="#confval-osd_memory_target" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>When TCMalloc is available and cache autotuning is enabled, try to
+keep this many bytes mapped in memory. Note: This may not exactly
+match the RSS memory usage of the process.  While the total amount
+of heap memory mapped by the process should usually be close
+to this target, there is no guarantee that the kernel will actually
+reclaim  memory that has been unmapped.  During initial development,
+it was found that some kernels result in the OSD’s RSS memory
+exceeding the mapped memory by up to 20%.  It is hypothesised
+however, that the kernel generally may be more aggressive about
+reclaiming unmapped memory when there is a high amount of memory
+pressure.  Your mileage may vary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4Gi</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">896_M</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-bluestore_cache_autotune"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code></a>, <a class="reference internal" href="#confval-osd_memory_cache_min"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_memory_cache_min</span></code></a>, <a class="reference internal" href="#confval-osd_memory_base"><code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_memory_base</span></code></a>, <code class="xref std std-confval docutils literal notranslate"><span class="pre">osd_memory_target_autotune</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_autotune_interval">
+<span class="sig-name descname"><span class="pre">bluestore_cache_autotune_interval</span></span><a class="headerlink" href="#confval-bluestore_cache_autotune_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The number of seconds to wait between rebalances when cache autotune
+is
+enabled.  <cite>bluestore_cache_autotune_interval</cite> sets the speed at which
+Ceph
+recomputes the allocation ratios of various caches. Note: Setting this
+interval too small can result in high CPU usage and lower performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_autotune"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_memory_base">
+<span class="sig-name descname"><span class="pre">osd_memory_base</span></span><a class="headerlink" href="#confval-osd_memory_base" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>When TCMalloc and cache autotuning are enabled, estimate the minimum
+amount of memory in bytes the OSD will need.  This is used to help the
+autotuner estimate the expected aggregate memory consumption of the
+caches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">768Mi</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_autotune"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_memory_expected_fragmentation">
+<span class="sig-name descname"><span class="pre">osd_memory_expected_fragmentation</span></span><a class="headerlink" href="#confval-osd_memory_expected_fragmentation" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>When TCMalloc and cache autotuning is enabled, estimate the percentage
+of memory fragmentation.  This is used to help the autotuner estimate
+the expected aggregate memory consumption of the caches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.15</span></code></p>
+</dd>
+<dt class="field-odd">allowed range<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-bluestore_cache_autotune"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_memory_cache_min">
+<span class="sig-name descname"><span class="pre">osd_memory_cache_min</span></span><a class="headerlink" href="#confval-osd_memory_cache_min" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>When TCMalloc and cache autotuning are enabled, set the minimum
+amount of memory used for caches. Note: Setting this value too
+low can result in significant cache thrashing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Mi</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">128_M</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-bluestore_cache_autotune"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-osd_memory_cache_resize_interval">
+<span class="sig-name descname"><span class="pre">osd_memory_cache_resize_interval</span></span><a class="headerlink" href="#confval-osd_memory_cache_resize_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>When TCMalloc and cache autotuning are enabled, wait this many seconds
+between resizing caches.  This setting changes the total amount of
+memory available for BlueStore to use for caching.  Note that setting
+this interval too small can result in memory allocator thrashing and
+lower performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_autotune"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_autotune</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="manual-cache-sizing">
+<h2>Manual Cache Sizing<a class="headerlink" href="#manual-cache-sizing" title="Link to this heading"></a></h2>
+<p>The amount of memory consumed by each OSD to be used for its BlueStore cache is
+determined by the <code class="docutils literal notranslate"><span class="pre">bluestore_cache_size</span></code> configuration option. If that option
+has not been specified (that is, if it remains at 0), then Ceph uses a
+different configuration option to determine the default memory budget:
+<code class="docutils literal notranslate"><span class="pre">bluestore_cache_size_hdd</span></code> if the primary device is an HDD, or
+<code class="docutils literal notranslate"><span class="pre">bluestore_cache_size_ssd</span></code> if the primary device is an SSD.</p>
+<p>BlueStore and the rest of the Ceph OSD daemon make every effort to work within
+this memory budget. Note that in addition to the configured cache size, there
+is also memory consumed by the OSD itself. There is additional utilization due
+to memory fragmentation and other allocator overhead.</p>
+<p>The configured cache-memory budget can be used to store the following types of
+things:</p>
+<ul class="simple">
+<li><p>Key/Value metadata (that is, RocksDB’s internal cache)</p></li>
+<li><p>BlueStore metadata</p></li>
+<li><p>BlueStore data (that is, recently read or recently written object data)</p></li>
+</ul>
+<p>Cache memory usage is governed by the configuration options
+<code class="docutils literal notranslate"><span class="pre">bluestore_cache_meta_ratio</span></code> and <code class="docutils literal notranslate"><span class="pre">bluestore_cache_kv_ratio</span></code>.  The fraction
+of the cache that is reserved for data is governed by both the effective
+BlueStore cache size (which depends on the relevant
+<code class="docutils literal notranslate"><span class="pre">bluestore_cache_size[_ssd|_hdd]</span></code> option and the device class of the primary
+device) and the “meta” and “kv” ratios.  This data fraction can be calculated
+with the following formula: <code class="docutils literal notranslate"><span class="pre">&lt;effective_cache_size&gt;</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">-</span>
+<span class="pre">bluestore_cache_meta_ratio</span> <span class="pre">-</span> <span class="pre">bluestore_cache_kv_ratio)</span></code>.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_size">
+<span class="sig-name descname"><span class="pre">bluestore_cache_size</span></span><a class="headerlink" href="#confval-bluestore_cache_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The amount of memory BlueStore will use for its cache.  If zero,
+<code class="docutils literal notranslate"><span class="pre">bluestore_cache_size_hdd</span></code> or <code class="docutils literal notranslate"><span class="pre">bluestore_cache_size_ssd</span></code> will be
+used instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_size_hdd">
+<span class="sig-name descname"><span class="pre">bluestore_cache_size_hdd</span></span><a class="headerlink" href="#confval-bluestore_cache_size_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default amount of memory BlueStore will use for its cache when
+backed by an HDD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1Gi</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_size_ssd">
+<span class="sig-name descname"><span class="pre">bluestore_cache_size_ssd</span></span><a class="headerlink" href="#confval-bluestore_cache_size_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default amount of memory BlueStore will use for its cache when
+backed by an SSD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">3Gi</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_meta_ratio">
+<span class="sig-name descname"><span class="pre">bluestore_cache_meta_ratio</span></span><a class="headerlink" href="#confval-bluestore_cache_meta_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ratio of bluestore cache to devote to metadata</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.45</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_cache_kv_ratio">
+<span class="sig-name descname"><span class="pre">bluestore_cache_kv_ratio</span></span><a class="headerlink" href="#confval-bluestore_cache_kv_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Ratio of bluestore cache to devote to key/value database (RocksDB)</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.45</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_cache_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_cache_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="checksums">
+<h2>Checksums<a class="headerlink" href="#checksums" title="Link to this heading"></a></h2>
+<p>BlueStore checksums all metadata and all data written to disk. Metadata
+checksumming is handled by RocksDB and uses the <cite>crc32c</cite> algorithm. By
+contrast, data checksumming is handled by BlueStore and can use either
+<cite>crc32c</cite>, <cite>xxhash32</cite>, or <cite>xxhash64</cite>. Nonetheless, <cite>crc32c</cite> is the default
+checksum algorithm and it is suitable for most purposes.</p>
+<p>Full data checksumming increases the amount of metadata that BlueStore must
+store and manage. Whenever possible (for example, when clients hint that data
+is written and read sequentially), BlueStore will checksum larger blocks. In
+many cases, however, it must store a checksum value (usually 4 bytes) for every
+4 KB block of data.</p>
+<p>It is possible to obtain a smaller checksum value by truncating the checksum to
+one or two bytes and reducing the metadata overhead.  A drawback of this
+approach is that it increases the probability of a random error going
+undetected: about one in four billion given a 32-bit (4 byte) checksum, 1 in
+65,536 given a 16-bit (2 byte) checksum, and 1 in 256 given an 8-bit (1 byte)
+checksum. To use the smaller checksum values, select <cite>crc32c_16</cite> or <cite>crc32c_8</cite>
+as the checksum algorithm.</p>
+<p>The <em>checksum algorithm</em> can be specified either via a per-pool <code class="docutils literal notranslate"><span class="pre">csum_type</span></code>
+configuration option or via the global configuration option. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;pool-name&gt;<span class="w"> </span>csum_type<span class="w"> </span>&lt;algorithm&gt;</span>
+</pre></div></div><dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_csum_type">
+<span class="sig-name descname"><span class="pre">bluestore_csum_type</span></span><a class="headerlink" href="#confval-bluestore_csum_type" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default checksum algorithm to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">crc32c</span></code></p>
+</dd>
+<dt class="field-odd">valid choices<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crc32c</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crc32c_16</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crc32c_8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xxhash32</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xxhash64</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="inline-compression">
+<h2>Inline Compression<a class="headerlink" href="#inline-compression" title="Link to this heading"></a></h2>
+<p>BlueStore supports inline compression using <cite>snappy</cite>, <cite>zlib</cite>, <cite>lz4</cite>, or <cite>zstd</cite>.</p>
+<p>Whether data in BlueStore is compressed is determined by two factors: (1) the
+<em>compression mode</em> and (2) any client hints associated with a write operation.
+The compression modes are as follows:</p>
+<ul class="simple">
+<li><p><strong>none</strong>: Never compress data.</p></li>
+<li><p><strong>passive</strong>: Do not compress data unless the write operation has a
+<em>compressible</em> hint set.</p></li>
+<li><p><strong>aggressive</strong>: Do compress data unless the write operation has an
+<em>incompressible</em> hint set.</p></li>
+<li><p><strong>force</strong>: Try to compress data no matter what.</p></li>
+</ul>
+<p>For more information about the <em>compressible</em> and <em>incompressible</em> I/O hints,
+see <a class="reference internal" href="../api/librados.html#c.rados_set_alloc_hint" title="rados_set_alloc_hint"><code class="xref c c-func docutils literal notranslate"><span class="pre">rados_set_alloc_hint()</span></code></a>.</p>
+<p>Note that data in Bluestore will be compressed only if the data chunk will be
+sufficiently reduced in size (as determined by the <code class="docutils literal notranslate"><span class="pre">bluestore</span> <span class="pre">compression</span>
+<span class="pre">required</span> <span class="pre">ratio</span></code> setting). No matter which compression modes have been used, if
+the data chunk is too big, then it will be discarded and the original
+(uncompressed) data will be stored instead. For example, if <code class="docutils literal notranslate"><span class="pre">bluestore</span>
+<span class="pre">compression</span> <span class="pre">required</span> <span class="pre">ratio</span></code> is set to <code class="docutils literal notranslate"><span class="pre">.7</span></code>, then data compression will take
+place only if the size of the compressed data is no more than 70% of the size
+of the original data.</p>
+<p>The <em>compression mode</em>, <em>compression algorithm</em>, <em>compression required ratio</em>,
+<em>min blob size</em>, and <em>max blob size</em> settings can be specified either via a
+per-pool property or via a global config option. To specify pool properties,
+run the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;pool-name&gt;<span class="w"> </span>compression_algorithm<span class="w"> </span>&lt;algorithm&gt;</span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;pool-name&gt;<span class="w"> </span>compression_mode<span class="w"> </span>&lt;mode&gt;</span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;pool-name&gt;<span class="w"> </span>compression_required_ratio<span class="w"> </span>&lt;ratio&gt;</span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;pool-name&gt;<span class="w"> </span>compression_min_blob_size<span class="w"> </span>&lt;size&gt;</span>
+<span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>pool<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;pool-name&gt;<span class="w"> </span>compression_max_blob_size<span class="w"> </span>&lt;size&gt;</span>
+</pre></div></div><dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_algorithm">
+<span class="sig-name descname"><span class="pre">bluestore_compression_algorithm</span></span><a class="headerlink" href="#confval-bluestore_compression_algorithm" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default compressor to use (if any) if the per-pool property
+<code class="docutils literal notranslate"><span class="pre">compression_algorithm</span></code> is not set. Note that <code class="docutils literal notranslate"><span class="pre">zstd</span></code> is <em>not</em>
+recommended for BlueStore due to high CPU overhead when compressing
+small amounts of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">snappy</span></code></p>
+</dd>
+<dt class="field-odd">valid choices<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>&lt;empty string&gt;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">snappy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zlib</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zstd</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lz4</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_mode">
+<span class="sig-name descname"><span class="pre">bluestore_compression_mode</span></span><a class="headerlink" href="#confval-bluestore_compression_mode" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The default policy for using compression if the per-pool property
+<code class="docutils literal notranslate"><span class="pre">compression_mode</span></code> is not set. <code class="docutils literal notranslate"><span class="pre">none</span></code> means never use compression.
+<code class="docutils literal notranslate"><span class="pre">passive</span></code> means use compression when <a class="reference internal" href="../api/librados.html#c.rados_set_alloc_hint" title="rados_set_alloc_hint"><code class="xref c c-func docutils literal notranslate"><span class="pre">clients</span> <span class="pre">hint</span></code></a> that data is compressible.  <code class="docutils literal notranslate"><span class="pre">aggressive</span></code>
+means use compression unless clients hint that data is not
+compressible.  <code class="docutils literal notranslate"><span class="pre">force</span></code> means use compression under all circumstances
+even if the clients hint that the data is not compressible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd>
+<dt class="field-odd">valid choices<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">passive</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aggressive</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">force</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_required_ratio">
+<span class="sig-name descname"><span class="pre">bluestore_compression_required_ratio</span></span><a class="headerlink" href="#confval-bluestore_compression_required_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The ratio of the size of the data chunk after compression relative to
+the original size must be at least this small in order to store the
+compressed version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.875</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_min_blob_size">
+<span class="sig-name descname"><span class="pre">bluestore_compression_min_blob_size</span></span><a class="headerlink" href="#confval-bluestore_compression_min_blob_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Chunks smaller than this are never compressed. The per-pool property
+<code class="docutils literal notranslate"><span class="pre">compression_min_blob_size</span></code> overrides this setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_min_blob_size_hdd">
+<span class="sig-name descname"><span class="pre">bluestore_compression_min_blob_size_hdd</span></span><a class="headerlink" href="#confval-bluestore_compression_min_blob_size_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default value of <code class="docutils literal notranslate"><span class="pre">bluestore</span> <span class="pre">compression</span> <span class="pre">min</span> <span class="pre">blob</span> <span class="pre">size</span></code> for
+rotational media.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">8Ki</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_compression_min_blob_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_min_blob_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_min_blob_size_ssd">
+<span class="sig-name descname"><span class="pre">bluestore_compression_min_blob_size_ssd</span></span><a class="headerlink" href="#confval-bluestore_compression_min_blob_size_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default value of <code class="docutils literal notranslate"><span class="pre">bluestore</span> <span class="pre">compression</span> <span class="pre">min</span> <span class="pre">blob</span> <span class="pre">size</span></code> for non-
+rotational (solid state) media.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64Ki</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_compression_min_blob_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_min_blob_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_max_blob_size">
+<span class="sig-name descname"><span class="pre">bluestore_compression_max_blob_size</span></span><a class="headerlink" href="#confval-bluestore_compression_max_blob_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Chunks larger than this value are broken into smaller blobs of at most
+<code class="docutils literal notranslate"><span class="pre">bluestore_compression_max_blob_size</span></code> bytes before being compressed.
+The per-pool property <code class="docutils literal notranslate"><span class="pre">compression_max_blob_size</span></code> overrides this
+setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_max_blob_size_hdd">
+<span class="sig-name descname"><span class="pre">bluestore_compression_max_blob_size_hdd</span></span><a class="headerlink" href="#confval-bluestore_compression_max_blob_size_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default value of <code class="docutils literal notranslate"><span class="pre">bluestore</span> <span class="pre">compression</span> <span class="pre">max</span> <span class="pre">blob</span> <span class="pre">size</span></code> for
+rotational media.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64Ki</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_compression_max_blob_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_max_blob_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_compression_max_blob_size_ssd">
+<span class="sig-name descname"><span class="pre">bluestore_compression_max_blob_size_ssd</span></span><a class="headerlink" href="#confval-bluestore_compression_max_blob_size_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default value of <code class="docutils literal notranslate"><span class="pre">bluestore</span> <span class="pre">compression</span> <span class="pre">max</span> <span class="pre">blob</span> <span class="pre">size</span></code> for non-
+rotational (SSD, NVMe) media.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64Ki</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_compression_max_blob_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_compression_max_blob_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="rocksdb-sharding">
+<span id="bluestore-rocksdb-sharding"></span><h2>RocksDB Sharding<a class="headerlink" href="#rocksdb-sharding" title="Link to this heading"></a></h2>
+<p>BlueStore maintains several types of internal key-value data, all of which are
+stored in RocksDB. Each data type in BlueStore is assigned a unique prefix.
+Prior to the Pacific release, all key-value data was stored in a single RocksDB
+column family: ‘default’. In Pacific and later releases, however, BlueStore can
+divide key-value data into several RocksDB column families. BlueStore achieves
+better caching and more precise compaction when keys are similar: specifically,
+when keys have similar access frequency, similar modification frequency, and a
+similar lifetime.  Under such conditions, performance is improved and less disk
+space is required during compaction (because each column family is smaller and
+is able to compact independently of the others).</p>
+<p>OSDs deployed in Pacific or later releases use RocksDB sharding by default.
+However, if Ceph has been upgraded to Pacific or a later version from a
+previous version, sharding is disabled on any OSDs that were created before
+Pacific.</p>
+<p>To enable sharding and apply the Pacific defaults to a specific OSD, stop the
+OSD and run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-bluestore-tool<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--path<span class="w"> </span>&lt;data<span class="w"> </span>path&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--sharding<span class="o">=</span><span class="s2">&quot;m(3) p(3,0-12) O(3,0-13)=block_cache={type=binned_lru} L P&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>reshard</span>
+</pre></div></div></div></blockquote>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_rocksdb_cf">
+<span class="sig-name descname"><span class="pre">bluestore_rocksdb_cf</span></span><a class="headerlink" href="#confval-bluestore_rocksdb_cf" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Enables sharding of BlueStore’s RocksDB. When <code class="docutils literal notranslate"><span class="pre">true</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bluestore_rocksdb_cfs</span></code> is used. Only applied when OSD is doing
+<code class="docutils literal notranslate"><span class="pre">--mkfs</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_rocksdb_cfs">
+<span class="sig-name descname"><span class="pre">bluestore_rocksdb_cfs</span></span><a class="headerlink" href="#confval-bluestore_rocksdb_cfs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Definition of BlueStore’s RocksDB sharding. The optimal value depends
+on multiple factors, and modification is inadvisable. This setting is
+used only when OSD is doing <code class="docutils literal notranslate"><span class="pre">--mkfs</span></code>. Next runs of OSD retrieve
+sharding from disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">m(3)</span> <span class="pre">p(3,0-12)</span> <span class="pre">O(3,0-13)=block_cache={type=binned_lru}</span> <span class="pre">L=min_write_buffer_number_to_merge=32</span> <span class="pre">P=min_write_buffer_number_to_merge=32</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="throttling">
+<h2>Throttling<a class="headerlink" href="#throttling" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_throttle_bytes">
+<span class="sig-name descname"><span class="pre">bluestore_throttle_bytes</span></span><a class="headerlink" href="#confval-bluestore_throttle_bytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Maximum bytes in flight before we throttle IO submission</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">64Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_throttle_deferred_bytes">
+<span class="sig-name descname"><span class="pre">bluestore_throttle_deferred_bytes</span></span><a class="headerlink" href="#confval-bluestore_throttle_deferred_bytes" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Maximum bytes for deferred writes before we throttle IO submission</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_throttle_cost_per_io">
+<span class="sig-name descname"><span class="pre">bluestore_throttle_cost_per_io</span></span><a class="headerlink" href="#confval-bluestore_throttle_cost_per_io" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Overhead added to transaction cost (in bytes) for each IO</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_throttle_cost_per_io_hdd">
+<span class="sig-name descname"><span class="pre">bluestore_throttle_cost_per_io_hdd</span></span><a class="headerlink" href="#confval-bluestore_throttle_cost_per_io_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default bluestore_throttle_cost_per_io for rotational media</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">670000</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_throttle_cost_per_io"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_cost_per_io</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_throttle_cost_per_io_ssd">
+<span class="sig-name descname"><span class="pre">bluestore_throttle_cost_per_io_ssd</span></span><a class="headerlink" href="#confval-bluestore_throttle_cost_per_io_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default bluestore_throttle_cost_per_io for non-rotation (solid state)
+media</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4000</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_throttle_cost_per_io"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_throttle_cost_per_io</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="spdk-usage">
+<h2>SPDK Usage<a class="headerlink" href="#spdk-usage" title="Link to this heading"></a></h2>
+<p>To use the SPDK driver for NVMe devices, you must first prepare your system.
+See <a class="reference external" href="http://www.spdk.io/doc/getting_started.html#getting_started_examples">SPDK document</a>.</p>
+<p>SPDK offers a script that will configure the device automatically. Run this
+script with root permissions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>src/spdk/scripts/setup.sh</span>
+</pre></div></div><p>You will need to specify the subject NVMe device’s device selector with the
+“spdk:” prefix for <code class="docutils literal notranslate"><span class="pre">bluestore_block_path</span></code>.</p>
+<p>In the following example, you first find the device selector of an Intel NVMe
+SSD by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">lspci<span class="w"> </span>-mm<span class="w"> </span>-n<span class="w"> </span>-D<span class="w"> </span>-d<span class="w"> </span><span class="m">8086</span>:0953</span>
+</pre></div></div><p>The form of the device selector is either <code class="docutils literal notranslate"><span class="pre">DDDD:BB:DD.FF</span></code> or
+<code class="docutils literal notranslate"><span class="pre">DDDD.BB.DD.FF</span></code>.</p>
+<p>Next, supposing that <code class="docutils literal notranslate"><span class="pre">0000:01:00.0</span></code> is the device selector found in the
+output of the <code class="docutils literal notranslate"><span class="pre">lspci</span></code> command, you can specify the device selector by running
+the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bluestore_block_path</span> <span class="o">=</span> <span class="s2">&quot;spdk:trtype:PCIe traddr:0000:01:00.0&quot;</span>
+</pre></div>
+</div>
+<p>You may also specify a remote NVMeoF target over the TCP transport, as in the
+following example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bluestore_block_path</span> <span class="o">=</span> <span class="s2">&quot;spdk:trtype:TCP traddr:10.67.110.197 trsvcid:4420 subnqn:nqn.2019-02.io.spdk:cnode1&quot;</span>
+</pre></div>
+</div>
+<p>To run multiple SPDK instances per node, you must make sure each instance uses
+its own DPDK memory by specifying for each instance the amount of DPDK memory
+(in MB) that the instance will use.</p>
+<p>In most cases, a single device can be used for data, DB, and WAL. We describe
+this strategy as <em>colocating</em> these components. Be sure to enter the below
+settings to ensure that all I/Os are issued through SPDK:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bluestore_block_db_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">bluestore_block_db_size</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">bluestore_block_wal_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">bluestore_block_wal_size</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>If these settings are not entered, then the current implementation will
+populate the SPDK map files with kernel file system symbols and will use the
+kernel driver to issue DB/WAL I/Os.</p>
+</section>
+<section id="minimum-allocation-size">
+<h2>Minimum Allocation Size<a class="headerlink" href="#minimum-allocation-size" title="Link to this heading"></a></h2>
+<p>There is a configured minimum amount of storage that BlueStore allocates on an
+underlying storage device. In practice, this is the least amount of capacity
+that even a tiny RADOS object can consume on each OSD’s primary device. The
+configuration option in question--<a class="reference internal" href="#confval-bluestore_min_alloc_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size</span></code></a>--derives
+its value from the value of either <a class="reference internal" href="#confval-bluestore_min_alloc_size_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size_hdd</span></code></a> or
+<a class="reference internal" href="#confval-bluestore_min_alloc_size_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size_ssd</span></code></a>, depending on the OSD’s <code class="docutils literal notranslate"><span class="pre">rotational</span></code>
+attribute. Thus if an OSD is created on an HDD, BlueStore is initialized with
+the current value of <a class="reference internal" href="#confval-bluestore_min_alloc_size_hdd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size_hdd</span></code></a>; but with SSD OSDs
+(including NVMe devices), Bluestore is initialized with the current value of
+<a class="reference internal" href="#confval-bluestore_min_alloc_size_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size_ssd</span></code></a>.</p>
+<p>In Mimic and earlier releases, the default values were 64KB for rotational
+media (HDD) and 16KB for non-rotational media (SSD). The Octopus release
+changed the the default value for non-rotational media (SSD) to 4KB, and the
+Pacific release changed the default value for rotational media (HDD) to 4KB.</p>
+<p>These changes were driven by space amplification that was experienced by Ceph
+RADOS GateWay (RGW) deployments that hosted large numbers of small files
+(S3/Swift objects).</p>
+<p>For example, when an RGW client stores a 1 KB S3 object, that object is written
+to a single RADOS object. In accordance with the default
+<code class="xref std std-confval docutils literal notranslate"><span class="pre">min_alloc_size</span></code> value, 4 KB of underlying drive space is allocated.
+This means that roughly 3 KB (that is, 4 KB minus 1 KB) is allocated but never
+used: this corresponds to 300% overhead or 25% efficiency. Similarly, a 5 KB
+user object will be stored as two RADOS objects, a 4 KB RADOS object and a 1 KB
+RADOS object, with the result that 4KB of device capacity is stranded. In this
+case, however, the overhead percentage is much smaller. Think of this in terms
+of the remainder from a modulus operation. The overhead <em>percentage</em> thus
+decreases rapidly as object size increases.</p>
+<p>There is an additional subtlety that is easily missed: the amplification
+phenomenon just described takes place for <em>each</em> replica. For example, when
+using the default of three copies of data (3R), a 1 KB S3 object actually
+strands roughly 9 KB of storage device capacity. If erasure coding (EC) is used
+instead of replication, the amplification might be even higher: for a <code class="docutils literal notranslate"><span class="pre">k=4,</span>
+<span class="pre">m=2</span></code> pool, our 1 KB S3 object allocates 24 KB (that is, 4 KB multiplied by 6)
+of device capacity.</p>
+<p>When an RGW bucket pool contains many relatively large user objects, the effect
+of this phenomenon is often negligible. However, with deployments that can
+expect a significant fraction of relatively small user objects, the effect
+should be taken into consideration.</p>
+<p>The 4KB default value aligns well with conventional HDD and SSD devices.
+However, certain novel coarse-IU (Indirection Unit) QLC SSDs perform and wear
+best when <a class="reference internal" href="#confval-bluestore_min_alloc_size_ssd"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size_ssd</span></code></a> is specified at OSD creation
+to match the device’s IU: this might be 8KB, 16KB, or even 64KB.  These novel
+storage drives can achieve read performance that is competitive with that of
+conventional TLC SSDs and write performance that is faster than that of HDDs,
+with higher density and lower cost than TLC SSDs.</p>
+<p>Note that when creating OSDs on these novel devices, one must be careful to
+apply the non-default value only to appropriate devices, and not to
+conventional HDD and SSD devices. Error can be avoided through careful ordering
+of OSD creation, with custom OSD device classes, and especially by the use of
+central configuration <em>masks</em>.</p>
+<p>In Quincy and later releases, you can use the
+<a class="reference internal" href="#confval-bluestore_use_optimal_io_size_for_min_alloc_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_use_optimal_io_size_for_min_alloc_size</span></code></a> option to allow
+automatic discovery of the correct value as each OSD is created. Note that the
+use of <code class="docutils literal notranslate"><span class="pre">bcache</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenCAS</span></code>, <code class="docutils literal notranslate"><span class="pre">dmcrypt</span></code>, <code class="docutils literal notranslate"><span class="pre">ATA</span> <span class="pre">over</span> <span class="pre">Ethernet</span></code>, <cite>iSCSI</cite>, or
+other device-layering and abstraction technologies might confound the
+determination of correct values. Moreover, OSDs deployed on top of VMware
+storage have sometimes been found to report a <code class="docutils literal notranslate"><span class="pre">rotational</span></code> attribute that
+does not match the underlying hardware.</p>
+<p>We suggest inspecting such OSDs at startup via logs and admin sockets in order
+to ensure that their behavior is correct. Be aware that this kind of inspection
+might not work as expected with older kernels.  To check for this issue,
+examine the presence and value of <code class="docutils literal notranslate"><span class="pre">/sys/block/&lt;drive&gt;/queue/optimal_io_size</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When running Reef or a later Ceph release, the <code class="docutils literal notranslate"><span class="pre">min_alloc_size</span></code>
+baked into each OSD is conveniently reported by <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">metadata</span></code>.</p>
+</div>
+<p>To inspect a specific OSD, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>osd<span class="w"> </span>metadata<span class="w"> </span>osd.1701<span class="w"> </span><span class="p">|</span><span class="w"> </span>egrep<span class="w"> </span>rotational<span class="se">\|</span>alloc</span>
+</pre></div></div><p>This space amplification might manifest as an unusually high ratio of raw to
+stored data as reported by <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">df</span></code>. There might also be <code class="docutils literal notranslate"><span class="pre">%USE</span></code> / <code class="docutils literal notranslate"><span class="pre">VAR</span></code>
+values reported by <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">df</span></code> that are unusually high in comparison to
+other, ostensibly identical, OSDs. Finally, there might be unexpected balancer
+behavior in pools that use OSDs that have mismatched <code class="docutils literal notranslate"><span class="pre">min_alloc_size</span></code> values.</p>
+<p>This BlueStore attribute takes effect <em>only</em> at OSD creation; if the attribute
+is changed later, a specific OSD’s behavior will not change unless and until
+the OSD is destroyed and redeployed with the appropriate option value(s).
+Upgrading to a later Ceph release will <em>not</em> change the value used by OSDs that
+were deployed under older releases or with other settings.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_min_alloc_size">
+<span class="sig-name descname"><span class="pre">bluestore_min_alloc_size</span></span><a class="headerlink" href="#confval-bluestore_min_alloc_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>A smaller allocation size generally means less data is read and then
+rewritten when a copy-on-write operation is triggered (e.g., when
+writing to something that was recently snapshotted).  Similarly, less
+data is journaled before performing an overwrite (writes smaller than
+min_alloc_size must first pass through the BlueStore journal).  Larger
+values of min_alloc_size reduce the amount of metadata required to
+describe the on-disk layout and reduce overall fragmentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_min_alloc_size_hdd">
+<span class="sig-name descname"><span class="pre">bluestore_min_alloc_size_hdd</span></span><a class="headerlink" href="#confval-bluestore_min_alloc_size_hdd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default min_alloc_size value for rotational media</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4Ki</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_min_alloc_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_min_alloc_size_ssd">
+<span class="sig-name descname"><span class="pre">bluestore_min_alloc_size_ssd</span></span><a class="headerlink" href="#confval-bluestore_min_alloc_size_ssd" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Default min_alloc_size value for non-rotational (solid state)  media</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4Ki</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_min_alloc_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-bluestore_use_optimal_io_size_for_min_alloc_size">
+<span class="sig-name descname"><span class="pre">bluestore_use_optimal_io_size_for_min_alloc_size</span></span><a class="headerlink" href="#confval-bluestore_use_optimal_io_size_for_min_alloc_size" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Discover media optimal IO Size and use for min_alloc_size</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-bluestore_min_alloc_size"><code class="xref std std-confval docutils literal notranslate"><span class="pre">bluestore_min_alloc_size</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="dsa-data-streaming-accelerator-usage">
+<h2>DSA (Data Streaming Accelerator) Usage<a class="headerlink" href="#dsa-data-streaming-accelerator-usage" title="Link to this heading"></a></h2>
+<p>If you want to use the DML library to drive the DSA device for offloading
+read/write operations on persistent memory (PMEM) in BlueStore, you need to
+install <a class="reference external" href="https://github.com/intel/DML">DML</a> and the <a class="reference external" href="https://github.com/intel/idxd-config">idxd-config</a> library. This will work only on machines
+that have a SPR (Sapphire Rapids) CPU.</p>
+<p>After installing the DML software, configure the shared work queues (WQs) with
+reference to the following WQ configuration example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">accel-config<span class="w"> </span>config-wq<span class="w"> </span>--group-id<span class="o">=</span><span class="m">1</span><span class="w"> </span>--mode<span class="o">=</span>shared<span class="w"> </span>--wq-size<span class="o">=</span><span class="m">16</span><span class="w"> </span>--threshold<span class="o">=</span><span class="m">15</span><span class="w"> </span>--type<span class="o">=</span>user<span class="w"> </span>--name<span class="o">=</span><span class="s2">&quot;MyApp1&quot;</span><span class="w"> </span>--priority<span class="o">=</span><span class="m">10</span><span class="w"> </span>--block-on-fault<span class="o">=</span><span class="m">1</span><span class="w"> </span>dsa0/wq0.1</span>
+<span class="prompt2">accel-config<span class="w"> </span>config-engine<span class="w"> </span>dsa0/engine0.1<span class="w"> </span>--group-id<span class="o">=</span><span class="m">1</span></span>
+<span class="prompt2">accel-config<span class="w"> </span>enable-device<span class="w"> </span>dsa0</span>
+<span class="prompt2">accel-config<span class="w"> </span>enable-wq<span class="w"> </span>dsa0/wq0.1</span>
+</pre></div></div></section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mclock-config-ref.html" class="btn btn-neutral float-left" title="mClock Config Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="filestore-config-ref.html" class="btn btn-neutral float-right" title="Filestore Config Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

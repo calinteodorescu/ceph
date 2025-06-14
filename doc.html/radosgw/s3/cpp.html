@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C++ S3 Examples &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="C# S3 Examples" href="csharp.html" />
+    <link rel="prev" title="Object Operations" href="objectops.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../account.html">User Accounts</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../s3.html">S3 API</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../s3.html#api">API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="commons.html">Common</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="serviceops.html">Service Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bucketops.html">Bucket Ops</a></li>
+<li class="toctree-l4"><a class="reference internal" href="objectops.html">Object Ops</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">C++</a></li>
+<li class="toctree-l4"><a class="reference internal" href="csharp.html">C#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="java.html">Java</a></li>
+<li class="toctree-l4"><a class="reference internal" href="perl.html">Perl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="php.html">PHP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="python.html">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ruby.html">Ruby AWS::SDK Examples (aws-sdk gem ~&gt;2)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ruby.html#ruby-aws-s3-examples-aws-s3-gem">Ruby AWS::S3 Examples (aws-s3 gem)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html#features-support">Features Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html#unsupported-header-fields">Unsupported Header Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Object Gateway</a></li>
+          <li class="breadcrumb-item"><a href="../s3.html">Ceph Object Gateway S3 API</a></li>
+      <li class="breadcrumb-item active">C++ S3 Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/radosgw/s3/cpp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="c-s3-examples">
+<span id="cpp"></span><h1>C++ S3 Examples<a class="headerlink" href="#c-s3-examples" title="Link to this heading"></a></h1>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading"></a></h2>
+<p>The following contains includes and globals that will be used in later examples:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;libs3.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;fstream&gt;</span>
+
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">access_key</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ACCESS_KEY&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">secret_key</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SECRET_KEY&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">host</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;HOST&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sample_bucket</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;sample_bucket&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sample_key</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello.txt&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">sample_file</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;resource/hello.txt&quot;</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">security_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">auth_region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+
+<span class="n">S3BucketContext</span><span class="w"> </span><span class="n">bucketContext</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">host</span><span class="p">,</span>
+<span class="w">        </span><span class="n">sample_bucket</span><span class="p">,</span>
+<span class="w">        </span><span class="n">S3ProtocolHTTP</span><span class="p">,</span>
+<span class="w">        </span><span class="n">S3UriStylePath</span><span class="p">,</span>
+<span class="w">        </span><span class="n">access_key</span><span class="p">,</span>
+<span class="w">        </span><span class="n">secret_key</span><span class="p">,</span>
+<span class="w">        </span><span class="n">security_token</span><span class="p">,</span>
+<span class="w">        </span><span class="n">auth_region</span>
+<span class="p">};</span>
+
+<span class="n">S3Status</span><span class="w"> </span><span class="nf">responsePropertiesCallback</span><span class="p">(</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="n">S3ResponseProperties</span><span class="w"> </span><span class="o">*</span><span class="n">properties</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">S3StatusOK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">responseCompleteCallback</span><span class="p">(</span>
+<span class="w">                </span><span class="n">S3Status</span><span class="w"> </span><span class="n">status</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="n">S3ErrorDetails</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">S3ResponseHandler</span><span class="w"> </span><span class="n">responseHandler</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">responsePropertiesCallback</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">responseCompleteCallback</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-and-closing-a-connection">
+<h2>Creating (and Closing) a Connection<a class="headerlink" href="#creating-and-closing-a-connection" title="Link to this heading"></a></h2>
+<p>This creates a connection so that you can interact with the server.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">S3_initialize</span><span class="p">(</span><span class="s">&quot;s3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">S3_INIT_ALL</span><span class="p">,</span><span class="w"> </span><span class="n">host</span><span class="p">);</span>
+<span class="c1">// Do stuff...</span>
+<span class="n">S3_deinitialize</span><span class="p">();</span>
+</pre></div>
+</div>
+</section>
+<section id="listing-owned-buckets">
+<h2>Listing Owned Buckets<a class="headerlink" href="#listing-owned-buckets" title="Link to this heading"></a></h2>
+<p>This gets a list of Buckets that you own.
+This also prints out the bucket name, owner ID, and display name
+for each bucket.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">S3Status</span><span class="w"> </span><span class="nf">listServiceCallback</span><span class="p">(</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">ownerId</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">ownerDisplayName</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">bucketName</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">int64_t</span><span class="w"> </span><span class="n">creationDate</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="o">*</span><span class="n">header_printed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">callbackData</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!*</span><span class="n">header_printed</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="o">*</span><span class="n">header_printed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%-22s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;       Bucket&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;  %-20s  %-12s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;     Owner ID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Display Name&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;----------------------&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;  --------------------&quot;</span><span class="w"> </span><span class="s">&quot;  ------------&quot;</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%-22s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bucketName</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;  %-20s  %-12s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ownerId</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">ownerId</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ownerDisplayName</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">ownerDisplayName</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">S3StatusOK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">S3ListServiceHandler</span><span class="w"> </span><span class="n">listServiceHandler</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">responseHandler</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">listServiceCallback</span>
+<span class="p">};</span>
+<span class="kt">bool</span><span class="w"> </span><span class="n">header_printed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="n">S3_list_service</span><span class="p">(</span><span class="n">S3ProtocolHTTP</span><span class="p">,</span><span class="w"> </span><span class="n">access_key</span><span class="p">,</span><span class="w"> </span><span class="n">secret_key</span><span class="p">,</span><span class="w"> </span><span class="n">security_token</span><span class="p">,</span><span class="w"> </span><span class="n">host</span><span class="p">,</span>
+<span class="w">            </span><span class="n">auth_region</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">listServiceHandler</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">header_printed</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-bucket">
+<h2>Creating a Bucket<a class="headerlink" href="#creating-a-bucket" title="Link to this heading"></a></h2>
+<p>This creates a new bucket.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">S3_create_bucket</span><span class="p">(</span><span class="n">S3ProtocolHTTP</span><span class="p">,</span><span class="w"> </span><span class="n">access_key</span><span class="p">,</span><span class="w"> </span><span class="n">secret_key</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">host</span><span class="p">,</span><span class="w"> </span><span class="n">sample_bucket</span><span class="p">,</span><span class="w"> </span><span class="n">S3CannedAclPrivate</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">responseHandler</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="listing-a-bucket-s-content">
+<h2>Listing a Bucket’s Content<a class="headerlink" href="#listing-a-bucket-s-content" title="Link to this heading"></a></h2>
+<p>This gets a list of objects in the bucket.
+This also prints out each object’s name, the file size, and
+last modified date.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">S3Status</span><span class="w"> </span><span class="nf">listBucketCallback</span><span class="p">(</span>
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">isTruncated</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">nextMarker</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">contentsCount</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="n">S3ListBucketContent</span><span class="w"> </span><span class="o">*</span><span class="n">contents</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">int</span><span class="w"> </span><span class="n">commonPrefixesCount</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">commonPrefixes</span><span class="p">,</span>
+<span class="w">                </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%-22s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;      Object Name&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;  %-5s  %-20s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Size&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;   Last Modified&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;----------------------&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;  -----&quot;</span><span class="w"> </span><span class="s">&quot;  --------------------&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">contentsCount</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">timebuf</span><span class="p">[</span><span class="mi">256</span><span class="p">];</span>
+<span class="w">                </span><span class="kt">char</span><span class="w"> </span><span class="n">sizebuf</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">S3ListBucketContent</span><span class="w"> </span><span class="o">*</span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="p">(</span><span class="n">contents</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">                </span><span class="kt">time_t</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">time_t</span><span class="p">)</span><span class="w"> </span><span class="n">content</span><span class="o">-&gt;</span><span class="n">lastModified</span><span class="p">;</span>
+
+<span class="w">                </span><span class="n">strftime</span><span class="p">(</span><span class="n">timebuf</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">timebuf</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;%Y-%m-%dT%H:%M:%SZ&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">gmtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t</span><span class="p">));</span>
+<span class="w">                </span><span class="n">sprintf</span><span class="p">(</span><span class="n">sizebuf</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%5llu&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">)</span><span class="w"> </span><span class="n">content</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+<span class="w">                </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%-22s  %s  %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">sizebuf</span><span class="p">,</span><span class="w"> </span><span class="n">timebuf</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">S3StatusOK</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">S3ListBucketHandler</span><span class="w"> </span><span class="n">listBucketHandler</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">responseHandler</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">listBucketCallback</span>
+<span class="p">};</span>
+<span class="n">S3_list_bucket</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">listBucketHandler</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The output will look something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myphoto1</span><span class="o">.</span><span class="n">jpg</span> <span class="mi">251262</span>  <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span><span class="n">T21</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">48.000</span><span class="n">Z</span>
+<span class="n">myphoto2</span><span class="o">.</span><span class="n">jpg</span> <span class="mi">262518</span>  <span class="mi">2011</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">08</span><span class="n">T21</span><span class="p">:</span><span class="mi">38</span><span class="p">:</span><span class="mf">01.000</span><span class="n">Z</span>
+</pre></div>
+</div>
+</section>
+<section id="deleting-a-bucket">
+<h2>Deleting a Bucket<a class="headerlink" href="#deleting-a-bucket" title="Link to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Bucket must be empty! Otherwise it won’t work!</p>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">S3_delete_bucket</span><span class="p">(</span><span class="n">S3ProtocolHTTP</span><span class="p">,</span><span class="w"> </span><span class="n">S3UriStylePath</span><span class="p">,</span><span class="w"> </span><span class="n">access_key</span><span class="p">,</span><span class="w"> </span><span class="n">secret_key</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">host</span><span class="p">,</span><span class="w"> </span><span class="n">sample_bucket</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">responseHandler</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-an-object-from-a-file">
+<h2>Creating an Object (from a file)<a class="headerlink" href="#creating-an-object-from-a-file" title="Link to this heading"></a></h2>
+<p>This creates a file <code class="docutils literal notranslate"><span class="pre">hello.txt</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span>
+<span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">put_object_callback_data</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">infile</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">contentLength</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="n">put_object_callback_data</span><span class="p">;</span>
+
+
+<span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">putObjectDataCallback</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">bufferSize</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">put_object_callback_data</span><span class="w"> </span><span class="o">*</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">put_object_callback_data</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">callbackData</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">toRead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="w"> </span><span class="n">bufferSize</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="w"> </span><span class="n">bufferSize</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span><span class="p">);</span>
+<span class="w">                </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fread</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">toRead</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">infile</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">data</span><span class="o">-&gt;</span><span class="n">contentLength</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">put_object_callback_data</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="n">statbuf</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">statbuf</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">ERROR: Failed to stat file %s: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sample_file</span><span class="p">);</span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">-1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">contentLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">statbuf</span><span class="p">.</span><span class="n">st_size</span><span class="p">;</span>
+<span class="n">data</span><span class="p">.</span><span class="n">contentLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">contentLength</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">infile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">sample_file</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">ERROR: Failed to open input file %s: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sample_file</span><span class="p">);</span>
+<span class="w">        </span><span class="n">perror</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="w">        </span><span class="n">exit</span><span class="p">(</span><span class="mi">-1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">S3PutObjectHandler</span><span class="w"> </span><span class="n">putObjectHandler</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">responseHandler</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">putObjectDataCallback</span>
+<span class="p">};</span>
+
+<span class="n">S3_put_object</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span><span class="w"> </span><span class="n">sample_key</span><span class="p">,</span><span class="w"> </span><span class="n">contentLength</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">putObjectHandler</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
+<span class="n">fclose</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">infile</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="download-an-object-to-a-file">
+<h2>Download an Object (to a file)<a class="headerlink" href="#download-an-object-to-a-file" title="Link to this heading"></a></h2>
+<p>This downloads a file and prints the contents.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">S3Status</span><span class="w"> </span><span class="nf">getObjectDataCallback</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">bufferSize</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">callbackData</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">outfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="n">callbackData</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">wrote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fwrite</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">bufferSize</span><span class="p">,</span><span class="w"> </span><span class="n">outfile</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">((</span><span class="n">wrote</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="w"> </span><span class="n">bufferSize</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">S3StatusAbortedByCallback</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">S3StatusOK</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">S3GetObjectHandler</span><span class="w"> </span><span class="n">getObjectHandler</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="n">responseHandler</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">getObjectDataCallback</span>
+<span class="p">};</span>
+<span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">outfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stdout</span><span class="p">;</span>
+<span class="n">S3_get_object</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span><span class="w"> </span><span class="n">sample_key</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">getObjectHandler</span><span class="p">,</span><span class="w"> </span><span class="n">outfile</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="delete-an-object">
+<h2>Delete an Object<a class="headerlink" href="#delete-an-object" title="Link to this heading"></a></h2>
+<p>This deletes an object.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">S3ResponseHandler</span><span class="w"> </span><span class="n">deleteResponseHandler</span><span class="w"> </span><span class="o">=</span>
+<span class="p">{</span>
+<span class="w">        </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="o">&amp;</span><span class="n">responseCompleteCallback</span>
+<span class="p">};</span>
+<span class="n">S3_delete_object</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span><span class="w"> </span><span class="n">sample_key</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">deleteResponseHandler</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="change-an-object-s-acl">
+<h2>Change an Object’s ACL<a class="headerlink" href="#change-an-object-s-acl" title="Link to this heading"></a></h2>
+<p>This changes an object’s ACL to grant full control to another user.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">ownerId</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;owner&quot;</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">ownerDisplayName</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;owner&quot;</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">granteeId</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;grantee&quot;</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">granteeDisplayName</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;grantee&quot;</span><span class="p">;</span>
+
+<span class="n">S3AclGrant</span><span class="w"> </span><span class="n">grants</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">S3GranteeTypeCanonicalUser</span><span class="p">,</span>
+<span class="w">                </span><span class="p">{{}},</span>
+<span class="w">                </span><span class="n">S3PermissionFullControl</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">S3GranteeTypeCanonicalUser</span><span class="p">,</span>
+<span class="w">                </span><span class="p">{{}},</span>
+<span class="w">                </span><span class="n">S3PermissionReadACP</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">                </span><span class="n">S3GranteeTypeAllUsers</span><span class="p">,</span>
+<span class="w">                </span><span class="p">{{}},</span>
+<span class="w">                </span><span class="n">S3PermissionRead</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">ownerId</span><span class="p">,</span><span class="w"> </span><span class="n">S3_MAX_GRANTEE_USER_ID_SIZE</span><span class="p">);</span>
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">displayName</span><span class="p">,</span><span class="w"> </span><span class="n">ownerDisplayName</span><span class="p">,</span><span class="w"> </span><span class="n">S3_MAX_GRANTEE_DISPLAY_NAME_SIZE</span><span class="p">);</span>
+
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">granteeId</span><span class="p">,</span><span class="w"> </span><span class="n">S3_MAX_GRANTEE_USER_ID_SIZE</span><span class="p">);</span>
+<span class="n">strncpy</span><span class="p">(</span><span class="n">grants</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">grantee</span><span class="p">.</span><span class="n">canonicalUser</span><span class="p">.</span><span class="n">displayName</span><span class="p">,</span><span class="w"> </span><span class="n">granteeDisplayName</span><span class="p">,</span><span class="w"> </span><span class="n">S3_MAX_GRANTEE_DISPLAY_NAME_SIZE</span><span class="p">);</span>
+
+<span class="n">S3_set_acl</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span><span class="w"> </span><span class="n">sample_key</span><span class="p">,</span><span class="w"> </span><span class="n">ownerId</span><span class="p">,</span><span class="w"> </span><span class="n">ownerDisplayName</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">grants</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">responseHandler</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-object-download-url-signed">
+<h2>Generate Object Download URL (signed)<a class="headerlink" href="#generate-object-download-url-signed" title="Link to this heading"></a></h2>
+<p>This generates a signed download URL that will be valid for 5 minutes.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="n">S3_MAX_AUTHENTICATED_QUERY_STRING_SIZE</span><span class="p">];</span>
+<span class="kt">int64_t</span><span class="w"> </span><span class="n">expires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="c1">// Current time + 5 minutes</span>
+
+<span class="n">S3_generate_authenticated_query_string</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bucketContext</span><span class="p">,</span><span class="w"> </span><span class="n">sample_key</span><span class="p">,</span><span class="w"> </span><span class="n">expires</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="objectops.html" class="btn btn-neutral float-left" title="Object Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="csharp.html" class="btn btn-neutral float-right" title="C# S3 Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

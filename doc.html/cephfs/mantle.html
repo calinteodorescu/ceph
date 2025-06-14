@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mantle &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Metrics" href="metrics.html" />
+    <link rel="prev" title="LibCephFS (Python)" href="api/libcephfs-py.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="journaler.html"> Journaler Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="capabilities.html"> Client's Capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/index.html"> Java and Python bindings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Mantle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quickstart-with-vstart">Quickstart with vstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics.html#getting-metrics">Getting Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">Mantle</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/mantle.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="mantle">
+<h1>Mantle<a class="headerlink" href="#mantle" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Mantle is for research and development of metadata balancer algorithms,
+not for use on production CephFS clusters.</p>
+</div>
+<p>Mantle is a programmable metadata balancer that is built into the MDS.</p>
+<p>By default (without Mantle), multiple, active MDSs can migrate directories to
+balance metadata load. The policies for when, where, and how much to migrate
+are hard-coded into the metadata balancing module.</p>
+<p>Mantle works by protecting the mechanisms for balancing load (migration,
+replication, fragmentation) while suppressing the balancing policies using Lua.
+Mantle is based on [1] but the current implementation does <em>NOT</em> have the
+following features from that paper:</p>
+<ol class="arabic simple">
+<li><p>Balancing API: in the paper, the user fills in when, where, how much, and
+load calculation policies. Currently, Mantle requires only that Lua policies
+return a table of target loads (for example, how much load to send to each
+MDS)</p></li>
+<li><p>The “how much” hook: in the paper, there was a hook that allowed the user to
+control the “fragment selector policy”. Currently, Mantle does not have this
+hook.</p></li>
+<li><p>“Instantaneous CPU utilization” as a metric.</p></li>
+</ol>
+<p>[1] Supercomputing ‘15 Paper:
+<a class="reference external" href="http://sc15.supercomputing.org/schedule/event_detail-evid=pap168.html">http://sc15.supercomputing.org/schedule/event_detail-evid=pap168.html</a></p>
+<section id="quickstart-with-vstart">
+<h2>Quickstart with vstart<a class="headerlink" href="#quickstart-with-vstart" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Developing balancers with vstart is difficult because running all daemons
+and clients on one node can overload the system. Let the system run for a
+while, even though there will likely be many lost heartbeat warnings and
+many laggy MDS warnings. In most cases this guide will work, but sometimes
+when developing with vstart all MDSs will lock up and you cannot actually
+see them spill. It is better to run this on a multi-node cluster.</p>
+</div>
+<p>As a prerequisite, we assume you have installed <a class="reference external" href="https://sourceforge.net/projects/mdtest/">mdtest</a> or pulled the <a class="reference external" href="https://hub.docker.com/r/michaelsevilla/mdtest/">Docker image</a>. We use mdtest because we
+need to generate enough load to get over the MIN_OFFLOAD threshold that is
+arbitrarily set in the balancer. For example, this does not create enough
+metadata load:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">true</span><span class="p">;</span> <span class="n">do</span>
+  <span class="n">touch</span> <span class="s2">&quot;/cephfs/blah-`date`&quot;</span>
+<span class="n">done</span>
+</pre></div>
+</div>
+<section id="mantle-with-vstart-sh">
+<h3>Mantle with <cite>vstart.sh</cite><a class="headerlink" href="#mantle-with-vstart-sh" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Start Ceph and tune the logging so we can see migrations happen:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd build
+../src/vstart.sh -n -l
+for i in a b c; do
+  bin/ceph --admin-daemon out/mds.$i.asok config set debug_ms 0
+  bin/ceph --admin-daemon out/mds.$i.asok config set debug_mds 2
+  bin/ceph --admin-daemon out/mds.$i.asok config set mds_beacon_grace 1500
+done
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Put the balancer into RADOS:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">rados</span> <span class="n">put</span> <span class="o">--</span><span class="n">pool</span><span class="o">=</span><span class="n">cephfs_metadata_a</span> <span class="n">greedyspill</span><span class="o">.</span><span class="n">lua</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">mds</span><span class="o">/</span><span class="n">balancers</span><span class="o">/</span><span class="n">greedyspill</span><span class="o">.</span><span class="n">lua</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Activate Mantle:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">ceph</span> <span class="n">fs</span> <span class="nb">set</span> <span class="n">cephfs</span> <span class="n">max_mds</span> <span class="mi">5</span>
+<span class="nb">bin</span><span class="o">/</span><span class="n">ceph</span> <span class="n">fs</span> <span class="nb">set</span> <span class="n">cephfs_a</span> <span class="n">balancer</span> <span class="n">greedyspill</span><span class="o">.</span><span class="n">lua</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Mount CephFS in another window:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="nb">bin</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">fuse</span> <span class="o">/</span><span class="n">cephfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">allow_other</span> <span class="o">&amp;</span>
+  <span class="n">tail</span> <span class="o">-</span><span class="n">f</span> <span class="n">out</span><span class="o">/</span><span class="n">mds</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">log</span>
+
+
+<span class="n">Note</span> <span class="n">that</span> <span class="k">if</span> <span class="n">you</span> <span class="n">look</span> <span class="n">at</span> <span class="n">the</span> <span class="n">last</span> <span class="n">MDS</span> <span class="p">(</span><span class="n">which</span> <span class="n">could</span> <span class="n">be</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">--</span> <span class="n">it</span><span class="s1">&#39;s</span>
+<span class="n">random</span><span class="p">),</span> <span class="n">you</span> <span class="n">will</span> <span class="n">see</span> <span class="n">an</span> <span class="n">attempt</span> <span class="n">to</span> <span class="n">index</span> <span class="n">a</span> <span class="n">nil</span> <span class="n">value</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">because</span> <span class="n">the</span>
+<span class="n">last</span> <span class="n">MDS</span> <span class="n">tries</span> <span class="n">to</span> <span class="n">check</span> <span class="n">the</span> <span class="n">load</span> <span class="n">of</span> <span class="n">its</span> <span class="n">neighbor</span><span class="p">,</span> <span class="n">which</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span><span class="o">.</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Run a simple benchmark. In our case, we use the Docker mdtest image to
+create load:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for i in 0 1 2; do
+  docker run -d \
+    --name=client$i \
+    -v /cephfs:/cephfs \
+    michaelsevilla/mdtest \
+    -F -C -n 100000 -d &quot;/cephfs/client-test$i&quot;
+done
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>When you are done, you can kill all the clients with:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>for i in 0 1 2 3; do docker rm -f client$i; done
+</pre></div>
+</div>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Link to this heading"></a></h3>
+<p>Looking at the log for the first MDS (could be a, b, or c), we see that
+everyone has no load:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2016-08-21 06:44:01.763930 7fd03aaf7700  0 lua.balancer MDS0: &lt; auth.meta_load=0.0 all.meta_load=0.0 req_rate=1.0 queue_len=0.0 cpu_load_avg=1.35 &gt; load=0.0
+2016-08-21 06:44:01.763966 7fd03aaf7700  0 lua.balancer MDS1: &lt; auth.meta_load=0.0 all.meta_load=0.0 req_rate=0.0 queue_len=0.0 cpu_load_avg=1.35 &gt; load=0.0
+2016-08-21 06:44:01.763982 7fd03aaf7700  0 lua.balancer MDS2: &lt; auth.meta_load=0.0 all.meta_load=0.0 req_rate=0.0 queue_len=0.0 cpu_load_avg=1.35 &gt; load=0.0
+2016-08-21 06:44:01.764010 7fd03aaf7700  2 lua.balancer when: not migrating! my_load=0.0 hisload=0.0
+2016-08-21 06:44:01.764033 7fd03aaf7700  2 mds.0.bal  mantle decided that new targets={}
+</pre></div>
+</div>
+<p>After the jobs starts, MDS0 gets about 1953 units of load. The greedy spill
+balancer dictates that half the load goes to your neighbor MDS, so we see that
+Mantle tries to send 1953 load units to MDS1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2016-08-21 06:45:21.869994 7fd03aaf7700  0 lua.balancer MDS0: &lt; auth.meta_load=5834.188908912 all.meta_load=1953.3492228857 req_rate=12591.0 queue_len=1075.0 cpu_load_avg=3.05 &gt; load=1953.3492228857
+2016-08-21 06:45:21.870017 7fd03aaf7700  0 lua.balancer MDS1: &lt; auth.meta_load=0.0 all.meta_load=0.0 req_rate=0.0 queue_len=0.0 cpu_load_avg=3.05 &gt; load=0.0
+2016-08-21 06:45:21.870027 7fd03aaf7700  0 lua.balancer MDS2: &lt; auth.meta_load=0.0 all.meta_load=0.0 req_rate=0.0 queue_len=0.0 cpu_load_avg=3.05 &gt; load=0.0
+2016-08-21 06:45:21.870034 7fd03aaf7700  2 lua.balancer when: migrating! my_load=1953.3492228857 hisload=0.0
+2016-08-21 06:45:21.870050 7fd03aaf7700  2 mds.0.bal  mantle decided that new targets={0=0,1=976.675,2=0}
+2016-08-21 06:45:21.870094 7fd03aaf7700  0 mds.0.bal    - exporting [0,0.52287 1.04574] 1030.88 to mds.1 [dir 100000006ab /client-test2/ [2,head] auth pv=33 v=32 cv=32/0 ap=2+3+4 state=1610612802|complete f(v0 m2016-08-21 06:44:20.366935 1=0+1) n(v2 rc2016-08-21 06:44:30.946816 3790=3788+2) hs=1+0,ss=0+0 dirty=1 | child=1 dirty=1 authpin=1 0x55d2762fd690]
+2016-08-21 06:45:21.870151 7fd03aaf7700  0 mds.0.migrator nicely exporting to mds.1 [dir 100000006ab /client-test2/ [2,head] auth pv=33 v=32 cv=32/0 ap=2+3+4 state=1610612802|complete f(v0 m2016-08-21 06:44:20.366935 1=0+1) n(v2 rc2016-08-21 06:44:30.946816 3790=3788+2) hs=1+0,ss=0+0 dirty=1 | child=1 dirty=1 authpin=1 0x55d2762fd690]
+</pre></div>
+</div>
+<p>Eventually load moves around:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2016-08-21 06:47:10.210253 7fd03aaf7700  0 lua.balancer MDS0: &lt; auth.meta_load=415.77414300449 all.meta_load=415.79000078186 req_rate=82813.0 queue_len=0.0 cpu_load_avg=11.97 &gt; load=415.79000078186
+2016-08-21 06:47:10.210277 7fd03aaf7700  0 lua.balancer MDS1: &lt; auth.meta_load=228.72023977691 all.meta_load=186.5606496623 req_rate=28580.0 queue_len=0.0 cpu_load_avg=11.97 &gt; load=186.5606496623
+2016-08-21 06:47:10.210290 7fd03aaf7700  0 lua.balancer MDS2: &lt; auth.meta_load=0.0 all.meta_load=0.0 req_rate=1.0 queue_len=0.0 cpu_load_avg=11.97 &gt; load=0.0
+2016-08-21 06:47:10.210298 7fd03aaf7700  2 lua.balancer when: not migrating! my_load=415.79000078186 hisload=186.5606496623
+2016-08-21 06:47:10.210311 7fd03aaf7700  2 mds.0.bal  mantle decided that new targets={}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<p>Most of the implementation is in MDBalancer. Metrics are passed to the balancer
+policies via the Lua stack and a list of loads is returned back to MDBalancer.
+It sits alongside the current balancer implementation and it’s enabled with a
+Ceph CLI command (“ceph fs set cephfs balancer mybalancer.lua”). If the Lua policy
+fails (for whatever reason), we fall back to the original metadata load
+balancer. The balancer is stored in the RADOS metadata pool and a string in the
+MDSMap tells the MDSs which balancer to use.</p>
+<section id="exposing-metrics-to-lua">
+<h3>Exposing Metrics to Lua<a class="headerlink" href="#exposing-metrics-to-lua" title="Link to this heading"></a></h3>
+<p>Metrics are exposed directly to the Lua code as global variables instead of
+using a well-defined function signature. There is a global “mds” table, where
+each index is an MDS number (e.g., 0) and each value is a dictionary of metrics
+and values. The Lua code can grab metrics using something like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mds</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;queue_len&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This is in contrast to cls-lua in the OSDs, which has well-defined arguments
+(e.g., input/output bufferlists). Exposing the metrics directly makes it easier
+to add new metrics without having to change the API on the Lua side; we want
+the API to grow and shrink as we explore which metrics matter. The downside of
+this approach is that the person programming Lua balancer policies has to look
+at the Ceph source code to see which metrics are exposed. We figure that the
+Mantle developer will be in touch with MDS internals anyways.</p>
+<p>The metrics exposed to the Lua policy are the same ones that are already stored
+in mds_load_t: auth.meta_load(), all.meta_load(), req_rate, queue_length,
+cpu_load_avg.</p>
+</section>
+<section id="compile-execute-the-balancer">
+<h3>Compile/Execute the Balancer<a class="headerlink" href="#compile-execute-the-balancer" title="Link to this heading"></a></h3>
+<p>Here we use <cite>lua_pcall</cite> instead of <cite>lua_call</cite> because we want to handle errors
+in the MDBalancer. We do not want the error propagating up the call chain. The
+cls_lua class wants to handle the error itself because it must fail gracefully.
+For Mantle, we don’t care if a Lua error crashes our balancer -- in that case,
+we will fall back to the original balancer.</p>
+<p>The performance improvement of using <cite>lua_call</cite> over <cite>lua_pcall</cite> would not be
+leveraged here because the balancer is invoked every 10 seconds by default.</p>
+</section>
+<section id="returning-policy-decision-to-c">
+<h3>Returning Policy Decision to C++<a class="headerlink" href="#returning-policy-decision-to-c" title="Link to this heading"></a></h3>
+<p>We force the Lua policy engine to return a table of values, corresponding to
+the amount of load to send to each MDS. These loads are inserted directly into
+the MDBalancer “my_targets” vector. We do not allow the MDS to return a table
+of MDSs and metrics because we want the decision to be completely made on the
+Lua side.</p>
+<p>Iterating through tables returned by Lua is done through the stack. In Lua
+jargon: a dummy value is pushed onto the stack and the next iterator replaces
+the top of the stack with a (k, v) pair. After reading each value, pop that
+value but keep the key for the next call to <cite>lua_next</cite>.</p>
+</section>
+<section id="reading-from-rados">
+<h3>Reading from RADOS<a class="headerlink" href="#reading-from-rados" title="Link to this heading"></a></h3>
+<p>All MDSs will read balancing code from RADOS when the balancer version changes
+in the MDS Map. The balancer pulls the Lua code from RADOS synchronously. We do
+this with a timeout: if the asynchronous read does not come back within half
+the balancing tick interval the operation is cancelled and a Connection Timeout
+error is returned. By default, the balancing tick interval is 10 seconds, so
+Mantle will use a 5 second timeout. This design allows Mantle to
+immediately return an error if anything RADOS-related goes wrong.</p>
+<p>We use this implementation because we do not want to do a blocking OSD read
+from inside the global MDS lock. Doing so would bring down the MDS cluster if
+any of the OSDs are not responsive -- this is tested in the ceph-qa-suite by
+setting all OSDs to down/out and making sure the MDS cluster stays active.</p>
+<p>One approach would be to asynchronously fire the read when handling the MDS Map
+and fill in the Lua code in the background. We cannot do this because the MDS
+does not support daemon-local fallbacks and the balancer assumes that all MDSs
+come to the same decision at the same time (e.g., importers, exporters, etc.).</p>
+</section>
+<section id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Link to this heading"></a></h3>
+<p>Logging in a Lua policy will appear in the MDS log. The syntax is the same as
+the cls logging interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">BAL_LOG</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;this is a log message&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is implemented by passing a function that wraps the <cite>dout</cite> logging framework
+(<cite>dout_wrapper</cite>) to Lua with the <cite>lua_register()</cite> primitive. The Lua code is
+actually calling the <cite>dout</cite> function in C++.</p>
+<p>Warning and Info messages are centralized using the clog/Beacon. Successful
+messages are only sent on version changes by the first MDS to avoid spamming
+the <cite>ceph -w</cite> utility. These messages are used for the integration tests.</p>
+</section>
+<section id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h3>
+<p>Testing is done with the ceph-qa-suite (tasks.cephfs.test_mantle). We do not
+test invalid balancer logging and loading the actual Lua VM.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api/libcephfs-py.html" class="btn btn-neutral float-left" title="LibCephFS (Python)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metrics.html" class="btn btn-neutral float-right" title="Metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

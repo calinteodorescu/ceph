@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Ceph &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ceph Mirrors" href="mirrors.html" />
+    <link rel="prev" title="Cloning the Ceph Source Code Repository" href="clone-source.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installing Ceph</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#recommended-methods">Recommended methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#other-methods">Other methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index_manual.html">Installation (Manual)</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="index_manual.html#get-software">Get Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#install-software">Install Software</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#deploy-a-cluster-manually">Deploy a Cluster Manually</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index_manual.html#upgrade-software">Upgrade Software</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#windows">Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installing Ceph</a></li>
+          <li class="breadcrumb-item"><a href="index_manual.html">Installation (Manual)</a></li>
+      <li class="breadcrumb-item active">Build Ceph</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/install/build-ceph.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="build-ceph">
+<h1>Build Ceph<a class="headerlink" href="#build-ceph" title="Link to this heading"></a></h1>
+<p>You can get Ceph software by retrieving Ceph source code and building it yourself.
+To build Ceph, you need to set up a development environment, compile Ceph,
+and then either install in user space or build packages and install the packages.</p>
+<section id="build-prerequisites">
+<h2>Build Prerequisites<a class="headerlink" href="#build-prerequisites" title="Link to this heading"></a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Check this section to see if there are specific prerequisites for your
+Linux/Unix distribution.</p>
+</div>
+<p>A debug build of Ceph may take around 40 gigabytes. If you want to build Ceph in
+a virtual machine (VM) please make sure total disk space on the VM is at least
+60 gigabytes.</p>
+<p>Please also be aware that some distributions of Linux, like CentOS, use Linux
+Volume Manager (LVM) for the default installation. LVM may reserve a large
+portion of disk space of a typical sized virtual disk for the operating system.</p>
+<p>Before you can build Ceph source code, you need to install several libraries
+and tools:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">install</span><span class="o">-</span><span class="n">deps</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some distributions that support Google’s memory profiler tool may use
+a different package name (e.g., <code class="docutils literal notranslate"><span class="pre">libgoogle-perftools4</span></code>).</p>
+</div>
+</section>
+<section id="id1">
+<span id="id2"></span><h2>Build Ceph<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>Ceph is built using cmake. To build Ceph, navigate to your cloned Ceph
+repository and execute the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">ceph</span>
+<span class="o">./</span><span class="n">do_cmake</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">cd</span> <span class="n">build</span>
+<span class="n">ninja</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="../install-storage-cluster#installing-a-build">Installing a Build</a> to install a build in user space and <a class="reference external" href="https://github.com/ceph/ceph#building-ceph">Ceph README.md</a>
+doc for more details on build.</p>
+</section>
+<section id="build-ceph-packages">
+<h2>Build Ceph Packages<a class="headerlink" href="#build-ceph-packages" title="Link to this heading"></a></h2>
+<p>To build packages, you must clone the <a class="reference external" href="../clone-source">Ceph</a> repository. You can create
+installation packages from the latest code using <code class="docutils literal notranslate"><span class="pre">dpkg-buildpackage</span></code> for
+Debian/Ubuntu or <code class="docutils literal notranslate"><span class="pre">rpmbuild</span></code> for the RPM Package Manager.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>When building on a multi-core CPU, use the <code class="docutils literal notranslate"><span class="pre">-j</span></code> and the number of
+cores * 2. For example, use <code class="docutils literal notranslate"><span class="pre">-j4</span></code> for a dual-core processor to accelerate
+the build.</p>
+</div>
+<section id="advanced-package-tool-apt">
+<h3>Advanced Package Tool (APT)<a class="headerlink" href="#advanced-package-tool-apt" title="Link to this heading"></a></h3>
+<p>To create <code class="docutils literal notranslate"><span class="pre">.deb</span></code> packages for Debian/Ubuntu, ensure that you have cloned the
+<a class="reference external" href="../clone-source">Ceph</a> repository, installed the <a class="reference internal" href="#build-prerequisites">Build Prerequisites</a> and installed
+<code class="docutils literal notranslate"><span class="pre">debhelper</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">debhelper</span>
+</pre></div>
+</div>
+<p>Once you have installed debhelper, you can build the packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dpkg</span><span class="o">-</span><span class="n">buildpackage</span>
+</pre></div>
+</div>
+<p>For multi-processor CPUs use the <code class="docutils literal notranslate"><span class="pre">-j</span></code> option to accelerate the build.</p>
+</section>
+<section id="rpm-package-manager">
+<h3>RPM Package Manager<a class="headerlink" href="#rpm-package-manager" title="Link to this heading"></a></h3>
+<p>To create <code class="docutils literal notranslate"><span class="pre">.rpm</span></code> packages, ensure that you have cloned the <a class="reference external" href="../clone-source">Ceph</a> repository,
+installed the <a class="reference internal" href="#build-prerequisites">Build Prerequisites</a> and installed <code class="docutils literal notranslate"><span class="pre">rpm-build</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rpmdevtools</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">rpm</span><span class="o">-</span><span class="n">build</span> <span class="n">rpmdevtools</span>
+</pre></div>
+</div>
+<p>Once you have installed the tools, setup an RPM compilation environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpmdev</span><span class="o">-</span><span class="n">setuptree</span>
+</pre></div>
+</div>
+<p>Fetch the source tarball for the RPM compilation environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">P</span> <span class="o">~/</span><span class="n">rpmbuild</span><span class="o">/</span><span class="n">SOURCES</span><span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tarballs</span><span class="o">/</span><span class="n">ceph</span><span class="o">-&lt;</span><span class="n">version</span><span class="o">&gt;.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+</pre></div>
+</div>
+<p>Or from the EU mirror:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="o">-</span><span class="n">P</span> <span class="o">~/</span><span class="n">rpmbuild</span><span class="o">/</span><span class="n">SOURCES</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">eu</span><span class="o">.</span><span class="n">ceph</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">tarballs</span><span class="o">/</span><span class="n">ceph</span><span class="o">-&lt;</span><span class="n">version</span><span class="o">&gt;.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span>
+</pre></div>
+</div>
+<p>Extract the specfile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">--</span><span class="n">strip</span><span class="o">-</span><span class="n">components</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span><span class="n">C</span> <span class="o">~/</span><span class="n">rpmbuild</span><span class="o">/</span><span class="n">SPECS</span><span class="o">/</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">anchored</span> <span class="o">-</span><span class="n">xvjf</span> <span class="o">~/</span><span class="n">rpmbuild</span><span class="o">/</span><span class="n">SOURCES</span><span class="o">/</span><span class="n">ceph</span><span class="o">-&lt;</span><span class="n">version</span><span class="o">&gt;.</span><span class="n">tar</span><span class="o">.</span><span class="n">bz2</span> <span class="s2">&quot;ceph.spec&quot;</span>
+</pre></div>
+</div>
+<p>Build the RPM packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rpmbuild</span> <span class="o">-</span><span class="n">ba</span> <span class="o">~/</span><span class="n">rpmbuild</span><span class="o">/</span><span class="n">SPECS</span><span class="o">/</span><span class="n">ceph</span><span class="o">.</span><span class="n">spec</span>
+</pre></div>
+</div>
+<p>For multi-processor CPUs use the <code class="docutils literal notranslate"><span class="pre">-j</span></code> option to accelerate the build.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="clone-source.html" class="btn btn-neutral float-left" title="Cloning the Ceph Source Code Repository" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mirrors.html" class="btn btn-neutral float-right" title="Ceph Mirrors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

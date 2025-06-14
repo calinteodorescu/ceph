@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuring Directory fragmentation &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuring multiple active MDS daemons" href="multimds.html" />
+    <link rel="prev" title="LazyIO" href="lazyio.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#administration">Administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mds-states.html"> MDS States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posix.html"> POSIX compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds-journaling.html"> MDS Journaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-layouts.html"> File layouts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mdcache.html"> Distributed Metadata Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dynamic-metadata-management.html"> Dynamic Metadata Management in CephFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-io-path.html"> CephFS IO Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="charmap.html"> Case Sensitivity and Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazyio.html"> LazyIO</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> Directory fragmentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#splitting-and-merging">Splitting and merging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#size-thresholds">Size thresholds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#activity-thresholds">Activity thresholds</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="multimds.html"> Multiple active MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snapshots.html"> Snapshots</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">Configuring Directory fragmentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/dirfrags.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="configuring-directory-fragmentation">
+<h1>Configuring Directory fragmentation<a class="headerlink" href="#configuring-directory-fragmentation" title="Link to this heading"></a></h1>
+<p>In CephFS, directories are <em>fragmented</em> when they become very large
+or very busy.  This splits up the metadata so that it can be shared
+between multiple MDS daemons, and between multiple objects in the
+metadata pool.</p>
+<p>In normal operation, directory fragmentation is invisible to
+users and administrators, and all the configuration settings mentioned
+here should be left at their default values.</p>
+<p>While directory fragmentation enables CephFS to handle very large
+numbers of entries in a single directory, application programmers should
+remain conservative about creating very large directories, as they still
+have a resource cost in situations such as a CephFS client listing
+the directory, where all the fragments must be loaded at once.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The root directory cannot be fragmented.</p>
+</div>
+<p>All directories are initially created as a single fragment.  This fragment
+may be <em>split</em> to divide up the directory into more fragments, and these
+fragments may be <em>merged</em> to reduce the number of fragments in the directory.</p>
+<section id="splitting-and-merging">
+<h2>Splitting and merging<a class="headerlink" href="#splitting-and-merging" title="Link to this heading"></a></h2>
+<p>When an MDS identifies a directory fragment to be split, it does not
+do the split immediately.  Because splitting interrupts metadata IO,
+a short delay is used to allow short bursts of client IO to complete
+before the split begins.  This delay is configured with
+<code class="docutils literal notranslate"><span class="pre">mds_bal_fragment_interval</span></code>, which defaults to 5 seconds.</p>
+<p>When the split is done, the directory fragment is broken up into
+a power of two number of new fragments.  The number of new
+fragments is given by two to the power <code class="docutils literal notranslate"><span class="pre">mds_bal_split_bits</span></code>, i.e.
+if <code class="docutils literal notranslate"><span class="pre">mds_bal_split_bits</span></code> is 2, then four new fragments will be
+created.  The default setting is 3, i.e. splits create 8 new fragments.</p>
+<p>The criteria for initiating a split or a merge are described in the
+following sections.</p>
+</section>
+<section id="size-thresholds">
+<h2>Size thresholds<a class="headerlink" href="#size-thresholds" title="Link to this heading"></a></h2>
+<p>A directory fragment is eligible for splitting when its size exceeds
+<code class="docutils literal notranslate"><span class="pre">mds_bal_split_size</span></code> (default 10000 directory entries).  Ordinarily this
+split is delayed by <code class="docutils literal notranslate"><span class="pre">mds_bal_fragment_interval</span></code>, but if the fragment size
+exceeds a factor of <code class="docutils literal notranslate"><span class="pre">mds_bal_fragment_fast_factor</span></code> the split size,
+the split will happen immediately (holding up any client metadata
+IO on the directory).</p>
+<p><code class="docutils literal notranslate"><span class="pre">mds_bal_fragment_size_max</span></code> is the hard limit on the size of
+directory fragments.  If it is reached, clients will receive
+ENOSPC errors if they try to create files in the fragment.  On
+a properly configured system, this limit should never be reached on
+ordinary directories, as they will have split long before.  By default,
+this is set to 10 times the split size, giving a dirfrag size limit of
+100000 directory entries.  Increasing this limit may lead to oversized
+directory fragment objects in the metadata pool, which the OSDs may not
+be able to handle.</p>
+<p>A directory fragment is eligible for merging when its size is less
+than <code class="docutils literal notranslate"><span class="pre">mds_bal_merge_size</span></code>.  There is no merge equivalent of the
+“fast splitting” explained above: fast splitting exists to avoid
+creating oversized directory fragments, there is no equivalent issue
+to avoid when merging.  The default merge size is 50 directory entries.</p>
+</section>
+<section id="activity-thresholds">
+<h2>Activity thresholds<a class="headerlink" href="#activity-thresholds" title="Link to this heading"></a></h2>
+<p>In addition to splitting fragments based
+on their size, the MDS may split directory fragments if their
+activity exceeds a threshold.</p>
+<p>The MDS maintains separate time-decaying load counters for read and write
+operations on directory fragments.  The decaying load counters have an
+exponential decay based on the <code class="docutils literal notranslate"><span class="pre">mds_decay_halflife</span></code> setting.</p>
+<p>On writes, the write counter is
+incremented, and compared with <code class="docutils literal notranslate"><span class="pre">mds_bal_split_wr</span></code>, triggering a
+split if the threshold is exceeded.  Write operations include metadata IO
+such as renames, unlinks and creations.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mds_bal_split_rd</span></code> threshold is applied based on the read operation
+load counter, which tracks readdir operations.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mds_bal_split_rd</span></code> and <code class="docutils literal notranslate"><span class="pre">mds_bal_split_wr</span></code> configs represent the
+popularity threshold. In the MDS these are measured as “read/write temperatures”
+which is closely related to the number of respective read/write operations.
+By default, the read threshold is 25000 operations and the write
+threshold is 10000 operations, i.e. 2.5x as many reads as writes would be
+required to trigger a split.</p>
+<p>After fragments are split due to the activity thresholds, they are only
+merged based on the size threshold (<code class="docutils literal notranslate"><span class="pre">mds_bal_merge_size</span></code>), so
+a spike in activity may cause a directory to stay fragmented
+forever unless some entries are unlinked.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lazyio.html" class="btn btn-neutral float-left" title="LazyIO" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multimds.html" class="btn btn-neutral float-right" title="Configuring multiple active MDS daemons" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

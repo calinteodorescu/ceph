@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ElasticSearch Sync Module &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cloud Sync Module" href="cloud-sync-module.html" />
+    <link rel="prev" title="Sync Modules" href="sync-modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="sync-modules.html">Sync Modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ElasticSearch Sync Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elasticsearch-tier-type-configurables">ElasticSearch tier type configurables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#end-user-metadata-queries">End user metadata queries</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cloud-sync-module.html">Cloud Sync Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="archive-sync-module.html">Archive Sync Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sync-modules.html#requirements-and-assumptions">Requirements and Assumptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sync-modules.html#configuring-sync-modules">Configuring Sync Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+          <li class="breadcrumb-item"><a href="sync-modules.html">Sync Modules</a></li>
+      <li class="breadcrumb-item active">ElasticSearch Sync Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/elastic-sync-module.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="elasticsearch-sync-module">
+<h1>ElasticSearch Sync Module<a class="headerlink" href="#elasticsearch-sync-module" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Kraken.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As of 31 May 2020, only Elasticsearch 6 and lower are supported. ElasticSearch 7 is not supported.</p>
+</div>
+<p>This sync module writes the metadata from other zones to <a class="reference external" href="https://github.com/elastic/elasticsearch">ElasticSearch</a>. As of
+luminous this is a json of data fields we currently store in ElasticSearch.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+     <span class="s2">&quot;_index&quot;</span> <span class="p">:</span> <span class="s2">&quot;rgw-gold-ee5863d6&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;_type&quot;</span> <span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;_id&quot;</span> <span class="p">:</span> <span class="s2">&quot;34137443-8592-48d9-8ca7-160255d52ade.34137.1:object1:null&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;_score&quot;</span> <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+     <span class="s2">&quot;_source&quot;</span> <span class="p">:</span> <span class="p">{</span>
+       <span class="s2">&quot;bucket&quot;</span> <span class="p">:</span> <span class="s2">&quot;testbucket123&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;object1&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;instance&quot;</span> <span class="p">:</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;versioned_epoch&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+       <span class="s2">&quot;owner&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;id&quot;</span> <span class="p">:</span> <span class="s2">&quot;user1&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;display_name&quot;</span> <span class="p">:</span> <span class="s2">&quot;user1&quot;</span>
+       <span class="p">},</span>
+       <span class="s2">&quot;permissions&quot;</span> <span class="p">:</span> <span class="p">[</span>
+         <span class="s2">&quot;user1&quot;</span>
+       <span class="p">],</span>
+       <span class="s2">&quot;meta&quot;</span> <span class="p">:</span> <span class="p">{</span>
+         <span class="s2">&quot;size&quot;</span> <span class="p">:</span> <span class="mi">712354</span><span class="p">,</span>
+         <span class="s2">&quot;mtime&quot;</span> <span class="p">:</span> <span class="s2">&quot;2017-05-04T12:54:16.462Z&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;etag&quot;</span> <span class="p">:</span> <span class="s2">&quot;7ac66c0f148de9519b8bd264312c4d64&quot;</span>
+       <span class="p">}</span>
+     <span class="p">}</span>
+   <span class="p">}</span>
+</pre></div>
+</div>
+<section id="elasticsearch-tier-type-configurables">
+<h2>ElasticSearch tier type configurables<a class="headerlink" href="#elasticsearch-tier-type-configurables" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">endpoint</span></code></p></li>
+</ul>
+<p>Specifies the Elasticsearch server endpoint to access</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num_shards</span></code> (integer)</p></li>
+</ul>
+<p>The number of shards that Elasticsearch will be configured with on
+data sync initialization. Note that this cannot be changed after init.
+Any change here requires rebuild of the Elasticsearch index and reinit
+of the data sync process.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">num_replicas</span></code> (integer)</p></li>
+</ul>
+<p>The number of the replicas that Elasticsearch will be configured with
+on data sync initialization.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">explicit_custom_meta</span></code> (true | false)</p></li>
+</ul>
+<p>Specifies whether all user custom metadata will be indexed, or whether
+user will need to configure (at the bucket level) what custom
+metadata entries should be indexed. This is false by default</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">index_buckets_list</span></code> (comma separated list of strings)</p></li>
+</ul>
+<p>If empty, all buckets will be indexed. Otherwise, only buckets
+specified here will be indexed. It is possible to provide bucket
+prefixes (e.g., foo*), or bucket suffixes (e.g., *bar).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">approved_owners_list</span></code> (comma separated list of strings)</p></li>
+</ul>
+<p>If empty, buckets of all owners will be indexed (subject to other
+restrictions), otherwise, only buckets owned by specified owners will
+be indexed. Suffixes and prefixes can also be provided.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">override_index_path</span></code> (string)</p></li>
+</ul>
+<p>if not empty, this string will be used as the elasticsearch index
+path. Otherwise the index path will be determined and generated on
+sync initialization.</p>
+</section>
+<section id="end-user-metadata-queries">
+<h2>End user metadata queries<a class="headerlink" href="#end-user-metadata-queries" title="Link to this heading"></a></h2>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Luminous.</span></p>
+</div>
+<p>Since the ElasticSearch cluster now stores object metadata, it is important that
+the ElasticSearch endpoint is not exposed to the public and only accessible to
+the cluster administrators. For exposing metadata queries to the end user itself
+this poses a problem since we’d want the user to only query their metadata and
+not of any other users, this would require the ElasticSearch cluster to
+authenticate users in a way similar to RGW does which poses a problem.</p>
+<p>As of Luminous RGW in the metadata master zone can now service end user
+requests. This allows for not exposing the elasticsearch endpoint in public and
+also solves the authentication and authorization problem since RGW itself can
+authenticate the end user requests. For this purpose RGW introduces a new query
+in the bucket APIs that can service elasticsearch requests. All these requests
+must be sent to the metadata master zone.</p>
+<section id="syntax">
+<h3>Syntax<a class="headerlink" href="#syntax" title="Link to this heading"></a></h3>
+<section id="get-an-elasticsearch-query">
+<h4>Get an elasticsearch query<a class="headerlink" href="#get-an-elasticsearch-query" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /{bucket}?query={query-expr}
+</pre></div>
+</div>
+<dl class="simple">
+<dt>request params:</dt><dd><ul class="simple">
+<li><p>max-keys: max number of entries to return</p></li>
+<li><p>marker: pagination marker</p></li>
+</ul>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">expression</span> <span class="pre">:=</span> <span class="pre">[(]&lt;arg&gt;</span> <span class="pre">&lt;op&gt;</span> <span class="pre">&lt;value&gt;</span> <span class="pre">[)][&lt;and|or&gt;</span> <span class="pre">...]</span></code></p>
+<p>op is one of the following:
+&lt;, &lt;=, ==, &gt;=, &gt;</p>
+<p>For example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /?query=name==foo
+</pre></div>
+</div>
+<p>Will return all the indexed keys that user has read permission to, and
+are named ‘foo’.</p>
+<p>The output will be a list of keys in XML that is similar to the S3
+list buckets response.</p>
+</section>
+<section id="configure-custom-metadata-fields">
+<h4>Configure custom metadata fields<a class="headerlink" href="#configure-custom-metadata-fields" title="Link to this heading"></a></h4>
+<p>Define which custom metadata entries should be indexed (under the
+specified bucket), and what are the types of these keys. If explicit
+custom metadata indexing is configured, this is needed so that rgw
+will index the specified custom metadata values. Otherwise it is
+needed in cases where the indexed metadata keys are of a type other
+than string.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /{bucket}?mdsearch
+x-amz-meta-search: &lt;key [; type]&gt; [, ...]
+</pre></div>
+</div>
+<p>Multiple metadata fields must be comma separated, a type can be forced for a
+field with a <cite>;</cite>. The currently allowed types are string(default), integer and
+date</p>
+<p>eg. if you want to index a custom object metadata x-amz-meta-year as int,
+x-amz-meta-date as type date and x-amz-meta-title as string, you’d do</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>POST /mybooks?mdsearch
+x-amz-meta-search: x-amz-meta-year;int, x-amz-meta-release-date;date, x-amz-meta-title;string
+</pre></div>
+</div>
+</section>
+<section id="delete-custom-metadata-configuration">
+<h4>Delete custom metadata configuration<a class="headerlink" href="#delete-custom-metadata-configuration" title="Link to this heading"></a></h4>
+<p>Delete custom metadata bucket configuration.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DELETE /&lt;bucket&gt;?mdsearch
+</pre></div>
+</div>
+</section>
+<section id="get-custom-metadata-configuration">
+<h4>Get custom metadata configuration<a class="headerlink" href="#get-custom-metadata-configuration" title="Link to this heading"></a></h4>
+<p>Retrieve custom metadata bucket configuration.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /&lt;bucket&gt;?mdsearch
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sync-modules.html" class="btn btn-neutral float-left" title="Sync Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloud-sync-module.html" class="btn btn-neutral float-right" title="Cloud Sync Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

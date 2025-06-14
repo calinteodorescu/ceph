@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serialization (encode/decode) &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Erasure Coded pool" href="erasure-coded-pool.html" />
+    <link rel="prev" title="Ceph messenger DPDKStack" href="dpdk.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Serialization (encode/decode)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#principles-for-format-change">Principles for format change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#frameworks">Frameworks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-field-to-a-structure">Adding a field to a structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">Serialization (encode/decode)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/encoding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="serialization-encode-decode">
+<h1>Serialization (encode/decode)<a class="headerlink" href="#serialization-encode-decode" title="Link to this heading"></a></h1>
+<p>When a structure is sent over the network or written to disk, it is
+encoded into a string of bytes. Usually (but not always -- multiple
+serialization facilities coexist in Ceph) serializable structures
+have <code class="docutils literal notranslate"><span class="pre">encode</span></code> and <code class="docutils literal notranslate"><span class="pre">decode</span></code> methods that write and read from
+<code class="docutils literal notranslate"><span class="pre">bufferlist</span></code> objects representing byte strings.</p>
+<section id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading"></a></h2>
+<p>It is best to think not in the domain of daemons and clients but
+encoders and decoders. An encoder serializes a structure into a bufferlist
+while a decoder does the opposite.</p>
+<p>Encoders and decoders can be referred collectively as dencoders.</p>
+<p>Dencoders (both encoders and docoders) live within daemons and clients.
+For instance, when an RBD client issues an IO operation, it prepares
+an instance of the <code class="docutils literal notranslate"><span class="pre">MOSDOp</span></code> structure and encodes it into a bufferlist
+that is put on the wire.
+An OSD reads these bytes and decodes them back into an <code class="docutils literal notranslate"><span class="pre">MOSDOp</span></code> instance.
+Here encoder was used by the client while decoder by the OSD. However,
+these roles can swing -- just imagine handling of the response: OSD encodes
+the <code class="docutils literal notranslate"><span class="pre">MOSDOpReply</span></code> while RBD clients decode.</p>
+<p>Encoder and decoder operate accordingly to a format which is defined
+by a programmer by implementing the <code class="docutils literal notranslate"><span class="pre">encode</span></code> and <code class="docutils literal notranslate"><span class="pre">decode</span></code> methods.</p>
+</section>
+<section id="principles-for-format-change">
+<h2>Principles for format change<a class="headerlink" href="#principles-for-format-change" title="Link to this heading"></a></h2>
+<p>It is not unusual for the format of serialization to change. This
+process requires careful attention both during development
+and review.</p>
+<p>The general rule is that a decoder must understand what has been encoded by an
+encoder. Most difficulties arise during the process of ensuring the continuity
+of compatibility of old decoders with new encoders, and ensuring the continuity
+of compatibility of new decoders with old decoders. One should assume -- if not
+otherwise specified -- that any mix of old and new is possible in a cluster.
+There are two primary concerns:</p>
+<ol class="arabic simple">
+<li><p><strong>Upgrades.</strong> Although there are recommendations related to the order of
+entity types (mons/OSDs/clients), it is not mandatory and no assumption
+should be made.</p></li>
+<li><p><strong>Huge variability of client versions.</strong> It has always been the case that
+kernel upgrades (and thus kernel clients) are decoupled from Ceph upgrades.
+Containerization brings variability even to <code class="docutils literal notranslate"><span class="pre">librbd</span></code> -- now user space
+libraries live in the container itself:</p></li>
+</ol>
+<p>There are a few rules limiting the degree of interoperability between
+dencoders:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n-2</span></code> for dencoding between daemons,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n-3</span></code> hard requirement for client scenarios,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n-3..</span></code> soft requirement for client scenarios. Ideally every client should
+be able to talk to any version of daemons.</p></li>
+</ul>
+<p>As the underlying reasons are the same, the rules that dencoders
+follow are nearly the same as the rules for deprecations of our features
+bits. See the <code class="docutils literal notranslate"><span class="pre">Notes</span> <span class="pre">on</span> <span class="pre">deprecation</span></code> in <code class="docutils literal notranslate"><span class="pre">src/include/ceph_features.h</span></code>.</p>
+</section>
+<section id="frameworks">
+<h2>Frameworks<a class="headerlink" href="#frameworks" title="Link to this heading"></a></h2>
+<p>Currently multiple genres of dencoding helpers co-exist.</p>
+<ul class="simple">
+<li><p>encoding.h (the most proliferated one),</p></li>
+<li><p>denc.h (performance optimized, seen mostly in <code class="docutils literal notranslate"><span class="pre">BlueStore</span></code>),</p></li>
+<li><p>the <cite>Message</cite> hierarchy.</p></li>
+</ul>
+<p>Although details vary, the interoperability rules stay the same.</p>
+</section>
+<section id="adding-a-field-to-a-structure">
+<h2>Adding a field to a structure<a class="headerlink" href="#adding-a-field-to-a-structure" title="Link to this heading"></a></h2>
+<p>You can see examples of this all over the Ceph code, but here’s an
+example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AcmeClass</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">member1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">member2</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">bufferlist</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bl</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ENCODE_START</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">encode</span><span class="p">(</span><span class="n">member1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">encode</span><span class="p">(</span><span class="n">member2</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="n">ENCODE_FINISH</span><span class="p">(</span><span class="n">bl</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="n">bufferlist</span><span class="o">::</span><span class="n">iterator</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bl</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">DECODE_START</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><span class="n">member1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><span class="n">member2</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="n">DECODE_FINISH</span><span class="p">(</span><span class="n">bl</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ENCODE_START</span></code> macro writes a header that specifies a <em>version</em> and
+a <em>compat_version</em> (both initially 1).  The message version is incremented
+whenever a change is made to the encoding.  The compat_version is incremented
+only if the change will break existing decoders -- decoders are tolerant
+of trailing bytes, so changes that add fields at the end of the structure
+do not require incrementing compat_version.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DECODE_START</span></code> macro takes an argument specifying the most recent
+message version that the code can handle.  This is compared with the
+compat_version encoded in the message, and if the message is too new then
+an exception will be thrown.  Because changes to compat_version are rare,
+this isn’t usually something to worry about when adding fields.</p>
+<p>In practice, changes to encoding usually involve simply adding the desired fields
+at the end of the <code class="docutils literal notranslate"><span class="pre">encode</span></code> and <code class="docutils literal notranslate"><span class="pre">decode</span></code> functions, and incrementing
+the versions in <code class="docutils literal notranslate"><span class="pre">ENCODE_START</span></code> and <code class="docutils literal notranslate"><span class="pre">DECODE_START</span></code>.  For example, here’s how
+to add a third field to <code class="docutils literal notranslate"><span class="pre">AcmeClass</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AcmeClass</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">member1</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">member2</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">member3</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">bufferlist</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bl</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ENCODE_START</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">encode</span><span class="p">(</span><span class="n">member1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">encode</span><span class="p">(</span><span class="n">member2</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">encode</span><span class="p">(</span><span class="n">member3</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="n">ENCODE_FINISH</span><span class="p">(</span><span class="n">bl</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="n">bufferlist</span><span class="o">::</span><span class="n">iterator</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bl</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">DECODE_START</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><span class="n">member1</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><span class="n">member2</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">struct_v</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="o">::</span><span class="n">decode</span><span class="p">(</span><span class="n">member3</span><span class="p">,</span><span class="w"> </span><span class="n">bl</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">DECODE_FINISH</span><span class="p">(</span><span class="n">bl</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Note that the compat_version did not change because the encoded message
+will still be decodable by versions of the code that only understand
+version 1 -- they will just ignore the trailing bytes where we encode <code class="docutils literal notranslate"><span class="pre">member3</span></code>.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">decode</span></code> function, decoding the new field is conditional: this is
+because we might still be passed older-versioned messages that do not
+have the field.  The <code class="docutils literal notranslate"><span class="pre">struct_v</span></code> variable is a local set by the <code class="docutils literal notranslate"><span class="pre">DECODE_START</span></code>
+macro.</p>
+<p># Into the weeeds</p>
+<p>The append-extendability of our dencoders is a result of the forward
+compatibility that the <code class="docutils literal notranslate"><span class="pre">ENCODE_START</span></code> and <code class="docutils literal notranslate"><span class="pre">DECODE_FINISH</span></code> macros bring.</p>
+<p>They are implementing extensibility facilities. An encoder, when filling
+the bufferlist, prepends three fields: version of the current format,
+minimal version of a decoder compatible with it and the total size of
+all encoded fields.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * start encoding block</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param v current (code) version of the encoding</span>
+<span class="cm"> * @param compat oldest code version that can decode it</span>
+<span class="cm"> * @param bl bufferlist to encode to</span>
+<span class="cm"> *</span>
+<span class="cm"> */</span>
+<span class="cp">#define ENCODE_START(v, compat, bl)                             \</span>
+<span class="cp">  __u8 struct_v = v;                                            \</span>
+<span class="cp">  __u8 struct_compat = compat;                                  \</span>
+<span class="cp">  ceph_le32 struct_len;                                         \</span>
+<span class="cp">  auto filler = (bl).append_hole(sizeof(struct_v) +             \</span>
+<span class="cp">    sizeof(struct_compat) + sizeof(struct_len));                \</span>
+<span class="cp">  const auto starting_bl_len = (bl).length();                   \</span>
+<span class="cp">  using ::ceph::encode;                                         \</span>
+<span class="cp">  do {</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">struct_len</span></code> field allows the decoder to eat all the bytes that were
+left undecoded in the user-provided <code class="docutils literal notranslate"><span class="pre">decode</span></code> implementation.
+Analogically, decoders tracks how much input has been decoded in the
+user-provided <code class="docutils literal notranslate"><span class="pre">decode</span></code> methods.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#define DECODE_START(bl)                                        \</span>
+<span class="cp">  unsigned struct_end = 0;                                      \</span>
+<span class="cp">  __u32 struct_len;                                             \</span>
+<span class="cp">  decode(struct_len, bl);                                       \</span>
+<span class="cp">  ...                                                           \</span>
+<span class="cp">  struct_end = bl.get_off() + struct_len;                       \</span>
+<span class="cp">  }                                                             \</span>
+<span class="cp">  do {</span>
+</pre></div>
+</div>
+<p>Decoder uses this information to discard the extra bytes it does not
+understand. Advancing bufferlist is critical as dencoders tend to be nested;
+just leaving it intact would work only for the very last <code class="docutils literal notranslate"><span class="pre">deocde</span></code> call
+in a nested structure.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#define DECODE_FINISH(bl)                                       \</span>
+<span class="cp">  } while (false);                                              \</span>
+<span class="cp">  if (struct_end) {                                             \</span>
+<span class="cp">    ...                                                         \</span>
+<span class="cp">    if (bl.get_off() &lt; struct_end)                              \</span>
+<span class="cp">      bl += struct_end - bl.get_off();                          \</span>
+<span class="cp">  }</span>
+</pre></div>
+</div>
+<p>This entire, cooperative mechanism allows encoder (its further revisions)
+to generate more byte stream (due to e.g. adding a new field at the end)
+and not worry that the residue will crash older decoder revisions.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dpdk.html" class="btn btn-neutral float-left" title="Ceph messenger DPDKStack" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="erasure-coded-pool.html" class="btn btn-neutral float-right" title="Erasure Coded pool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

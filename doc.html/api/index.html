@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Documentation &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cephadm" href="mon_command_api.html" />
+    <link rel="prev" title="Monitoring overview" href="../monitoring/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-restful-api">Ceph RESTful API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-storage-cluster-apis">Ceph Storage Cluster APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-file-system-apis">Ceph File System APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-block-device-apis">Ceph Block Device APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-rados-gateway-apis">Ceph RADOS Gateway APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-object-store-apis">Ceph Object Store APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-mon-command-api">Ceph MON Command API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html">cephadm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#dashboard">dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#device">device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#fs">fs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#influx">influx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#k8sevents">k8sevents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#orch">orch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#osd">osd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#progress">progress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#add-bootstrap-peer-hint">add_bootstrap_peer_hint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#add-bootstrap-peer-hintv">add_bootstrap_peer_hintv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#auth">auth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#compact">compact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#config">config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#config-key">config-key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#connection">connection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#id4">device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#df">df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#dump-historic-ops">dump_historic_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#dump-historic-slow-ops">dump_historic_slow_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#features">features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#id5">fs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#fsid">fsid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#health">health</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#heap">heap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#injectargs">injectargs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#log">log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#mds">mds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#mgr">mgr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#mon">mon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#mon-status">mon_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#node-ls">node ls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#nvme-gw">nvme-gw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#ops">ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#id9">osd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#pg">pg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#quorum">quorum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#quorum-status">quorum_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#report">report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#service">service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#sessions">sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#smart">smart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#status">status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#sync-force">sync_force</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#tell">tell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#time-sync-status">time-sync-status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#version">version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon_command_api.html#versions">versions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Link to this heading"></a></h1>
+<section id="ceph-restful-api">
+<h2>Ceph RESTful API<a class="headerlink" href="#ceph-restful-api" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="../mgr/ceph_api/index.html#mgr-ceph-api"><span class="std std-ref">Ceph RESTful API</span></a>.</p>
+</section>
+<section id="ceph-storage-cluster-apis">
+<h2>Ceph Storage Cluster APIs<a class="headerlink" href="#ceph-storage-cluster-apis" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="../rados/api/index.html#rados-api"><span class="std std-ref">Ceph Storage Cluster APIs</span></a></p>
+</section>
+<section id="ceph-file-system-apis">
+<h2>Ceph File System APIs<a class="headerlink" href="#ceph-file-system-apis" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="../cephfs/api/index.html#cephfs-api"><span class="std std-ref">CephFS APIs</span></a></p>
+</section>
+<section id="ceph-block-device-apis">
+<h2>Ceph Block Device APIs<a class="headerlink" href="#ceph-block-device-apis" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="../rbd/api/librbdpy.html#rbd-api-py"><span class="std std-ref">Librbd (Python)</span></a></p>
+</section>
+<section id="ceph-rados-gateway-apis">
+<h2>Ceph RADOS Gateway APIs<a class="headerlink" href="#ceph-rados-gateway-apis" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="../radosgw/api.html#radosgw-api"><span class="std std-ref">librgw (Python)</span></a></p>
+</section>
+<section id="ceph-object-store-apis">
+<h2>Ceph Object Store APIs<a class="headerlink" href="#ceph-object-store-apis" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>See <a class="reference internal" href="../radosgw/s3.html#radosgw-s3"><span class="std std-ref">S3-compatible API</span></a>.</p></li>
+<li><p>See <a class="reference internal" href="../radosgw/swift.html#radosgw-swift"><span class="std std-ref">Swift-compatible API</span></a>.</p></li>
+<li><p>See <a class="reference internal" href="../radosgw/adminops.html#radosgw-admin-ops"><span class="std std-ref">Admin Ops API</span></a>.</p></li>
+</ul>
+</section>
+<section id="ceph-mon-command-api">
+<h2>Ceph MON Command API<a class="headerlink" href="#ceph-mon-command-api" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>See <a class="reference internal" href="mon_command_api.html"><span class="doc">Mon command API</span></a>.</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../monitoring/index.html" class="btn btn-neutral float-left" title="Monitoring overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mon_command_api.html" class="btn btn-neutral float-right" title="cephadm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

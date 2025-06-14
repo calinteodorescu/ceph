@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring overview &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Documentation" href="../api/index.html" />
+    <link rel="prev" title="CLI API Commands Module" href="../mgr/cli_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Monitoring overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-monitoring-stack">Ceph Monitoring stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-metrics">Ceph metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-daemon-health-metrics">Ceph daemon health metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-metrics">Performance metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#osd-performance">OSD performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#physical-storage-drive-performance">Physical storage drive performance:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pool-metrics">Pool metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rgw-metrics">RGW metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generic-metrics">Generic metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-operation-metrics">GET operation metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#put-operation-metrics">PUT operation metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-useful-queries">Additional Useful queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cephfs-metrics">CephFS Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#important-metrics">Important metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#useful-queries">Useful queries:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#block-metrics">Block metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Important  metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Useful queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-monitoring">Hardware monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Monitoring overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/monitoring/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="monitoring-overview">
+<span id="monitoring"></span><h1>Monitoring overview<a class="headerlink" href="#monitoring-overview" title="Link to this heading"></a></h1>
+<p>This document explains the Ceph monitoring
+stack and a number of important Ceph metrics.</p>
+<p>Ceph admins can explore the rich observability stack deployed by Ceph, and
+can leverage Prometheus, Alertmanager, Grafana, and scripting to create customized
+monitoring tools.</p>
+<section id="ceph-monitoring-stack">
+<h2>Ceph Monitoring stack<a class="headerlink" href="#ceph-monitoring-stack" title="Link to this heading"></a></h2>
+<p>Ceph deploys an integrated monitoring stack as described
+in the <a class="reference internal" href="../cephadm/services/monitoring.html#mgr-cephadm-monitoring"><span class="std std-ref">Monitoring Services</span></a> section of
+the <code class="docutils literal notranslate"><span class="pre">cephadm</span></code> documentation.  Deployments with external fleetwide monitoring
+and observability systems using these or other tools may choose to disable
+the stack that Ceph deploys by default.</p>
+</section>
+<section id="ceph-metrics">
+<h2>Ceph metrics<a class="headerlink" href="#ceph-metrics" title="Link to this heading"></a></h2>
+<p>Many Ceph metrics are gathered from the performance counters exposed by each
+Ceph daemon. These <a class="reference internal" href="../dev/perf_counters.html"><span class="doc">Perf counters</span></a> are native Ceph metrics.</p>
+<p>Performance counters are rendered into standard Prometheus metrics by the
+<code class="docutils literal notranslate"><span class="pre">ceph_exporter</span></code> daemon. This daemon runs on every Ceph cluster host and exposes
+an endpoint where performance counters exposed by Ceph
+daemons running on that host are presented in the form of Prometheus metrics.</p>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">ceph_exporter</span></code> the Ceph Manager <code class="docutils literal notranslate"><span class="pre">prometheus</span></code> module
+exposes metrics relating to the Ceph cluster as a  whole.</p>
+<p>Ceph provides a Prometheus endpoint from which one can obtain the complete list
+of available metrics, or against which admins, Grafana, and Alertmanager can exeute queries.</p>
+<p>Prometheus (and related systems) accept data queries formatted as PromQL
+expressions. Expansive documentation of PromQL can be
+viewed [here](<a class="reference external" href="https://prometheus.io/docs/prometheus/latest/querying/basics/">https://prometheus.io/docs/prometheus/latest/querying/basics/</a>) and
+several excellent books can be found at the usual sources of digital and print books.</p>
+<p>We will explore a number of PromQL queries below. Use the following command
+to obtain the Prometheus endpoint for your cluster:</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># ceph orch ps --service_name prometheus</span>
+NAME<span class="w">                         </span>HOST<span class="w">                          </span>PORTS<span class="w">   </span>STATUS<span class="w">          </span>REFRESHED<span class="w">  </span>AGE<span class="w">  </span>MEM<span class="w"> </span>USE<span class="w">  </span>MEM<span class="w"> </span>LIM<span class="w">  </span>VERSION<span class="w">  </span>IMAGE<span class="w"> </span>ID<span class="w">      </span>CONTAINER<span class="w"> </span>ID
+prometheus.cephtest-node-00<span class="w">  </span>cephtest-node-00.cephlab.com<span class="w">  </span>*:9095<span class="w">  </span>running<span class="w"> </span><span class="o">(</span>103m<span class="o">)</span><span class="w">    </span>50s<span class="w"> </span>ago<span class="w">   </span>5w<span class="w">     </span>142M<span class="w">        </span>-<span class="w">  </span><span class="m">2</span>.33.4<span class="w">   </span>514e6a882f6e<span class="w">  </span>efe3cbc2e521
+</pre></div>
+</div>
+<p>With this information you can connect to
+<code class="docutils literal notranslate"><span class="pre">http://cephtest-node-00.cephlab.com:9095</span></code> to access the Prometheus server
+interface, which includes a list of targets, an expression browser, and metrics
+related to the Prometheus service itself.</p>
+<p>The complete list of metrics (with descriptions) is available at the URL of the below form:
+in:</p>
+<p><code class="docutils literal notranslate"><span class="pre">http://cephtest-node-00.cephlab.com:9095/api/v1/targets/metadata</span></code></p>
+<p>The Ceph Dashboard provides a rich set of graphs and other panels that display the
+most important cluster and service metrics.  Many of the examples in this document
+are taken from Dashboard graphics or extrapolated from metrics exposed by the
+Ceph Dashboard.</p>
+</section>
+<section id="ceph-daemon-health-metrics">
+<h2>Ceph daemon health metrics<a class="headerlink" href="#ceph-daemon-health-metrics" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ceph_exporter</span></code> provides a metric named <code class="docutils literal notranslate"><span class="pre">ceph_daemon_socket_up</span></code> that
+indicates the health status of a Ceph daemon based on its ability to respond
+via the admin socket, where a value of <code class="docutils literal notranslate"><span class="pre">1</span></code> means healthy, and <code class="docutils literal notranslate"><span class="pre">0</span></code> means
+unhealthy. Although a Ceph daemon might still be “alive” when it
+reports <code class="docutils literal notranslate"><span class="pre">ceph_daemon_socket_up=0</span></code>, this status indicates a significant issue
+in its functionality. As such, this metric serves as an excellent means of
+detecting problems in any of the main Ceph daemons.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ceph_daemon_socket_up</span></code> Prometheus metrics also have labels as described below:
+* <code class="docutils literal notranslate"><span class="pre">ceph_daemon</span></code>: Identifier of the Ceph daemon exposing an admin socket on the host.
+* <code class="docutils literal notranslate"><span class="pre">hostname</span></code>: Name of the host where the Ceph daemon is running.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph_daemon_socket_up<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span><span class="s2">&quot;mds.a&quot;</span>,hostname<span class="o">=</span><span class="s2">&quot;testhost&quot;</span><span class="o">}</span><span class="w"> </span><span class="m">1</span>
+ceph_daemon_socket_up<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span><span class="s2">&quot;osd.1&quot;</span>,hostname<span class="o">=</span><span class="s2">&quot;testhost&quot;</span><span class="o">}</span><span class="w"> </span><span class="m">0</span>
+</pre></div>
+</div>
+<p>To identify any Ceph daemons that were not responsive at any point in the last
+12 hours, you can use the following PromQL expression:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">ceph_daemon_socket_up</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="w"> </span>or<span class="w"> </span>min_over_time<span class="o">(</span>ceph_daemon_socket_up<span class="o">[</span>12h<span class="o">])</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-metrics">
+<h2>Performance metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h2>
+<p>Below we explore a a number of metrics that indicate Ceph cluster performance.</p>
+<p>All of these metrics have the following labels:
+* <code class="docutils literal notranslate"><span class="pre">ceph_daemon</span></code>: Identifier of the Ceph daemon from which the metric was harvested
+* <code class="docutils literal notranslate"><span class="pre">instance</span></code>: The IP address of the exporter instance exposing the metric.
+* <code class="docutils literal notranslate"><span class="pre">job</span></code>: Prometheus scrape job name</p>
+<p>Below is an example Prometheus query result showing these labels:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph_osd_op_r<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span><span class="s2">&quot;osd.0&quot;</span>,<span class="w"> </span><span class="nv">instance</span><span class="o">=</span><span class="s2">&quot;192.168.122.7:9283&quot;</span>,<span class="w"> </span><span class="nv">job</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span><span class="o">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">73981</span>
+</pre></div>
+</div>
+<p><em>Cluster throughput:</em>
+Query <code class="docutils literal notranslate"><span class="pre">ceph_osd_op_r_out_bytes</span></code> and <code class="docutils literal notranslate"><span class="pre">ceph_osd_op_w_in_bytes</span></code> to obtain cluster client throughput:</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Writes (B/s):</span>
+sum<span class="o">(</span>irate<span class="o">(</span>ceph_osd_op_w_in_bytes<span class="o">[</span>1m<span class="o">]))</span>
+
+<span class="c1"># Reads (B/s):</span>
+sum<span class="o">(</span>irate<span class="o">(</span>ceph_osd_op_r_out_bytes<span class="o">[</span>1m<span class="o">]))</span>
+</pre></div>
+</div>
+<p><em>Cluster I/O (operations):</em>
+Query <code class="docutils literal notranslate"><span class="pre">ceph_osd_op_r</span></code>, <code class="docutils literal notranslate"><span class="pre">ceph_osd_op_w</span></code> to obtain the rates of client operations (IOPS):</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Writes (ops/s):</span>
+sum<span class="o">(</span>irate<span class="o">(</span>ceph_osd_op_w<span class="o">[</span>1m<span class="o">]))</span>
+
+<span class="c1"># Reads (ops/s):</span>
+sum<span class="o">(</span>irate<span class="o">(</span>ceph_osd_op_r<span class="o">[</span>1m<span class="o">]))</span>
+</pre></div>
+</div>
+<p><em>Latency:</em>
+Query <code class="docutils literal notranslate"><span class="pre">ceph_osd_op_latency_sum</span></code> to measure the delay before OSD transfers of data
+begins in respose to client requests:</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sum<span class="o">(</span>irate<span class="o">(</span>ceph_osd_op_latency_sum<span class="o">[</span>1m<span class="o">]))</span>
+</pre></div>
+</div>
+</section>
+<section id="osd-performance">
+<h2>OSD performance<a class="headerlink" href="#osd-performance" title="Link to this heading"></a></h2>
+<p>The cluster performance metrics described above are gathered from OSD metrics.
+By specifying an appropriate label value or regular expression we can retrieve
+performance metrics for one or a subset of the cluster’s OSDs:</p>
+<p>Examples:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># OSD 0 read latency</span>
+irate<span class="o">(</span>ceph_osd_op_r_latency_sum<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}[</span>1m<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>irate<span class="o">(</span>ceph_osd_op_r_latency_count<span class="o">[</span>1m<span class="o">])</span>
+
+<span class="c1"># OSD 0 write IOPS</span>
+irate<span class="o">(</span>ceph_osd_op_w<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}[</span>1m<span class="o">])</span>
+
+<span class="c1"># OSD 0 write thughtput (bytes)</span>
+irate<span class="o">(</span>ceph_osd_op_w_in_bytes<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}[</span>1m<span class="o">])</span>
+
+<span class="c1"># OSD.0 total raw capacity available</span>
+ceph_osd_stat_bytes<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span><span class="s2">&quot;osd.0&quot;</span>,<span class="w"> </span><span class="nv">instance</span><span class="o">=</span><span class="s2">&quot;cephtest-node-00.cephlab.com:9283&quot;</span>,<span class="w"> </span><span class="nv">job</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span><span class="o">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">536451481</span>
+</pre></div>
+</div>
+</section>
+<section id="physical-storage-drive-performance">
+<h2>Physical storage drive performance:<a class="headerlink" href="#physical-storage-drive-performance" title="Link to this heading"></a></h2>
+<p>By combining Prometheus <code class="docutils literal notranslate"><span class="pre">node_exporter</span></code> metrics with Ceph cluster metrics we can
+derive performance information for physical storage media backing Ceph OSDs.</p>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read latency of device used by osd.0</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_read_time_seconds_total<span class="o">[</span>1m<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>irate<span class="o">(</span>node_disk_reads_completed_total<span class="o">[</span>1m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+
+<span class="c1"># Write latency of device used by osd.0</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_write_time_seconds_total<span class="o">[</span>1m<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>irate<span class="o">(</span>node_disk_writes_completed_total<span class="o">[</span>1m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+
+<span class="c1"># IOPS of device used by osd.0</span>
+<span class="c1"># reads:</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_reads_completed_total<span class="o">[</span>1m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+
+<span class="c1"># writes:</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_writes_completed_total<span class="o">[</span>1m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+
+<span class="c1"># Throughput for device used by osd.0</span>
+<span class="c1"># reads:</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_read_bytes_total<span class="o">[</span>1m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+
+<span class="c1"># writes:</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_written_bytes_total<span class="o">[</span>1m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+
+<span class="c1"># Physical drive utilization (%) for osd.0 in the last 5 minutes. Note that this value has limited mean for SSDs</span>
+label_replace<span class="o">(</span>irate<span class="o">(</span>node_disk_io_time_seconds_total<span class="o">[</span>5m<span class="o">])</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span><span class="w"> </span>and<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance,<span class="w"> </span>device<span class="o">)</span><span class="w"> </span>label_replace<span class="o">(</span>label_replace<span class="o">(</span>ceph_disk_occupation_human<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;osd.0&quot;</span><span class="o">}</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;device&quot;</span>,<span class="w"> </span><span class="s2">&quot;/dev/(.*)&quot;</span><span class="o">)</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>,<span class="w"> </span><span class="s2">&quot;instance&quot;</span>,<span class="w"> </span><span class="s2">&quot;([^:.]*).*&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pool-metrics">
+<h2>Pool metrics<a class="headerlink" href="#pool-metrics" title="Link to this heading"></a></h2>
+<p>Ceph pool metrics have the following labels:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">instance</span></code>: The IP address of the exporter providing the metric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pool_id</span></code>: Numeric identifier of the Ceph pool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">job</span></code>: Prometheus scrape job name</p></li>
+</ul>
+<p>Pool-specific metrics include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_metadata</span></code>: Information about the pool that can be used
+together with other metrics to provide more information in query resultss
+and graphs.  In addition to the above three common labels this metric
+provides the following:</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compression_mode</span></code>: Compression type enabled for the pool. Values are
+<code class="docutils literal notranslate"><span class="pre">lz4</span></code>, <code class="docutils literal notranslate"><span class="pre">snappy</span></code>, <code class="docutils literal notranslate"><span class="pre">zlib</span></code>, <code class="docutils literal notranslate"><span class="pre">zstd</span></code>, and <code class="docutils literal notranslate"><span class="pre">none`).</span> <span class="pre">Example:</span>
+<span class="pre">``compression_mode=&quot;none&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: Brief description of the pool data protection strategy
+including replica number or EC profile. Example:
+<code class="docutils literal notranslate"><span class="pre">description=&quot;replica:3&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name of the pool. Example: <code class="docutils literal notranslate"><span class="pre">name=&quot;.mgr&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: Data protection strategy, replicated or EC. <code class="docutils literal notranslate"><span class="pre">Example:</span>
+<span class="pre">type=&quot;replicated&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_bytes_used</span></code>: Total raw capacity (after replication or EC)
+consumed by user data and metadata</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_stored</span></code>: Total client data stored in the pool (before data
+protection)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_compress_under_bytes</span></code>: Data eligible to be compressed in
+the pool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_compress_bytes_used</span></code>:  Data compressed in the pool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_rd</span></code>: Client read operations per pool (reads per second)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_rd_bytes</span></code>: Client read operations in bytes per pool</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_wr</span></code>: Client write operations per pool (writes per second)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_pool_wr_bytes</span></code>: Client write operation in bytes per pool</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><strong>Useful queries</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Total raw capacity available in the cluster:</span>
+sum<span class="o">(</span>ceph_osd_stat_bytes<span class="o">)</span>
+
+<span class="c1"># Total raw capacity consumed in the cluster (including metadata + redundancy):</span>
+sum<span class="o">(</span>ceph_pool_bytes_used<span class="o">)</span>
+
+<span class="c1"># Total client data stored in the cluster:</span>
+sum<span class="o">(</span>ceph_pool_stored<span class="o">)</span>
+
+<span class="c1"># Compression savings:</span>
+sum<span class="o">(</span>ceph_pool_compress_under_bytes<span class="w"> </span>-<span class="w"> </span>ceph_pool_compress_bytes_used<span class="o">)</span>
+
+<span class="c1"># Client IOPS for a specific pool</span>
+reads:<span class="w"> </span>irate<span class="o">(</span>ceph_pool_rd<span class="o">[</span>1m<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="o">(</span>pool_id<span class="o">)</span><span class="w"> </span>group_left<span class="o">(</span>instance,name<span class="o">)</span><span class="w"> </span>ceph_pool_metadata<span class="o">{</span><span class="nv">name</span><span class="o">=</span>~<span class="s2">&quot;testrbdpool&quot;</span><span class="o">}</span>
+writes:<span class="w"> </span>irate<span class="o">(</span>ceph_pool_wr<span class="o">[</span>1m<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="o">(</span>pool_id<span class="o">)</span><span class="w"> </span>group_left<span class="o">(</span>instance,name<span class="o">)</span><span class="w"> </span>ceph_pool_metadata<span class="o">{</span><span class="nv">name</span><span class="o">=</span>~<span class="s2">&quot;testrbdpool&quot;</span><span class="o">}</span>
+
+<span class="c1"># Client throughput for a specific pool</span>
+reads:<span class="w"> </span>irate<span class="o">(</span>ceph_pool_rd_bytes<span class="o">[</span>1m<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="o">(</span>pool_id<span class="o">)</span><span class="w"> </span>group_left<span class="o">(</span>instance,name<span class="o">)</span><span class="w"> </span>ceph_pool_metadata<span class="o">{</span><span class="nv">name</span><span class="o">=</span>~<span class="s2">&quot;testrbdpool&quot;</span><span class="o">}</span>
+writes:<span class="w"> </span>irate<span class="o">(</span>ceph_pool_wr_bytes<span class="o">[</span>1m<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="o">(</span>pool_id<span class="o">)</span><span class="w"> </span>group_left<span class="o">(</span>instance,name<span class="o">)</span><span class="w"> </span>ceph_pool_metadata<span class="o">{</span><span class="nv">name</span><span class="o">=</span>~<span class="s2">&quot;testrbdpool&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+</section>
+<section id="rgw-metrics">
+<h2>RGW metrics<a class="headerlink" href="#rgw-metrics" title="Link to this heading"></a></h2>
+<p>These metrics have the following labels:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">instance</span></code>: The IP address of the exporter providing the metric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instance_id</span></code>: Identifier of the RGW daemon instance</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">job</span></code>: Orometheus scrape job name</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph_rgw_req<span class="o">{</span><span class="nv">instance</span><span class="o">=</span><span class="s2">&quot;192.168.122.7:9283&quot;</span>,<span class="w"> </span><span class="nv">instance_id</span><span class="o">=</span><span class="s2">&quot;154247&quot;</span>,<span class="w"> </span><span class="nv">job</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span><span class="o">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">12345</span>
+</pre></div>
+</div>
+<section id="generic-metrics">
+<h3>Generic metrics<a class="headerlink" href="#generic-metrics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_metadata</span></code>: Provides generic information about an RGW daemon.
+This can be used together with other metrics to provide contextual
+information in queries and graphs. In addtion to the three common labels,
+this metric provides the following:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_daemon</span></code>: Name of the RGW daemon instance. Example:
+<code class="docutils literal notranslate"><span class="pre">ceph_daemon=&quot;rgw.rgwtest.cephtest-node-00.sxizyq&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_version</span></code>: Version of the RGW daemon. Example: <code class="docutils literal notranslate"><span class="pre">ceph_version=&quot;ceph</span>
+<span class="pre">version</span> <span class="pre">17.2.6</span> <span class="pre">(d7ff0d10654d2280e08f1ab989c7cdf3064446a5)</span> <span class="pre">quincy</span>
+<span class="pre">(stable)&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostname</span></code>: Name of the host where the daemon runs. Example:
+<code class="docutils literal notranslate"><span class="pre">hostname:&quot;cephtest-node-00.cephlab.com&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_req</span></code>: Number of requests processed by the daemon
+(<code class="docutils literal notranslate"><span class="pre">GET``+``PUT``+``DELETE</span></code>).  Useful for detecting bottlenecks and
+optimizing load distribution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_qlen</span></code>: Operations queue length for the daemon.  Useful for
+detecting bottlenecks and optimizing load distribution.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_failed_req</span></code>: Aborted requests.  Useful for detecting daemon
+errors.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="get-operation-metrics">
+<h3>GET operation metrics<a class="headerlink" href="#get-operation-metrics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_get_obj_lat_count</span></code>: Number of <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_get_obj_lat_sum</span></code>: Total latency for <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_get_obj_ops</span></code>: Total number of <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_get_obj_bytes</span></code>: Total bytes transferred for <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests</p></li>
+</ul>
+</section>
+<section id="put-operation-metrics">
+<h3>PUT operation metrics<a class="headerlink" href="#put-operation-metrics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_put_obj_lat_count</span></code>: Number of get operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_put_obj_lat_sum</span></code>: Total latency time for <code class="docutils literal notranslate"><span class="pre">PUT</span></code> operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_put_obj_ops</span></code>: Total number of <code class="docutils literal notranslate"><span class="pre">PUT</span></code> operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rgw_op_global_get_obj_bytes</span></code>: Total bytes transferred in <code class="docutils literal notranslate"><span class="pre">PUT</span></code> operations</p></li>
+</ul>
+</section>
+<section id="additional-useful-queries">
+<h3>Additional Useful queries<a class="headerlink" href="#additional-useful-queries" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Average GET latency</span>
+rate<span class="o">(</span>ceph_rgw_op_global_get_obj_lat_sum<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>rate<span class="o">(</span>ceph_rgw_op_global_get_obj_lat_count<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+
+<span class="c1"># Average PUT latency</span>
+rate<span class="o">(</span>ceph_rgw_op_global_put_obj_lat_sum<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>rate<span class="o">(</span>ceph_rgw_op_global_put_obj_lat_count<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+
+<span class="c1"># Requests per second</span>
+rate<span class="o">(</span>ceph_rgw_req<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+
+<span class="c1"># Total number of &quot;other&quot; operations (``LIST``, ``DELETE``, etc)</span>
+rate<span class="o">(</span>ceph_rgw_req<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>-<span class="w">  </span><span class="o">(</span>rate<span class="o">(</span>ceph_rgw_op_global_get_obj_ops<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>+<span class="w"> </span>rate<span class="o">(</span>ceph_rgw_op_global_put_obj_ops<span class="o">[</span>30s<span class="o">]))</span>
+
+<span class="c1"># GET latency per RGW instance</span>
+rate<span class="o">(</span>ceph_rgw_op_global_get_obj_lat_sum<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>/<span class="w">  </span>rate<span class="o">(</span>ceph_rgw_op_global_get_obj_lat_count<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+
+<span class="c1"># PUT latency per RGW instance</span>
+rate<span class="o">(</span>ceph_rgw_op_global_put_obj_lat_sum<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>/<span class="w">  </span>rate<span class="o">(</span>ceph_rgw_op_global_put_obj_lat_count<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+
+<span class="c1"># Bandwidth consumed by GET operations</span>
+sum<span class="o">(</span>rate<span class="o">(</span>ceph_rgw_op_global_get_obj_bytes<span class="o">[</span>30s<span class="o">]))</span>
+
+<span class="c1"># Bandwidth consumed by PUT operations</span>
+sum<span class="o">(</span>rate<span class="o">(</span>ceph_rgw_op_global_put_obj_bytes<span class="o">[</span>30s<span class="o">]))</span>
+
+<span class="c1"># Bandwidth consumed by RGW instance (PUTs + GETs)</span>
+sum<span class="w"> </span>by<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span><span class="o">(</span>rate<span class="o">(</span>ceph_rgw_op_global_get_obj_bytes<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>+<span class="w"> </span>rate<span class="o">(</span>ceph_rgw_op_global_put_obj_bytes<span class="o">[</span>30s<span class="o">]))</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance_id<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+
+<span class="c1"># HTTP errors and other request failures</span>
+rate<span class="o">(</span>ceph_rgw_failed_req<span class="o">[</span>30s<span class="o">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cephfs-metrics">
+<h2>CephFS Metrics<a class="headerlink" href="#cephfs-metrics" title="Link to this heading"></a></h2>
+<p>These metrics have the following labels:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_daemon</span></code>: The name of the MDS daemon</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instance</span></code>: The IP address and port of the exporter exposing the metric</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">job</span></code>: Prometheus scrape job name</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph_mds_request<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span><span class="s2">&quot;mds.test.cephtest-node-00.hmhsoh&quot;</span>,<span class="w"> </span><span class="nv">instance</span><span class="o">=</span><span class="s2">&quot;192.168.122.7:9283&quot;</span>,<span class="w"> </span><span class="nv">job</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span><span class="o">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1452</span>
+</pre></div>
+</div>
+<section id="important-metrics">
+<h3>Important metrics<a class="headerlink" href="#important-metrics" title="Link to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_metadata</span></code>: Provides general information about the MDS daemon.  It
+can be used together with other metrics to provide contextual
+information in queries and graphs.  The following extra labels are populated:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_version</span></code>: MDS daemon version</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fs_id</span></code>: CephFS filesystem ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostname</span></code>: Name of the host where the MDS daemon runs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">public_addr</span></code>: Public address of the host where the MDS daemon runs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rank</span></code>: Rank of the MDS daemon</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph_mds_metadata<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span><span class="s2">&quot;mds.test.cephtest-node-00.hmhsoh&quot;</span>,<span class="w"> </span><span class="nv">ceph_version</span><span class="o">=</span><span class="s2">&quot;ceph version 17.2.6 (d7ff0d10654d2280e08f1ab989c7cdf3064446a5) quincy (stable)&quot;</span>,<span class="w"> </span><span class="nv">fs_id</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span>,<span class="w"> </span><span class="nv">hostname</span><span class="o">=</span><span class="s2">&quot;cephtest-node-00.cephlab.com&quot;</span>,<span class="w"> </span><span class="nv">instance</span><span class="o">=</span><span class="s2">&quot;cephtest-node-00.cephlab.com:9283&quot;</span>,<span class="w"> </span><span class="nv">job</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span>,<span class="w"> </span><span class="nv">public_addr</span><span class="o">=</span><span class="s2">&quot;192.168.122.145:6801/118896446&quot;</span>,<span class="w"> </span><span class="nv">rank</span><span class="o">=</span><span class="s2">&quot;-1&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_request</span></code>: Total number of requests for the MDS</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_reply_latency_sum</span></code>: Reply latency total</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_reply_latency_count</span></code>: Reply latency count</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_server_handle_client_request</span></code>: Number of client requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_sessions_session_count</span></code>: Session count</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_sessions_total_load</span></code>: Total load</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_sessions_sessions_open</span></code>: Sessions currently open</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_sessions_sessions_stale</span></code>: Sessions currently stale</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_objecter_op_r</span></code>: Number of read operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_objecter_op_w</span></code>: Number of write operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_root_rbytes</span></code>: Total number of bytes managed by the daemon</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_mds_root_rfiles</span></code>: Total number of files managed by the daemon</p></li>
+</ul>
+</section>
+<section id="useful-queries">
+<h3>Useful queries:<a class="headerlink" href="#useful-queries" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Total MDS read workload:</span>
+sum<span class="o">(</span>rate<span class="o">(</span>ceph_objecter_op_r<span class="o">[</span>1m<span class="o">]))</span>
+
+<span class="c1"># Total MDS daemons workload:</span>
+sum<span class="o">(</span>rate<span class="o">(</span>ceph_objecter_op_w<span class="o">[</span>1m<span class="o">]))</span>
+
+<span class="c1"># Read workload for a specific MDS</span>
+sum<span class="o">(</span>rate<span class="o">(</span>ceph_objecter_op_r<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;mdstest&quot;</span><span class="o">}[</span>1m<span class="o">]))</span>
+
+<span class="c1"># Write workload for a specific MDS</span>
+sum<span class="o">(</span>rate<span class="o">(</span>ceph_objecter_op_r<span class="o">{</span><span class="nv">ceph_daemon</span><span class="o">=</span>~<span class="s2">&quot;mdstest&quot;</span><span class="o">}[</span>1m<span class="o">]))</span>
+
+<span class="c1"># Average reply latency</span>
+rate<span class="o">(</span>ceph_mds_reply_latency_sum<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>rate<span class="o">(</span>ceph_mds_reply_latency_count<span class="o">[</span>30s<span class="o">])</span>
+
+<span class="c1"># Total requests per second</span>
+rate<span class="o">(</span>ceph_mds_request<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance<span class="o">)</span><span class="w"> </span>group_right<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_mds_metadata
+</pre></div>
+</div>
+</section>
+</section>
+<section id="block-metrics">
+<h2>Block metrics<a class="headerlink" href="#block-metrics" title="Link to this heading"></a></h2>
+<p>By default RBD metrics for images are not gathered, as their cardinality may
+be high.  This helps ensure the performance of the Manager’s <code class="docutils literal notranslate"><span class="pre">prometheus</span></code> module.</p>
+<p>To produce metrics for RBD images, configure the
+Manager option <code class="docutils literal notranslate"><span class="pre">mgr/prometheus/rbd_stats_pools</span></code>. For more information
+see <a class="reference internal" href="../mgr/prometheus.html#prometheus-rbd-io-statistics"><span class="std std-ref">Ceph Health Checks</span></a></p>
+<p>These metrics have the following labels:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">image</span></code>: Name of the image (volume)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">instance</span></code>: Node where the exporter runs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">job</span></code>: Name of the Prometheus scrape job</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pool</span></code>: RBD pool name</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ceph_rbd_read_bytes<span class="o">{</span><span class="nv">image</span><span class="o">=</span><span class="s2">&quot;test2&quot;</span>,<span class="w"> </span><span class="nv">instance</span><span class="o">=</span><span class="s2">&quot;cephtest-node-00.cephlab.com:9283&quot;</span>,<span class="w"> </span><span class="nv">job</span><span class="o">=</span><span class="s2">&quot;ceph&quot;</span>,<span class="w"> </span><span class="nv">pool</span><span class="o">=</span><span class="s2">&quot;testrbdpool&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<section id="id1">
+<h3>Important  metrics<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_read_bytes</span></code>: RBD bytes read</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_write_bytes</span></code>: RBD image bytes written</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_read_latency_count</span></code>: RBD read operation latency count</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_read_latency_sum</span></code>: RBD read operation latency total time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_read_ops</span></code>: RBD read operation count</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_write_ops</span></code>: RBD write operation count</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_write_latency_count</span></code>: RBD write operation latency count</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ceph_rbd_write_latency_sum</span></code>: RBD write operation latency total</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Useful queries<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Average read latency</span>
+rate<span class="o">(</span>ceph_rbd_read_latency_sum<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>/<span class="w"> </span>rate<span class="o">(</span>ceph_rbd_read_latency_count<span class="o">[</span>30s<span class="o">])</span><span class="w"> </span>*<span class="w"> </span>on<span class="w"> </span><span class="o">(</span>instance<span class="o">)</span><span class="w"> </span>group_left<span class="w"> </span><span class="o">(</span>ceph_daemon<span class="o">)</span><span class="w"> </span>ceph_rgw_metadata
+</pre></div>
+</div>
+</section>
+</section>
+<section id="hardware-monitoring">
+<h2>Hardware monitoring<a class="headerlink" href="#hardware-monitoring" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="../hardware-monitoring/index.html#hardware-monitoring"><span class="std std-ref">Hardware monitoring</span></a></p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../mgr/cli_api.html" class="btn btn-neutral float-left" title="CLI API Commands Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

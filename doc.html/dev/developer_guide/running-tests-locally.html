@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running Unit Tests &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Testing - Windows" href="tests-windows.html" />
+    <link rel="prev" title="Sentry Notes" href="testing_integration_tests/tests-sentry-developers-guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="essentials.html">Essentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="merging.html">What is Merged and When</a></li>
+<li class="toctree-l2"><a class="reference internal" href="issue-tracker.html">Issue tracker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests-unit-tests.html">Tests: Unit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing_integration_tests/index.html">Tests: Integration Tests (Teuthology)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tests: Running Tests (Locally)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-run-s3-tests-locally">How to run s3-tests locally</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-build-ceph">Step 1 - build Ceph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-vstart">Step 2 - vstart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-run-s3-tests">Step 3 - run s3-tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-test-using-vstart-runner-py">Running test using vstart_runner.py</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-your-first-test">Running your first test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#internal-working-of-vstart-runner-py">Internal working of vstart_runner.py -</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-workunits-using-vstart-enviroment-sh">Running Workunits Using vstart_enviroment.sh</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-the-environment">Set up the environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-a-test">Running a test</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests-windows.html">Tests: Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dash-devel.html">Ceph Dashboard Developer Documentation (formerly HACKING.rst)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jaegertracing.html">Tracing Developer Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cephadm/index.html">Cephadm Developer Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging-gdb.html">Debugging with GDB</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Contributing to Ceph: A Guide for Developers</a></li>
+      <li class="breadcrumb-item active">Running Unit Tests</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dev/developer_guide/running-tests-locally.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="running-unit-tests">
+<h1>Running Unit Tests<a class="headerlink" href="#running-unit-tests" title="Link to this heading"></a></h1>
+<section id="how-to-run-s3-tests-locally">
+<h2>How to run s3-tests locally<a class="headerlink" href="#how-to-run-s3-tests-locally" title="Link to this heading"></a></h2>
+<p>RGW code can be tested by building Ceph locally from source, starting a vstart
+cluster, and running the “s3-tests” suite against it.</p>
+<p>The following instructions should work on jewel and above.</p>
+<section id="step-1-build-ceph">
+<h3>Step 1 - build Ceph<a class="headerlink" href="#step-1-build-ceph" title="Link to this heading"></a></h3>
+<p>Refer to <a class="reference internal" href="../../install/build-ceph.html"><span class="doc">Build Ceph</span></a>.</p>
+<p>You can do step 2 separately while it is building.</p>
+</section>
+<section id="step-2-vstart">
+<h3>Step 2 - vstart<a class="headerlink" href="#step-2-vstart" title="Link to this heading"></a></h3>
+<p>When the build completes, and still in the top-level directory of the git
+clone where you built Ceph, do the following, for cmake builds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">build</span><span class="o">/</span>
+<span class="n">RGW</span><span class="o">=</span><span class="mi">1</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span>
+</pre></div>
+</div>
+<p>This will produce a lot of output as the vstart cluster is started up. At the
+end you should see a message like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">started</span><span class="o">.</span>  <span class="n">stop</span><span class="o">.</span><span class="n">sh</span> <span class="n">to</span> <span class="n">stop</span><span class="o">.</span>  <span class="n">see</span> <span class="n">out</span><span class="o">/*</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="s1">&#39;tail -f out/????&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">debug</span> <span class="n">output</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>This means the cluster is running.</p>
+</section>
+<section id="step-3-run-s3-tests">
+<h3>Step 3 - run s3-tests<a class="headerlink" href="#step-3-run-s3-tests" title="Link to this heading"></a></h3>
+<p>To run the s3tests suite do the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>../qa/workunits/rgw/run-s3tests.sh
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-test-using-vstart-runner-py">
+<h2>Running test using vstart_runner.py<a class="headerlink" href="#running-test-using-vstart-runner-py" title="Link to this heading"></a></h2>
+<p>CephFS and Ceph Manager code is be tested using <a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/tasks/vstart_runner.py">vstart_runner.py</a>.</p>
+<section id="running-your-first-test">
+<h3>Running your first test<a class="headerlink" href="#running-your-first-test" title="Link to this heading"></a></h3>
+<p>The Python tests in Ceph repository can be executed on your local machine
+using <a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/tasks/vstart_runner.py">vstart_runner.py</a>. To do that, you’d need <a class="reference external" href="https://github.com/ceph/teuthology">teuthology</a> installed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ceph/teuthology
+<span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>teuthology
+<span class="gp">$ </span>./bootstrap<span class="w"> </span>install
+</pre></div>
+</div>
+<p>This will create a virtual environment named <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> in root of the
+teuthology repository and install teuthology in it.</p>
+<p>You can also install teuthology via <code class="docutils literal notranslate"><span class="pre">pip</span></code> if you would like to install it
+in a custom virtual environment with clone <a class="reference external" href="https://github.com/ceph/teuthology">teuthology</a> repository using
+<code class="docutils literal notranslate"><span class="pre">git</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>virtualenv<span class="w"> </span>--python<span class="o">=</span>python3<span class="w"> </span>venv
+<span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;setuptools &gt;= 12&#39;</span>
+<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>teuthology<span class="o">[</span>test<span class="o">]</span>@git+https://github.com/ceph/teuthology
+<span class="gp">$ </span>deactivate
+</pre></div>
+</div>
+<p>If for some unforeseen reason above approaches do no work (maybe boostrap
+script doesn’t work due to a bug or you can’t download tethology at the
+moment) teuthology can be installed manually manually from copy of
+teuthology repo already present on your machine:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>teuthology
+<span class="gp">$ </span>virtualenv<span class="w"> </span>-p<span class="w"> </span>python3<span class="w"> </span>venv
+<span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>.
+<span class="gp">$ </span>deactivate
+</pre></div>
+</div>
+<p>The above steps installs teuthology in a virtual environment. Before running
+a test locally, build Ceph successfully from the source (refer
+<a class="reference internal" href="../../install/build-ceph.html"><span class="doc">Build Ceph</span></a>) and do:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">cd</span><span class="w"> </span>build
+<span class="gp">$ </span>../src/vstart.sh<span class="w"> </span>-n<span class="w"> </span>-d<span class="w"> </span>-l
+<span class="gp">$ </span><span class="nb">source</span><span class="w"> </span>~/path/to/teuthology/venv/bin/activate
+</pre></div>
+</div>
+<p>To run a specific test, say <a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/tasks/cephfs/test_client_recovery.py#L133">test_reconnect_timeout</a> from
+<a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/tasks/cephfs/test_client_recovery.py#L86">TestClientRecovery</a> in <code class="docutils literal notranslate"><span class="pre">qa/tasks/cephfs/test_client_recovery</span></code>, you can
+do:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>../qa/tasks/vstart_runner.py<span class="w"> </span>tasks.cephfs.test_client_recovery.TestClientRecovery.test_reconnect_timeout
+</pre></div>
+</div>
+<p>The above command runs vstart_runner.py and passes the test to be executed as
+an argument to vstart_runner.py. In a similar way, you can also run the group
+of tests in the following manner:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="c1"># run all tests in class TestClientRecovery</span>
+<span class="gp">$ </span>python<span class="w"> </span>../qa/tasks/vstart_runner.py<span class="w"> </span>tasks.cephfs.test_client_recovery.TestClientRecovery
+<span class="gp">$ </span><span class="c1"># run  all tests in test_client_recovery.py</span>
+<span class="gp">$ </span>python<span class="w"> </span>../qa/tasks/vstart_runner.py<span class="w"> </span>tasks.cephfs.test_client_recovery
+</pre></div>
+</div>
+<p>Based on the argument passed, vstart_runner.py collects tests and executes as
+it would execute a single test.</p>
+<p>vstart_runner.py can take the following options -</p>
+<dl class="option-list">
+<dt><kbd><span class="option">--clear-old-log</span></kbd></dt>
+<dd><p>deletes old log file before running the test</p>
+</dd>
+<dt><kbd><span class="option">--create</span></kbd></dt>
+<dd><p>create Ceph cluster before running a test</p>
+</dd>
+<dt><kbd><span class="option">--create-cluster-only</span></kbd></dt>
+<dd><p>creates the cluster and quits; tests can be issued
+later</p>
+</dd>
+<dt><kbd><span class="option">--interactive</span></kbd></dt>
+<dd><p>drops a Python shell when a test fails</p>
+</dd>
+<dt><kbd><span class="option">--log-ps-output</span></kbd></dt>
+<dd><p>logs ps output; might be useful while debugging</p>
+</dd>
+<dt><kbd><span class="option">--teardown</span></kbd></dt>
+<dd><p>tears Ceph cluster down after test(s) has finished
+running</p>
+</dd>
+<dt><kbd><span class="option">--kclient</span></kbd></dt>
+<dd><p>use the kernel cephfs client instead of FUSE</p>
+</dd>
+<dt><kbd><span class="option">--brxnet=<var>&lt;net/mask&gt;</var></span></kbd></dt>
+<dd><p>specify a new net/mask for the mount clients’ network
+namespace container (Default: 192.168.0.0/16)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If using the FUSE client, ensure that the fuse package is installed
+and enabled on the system and that <code class="docutils literal notranslate"><span class="pre">user_allow_other</span></code> is added
+to <code class="docutils literal notranslate"><span class="pre">/etc/fuse.conf</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If using the kernel client, the user must have the ability to run
+commands with passwordless sudo access.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A failure on the kernel client may crash the host, so it’s
+recommended to use this functionality within a virtual machine.</p>
+</div>
+</section>
+<section id="internal-working-of-vstart-runner-py">
+<h3>Internal working of vstart_runner.py -<a class="headerlink" href="#internal-working-of-vstart-runner-py" title="Link to this heading"></a></h3>
+<p>vstart_runner.py primarily does three things -</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>collects and runs the tests</dt><dd><p>vstart_runner.py setups/teardowns the cluster and collects and runs the
+test. This is implemented using methods <code class="docutils literal notranslate"><span class="pre">scan_tests()</span></code>, <code class="docutils literal notranslate"><span class="pre">load_tests()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">exec_test()</span></code>. This is where all the options that vstart_runner.py
+takes are implemented along with other features like logging and copying
+the traceback to the bottom of the log.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>provides an interface for issuing and testing shell commands</dt><dd><p>The tests are written assuming that the cluster exists on remote machines.
+vstart_runner.py provides an interface to run the same tests with the
+cluster that exists within the local machine. This is done using the class
+<code class="docutils literal notranslate"><span class="pre">LocalRemote</span></code>. Class <code class="docutils literal notranslate"><span class="pre">LocalRemoteProcess</span></code> can manage the process that
+executes the commands from <code class="docutils literal notranslate"><span class="pre">LocalRemote</span></code>, class <code class="docutils literal notranslate"><span class="pre">LocalDaemon</span></code> provides
+an interface to handle Ceph daemons and class <code class="docutils literal notranslate"><span class="pre">LocalFuseMount</span></code> can
+create and handle FUSE mounts.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>provides an interface to operate Ceph cluster</dt><dd><p><code class="docutils literal notranslate"><span class="pre">LocalCephManager</span></code> provides methods to run Ceph cluster commands with
+and without admin socket and <code class="docutils literal notranslate"><span class="pre">LocalCephCluster</span></code> provides methods to set
+or clear <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>vstart_runner.py deletes “adjust-ulimits” and “ceph-coverage” from
+the command arguments unconditionally since they are not applicable
+when tests are run on a developer’s machine.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>“omit_sudo” is re-set to False unconditionally in cases of commands
+“passwd” and “chown”.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The presence of binary file named after the first argument is
+checked in <code class="docutils literal notranslate"><span class="pre">&lt;ceph-repo-root&gt;/build/bin/</span></code>. If present, the first
+argument is replaced with the path to binary file.</p>
+</div>
+</section>
+</section>
+<section id="running-workunits-using-vstart-enviroment-sh">
+<h2>Running Workunits Using vstart_enviroment.sh<a class="headerlink" href="#running-workunits-using-vstart-enviroment-sh" title="Link to this heading"></a></h2>
+<p>Code can be tested by building Ceph locally from source, starting a vstart
+cluster, and running any suite against it.
+Similar to S3-Tests, other workunits can be run against by configuring your environment.</p>
+<section id="set-up-the-environment">
+<h3>Set up the environment<a class="headerlink" href="#set-up-the-environment" title="Link to this heading"></a></h3>
+<p>Configure your environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.<span class="w"> </span>./build/vstart_enviroment.sh
+</pre></div>
+</div>
+</section>
+<section id="running-a-test">
+<h3>Running a test<a class="headerlink" href="#running-a-test" title="Link to this heading"></a></h3>
+<p>To run a workunit (e.g <code class="docutils literal notranslate"><span class="pre">mon/osd.sh</span></code>) do the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./qa/workunits/mon/osd.sh
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="testing_integration_tests/tests-sentry-developers-guide.html" class="btn btn-neutral float-left" title="Sentry Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests-windows.html" class="btn btn-neutral float-right" title="Testing - Windows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

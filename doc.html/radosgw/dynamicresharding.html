@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RGW Dynamic Bucket Index Resharding &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RGW Support for Multifactor Authentication" href="mfa.html" />
+    <link rel="prev" title="Bucket Policies" href="bucketpolicy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Dynamic Bucket Index Resharding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multisite">Multisite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#admin-commands">Admin Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#add-a-bucket-to-the-resharding-queue">Add a Bucket to the Resharding Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-resharding-queue">List Resharding Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#process-tasks-on-the-resharding-queue">Process Tasks on the Resharding Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bucket-resharding-status">Bucket Resharding Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cancel-pending-bucket-resharding">Cancel Pending Bucket Resharding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-immediate-bucket-resharding">Manual Immediate Bucket Resharding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-a-bucket-s-minimum-number-of-shards">Setting a Bucket’s Minimum Number of Shards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stale-instance-management">Stale Instance Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lifecycle-fixes">Lifecycle Fixes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#object-expirer-fixes">Object Expirer Fixes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-transition.html">Cloud Transition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">RGW Dynamic Bucket Index Resharding</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/dynamicresharding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="rgw-dynamic-bucket-index-resharding">
+<span id="id1"></span><h1>RGW Dynamic Bucket Index Resharding<a class="headerlink" href="#rgw-dynamic-bucket-index-resharding" title="Link to this heading"></a></h1>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version Luminous.</span></p>
+</div>
+<p>A bucket index object with too many entries can lead to performance
+problems. This can be addressed by resharding bucket indexes.  Until
+Luminous, changing the number of bucket shards (resharding) could only
+be done offline, with RGW services disabled.  Since the Luminous
+release Ceph has supported online bucket resharding.</p>
+<p>Each bucket index shard can handle its entries efficiently up until
+reaching a certain threshold number. If this threshold is exceeded the
+system can suffer from performance issues. The dynamic resharding
+feature detects this situation and automatically increases the number
+of shards used by a bucket’s index, resulting in a reduction of the
+number of entries in each shard. This process is transparent to the
+user. Writes to the target bucket can be blocked briefly during
+resharding process, but reads are not.</p>
+<p>By default dynamic bucket index resharding can only increase the
+number of bucket index shards to 1999, although this upper-bound is a
+configuration parameter (see <a class="reference internal" href="#configuration">Configuration</a> below). When
+possible, the process chooses a prime number of shards in order to
+spread the number of entries across the bucket index
+shards more evenly.</p>
+<p>Detection of resharding opportunities runs as a background process
+that periodically scans all buckets. A bucket that requires resharding
+is added to a queue. A thread runs in the background and processes the
+queueued resharding tasks one at a time.</p>
+<p>Starting with Tentacle, dynamic resharding has the ability to reduce
+the number of shards. Once the condition allowing reduction is noted,
+there is a time delay before it will actually be executed, in case the
+number of objects increases in the near future. The goal of the delay
+is to avoid thrashing where resharding keeps getting re-invoked on
+buckets that fluctuate in numbers of objects.</p>
+<section id="multisite">
+<h2>Multisite<a class="headerlink" href="#multisite" title="Link to this heading"></a></h2>
+<p>With Ceph releases prior to Reef, the Ceph Object Gateway (RGW) does not support
+dynamic resharding in a
+multisite deployment. For information on dynamic resharding, see
+<a class="reference internal" href="zone-features.html#feature-resharding"><span class="std std-ref">Resharding</span></a> in the RGW multisite documentation.</p>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_dynamic_resharding">
+<span class="sig-name descname"><span class="pre">rgw_dynamic_resharding</span></span><a class="headerlink" href="#confval-rgw_dynamic_resharding" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>If true, RGW will dynamically increase the number of shards in buckets
+that have a high number of objects per shard.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-rgw_max_objs_per_shard"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_max_objs_per_shard</span></code></a>, <a class="reference internal" href="#confval-rgw_max_dynamic_shards"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_max_dynamic_shards</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_max_objs_per_shard">
+<span class="sig-name descname"><span class="pre">rgw_max_objs_per_shard</span></span><a class="headerlink" href="#confval-rgw_max_objs_per_shard" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This is the max number of objects per bucket index shard that RGW will
+allow with dynamic resharding. RGW will trigger an automatic reshard
+operation on the bucket if it exceeds this number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100000</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-rgw_dynamic_resharding"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dynamic_resharding</span></code></a>, <a class="reference internal" href="#confval-rgw_max_dynamic_shards"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_max_dynamic_shards</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_max_dynamic_shards">
+<span class="sig-name descname"><span class="pre">rgw_max_dynamic_shards</span></span><a class="headerlink" href="#confval-rgw_max_dynamic_shards" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This is the maximum number of bucket index shards that dynamic
+sharding is able to create on its own. This does not limit user
+requested resharding. Ideally this value is a prime number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1999</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-rgw_dynamic_resharding"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dynamic_resharding</span></code></a>, <a class="reference internal" href="#confval-rgw_max_objs_per_shard"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_max_objs_per_shard</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_dynamic_resharding_may_reduce">
+<span class="sig-name descname"><span class="pre">rgw_dynamic_resharding_may_reduce</span></span><a class="headerlink" href="#confval-rgw_dynamic_resharding_may_reduce" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>If true, RGW’s dynamic resharding ability is allowed to reduce the
+number of shards if it appears there are too many.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-rgw_dynamic_resharding"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dynamic_resharding</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_dynamic_resharding_reduction_wait">
+<span class="sig-name descname"><span class="pre">rgw_dynamic_resharding_reduction_wait</span></span><a class="headerlink" href="#confval-rgw_dynamic_resharding_reduction_wait" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>In order to avoid resharding buckets with object counts that fluctuate
+up and down regularly, we implemement a delay between noting a shard
+reduction might be appropriate and when it’s actually done. This
+allows us to cancel the reshard operation if the number of object
+significantly increases during this delay. WARNING: Setting this value
+too low could result in significantly reduced cluster performance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">120</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+<dt class="field-even">see also<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#confval-rgw_dynamic_resharding"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dynamic_resharding</span></code></a>, <a class="reference internal" href="#confval-rgw_dynamic_resharding_may_reduce"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_dynamic_resharding_may_reduce</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_reshard_bucket_lock_duration">
+<span class="sig-name descname"><span class="pre">rgw_reshard_bucket_lock_duration</span></span><a class="headerlink" href="#confval-rgw_reshard_bucket_lock_duration" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Number of seconds the timeout on the reshard locks (bucket reshard
+lock and reshard log lock) are set to. As a reshard proceeds these
+locks can be renewed/extended. If too short, reshards cannot complete
+and will fail, causing a future reshard attempt. If too long a hung or
+crashed reshard attempt will keep the bucket locked for an extended
+period, not allowing RGW to detect the failed reshard attempt and
+recover.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">360</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">30</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_reshard_thread_interval">
+<span class="sig-name descname"><span class="pre">rgw_reshard_thread_interval</span></span><a class="headerlink" href="#confval-rgw_reshard_thread_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Number of seconds between processing of reshard log entries</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">600</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_reshard_num_logs">
+<span class="sig-name descname"><span class="pre">rgw_reshard_num_logs</span></span><a class="headerlink" href="#confval-rgw_reshard_num_logs" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">16</span></code></p>
+</dd>
+<dt class="field-odd">min<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_reshard_progress_judge_interval">
+<span class="sig-name descname"><span class="pre">rgw_reshard_progress_judge_interval</span></span><a class="headerlink" href="#confval-rgw_reshard_progress_judge_interval" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>interval (in seconds) of judging if bucket reshard failed in block
+state</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">120</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-rgw_reshard_progress_judge_ratio">
+<span class="sig-name descname"><span class="pre">rgw_reshard_progress_judge_ratio</span></span><a class="headerlink" href="#confval-rgw_reshard_progress_judge_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Add a random delay to rgw_reshard_progress_judge_interval for deciding
+when to judge the reshard process. The default setting spreads judge
+time window of [1, 1.5] * rgw_reshard_progress_judge_interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-rgw_reshard_progress_judge_interval"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rgw_reshard_progress_judge_interval</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="admin-commands">
+<h2>Admin Commands<a class="headerlink" href="#admin-commands" title="Link to this heading"></a></h2>
+<section id="add-a-bucket-to-the-resharding-queue">
+<h3>Add a Bucket to the Resharding Queue<a class="headerlink" href="#add-a-bucket-to-the-resharding-queue" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>add<span class="w"> </span>--bucket<span class="w"> </span>&lt;bucket_name&gt;<span class="w"> </span>--num-shards<span class="w"> </span>&lt;new<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>shards&gt;</span>
+</pre></div></div></section>
+<section id="list-resharding-queue">
+<h3>List Resharding Queue<a class="headerlink" href="#list-resharding-queue" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>list</span>
+</pre></div></div></section>
+<section id="process-tasks-on-the-resharding-queue">
+<h3>Process Tasks on the Resharding Queue<a class="headerlink" href="#process-tasks-on-the-resharding-queue" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>process</span>
+</pre></div></div></section>
+<section id="bucket-resharding-status">
+<h3>Bucket Resharding Status<a class="headerlink" href="#bucket-resharding-status" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>status<span class="w"> </span>--bucket<span class="w"> </span>&lt;bucket_name&gt;</span>
+</pre></div></div><p>The output is a JSON array of 3 properties (<code class="docutils literal notranslate"><span class="pre">reshard_status</span></code>, <code class="docutils literal notranslate"><span class="pre">new_bucket_instance_id</span></code>, <code class="docutils literal notranslate"><span class="pre">num_shards</span></code>) per shard.</p>
+<p>For example, the output at each dynamic resharding stage is shown below:</p>
+<ol class="arabic">
+<li><p>Before resharding occurred:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;reshard_status&quot;</span><span class="p">:</span> <span class="s2">&quot;not-resharding&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;new_bucket_instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;num_shards&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>During resharding:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;reshard_status&quot;</span><span class="p">:</span> <span class="s2">&quot;in-progress&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;new_bucket_instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;1179f470-2ebf-4630-8ec3-c9922da887fd.8652.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;num_shards&quot;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;reshard_status&quot;</span><span class="p">:</span> <span class="s2">&quot;in-progress&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;new_bucket_instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;1179f470-2ebf-4630-8ec3-c9922da887fd.8652.1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;num_shards&quot;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>After resharding completed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;reshard_status&quot;</span><span class="p">:</span> <span class="s2">&quot;not-resharding&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;new_bucket_instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;num_shards&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;reshard_status&quot;</span><span class="p">:</span> <span class="s2">&quot;not-resharding&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;new_bucket_instance_id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;num_shards&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="cancel-pending-bucket-resharding">
+<h3>Cancel Pending Bucket Resharding<a class="headerlink" href="#cancel-pending-bucket-resharding" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bucket resharding tasks cannot be canceled once they transition to
+the <code class="docutils literal notranslate"><span class="pre">in-progress</span></code> state from the initial <code class="docutils literal notranslate"><span class="pre">not-resharding</span></code> state.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>cancel<span class="w"> </span>--bucket<span class="w"> </span>&lt;bucket_name&gt;</span>
+</pre></div></div></section>
+<section id="manual-immediate-bucket-resharding">
+<h3>Manual Immediate Bucket Resharding<a class="headerlink" href="#manual-immediate-bucket-resharding" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>bucket<span class="w"> </span>reshard<span class="w"> </span>--bucket<span class="w"> </span>&lt;bucket_name&gt;<span class="w"> </span>--num-shards<span class="w"> </span>&lt;new<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>shards&gt;</span>
+</pre></div></div><p>When choosing a number of shards, the administrator must anticipate each
+bucket’s peak number of objects. Ideally one should aim for no
+more than 100000 entries per shard at any given time.</p>
+<p>Additionally, bucket index shards that are prime numbers are more effective
+in evenly distributing bucket index entries.
+For example, 7001 bucket index shards is better than 7000
+since the former is prime. A variety of web sites have lists of prime
+numbers; search for “list of prime numbers” with your favorite
+search engine to locate some web sites.</p>
+</section>
+<section id="setting-a-bucket-s-minimum-number-of-shards">
+<h3>Setting a Bucket’s Minimum Number of Shards<a class="headerlink" href="#setting-a-bucket-s-minimum-number-of-shards" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>bucket<span class="w"> </span>set-min-shards<span class="w"> </span>--bucket<span class="w"> </span>&lt;bucket_name&gt;<span class="w"> </span>--num-shards<span class="w"> </span>&lt;min<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>shards&gt;</span>
+</pre></div></div><p>Since dynamic resharding can now reduce the number of shards,
+administrators may want to prevent the number of shards from becoming
+too low, for example if the expect the number of objects to increase
+in the future. This command allows administrators to set a per-bucket
+minimum. This does not, however, prevent administrators from manually
+resharding to a lower number of shards.</p>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<p>Clusters prior to Luminous 12.2.11 and Mimic 13.2.5 left behind stale bucket
+instance entries, which were not automatically cleaned up. This issue also affected
+lifecycle policies, which were no longer applied to resharded buckets. Both of
+these issues can be remediated by running <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span></code> commands.</p>
+<section id="stale-instance-management">
+<h3>Stale Instance Management<a class="headerlink" href="#stale-instance-management" title="Link to this heading"></a></h3>
+<p>List the stale instances in a cluster that may be cleaned up:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>stale-instances<span class="w"> </span>list</span>
+</pre></div></div><p>Clean up the stale instances in a cluster:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>reshard<span class="w"> </span>stale-instances<span class="w"> </span>delete</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cleanup of stale instances should not be done in a multisite deployment.</p>
+</div>
+</section>
+<section id="lifecycle-fixes">
+<h3>Lifecycle Fixes<a class="headerlink" href="#lifecycle-fixes" title="Link to this heading"></a></h3>
+<p>For clusters with resharded instances, it is highly likely that the old
+lifecycle processes would have flagged and deleted lifecycle processing as the
+bucket instance changed during a reshard. While this is fixed for buckets
+deployed on newer Ceph releases (from Mimic 13.2.6 and Luminous 12.2.12),
+older buckets that had lifecycle policies and that have undergone
+resharding must be fixed manually.</p>
+<p>The command to do so is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>lc<span class="w"> </span>reshard<span class="w"> </span>fix<span class="w"> </span>--bucket<span class="w"> </span><span class="o">{</span>bucketname<span class="o">}</span></span>
+</pre></div></div><p>If the <code class="docutils literal notranslate"><span class="pre">--bucket</span></code> argument is not provided, this
+command will try to fix lifecycle policies for all the buckets in the cluster.</p>
+</section>
+<section id="object-expirer-fixes">
+<h3>Object Expirer Fixes<a class="headerlink" href="#object-expirer-fixes" title="Link to this heading"></a></h3>
+<p>Objects subject to Swift object expiration on older clusters may have
+been dropped from the log pool and never deleted after the bucket was
+resharded. This would happen if their expiration time was before the
+cluster was upgraded, but if their expiration was after the upgrade
+the objects would be correctly handled. To manage these expire-stale
+objects, <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span></code> provides two subcommands.</p>
+<p>Listing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>objects<span class="w"> </span>expire-stale<span class="w"> </span>list<span class="w"> </span>--bucket<span class="w"> </span><span class="o">{</span>bucketname<span class="o">}</span></span>
+</pre></div></div><p>Displays a list of object names and expiration times in JSON format.</p>
+<p>Deleting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>objects<span class="w"> </span>expire-stale<span class="w"> </span>rm<span class="w"> </span>--bucket<span class="w"> </span><span class="o">{</span>bucketname<span class="o">}</span></span>
+</pre></div></div><p>Initiates deletion of such objects, displaying a list of object names, expiration times, and deletion status in JSON format.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bucketpolicy.html" class="btn btn-neutral float-left" title="Bucket Policies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mfa.html" class="btn btn-neutral float-right" title="RGW Support for Multifactor Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

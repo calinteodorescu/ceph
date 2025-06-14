@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partial Object Recovery &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="OSDMap Trimming and PastIntervals" href="past_intervals.html" />
+    <link rel="prev" title="OSD" href="osd_overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">OSD developer documentation</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="async_recovery.html">Asynchronous Recovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="backfill_reservation.html">Backfill Reservation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="erasure_coding.html">Erasure Coded Placement Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="last_epoch_started.html">last_epoch_started</a></li>
+<li class="toctree-l4"><a class="reference internal" href="log_based_pg.html">Log Based PG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="manifest.html">Manifest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="map_message_handling.html">Map and PG Message handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mclock_wpq_cmp_study.html">QoS Study with mClock and WPQ Schedulers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="osd_overview.html">OSD</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Partial Object Recovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="past_intervals.html">OSDMap Trimming and PastIntervals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg.html">PG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pg_removal.html">PG Removal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pgpool.html">PGPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="recovery_reservation.html">Recovery Reservation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="refcount.html">Refcount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scrub.html">Scrub internals and diagnostics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="snaps.html">Snaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stale_read.html">Preventing Stale Reads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="watch_notify.html">Watch Notify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wbthrottle.html">Writeback Throttle</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../internals.html">Ceph Internals</a></li>
+          <li class="breadcrumb-item"><a href="index.html">OSD developer documentation</a></li>
+      <li class="breadcrumb-item active">Partial Object Recovery</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dev/osd_internals/partial_object_recovery.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="partial-object-recovery">
+<h1>Partial Object Recovery<a class="headerlink" href="#partial-object-recovery" title="Link to this heading"></a></h1>
+<p>Partial Object Recovery improves the efficiency of log-based recovery (vs
+backfill). Original log-based recovery calculates missing_set based on pg_log
+differences.</p>
+<p>The whole object should be recovery from one OSD to another
+if the object is indicated modified by pg_log regardless of how much
+content in the object is really modified. That means a 4M object,
+which is just modified 4k inside, should recovery the whole 4M object
+rather than the modified 4k content. In addition, object map should be
+also recovered even if it is not modified at all.</p>
+<p>Partial Object Recovery is designed to solve the problem mentioned above.
+In order to achieve the goals, two things should be done:</p>
+<ol class="arabic simple">
+<li><p>logging where the object is modified is necessary</p></li>
+<li><p>logging whether the object_map of an object is modified is also necessary</p></li>
+</ol>
+<p>class ObjectCleanRegion is introduced to do what we want.
+clean_offsets is a variable of interval_set&lt;uint64_t&gt;
+and is used to indicate the unmodified content in an object.
+clean_omap is a variable of bool indicating whether object_map is modified.
+new_object means that osd does not exist for an object
+max_num_intervals is an upbound of the number of intervals in clean_offsets
+so that the memory cost of clean_offsets is always bounded.</p>
+<p>The shortest clean interval will be trimmed if the number of intervals
+in clean_offsets exceeds the boundary.</p>
+<blockquote>
+<div><p>etc. max_num_intervals=2, clean_offsets:{[5~10], [20~5]}</p>
+<p>then new interval [30~10] will evict out the shortest one [20~5]</p>
+<p>finally, clean_offsets becomes {[5~10], [30~10]}</p>
+</div></blockquote>
+<section id="procedures-for-partial-object-recovery">
+<h2>Procedures for Partial Object Recovery<a class="headerlink" href="#procedures-for-partial-object-recovery" title="Link to this heading"></a></h2>
+<p>Firstly, OpContext and pg_log_entry_t should contain ObjectCleanRegion.
+In do_osd_ops(), finish_copyfrom(), finish_promote(), corresponding content
+in ObjectCleanRegion should mark dirty so that trace the modification of an object.
+Also update ObjectCleanRegion in OpContext to its pg_log_entry_t.</p>
+<p>Secondly, pg_missing_set can build and rebuild correctly.
+when calculating pg_missing_set during peering process,
+also merge ObjectCleanRegion in each pg_log_entry_t.</p>
+<blockquote>
+<div><dl>
+<dt>etc. object aa has pg_log:</dt><dd><p>26’101 {[0~4096, 8192~MAX], false}</p>
+<p>26’104 {0~8192, 12288~MAX, false}</p>
+<p>28’108 {[0~12288, 16384~MAX], true}</p>
+</dd>
+</dl>
+<p>missing_set for object aa: merge pg_log above --&gt; {[0~4096, 16384~MAX], true}.
+which means 4096~16384 is modified and object_map is also modified on version 28’108</p>
+</div></blockquote>
+<p>Also, OSD may be crash after merge log.
+Therefore, we need to read_log and rebuild pg_missing_set. For example, pg_log is:</p>
+<blockquote>
+<div><p>object aa: 26’101 {[0~4096, 8192~MAX], false}</p>
+<p>object bb: 26’102 {[0~4096, 8192~MAX], false}</p>
+<p>object cc: 26’103 {[0~4096, 8192~MAX], false}</p>
+<p>object aa: 26’104 {0~8192, 12288~MAX, false}</p>
+<p>object dd: 26’105 {[0~4096, 8192~MAX], false}</p>
+<p>object aa: 28’108 {[0~12288, 16384~MAX], true}</p>
+</div></blockquote>
+<p>Originally, if bb,cc,dd is recovered, and aa is not.
+So we need to rebuild pg_missing_set for object aa,
+and find aa is modified on version 28’108.
+If version in object_info is 26’96 &lt; 28’108,
+we don’t need to consider 26’104 and 26’101 because the whole object will be recovered.
+However, Partial Object Recovery should also require us to rebuild ObjectCleanRegion.</p>
+<p>Knowing whether the object is modified is not enough.</p>
+<p>Therefore, we also need to traverse the pg_log before,
+that says 26’104 and 26’101 also &gt; object_info(26’96)
+and rebuild pg_missing_set for object aa based on those three logs: 28’108, 26’104, 26’101.
+The way how to merge logs is the same as mentioned above</p>
+<p>Finally, finish the push and pull process based on pg_missing_set.
+Updating copy_subset in recovery_info based on ObjectCleanRegion in pg_missing_set.
+copy_subset indicates the intervals of content need to pull and push.</p>
+<p>The complicated part here is submit_push_data
+and serval cases should be considered separately.
+what we need to consider is how to deal with the object data,
+object data makes up of omap_header, xattrs, omap, data:</p>
+<p>case 1: first &amp;&amp; complete: since object recovering is finished in a single PushOp,
+we would like to preserve the original object and overwrite on the object directly.
+Object will not be removed and touch a new one.</p>
+<blockquote>
+<div><p>issue 1: As object is not removed, old xattrs remain in the old object
+but maybe updated in new object. Overwriting for the same key or adding new keys is correct,
+but removing keys will be wrong.
+In order to solve this issue, We need to remove the all original xattrs in the object, and then update new xattrs.</p>
+<p>issue 2: As object is not removed,
+object_map may be recovered depending on the clean_omap.
+Therefore, if recovering clean_omap, we need to remove old omap of the object for the same reason
+since omap updating may also be a deletion.
+Thus, in this case, we should do:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>clear xattrs of the object</p></li>
+<li><p>clear omap of the object if omap recovery is needed</p></li>
+<li><p>truncate the object into recovery_info.size</p></li>
+<li><p>recovery omap_header</p></li>
+<li><p>recovery xattrs, and recover omap if needed</p></li>
+<li><p>punch zeros for original object if fiemap tells nothing there</p></li>
+<li><p>overwrite object content which is modified</p></li>
+<li><p>finish recovery</p></li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+<p>case 2:  first &amp;&amp; !complete: object recovering should be done in multiple times.
+Here, target_oid will indicate a new temp_object in pgid_TEMP,
+so the issues are a bit difference.</p>
+<blockquote>
+<div><p>issue 1: As object is newly created, there is no need to deal with xattrs</p>
+<p>issue 2: As object is newly created,
+and object_map may not be transmitted depending on clean_omap.
+Therefore, if clean_omap is true, we need to clone object_map from original object.
+issue 3: As object is newly created, and unmodified data will not be transmitted.
+Therefore, we need to clone unmodified data from the original object.
+Thus, in this case, we should do:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>remove the temp object</p></li>
+<li><p>create a new temp object</p></li>
+<li><p>set alloc_hint for the new temp object</p></li>
+<li><p>truncate new temp object to recovery_info.size</p></li>
+<li><p>recovery omap_header</p></li>
+<li><p>clone object_map from original object if omap is clean</p></li>
+<li><p>clone unmodified object_data from original object</p></li>
+<li><p>punch zeros for the new temp object</p></li>
+<li><p>recovery xattrs, and recover omap if needed</p></li>
+<li><p>overwrite object content which is modified</p></li>
+<li><p>remove the original object</p></li>
+<li><p>move and rename the new temp object to replace the original object</p></li>
+<li><p>finish recovery</p></li>
+</ol>
+</div></blockquote>
+</div></blockquote>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="osd_overview.html" class="btn btn-neutral float-left" title="OSD" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="past_intervals.html" class="btn btn-neutral float-right" title="OSDMap Trimming and PastIntervals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

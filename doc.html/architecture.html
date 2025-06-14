@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing to Ceph: A Guide for Developers" href="dev/developer_guide/index.html" />
+    <link rel="prev" title="cephadm" href="api/mon_command_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-ceph-storage-cluster">The Ceph Storage Cluster</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#storing-data">Storing Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scalability-and-high-availability">Scalability and High Availability</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#crush-introduction">CRUSH Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cluster-map">Cluster Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#high-availability-monitors">High Availability Monitors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#high-availability-authentication">High Availability Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#smart-daemons-enable-hyperscale">Smart Daemons Enable Hyperscale</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dynamic-cluster-management">Dynamic Cluster Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#about-pools">About Pools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mapping-pgs-to-osds">Mapping PGs to OSDs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculating-pg-ids">Calculating PG IDs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#peering-and-sets">Peering and Sets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rebalancing">Rebalancing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-consistency">Data Consistency</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#erasure-coding">Erasure Coding</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reading-and-writing-encoded-chunks">Reading and Writing Encoded Chunks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interrupted-full-writes">Interrupted Full Writes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cache-tiering">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extending-ceph">Extending Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-protocol">Ceph Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#native-protocol-and-librados">Native Protocol and <code class="docutils literal notranslate"><span class="pre">librados</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#object-watch-notify">Object Watch/Notify</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-striping">Data Striping</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ceph-clients">Ceph Clients</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ceph-object-storage">Ceph Object Storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ceph-block-device">Ceph Block Device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ceph-file-system">Ceph File System</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/architecture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="architecture">
+<h1>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h1>
+<p><a class="reference internal" href="glossary.html#term-Ceph"><span class="xref std std-term">Ceph</span></a> uniquely delivers <strong>object, block, and file storage</strong> in one
+unified system. Ceph is highly reliable, easy to manage, and free. Ceph
+delivers extraordinary scalability–thousands of clients accessing petabytes to
+exabytes of data. A <a class="reference internal" href="glossary.html#term-Ceph-Node"><span class="xref std std-term">Ceph Node</span></a> leverages commodity hardware and
+intelligent daemons, and a <a class="reference internal" href="glossary.html#term-Ceph-Storage-Cluster"><span class="xref std std-term">Ceph Storage Cluster</span></a> accommodates large
+numbers of nodes, which communicate with each other to replicate and
+redistribute data dynamically.</p>
+<img alt="_images/stack.png" src="_images/stack.png" />
+<section id="the-ceph-storage-cluster">
+<span id="arch-ceph-storage-cluster"></span><h2>The Ceph Storage Cluster<a class="headerlink" href="#the-ceph-storage-cluster" title="Link to this heading"></a></h2>
+<p>Ceph provides an infinitely scalable <a class="reference internal" href="glossary.html#term-Ceph-Storage-Cluster"><span class="xref std std-term">Ceph Storage Cluster</span></a> based upon
+<abbr title="Reliable Autonomic Distributed Object Store">RADOS</abbr>, a reliable,
+distributed storage service that uses the intelligence in each of its nodes to
+secure the data it stores and to provide that data to <a class="reference internal" href="glossary.html#term-Client"><span class="xref std std-term">client</span></a>s. See
+Sage Weil’s “<a class="reference external" href="https://ceph.io/en/news/blog/2009/the-rados-distributed-object-store/">The RADOS Object Store</a>” blog
+post for a brief explanation of RADOS and see <a class="reference external" href="https://ceph.io/assets/pdfs/weil-rados-pdsw07.pdf">RADOS - A Scalable, Reliable
+Storage Service for Petabyte-scale Storage Clusters</a> for an exhaustive
+explanation of <a class="reference internal" href="glossary.html#term-RADOS"><span class="xref std std-term">RADOS</span></a>.</p>
+<p>A Ceph Storage Cluster consists of multiple types of daemons:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="glossary.html#term-Ceph-Monitor"><span class="xref std std-term">Ceph Monitor</span></a></p></li>
+<li><p><a class="reference internal" href="glossary.html#term-Ceph-OSD-Daemon"><span class="xref std std-term">Ceph OSD Daemon</span></a></p></li>
+<li><p><a class="reference internal" href="glossary.html#term-Ceph-Manager"><span class="xref std std-term">Ceph Manager</span></a></p></li>
+<li><p><a class="reference internal" href="glossary.html#term-Ceph-Metadata-Server"><span class="xref std std-term">Ceph Metadata Server</span></a></p></li>
+</ul>
+<p id="arch-monitor">Ceph Monitors maintain the master copy of the cluster map, which they provide
+to Ceph clients. The existence of multiple monitors in the Ceph cluster ensures
+availability if one of the monitor daemons or its host fails.</p>
+<p>A Ceph OSD Daemon checks its own state and the state of other OSDs and reports
+back to monitors.</p>
+<p>A Ceph Manager serves as an endpoint for monitoring, orchestration, and plug-in
+modules.</p>
+<p>A Ceph Metadata Server (MDS) manages file metadata when CephFS is used to
+provide file services.</p>
+<p>Storage cluster clients and <a class="reference internal" href="glossary.html#term-Ceph-OSD-Daemon"><span class="xref std std-term">Ceph OSD Daemon</span></a>s use the CRUSH algorithm
+to compute information about the location of data.  By using the CRUSH
+algorithm, clients and OSDs avoid being bottlenecked by a central lookup table.
+Ceph’s high-level features include a native interface to the Ceph Storage
+Cluster via <code class="docutils literal notranslate"><span class="pre">librados</span></code> and a number of service interfaces built on top of
+<code class="docutils literal notranslate"><span class="pre">librados</span></code>.</p>
+<section id="storing-data">
+<h3>Storing Data<a class="headerlink" href="#storing-data" title="Link to this heading"></a></h3>
+<p>The Ceph Storage Cluster receives data from <a class="reference internal" href="glossary.html#term-Ceph-Client"><span class="xref std std-term">Ceph Client</span></a>s--whether it
+comes through a <a class="reference internal" href="glossary.html#term-Ceph-Block-Device"><span class="xref std std-term">Ceph Block Device</span></a>, <a class="reference internal" href="glossary.html#term-Ceph-Object-Storage"><span class="xref std std-term">Ceph Object Storage</span></a>, the
+<a class="reference internal" href="glossary.html#term-Ceph-File-System"><span class="xref std std-term">Ceph File System</span></a>, or a custom implementation that you create by using
+<code class="docutils literal notranslate"><span class="pre">librados</span></code>. The data received by the Ceph Storage Cluster is stored as RADOS
+objects. Each object is stored on an <a class="reference internal" href="glossary.html#term-Object-Storage-Device"><span class="xref std std-term">Object Storage Device</span></a> (this is
+also called an “OSD”). Ceph OSDs control read, write, and replication
+operations on storage drives. The default BlueStore back end stores objects
+in a monolithic, database-like fashion.</p>
+<img alt="_images/8f7d6306bd9506839931d77e1fdc60f397b4d841744e0c6b244aba9186738848.png" class="align-center" src="_images/8f7d6306bd9506839931d77e1fdc60f397b4d841744e0c6b244aba9186738848.png" />
+<p>Ceph OSD Daemons store data as objects in a flat namespace. This means that
+objects are not stored in a hierarchy of directories. An object has an
+identifier, binary data, and metadata consisting of name/value pairs.
+<a class="reference internal" href="glossary.html#term-Ceph-Client"><span class="xref std std-term">Ceph Client</span></a>s determine the semantics of the object data. For example,
+CephFS uses metadata to store file attributes such as the file owner, the
+created date, and the last modified date.</p>
+<img alt="_images/4ed8cdf2e8556555185907b4725c51c04704111b65598e30d43b6be77eb3948d.png" class="align-center" src="_images/4ed8cdf2e8556555185907b4725c51c04704111b65598e30d43b6be77eb3948d.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An object ID is unique across the entire cluster, not just the local
+filesystem.</p>
+</div>
+</section>
+<section id="scalability-and-high-availability">
+<span id="arch-scalability-and-high-availability"></span><span id="index-0"></span><h3>Scalability and High Availability<a class="headerlink" href="#scalability-and-high-availability" title="Link to this heading"></a></h3>
+<p>In traditional architectures, clients talk to a centralized component. This
+centralized component might be a gateway, a broker, an API, or a facade. A
+centralized component of this kind acts as a single point of entry to a complex
+subsystem. Architectures that rely upon such a centralized component have a
+single point of failure and incur limits to performance and scalability. If
+the centralized component goes down, the whole system becomes unavailable.</p>
+<p>Ceph eliminates this centralized component. This enables clients to interact
+with Ceph OSDs directly. Ceph OSDs create object replicas on other Ceph Nodes
+to ensure data safety and high availability. Ceph also uses a cluster of
+monitors to ensure high availability. To eliminate centralization, Ceph uses an
+algorithm called <abbr title="Controlled Replication Under Scalable Hashing">CRUSH</abbr>.</p>
+<section id="crush-introduction">
+<span id="index-1"></span><h4>CRUSH Introduction<a class="headerlink" href="#crush-introduction" title="Link to this heading"></a></h4>
+<p>Ceph Clients and Ceph OSD Daemons both use the <abbr title="Controlled Replication Under Scalable Hashing">CRUSH</abbr> algorithm to compute information about
+object location instead of relying upon a central lookup table. CRUSH provides
+a better data management mechanism than do older approaches, and CRUSH enables
+massive scale by distributing the work to all the OSD daemons in the cluster
+and all the clients that communicate with them. CRUSH uses intelligent data
+replication to ensure resiliency, which is better suited to hyper-scale
+storage. The following sections provide additional details on how CRUSH works.
+For an in-depth, academic discussion of CRUSH, see <a class="reference external" href="https://ceph.io/assets/pdfs/weil-crush-sc06.pdf">CRUSH - Controlled,
+Scalable, Decentralized Placement of Replicated Data</a>.</p>
+</section>
+<section id="cluster-map">
+<span id="architecture-cluster-map"></span><span id="index-2"></span><h4>Cluster Map<a class="headerlink" href="#cluster-map" title="Link to this heading"></a></h4>
+<p>In order for a Ceph cluster to function properly, Ceph Clients and Ceph OSDs
+must have current information about the cluster’s topology. Current information
+is stored in the “Cluster Map”, which is in fact a collection of five maps. The
+five maps that constitute the cluster map are:</p>
+<ol class="arabic simple">
+<li><p><strong>The Monitor Map:</strong> Contains the cluster <code class="docutils literal notranslate"><span class="pre">fsid</span></code>, the position, the name,
+the address, and the TCP port of each monitor. The monitor map specifies the
+current epoch, the time of the monitor map’s creation, and the time of the
+monitor map’s last modification.  To view a monitor map, run <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">mon</span>
+<span class="pre">dump</span></code>.</p></li>
+<li><p><strong>The OSD Map:</strong> Contains the cluster <code class="docutils literal notranslate"><span class="pre">fsid</span></code>, the time of the OSD map’s
+creation, the time of the OSD map’s last modification, a list of pools, a
+list of replica sizes, a list of PG numbers, and a list of OSDs and their
+statuses (for example, <code class="docutils literal notranslate"><span class="pre">up</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>). To view an OSD map, run <code class="docutils literal notranslate"><span class="pre">ceph</span>
+<span class="pre">osd</span> <span class="pre">dump</span></code>.</p></li>
+<li><p><strong>The PG Map:</strong> Contains the PG version, its time stamp, the last OSD map
+epoch, the full ratios, and the details of each placement group. This
+includes the PG ID, the <cite>Up Set</cite>, the <cite>Acting Set</cite>, the state of the PG (for
+example, <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">+</span> <span class="pre">clean</span></code>), and data usage statistics for each pool.</p></li>
+<li><p><strong>The CRUSH Map:</strong> Contains a list of storage devices, the failure domain
+hierarchy (for example, <code class="docutils literal notranslate"><span class="pre">device</span></code>, <code class="docutils literal notranslate"><span class="pre">host</span></code>, <code class="docutils literal notranslate"><span class="pre">rack</span></code>, <code class="docutils literal notranslate"><span class="pre">row</span></code>, <code class="docutils literal notranslate"><span class="pre">room</span></code>),
+and rules for traversing the hierarchy when storing data. To view a CRUSH
+map, run <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">getcrushmap</span> <span class="pre">-o</span> <span class="pre">{filename}</span></code> and then decompile it by
+running <code class="docutils literal notranslate"><span class="pre">crushtool</span> <span class="pre">-d</span> <span class="pre">{comp-crushmap-filename}</span> <span class="pre">-o</span>
+<span class="pre">{decomp-crushmap-filename}</span></code>. Use a text editor or <code class="docutils literal notranslate"><span class="pre">cat</span></code> to view the
+decompiled map.</p></li>
+<li><p><strong>The MDS Map:</strong> Contains the current MDS map epoch, when the map was
+created, and the last time it changed. It also contains the pool for
+storing metadata, a list of metadata servers, and which metadata servers
+are <code class="docutils literal notranslate"><span class="pre">up</span></code> and <code class="docutils literal notranslate"><span class="pre">in</span></code>. To view an MDS map, execute <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">fs</span> <span class="pre">dump</span></code>.</p></li>
+</ol>
+<p>Each map maintains a history of changes to its operating state. Ceph Monitors
+maintain a master copy of the cluster map. This master copy includes the
+cluster members, the state of the cluster, changes to the cluster, and
+information recording the overall health of the Ceph Storage Cluster.</p>
+</section>
+<section id="high-availability-monitors">
+<span id="index-3"></span><h4>High Availability Monitors<a class="headerlink" href="#high-availability-monitors" title="Link to this heading"></a></h4>
+<p>A Ceph Client must contact a Ceph Monitor and obtain a current copy of the
+cluster map in order to read data from or to write data to the Ceph cluster.</p>
+<p>It is possible for a Ceph cluster to function properly with only a single
+monitor, but a Ceph cluster that has only a single monitor has a single point
+of failure: if the monitor goes down, Ceph clients will be unable to read data
+from or write data to the cluster.</p>
+<p>Ceph leverages a cluster of monitors in order to increase reliability and fault
+tolerance. When a cluster of monitors is used, however, one or more of the
+monitors in the cluster can fall behind due to latency or other faults. Ceph
+mitigates these negative effects by requiring multiple monitor instances to
+agree about the state of the cluster. To establish consensus among the monitors
+regarding the state of the cluster, Ceph uses the <a class="reference external" href="https://en.wikipedia.org/wiki/Paxos_(computer_science)">Paxos</a> algorithm and a
+majority of monitors (for example, one in a cluster that contains only one
+monitor, two in a cluster that contains three monitors, three in a cluster that
+contains five monitors, four in a cluster that contains six monitors, and so
+on).</p>
+<p>See the <a class="reference internal" href="rados/configuration/mon-config-ref.html#monitor-config-reference"><span class="std std-ref">Monitor Config Reference</span></a> for more detail on configuring monitors.</p>
+</section>
+<section id="high-availability-authentication">
+<span id="arch-high-availability-authentication"></span><span id="index-4"></span><h4>High Availability Authentication<a class="headerlink" href="#high-availability-authentication" title="Link to this heading"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">cephx</span></code> authentication system is used by Ceph to authenticate users and
+daemons and to protect against man-in-the-middle attacks.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cephx</span></code> protocol does not address data encryption in transport
+(for example, SSL/TLS) or encryption at rest.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">cephx</span></code> uses shared secret keys for authentication. This means that both the
+client and the monitor cluster keep a copy of the client’s secret key.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cephx</span></code> protocol makes it possible for each party to prove to the other
+that it has a copy of the key without revealing it. This provides mutual
+authentication and allows the cluster to confirm (1) that the user has the
+secret key and (2) that the user can be confident that the cluster has a copy
+of the secret key.</p>
+<p>As stated in <a class="reference internal" href="#arch-scalability-and-high-availability"><span class="std std-ref">Scalability and High Availability</span></a>, Ceph does not have any centralized
+interface between clients and the Ceph object store. By avoiding such a
+centralized interface, Ceph avoids the bottlenecks that attend such centralized
+interfaces. However, this means that clients must interact directly with OSDs.
+Direct interactions between Ceph clients and OSDs require authenticated
+connections. The <code class="docutils literal notranslate"><span class="pre">cephx</span></code> authentication system establishes and sustains these
+authenticated connections.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cephx</span></code> protocol operates in a manner similar to <a class="reference external" href="https://en.wikipedia.org/wiki/Kerberos_(protocol)">Kerberos</a>.</p>
+<p>A user invokes a Ceph client to contact a monitor. Unlike Kerberos, each
+monitor can authenticate users and distribute keys, which means that there is
+no single point of failure and no bottleneck when using <code class="docutils literal notranslate"><span class="pre">cephx</span></code>. The monitor
+returns an authentication data structure that is similar to a Kerberos ticket.
+This authentication data structure contains a session key for use in obtaining
+Ceph services. The session key is itself encrypted with the user’s permanent
+secret key, which means that only the user can request services from the Ceph
+Monitors. The client then uses the session key to request services from the
+monitors, and the monitors provide the client with a ticket that authenticates
+the client against the OSDs that actually handle data. Ceph Monitors and OSDs
+share a secret, which means that the clients can use the ticket provided by the
+monitors to authenticate against any OSD or metadata server in the cluster.</p>
+<p>Like Kerberos tickets, <code class="docutils literal notranslate"><span class="pre">cephx</span></code> tickets expire. An attacker cannot use an
+expired ticket or session key that has been obtained surreptitiously. This form
+of authentication prevents attackers who have access to the communications
+medium from creating bogus messages under another user’s identity and prevents
+attackers from altering another user’s legitimate messages, as long as the
+user’s secret key is not divulged before it expires.</p>
+<p>An administrator must set up users before using <code class="docutils literal notranslate"><span class="pre">cephx</span></code>.  In the following
+diagram, the <code class="docutils literal notranslate"><span class="pre">client.admin</span></code> user invokes <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">auth</span> <span class="pre">get-or-create-key</span></code> from
+the command line to generate a username and secret key. Ceph’s <code class="docutils literal notranslate"><span class="pre">auth</span></code>
+subsystem generates the username and key, stores a copy on the monitor(s), and
+transmits the user’s secret back to the <code class="docutils literal notranslate"><span class="pre">client.admin</span></code> user. This means that
+the client and the monitor share a secret key.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">client.admin</span></code> user must provide the user ID and
+secret key to the user in a secure manner.</p>
+</div>
+<img alt="_images/27e608b3fe211969cd0bb2caefb190d9ee5ceb83ee46c3c475c361cc8b349129.png" class="align-center" src="_images/27e608b3fe211969cd0bb2caefb190d9ee5ceb83ee46c3c475c361cc8b349129.png" />
+<p>Here is how a client authenticates with a monitor. The client passes the user
+name to the monitor. The monitor generates a session key that is encrypted with
+the secret key associated with the <code class="docutils literal notranslate"><span class="pre">username</span></code>. The monitor transmits the
+encrypted ticket to the client. The client uses the shared secret key to
+decrypt the payload. The session key identifies the user, and this act of
+identification will last for the duration of the session.  The client requests
+a ticket for the user, and the ticket is signed with the session key. The
+monitor generates a ticket and uses the user’s secret key to encrypt it. The
+encrypted ticket is transmitted to the client. The client decrypts the ticket
+and uses it to sign requests to OSDs and to metadata servers in the cluster.</p>
+<img alt="_images/5f4e063a13f2c9c6ddf407e24dedc0be725634070c1d82d7877db0082bbf63bc.png" class="align-center" src="_images/5f4e063a13f2c9c6ddf407e24dedc0be725634070c1d82d7877db0082bbf63bc.png" />
+<p>The <code class="docutils literal notranslate"><span class="pre">cephx</span></code> protocol authenticates ongoing communications between the clients
+and Ceph daemons. After initial authentication, each message sent between a
+client and a daemon is signed using a ticket that can be verified by monitors,
+OSDs, and metadata daemons. This ticket is verified by using the secret shared
+between the client and the daemon.</p>
+<img alt="_images/33ea934f646c711940b4559154d56c3979eaaefdadf4e6398bde48272ceb4169.png" class="align-center" src="_images/33ea934f646c711940b4559154d56c3979eaaefdadf4e6398bde48272ceb4169.png" />
+<p>This authentication protects only the connections between Ceph clients and Ceph
+daemons. The authentication is not extended beyond the Ceph client. If a user
+accesses the Ceph client from a remote host, cephx authentication will not be
+applied to the connection between the user’s host and the client host.</p>
+<p>See <a class="reference internal" href="rados/configuration/auth-config-ref.html#rados-cephx-config-ref"><span class="std std-ref">CephX Config Reference</span></a> for more on configuration details.</p>
+<p>See <a class="reference internal" href="rados/operations/user-management.html#user-management"><span class="std std-ref">User Management</span></a> for more on user management.</p>
+<p>See <a class="reference internal" href="dev/cephx_protocol.html#cephx-2012-peter"><span class="std std-ref">A Detailed Description of the Cephx Authentication Protocol</span></a> for more on the distinction between authorization and
+authentication and for a step-by-step explanation of the setup of <code class="docutils literal notranslate"><span class="pre">cephx</span></code>
+tickets and session keys.</p>
+</section>
+<section id="smart-daemons-enable-hyperscale">
+<span id="index-5"></span><h4>Smart Daemons Enable Hyperscale<a class="headerlink" href="#smart-daemons-enable-hyperscale" title="Link to this heading"></a></h4>
+<p>A feature of many storage clusters is a centralized interface that keeps track
+of the nodes that clients are permitted to access. Such centralized
+architectures provide services to clients by means of a double dispatch. At the
+petabyte-to-exabyte scale, such double dispatches are a significant
+bottleneck.</p>
+<p>Ceph obviates this bottleneck: Ceph’s OSD Daemons AND Ceph clients are
+cluster-aware. Like Ceph clients, each Ceph OSD Daemon is aware of other Ceph
+OSD Daemons in the cluster. This enables Ceph OSD Daemons to interact directly
+with other Ceph OSD Daemons and to interact directly with Ceph Monitors.  Being
+cluster-aware makes it possible for Ceph clients to interact directly with Ceph
+OSD Daemons.</p>
+<p>Because Ceph clients, Ceph monitors, and Ceph OSD daemons interact with one
+another directly, Ceph OSD daemons can make use of the aggregate CPU and RAM
+resources of the nodes in the Ceph cluster. This means that a Ceph cluster can
+easily perform tasks that a cluster with a centralized interface would struggle
+to perform. The ability of Ceph nodes to make use of the computing power of
+the greater cluster provides several benefits:</p>
+<ol class="arabic">
+<li><p><strong>OSDs Service Clients Directly:</strong> Network devices can support only a
+limited number of concurrent connections. Because Ceph clients contact
+Ceph OSD daemons directly without first connecting to a central interface,
+Ceph enjoys improved perfomance and increased system capacity relative to
+storage redundancy strategies that include a central interface. Ceph clients
+maintain sessions only when needed, and maintain those sessions with only
+particular Ceph OSD daemons, not with a centralized interface.</p></li>
+<li><p><strong>OSD Membership and Status</strong>: When Ceph OSD Daemons join a cluster, they
+report their status. At the lowest level, the Ceph OSD Daemon status is
+<code class="docutils literal notranslate"><span class="pre">up</span></code> or <code class="docutils literal notranslate"><span class="pre">down</span></code>: this reflects whether the Ceph OSD daemon is running and
+able to service Ceph Client requests. If a Ceph OSD Daemon is <code class="docutils literal notranslate"><span class="pre">down</span></code> and
+<code class="docutils literal notranslate"><span class="pre">in</span></code> the Ceph Storage Cluster, this status may indicate the failure of the
+Ceph OSD Daemon. If a Ceph OSD Daemon is not running because it has crashed,
+the Ceph OSD Daemon cannot notify the Ceph Monitor that it is <code class="docutils literal notranslate"><span class="pre">down</span></code>. The
+OSDs periodically send messages to the Ceph Monitor (in releases prior to
+Luminous, this was done by means of <code class="docutils literal notranslate"><span class="pre">MPGStats</span></code>, and beginning with the
+Luminous release, this has been done with <code class="docutils literal notranslate"><span class="pre">MOSDBeacon</span></code>). If the Ceph
+Monitors receive no such message after a configurable period of time,
+then they mark the OSD <code class="docutils literal notranslate"><span class="pre">down</span></code>. This mechanism is a failsafe, however.
+Normally, Ceph OSD Daemons determine if a neighboring OSD is <code class="docutils literal notranslate"><span class="pre">down</span></code> and
+report it to the Ceph Monitors. This contributes to making Ceph Monitors
+lightweight processes. See <a class="reference external" href="../rados/operations/monitoring-osd-pg/#monitoring-osds">Monitoring OSDs</a> and <a class="reference external" href="../rados/configuration/mon-osd-interaction">Heartbeats</a> for
+additional details.</p></li>
+<li><p><strong>Data Scrubbing:</strong> To maintain data consistency, Ceph OSD Daemons scrub
+RADOS objects. Ceph OSD Daemons compare the metadata of their own local
+objects against the metadata of the replicas of those objects, which are
+stored on other OSDs. Scrubbing occurs on a per-Placement-Group basis, finds
+mismatches in object size and finds metadata mismatches, and is usually
+performed daily. Ceph OSD Daemons perform deeper scrubbing by comparing the
+data in objects, bit-for-bit, against their checksums. Deep scrubbing finds
+bad sectors on drives that are not detectable with light scrubs. See <a class="reference internal" href="rados/configuration/osd-config-ref.html#rados-config-scrubbing"><span class="std std-ref">Data
+Scrubbing</span></a> for details on configuring scrubbing.</p></li>
+<li><p><strong>Replication:</strong> Data replication involves collaboration between Ceph
+Clients and Ceph OSD Daemons. Ceph OSD Daemons use the CRUSH algorithm to
+determine the storage location of object replicas. Ceph clients use the
+CRUSH algorithm to determine the storage location of an object, then the
+object is mapped to a pool and to a placement group, and then the client
+consults the CRUSH map to identify the placement group’s primary OSD.</p>
+<p>After identifying the target placement group, the client writes the object
+to the identified placement group’s primary OSD. The primary OSD then
+consults its own copy of the CRUSH map to identify secondary
+OSDS, replicates the object to the placement groups in those secondary
+OSDs, confirms that the object was stored successfully in the
+secondary OSDs, and reports to the client that the object
+was stored successfully.  We call these replication operations <code class="docutils literal notranslate"><span class="pre">subops</span></code>.</p>
+</li>
+</ol>
+<img alt="_images/371a69864f70ff3126415526ca287d9c03c2aef722b92d636d8f867f0d65afce.png" class="align-center" src="_images/371a69864f70ff3126415526ca287d9c03c2aef722b92d636d8f867f0d65afce.png" />
+<p>By performing this data replication, Ceph OSD Daemons relieve Ceph
+clients and their network interfaces of the burden of replicating data.</p>
+</section>
+</section>
+<section id="dynamic-cluster-management">
+<h3>Dynamic Cluster Management<a class="headerlink" href="#dynamic-cluster-management" title="Link to this heading"></a></h3>
+<p>In the <a class="reference internal" href="#scalability-and-high-availability">Scalability and High Availability</a> section, we explained how Ceph uses
+CRUSH, cluster topology, and intelligent daemons to scale and maintain high
+availability. Key to Ceph’s design is the autonomous, self-healing, and
+intelligent Ceph OSD Daemon. Let’s take a deeper look at how CRUSH works to
+enable modern cloud storage infrastructures to place data, rebalance the
+cluster, and adaptively place and balance data and recover from faults.</p>
+<section id="about-pools">
+<span id="index-6"></span><h4>About Pools<a class="headerlink" href="#about-pools" title="Link to this heading"></a></h4>
+<p>The Ceph storage system supports the notion of ‘Pools’, which are logical
+partitions for storing objects.</p>
+<p>Ceph Clients retrieve a <a class="reference internal" href="#cluster-map">Cluster Map</a> from a Ceph Monitor, and write RADOS
+objects to pools. The way that Ceph places the data in the pools is determined
+by the pool’s <code class="docutils literal notranslate"><span class="pre">size</span></code> or number of replicas, the CRUSH rule, and the number of
+placement groups in the pool.</p>
+<img alt="_images/6bd81b732befb17e664371189141fdf2c18e032d2c0f87b2a29f8fb78f895f78.png" class="align-center" src="_images/6bd81b732befb17e664371189141fdf2c18e032d2c0f87b2a29f8fb78f895f78.png" />
+<p>Pools set at least the following parameters:</p>
+<ul class="simple">
+<li><p>Ownership/Access to Objects</p></li>
+<li><p>The Number of Placement Groups, and</p></li>
+<li><p>The CRUSH Rule to Use.</p></li>
+</ul>
+<p>See <a class="reference internal" href="rados/operations/pools.html#setpoolvalues"><span class="std std-ref">Setting Pool Values</span></a> for details.</p>
+</section>
+<section id="mapping-pgs-to-osds">
+<h4>Mapping PGs to OSDs<a class="headerlink" href="#mapping-pgs-to-osds" title="Link to this heading"></a></h4>
+<p>Each pool has a number of placement groups (PGs) within it. CRUSH dynamically
+maps PGs to OSDs. When a Ceph Client stores objects, CRUSH maps each RADOS
+object to a PG.</p>
+<p>This mapping of RADOS objects to PGs implements an abstraction and indirection
+layer between Ceph OSD Daemons and Ceph Clients. The Ceph Storage Cluster must
+be able to grow (or shrink) and redistribute data adaptively when the internal
+topology changes.</p>
+<p>If the Ceph Client “knew” which Ceph OSD Daemons were storing which objects, a
+tight coupling would exist between the Ceph Client and the Ceph OSD Daemon.
+But Ceph avoids any such tight coupling. Instead, the CRUSH algorithm maps each
+RADOS object to a placement group and then maps each placement group to one or
+more Ceph OSD Daemons. This “layer of indirection” allows Ceph to rebalance
+dynamically when new Ceph OSD Daemons and their underlying OSD devices come
+online. The following diagram shows how the CRUSH algorithm maps objects to
+placement groups, and how it maps placement groups to OSDs.</p>
+<img alt="_images/f592d64bd19e67476c118c14caf9d4e3df61607d25670d5b3e83b45d2f29db99.png" class="align-center" src="_images/f592d64bd19e67476c118c14caf9d4e3df61607d25670d5b3e83b45d2f29db99.png" />
+<p>The client uses its copy of the cluster map and the CRUSH algorithm to compute
+precisely which OSD it will use when reading or writing a particular object.</p>
+</section>
+<section id="calculating-pg-ids">
+<span id="index-7"></span><h4>Calculating PG IDs<a class="headerlink" href="#calculating-pg-ids" title="Link to this heading"></a></h4>
+<p>When a Ceph Client binds to a Ceph Monitor, it retrieves the latest version of
+the <a class="reference internal" href="#cluster-map">Cluster Map</a>. When a client has been equipped with a copy of the cluster
+map, it is aware of all the monitors, OSDs, and metadata servers in the
+cluster. <strong>However, even equipped with a copy of the latest version of the
+cluster map, the client doesn’t know anything about object locations.</strong></p>
+<p><strong>Object locations must be computed.</strong></p>
+<p>The client requires only the object ID and the name of the pool in order to
+compute the object location.</p>
+<p>Ceph stores data in named pools (for example,  “liverpool”). When a client
+stores a named object (for example, “john”, “paul”, “george”, or “ringo”) it
+calculates a placement group by using the object name, a hash code, the number
+of PGs in the pool, and the pool name. Ceph clients use the following steps to
+compute PG IDs.</p>
+<ol class="arabic simple">
+<li><p>The client inputs the pool name and the object ID. (for example: pool =
+“liverpool” and object-id = “john”)</p></li>
+<li><p>Ceph hashes the object ID.</p></li>
+<li><p>Ceph calculates the hash, modulo the number of PGs (for example: <code class="docutils literal notranslate"><span class="pre">58</span></code>), to
+get a PG ID.</p></li>
+<li><p>Ceph uses the pool name to retrieve the pool ID: (for example: “liverpool” =
+<code class="docutils literal notranslate"><span class="pre">4</span></code>)</p></li>
+<li><p>Ceph prepends the pool ID to the PG ID (for example: <code class="docutils literal notranslate"><span class="pre">4.58</span></code>).</p></li>
+</ol>
+<p>It is much faster to compute object locations than to perform object location
+query over a chatty session. The <abbr title="Controlled Replication Under Scalable Hashing">CRUSH</abbr> algorithm allows a client to compute where objects are
+expected to be stored, and enables the client to contact the primary OSD to
+store or retrieve the objects.</p>
+</section>
+<section id="peering-and-sets">
+<span id="index-8"></span><h4>Peering and Sets<a class="headerlink" href="#peering-and-sets" title="Link to this heading"></a></h4>
+<p>In previous sections, we noted that Ceph OSD Daemons check each other’s
+heartbeats and report back to Ceph Monitors. Ceph OSD daemons also ‘peer’,
+which is the process of bringing all of the OSDs that store a Placement Group
+(PG) into agreement about the state of all of the RADOS objects (and their
+metadata) in that PG. Ceph OSD Daemons <a class="reference external" href="../rados/configuration/mon-osd-interaction#osds-report-peering-failure">Report Peering Failure</a> to the Ceph
+Monitors. Peering issues usually resolve themselves; however, if the problem
+persists, you may need to refer to the <a class="reference internal" href="rados/troubleshooting/troubleshooting-pg.html#failures-osd-peering"><span class="std std-ref">Troubleshooting Peering Failure</span></a>
+section.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PGs that agree on the state of the cluster do not necessarily have
+the current data yet.</p>
+</div>
+<p>The Ceph Storage Cluster was designed to store at least two copies of an object
+(that is, <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">=</span> <span class="pre">2</span></code>), which is the minimum requirement for data safety. For
+high availability, a Ceph Storage Cluster should store more than two copies of
+an object (that is, <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">=</span> <span class="pre">3</span></code> and <code class="docutils literal notranslate"><span class="pre">min</span> <span class="pre">size</span> <span class="pre">=</span> <span class="pre">2</span></code>) so that it can continue
+to run in a <code class="docutils literal notranslate"><span class="pre">degraded</span></code> state while maintaining data safety.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Although we say here that R2 (replication with two copies) is the
+minimum requirement for data safety, R3 (replication with three copies) is
+recommended. On a long enough timeline, data stored with an R2 strategy will
+be lost.</p>
+</div>
+<p>As explained in the diagram in <a class="reference internal" href="#smart-daemons-enable-hyperscale">Smart Daemons Enable Hyperscale</a>, we do not
+name the Ceph OSD Daemons specifically (for example, <code class="docutils literal notranslate"><span class="pre">osd.0</span></code>, <code class="docutils literal notranslate"><span class="pre">osd.1</span></code>,
+etc.), but rather refer to them as <em>Primary</em>, <em>Secondary</em>, and so forth. By
+convention, the <em>Primary</em> is the first OSD in the <em>Acting Set</em>, and is
+responsible for orchestrating the peering process for each placement group
+where it acts as the <em>Primary</em>. The <em>Primary</em> is the <strong>ONLY</strong> OSD in a given
+placement group that accepts client-initiated writes to objects.</p>
+<p>The set of OSDs that is responsible for a placement group is called the
+<em>Acting Set</em>. The term “<em>Acting Set</em>” can refer either to the Ceph OSD Daemons
+that are currently responsible for the placement group, or to the Ceph OSD
+Daemons that were responsible for a particular placement group as of some
+epoch.</p>
+<p>The Ceph OSD daemons that are part of an <em>Acting Set</em> might not always be
+<code class="docutils literal notranslate"><span class="pre">up</span></code>. When an OSD in the <em>Acting Set</em> is <code class="docutils literal notranslate"><span class="pre">up</span></code>, it is part of the <em>Up Set</em>.
+The <em>Up Set</em> is an important distinction, because Ceph can remap PGs to other
+Ceph OSD Daemons when an OSD fails.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Consider a hypothetical <em>Acting Set</em> for a PG that contains
+<code class="docutils literal notranslate"><span class="pre">osd.25</span></code>, <code class="docutils literal notranslate"><span class="pre">osd.32</span></code> and <code class="docutils literal notranslate"><span class="pre">osd.61</span></code>. The first OSD (<code class="docutils literal notranslate"><span class="pre">osd.25</span></code>), is the
+<em>Primary</em>. If that OSD fails, the Secondary (<code class="docutils literal notranslate"><span class="pre">osd.32</span></code>), becomes the
+<em>Primary</em>, and <code class="docutils literal notranslate"><span class="pre">osd.25</span></code> is removed from the <em>Up Set</em>.</p>
+</div>
+</section>
+<section id="rebalancing">
+<span id="index-9"></span><h4>Rebalancing<a class="headerlink" href="#rebalancing" title="Link to this heading"></a></h4>
+<p>When you add a Ceph OSD Daemon to a Ceph Storage Cluster, the cluster map gets
+updated with the new OSD. Referring back to <a class="reference internal" href="#calculating-pg-ids">Calculating PG IDs</a>, this changes
+the cluster map. Consequently, it changes object placement, because it changes
+an input for the calculations. The following diagram depicts the rebalancing
+process (albeit rather crudely, since it is substantially less impactful with
+large clusters) where some, but not all of the PGs migrate from existing OSDs
+(OSD 1, and OSD 2) to the new OSD (OSD 3). Even when rebalancing, CRUSH is
+stable. Many of the placement groups remain in their original configuration,
+and each OSD gets some added capacity, so there are no load spikes on the
+new OSD after rebalancing is complete.</p>
+<img alt="_images/930c5c07291356f1e914a3dae54c53ce2f68bff4680cf7bc423ad0855e263bc0.png" class="align-center" src="_images/930c5c07291356f1e914a3dae54c53ce2f68bff4680cf7bc423ad0855e263bc0.png" />
+</section>
+<section id="data-consistency">
+<span id="index-10"></span><h4>Data Consistency<a class="headerlink" href="#data-consistency" title="Link to this heading"></a></h4>
+<p>As part of maintaining data consistency and cleanliness, Ceph OSDs also scrub
+objects within placement groups. That is, Ceph OSDs compare object metadata in
+one placement group with its replicas in placement groups stored in other
+OSDs. Scrubbing (usually performed daily) catches OSD bugs or filesystem
+errors, often as a result of hardware issues.  OSDs also perform deeper
+scrubbing by comparing data in objects bit-for-bit.  Deep scrubbing (by default
+performed weekly) finds bad blocks on a drive that weren’t apparent in a light
+scrub.</p>
+<p>See <a class="reference internal" href="rados/configuration/osd-config-ref.html#rados-config-scrubbing"><span class="std std-ref">Data Scrubbing</span></a> for details on configuring scrubbing.</p>
+</section>
+</section>
+<section id="erasure-coding">
+<span id="index-11"></span><h3>Erasure Coding<a class="headerlink" href="#erasure-coding" title="Link to this heading"></a></h3>
+<p>An erasure coded pool stores each object as <code class="docutils literal notranslate"><span class="pre">K+M</span></code> chunks. It is divided into
+<code class="docutils literal notranslate"><span class="pre">K</span></code> data chunks and <code class="docutils literal notranslate"><span class="pre">M</span></code> coding chunks. The pool is configured to have a size
+of <code class="docutils literal notranslate"><span class="pre">K+M</span></code> so that each chunk is stored in an OSD in the acting set. The rank of
+the chunk is stored as an attribute of the object.</p>
+<p>For instance an erasure coded pool can be created to use five OSDs (<code class="docutils literal notranslate"><span class="pre">K+M</span> <span class="pre">=</span> <span class="pre">5</span></code>) and
+sustain the loss of two of them (<code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">2</span></code>). Data may be unavailable until (<code class="docutils literal notranslate"><span class="pre">K+1</span></code>)
+shards are restored.</p>
+<section id="reading-and-writing-encoded-chunks">
+<h4>Reading and Writing Encoded Chunks<a class="headerlink" href="#reading-and-writing-encoded-chunks" title="Link to this heading"></a></h4>
+<p>When the object <strong>NYAN</strong> containing <code class="docutils literal notranslate"><span class="pre">ABCDEFGHI</span></code> is written to the pool, the erasure
+encoding function splits the content into three data chunks simply by dividing
+the content in three: the first contains <code class="docutils literal notranslate"><span class="pre">ABC</span></code>, the second <code class="docutils literal notranslate"><span class="pre">DEF</span></code> and the
+last <code class="docutils literal notranslate"><span class="pre">GHI</span></code>. The content will be padded if the content length is not a multiple
+of <code class="docutils literal notranslate"><span class="pre">K</span></code>. The function also creates two coding chunks: the fourth with <code class="docutils literal notranslate"><span class="pre">YXY</span></code>
+and the fifth with <code class="docutils literal notranslate"><span class="pre">QGC</span></code>. Each chunk is stored in an OSD in the acting set.
+The chunks are stored in objects that have the same name (<strong>NYAN</strong>) but reside
+on different OSDs. The order in which the chunks were created must be preserved
+and is stored as an attribute of the object (<code class="docutils literal notranslate"><span class="pre">shard_t</span></code>), in addition to its
+name. Chunk 1 contains <code class="docutils literal notranslate"><span class="pre">ABC</span></code> and is stored on <strong>OSD5</strong> while chunk 4 contains
+<code class="docutils literal notranslate"><span class="pre">YXY</span></code> and is stored on <strong>OSD3</strong>.</p>
+<img alt="_images/1e7cd3cab46b5b5f9f05fb8799b908a41e5f4e0cb66affa02746a44d6e7e9e4d.png" class="align-center" src="_images/1e7cd3cab46b5b5f9f05fb8799b908a41e5f4e0cb66affa02746a44d6e7e9e4d.png" />
+<p>When the object <strong>NYAN</strong> is read from the erasure coded pool, the decoding
+function reads three chunks: chunk 1 containing <code class="docutils literal notranslate"><span class="pre">ABC</span></code>, chunk 3 containing
+<code class="docutils literal notranslate"><span class="pre">GHI</span></code> and chunk 4 containing <code class="docutils literal notranslate"><span class="pre">YXY</span></code>. Then, it rebuilds the original content
+of the object <code class="docutils literal notranslate"><span class="pre">ABCDEFGHI</span></code>. The decoding function is informed that the chunks 2
+and 5 are missing (they are called ‘erasures’). The chunk 5 could not be read
+because the <strong>OSD4</strong> is out. The decoding function can be called as soon as
+three chunks are read: <strong>OSD2</strong> was the slowest and its chunk was not taken into
+account.</p>
+<img alt="_images/10b9b7876d2029c364d579c849ca254ec751d1f6d544b2797b737bffd83b17e9.png" class="align-center" src="_images/10b9b7876d2029c364d579c849ca254ec751d1f6d544b2797b737bffd83b17e9.png" />
+</section>
+<section id="interrupted-full-writes">
+<h4>Interrupted Full Writes<a class="headerlink" href="#interrupted-full-writes" title="Link to this heading"></a></h4>
+<p>In an erasure coded pool, the primary OSD in the up set receives all write
+operations. It is responsible for encoding the payload into <code class="docutils literal notranslate"><span class="pre">K+M</span></code> chunks and
+sends them to the other OSDs. It is also responsible for maintaining an
+authoritative version of the placement group logs.</p>
+<p>In the following diagram, an erasure coded placement group has been created with
+<code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">2,</span> <span class="pre">M</span> <span class="pre">=</span> <span class="pre">1</span></code> and is supported by three OSDs, two for <code class="docutils literal notranslate"><span class="pre">K</span></code> and one for
+<code class="docutils literal notranslate"><span class="pre">M</span></code>. The acting set of the placement group is made of <strong>OSD 1</strong>, <strong>OSD 2</strong> and
+<strong>OSD 3</strong>. An object has been encoded and stored in the OSDs : the chunk
+<code class="docutils literal notranslate"><span class="pre">D1v1</span></code> (i.e. Data chunk number 1, version 1) is on <strong>OSD 1</strong>, <code class="docutils literal notranslate"><span class="pre">D2v1</span></code> on
+<strong>OSD 2</strong> and <code class="docutils literal notranslate"><span class="pre">C1v1</span></code> (i.e. Coding chunk number 1, version 1) on <strong>OSD 3</strong>. The
+placement group logs on each OSD are identical (i.e. <code class="docutils literal notranslate"><span class="pre">1,1</span></code> for epoch 1,
+version 1).</p>
+<img alt="_images/57547d6239155b42a2507f350a7b92102f7d0b7d66d9c680ace05728f775cbf1.png" class="align-center" src="_images/57547d6239155b42a2507f350a7b92102f7d0b7d66d9c680ace05728f775cbf1.png" />
+<p><strong>OSD 1</strong> is the primary and receives a <strong>WRITE FULL</strong> from a client, which
+means the payload is to replace the object entirely instead of overwriting a
+portion of it. Version 2 (v2) of the object is created to override version 1
+(v1). <strong>OSD 1</strong> encodes the payload into three chunks: <code class="docutils literal notranslate"><span class="pre">D1v2</span></code> (i.e. Data
+chunk number 1 version 2) will be on <strong>OSD 1</strong>, <code class="docutils literal notranslate"><span class="pre">D2v2</span></code> on <strong>OSD 2</strong> and
+<code class="docutils literal notranslate"><span class="pre">C1v2</span></code> (i.e. Coding chunk number 1 version 2) on <strong>OSD 3</strong>. Each chunk is sent
+to the target OSD, including the primary OSD which is responsible for storing
+chunks in addition to handling write operations and maintaining an authoritative
+version of the placement group logs. When an OSD receives the message
+instructing it to write the chunk, it also creates a new entry in the placement
+group logs to reflect the change. For instance, as soon as <strong>OSD 3</strong> stores
+<code class="docutils literal notranslate"><span class="pre">C1v2</span></code>, it adds the entry <code class="docutils literal notranslate"><span class="pre">1,2</span></code> ( i.e. epoch 1, version 2 ) to its logs.
+Because the OSDs work asynchronously, some chunks may still be in flight ( such
+as <code class="docutils literal notranslate"><span class="pre">D2v2</span></code> ) while others are acknowledged and persisted to storage drives
+(such as <code class="docutils literal notranslate"><span class="pre">C1v1</span></code> and <code class="docutils literal notranslate"><span class="pre">D1v1</span></code>).</p>
+<img alt="_images/c2f4bc8a1ec65e196ecb3f4879b57fcd575f609a9da830bc1c8a9faf5fb9d3ae.png" class="align-center" src="_images/c2f4bc8a1ec65e196ecb3f4879b57fcd575f609a9da830bc1c8a9faf5fb9d3ae.png" />
+<p>If all goes well, the chunks are acknowledged on each OSD in the acting set and
+the logs’ <code class="docutils literal notranslate"><span class="pre">last_complete</span></code> pointer can move from <code class="docutils literal notranslate"><span class="pre">1,1</span></code> to <code class="docutils literal notranslate"><span class="pre">1,2</span></code>.</p>
+<img alt="_images/751f12259141e4db6407aaed352b3d106825564694cfb7be5361c8a83c31cd22.png" class="align-center" src="_images/751f12259141e4db6407aaed352b3d106825564694cfb7be5361c8a83c31cd22.png" />
+<p>Finally, the files used to store the chunks of the previous version of the
+object can be removed: <code class="docutils literal notranslate"><span class="pre">D1v1</span></code> on <strong>OSD 1</strong>, <code class="docutils literal notranslate"><span class="pre">D2v1</span></code> on <strong>OSD 2</strong> and <code class="docutils literal notranslate"><span class="pre">C1v1</span></code>
+on <strong>OSD 3</strong>.</p>
+<img alt="_images/e295e2ea0df3c76a33f71180b338f1745fedd3a7b78af498a875107fae102c25.png" class="align-center" src="_images/e295e2ea0df3c76a33f71180b338f1745fedd3a7b78af498a875107fae102c25.png" />
+<p>But accidents happen. If <strong>OSD 1</strong> goes down while <code class="docutils literal notranslate"><span class="pre">D2v2</span></code> is still in flight,
+the object’s version 2 is partially written: <strong>OSD 3</strong> has one chunk but that is
+not enough to recover. It lost two chunks: <code class="docutils literal notranslate"><span class="pre">D1v2</span></code> and <code class="docutils literal notranslate"><span class="pre">D2v2</span></code> and the
+erasure coding parameters <code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">1</span></code> require that at least two chunks are
+available to rebuild the third. <strong>OSD 4</strong> becomes the new primary and finds that
+the <code class="docutils literal notranslate"><span class="pre">last_complete</span></code> log entry (i.e., all objects before this entry were known
+to be available on all OSDs in the previous acting set ) is <code class="docutils literal notranslate"><span class="pre">1,1</span></code> and that
+will be the head of the new authoritative log.</p>
+<img alt="_images/7c01016e1262b9a9ea0ba9ac2f2638391177a2e2cae4bb11d4c21805a2a628b8.png" class="align-center" src="_images/7c01016e1262b9a9ea0ba9ac2f2638391177a2e2cae4bb11d4c21805a2a628b8.png" />
+<p>The log entry 1,2 found on <strong>OSD 3</strong> is divergent from the new authoritative log
+provided by <strong>OSD 4</strong>: it is discarded and the file containing the <code class="docutils literal notranslate"><span class="pre">C1v2</span></code>
+chunk is removed. The <code class="docutils literal notranslate"><span class="pre">D1v1</span></code> chunk is rebuilt with the <code class="docutils literal notranslate"><span class="pre">decode</span></code> function of
+the erasure coding library during scrubbing and stored on the new primary
+<strong>OSD 4</strong>.</p>
+<img alt="_images/ad822d0d25fc1613169ce7d20f12ead31c2a3163fa4a4652f43a8c8037ad6e23.png" class="align-center" src="_images/ad822d0d25fc1613169ce7d20f12ead31c2a3163fa4a4652f43a8c8037ad6e23.png" />
+<p>See <a class="reference external" href="https://github.com/ceph/ceph/blob/40059e12af88267d0da67d8fd8d9cd81244d8f93/doc/dev/osd_internals/erasure_coding/developer_notes.rst">Erasure Code Notes</a> for additional details.</p>
+</section>
+</section>
+<section id="cache-tiering">
+<h3>Cache Tiering<a class="headerlink" href="#cache-tiering" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cache tiering is deprecated in Reef.</p>
+</div>
+<p>A cache tier provides Ceph Clients with better I/O performance for a subset of
+the data stored in a backing storage tier. Cache tiering involves creating a
+pool of relatively fast/expensive storage devices (e.g., solid state drives)
+configured to act as a cache tier, and a backing pool of either erasure-coded
+or relatively slower/cheaper devices configured to act as an economical storage
+tier. The Ceph objecter handles where to place the objects and the tiering
+agent determines when to flush objects from the cache to the backing storage
+tier. So the cache tier and the backing storage tier are completely transparent
+to Ceph clients.</p>
+<img alt="_images/3ad4f01c405d5d41ebed24d1ff5b79d4c702e36d35cef6a02cb6cde0b745c752.png" class="align-center" src="_images/3ad4f01c405d5d41ebed24d1ff5b79d4c702e36d35cef6a02cb6cde0b745c752.png" />
+<p>See <a class="reference external" href="../rados/operations/cache-tiering">Cache Tiering</a> for additional details.  Note that Cache Tiers can be
+tricky and their use is now discouraged.</p>
+</section>
+<section id="extending-ceph">
+<span id="index-12"></span><h3>Extending Ceph<a class="headerlink" href="#extending-ceph" title="Link to this heading"></a></h3>
+<p>You can extend Ceph by creating shared object classes called ‘Ceph Classes’.
+Ceph loads <code class="docutils literal notranslate"><span class="pre">.so</span></code> classes stored in the <code class="docutils literal notranslate"><span class="pre">osd</span> <span class="pre">class</span> <span class="pre">dir</span></code> directory dynamically
+(i.e., <code class="docutils literal notranslate"><span class="pre">$libdir/rados-classes</span></code> by default). When you implement a class, you
+can create new object methods that have the ability to call the native methods
+in the Ceph Object Store, or other class methods you incorporate via libraries
+or create yourself.</p>
+<p>On writes, Ceph Classes can call native or class methods, perform any series of
+operations on the inbound data and generate a resulting write transaction  that
+Ceph will apply atomically.</p>
+<p>On reads, Ceph Classes can call native or class methods, perform any series of
+operations on the outbound data and return the data to the client.</p>
+<aside class="topic">
+<p class="topic-title">Ceph Class Example</p>
+<p>A Ceph class for a content management system that presents pictures of a
+particular size and aspect ratio could take an inbound bitmap image, crop it
+to a particular aspect ratio, resize it and embed an invisible copyright or
+watermark to help protect the intellectual property; then, save the
+resulting bitmap image to the object store.</p>
+</aside>
+<p>See <code class="docutils literal notranslate"><span class="pre">src/objclass/objclass.h</span></code>, <code class="docutils literal notranslate"><span class="pre">src/fooclass.cc</span></code> and <code class="docutils literal notranslate"><span class="pre">src/barclass</span></code> for
+exemplary implementations.</p>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h3>
+<p>Ceph Storage Clusters are dynamic--like a living organism. Although many storage
+appliances do not fully utilize the CPU and RAM of a typical commodity server,
+Ceph does. From heartbeats, to  peering, to rebalancing the cluster or
+recovering from faults,  Ceph offloads work from clients (and from a centralized
+gateway which doesn’t exist in the Ceph architecture) and uses the computing
+power of the OSDs to perform the work. When referring to <a class="reference internal" href="start/hardware-recommendations.html#hardware-recommendations"><span class="std std-ref">Hardware Recommendations</span></a>
+and the <a class="reference external" href="../rados/configuration/network-config-ref">Network Config Reference</a>,  be cognizant of the
+foregoing concepts to understand how Ceph utilizes computing resources.</p>
+</section>
+</section>
+<section id="ceph-protocol">
+<span id="index-13"></span><h2>Ceph Protocol<a class="headerlink" href="#ceph-protocol" title="Link to this heading"></a></h2>
+<p>Ceph Clients use the native protocol for interacting with the Ceph Storage
+Cluster. Ceph packages this functionality into the <code class="docutils literal notranslate"><span class="pre">librados</span></code> library so that
+you can create your own custom Ceph Clients. The following diagram depicts the
+basic architecture.</p>
+<img alt="_images/41bf4522d8939b03a7a6ce2cb7f76f30abaa28f92bac665ee8c7dedd794b9fd9.png" class="align-center" src="_images/41bf4522d8939b03a7a6ce2cb7f76f30abaa28f92bac665ee8c7dedd794b9fd9.png" />
+<section id="native-protocol-and-librados">
+<h3>Native Protocol and <code class="docutils literal notranslate"><span class="pre">librados</span></code><a class="headerlink" href="#native-protocol-and-librados" title="Link to this heading"></a></h3>
+<p>Modern applications need a simple object storage interface with asynchronous
+communication capability. The Ceph Storage Cluster provides a simple object
+storage interface with asynchronous communication capability. The interface
+provides direct, parallel access to objects throughout the cluster.</p>
+<ul class="simple">
+<li><p>Pool Operations</p></li>
+<li><p>Snapshots and Copy-on-write Cloning</p></li>
+<li><p>Read/Write Objects
+- Create or Remove
+- Entire Object or Byte Range
+- Append or Truncate</p></li>
+<li><p>Create/Set/Get/Remove XATTRs</p></li>
+<li><p>Create/Set/Get/Remove Key/Value Pairs</p></li>
+<li><p>Compound operations and dual-ack semantics</p></li>
+<li><p>Object Classes</p></li>
+</ul>
+</section>
+<section id="object-watch-notify">
+<span id="index-14"></span><h3>Object Watch/Notify<a class="headerlink" href="#object-watch-notify" title="Link to this heading"></a></h3>
+<p>A client can register a persistent interest with an object and keep a session to
+the primary OSD open. The client can send a notification message and a payload to
+all watchers and receive notification when the watchers receive the
+notification. This enables a client to use any object as a
+synchronization/communication channel.</p>
+<img alt="_images/177d8b1b5798fef19734fe43f1a1241d024c5914b137d82f5121ca257cbc8ba4.png" class="align-center" src="_images/177d8b1b5798fef19734fe43f1a1241d024c5914b137d82f5121ca257cbc8ba4.png" />
+</section>
+<section id="data-striping">
+<span id="index-15"></span><h3>Data Striping<a class="headerlink" href="#data-striping" title="Link to this heading"></a></h3>
+<p>Storage devices have throughput limitations, which impact performance and
+scalability. So storage systems often support <a class="reference external" href="https://en.wikipedia.org/wiki/Data_striping">striping</a>--storing sequential
+pieces of information across multiple storage devices--to increase throughput
+and performance. The most common form of data striping comes from <a class="reference external" href="https://en.wikipedia.org/wiki/RAID">RAID</a>.
+The RAID type most similar to Ceph’s striping is <a class="reference external" href="https://en.wikipedia.org/wiki/RAID_0#RAID_0">RAID 0</a>, or a ‘striped
+volume’. Ceph’s striping offers the throughput of RAID 0 striping, the
+reliability of n-way RAID mirroring and faster recovery.</p>
+<p>Ceph provides three types of clients: Ceph Block Device, Ceph File System, and
+Ceph Object Storage. A Ceph Client converts its data from the representation
+format it provides to its users (a block device image, RESTful objects, CephFS
+filesystem directories) into objects for storage in the Ceph Storage Cluster.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The objects Ceph stores in the Ceph Storage Cluster are not striped.
+Ceph Object Storage, Ceph Block Device, and the Ceph File System stripe their
+data over multiple Ceph Storage Cluster objects. Ceph Clients that write
+directly to the Ceph Storage Cluster via <code class="docutils literal notranslate"><span class="pre">librados</span></code> must perform the
+striping (and parallel I/O) for themselves to obtain these benefits.</p>
+</div>
+<p>The simplest Ceph striping format involves a stripe count of 1 object. Ceph
+Clients write stripe units to a Ceph Storage Cluster object until the object is
+at its maximum capacity, and then create another object for additional stripes
+of data. The simplest form of striping may be sufficient for small block device
+images, S3 or Swift objects and CephFS files. However, this simple form doesn’t
+take maximum advantage of Ceph’s ability to distribute data across placement
+groups, and consequently doesn’t improve performance very much. The following
+diagram depicts the simplest form of striping:</p>
+<img alt="_images/63f356b83ca917107fe58861f05baaa88376ea5268a51130b12beaa27ffa7a6f.png" class="align-center" src="_images/63f356b83ca917107fe58861f05baaa88376ea5268a51130b12beaa27ffa7a6f.png" />
+<p>If you anticipate large images sizes, large S3 or Swift objects (e.g., video),
+or large CephFS directories, you may see considerable read/write performance
+improvements by striping client data over multiple objects within an object set.
+Significant write performance occurs when the client writes the stripe units to
+their corresponding objects in parallel. Since objects get mapped to different
+placement groups and further mapped to different OSDs, each write occurs in
+parallel at the maximum write speed. A write to a single drive would be limited
+by the head movement (e.g. 6ms per seek) and bandwidth of that one device (e.g.
+100MB/s).  By spreading that write over multiple objects (which map to different
+placement groups and OSDs) Ceph can reduce the number of seeks per drive and
+combine the throughput of multiple drives to achieve much faster write (or read)
+speeds.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Striping is independent of object replicas. Since CRUSH
+replicates objects across OSDs, stripes get replicated automatically.</p>
+</div>
+<p>In the following diagram, client data gets striped across an object set
+(<code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">set</span> <span class="pre">1</span></code> in the following diagram) consisting of 4 objects, where the
+first stripe unit is <code class="docutils literal notranslate"><span class="pre">stripe</span> <span class="pre">unit</span> <span class="pre">0</span></code> in <code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">0</span></code>, and the fourth stripe
+unit is <code class="docutils literal notranslate"><span class="pre">stripe</span> <span class="pre">unit</span> <span class="pre">3</span></code> in <code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">3</span></code>. After writing the fourth stripe, the
+client determines if the object set is full. If the object set is not full, the
+client begins writing a stripe to the first object again (<code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">0</span></code> in the
+following diagram). If the object set is full, the client creates a new object
+set (<code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">set</span> <span class="pre">2</span></code> in the following diagram), and begins writing to the first
+stripe (<code class="docutils literal notranslate"><span class="pre">stripe</span> <span class="pre">unit</span> <span class="pre">16</span></code>) in the first object in the new object set (<code class="docutils literal notranslate"><span class="pre">object</span>
+<span class="pre">4</span></code> in the diagram below).</p>
+<img alt="_images/2baa87bf42f2f01b9ec40ae117e817973dc8dca2e549e0dd87b7231b7da24731.png" class="align-center" src="_images/2baa87bf42f2f01b9ec40ae117e817973dc8dca2e549e0dd87b7231b7da24731.png" />
+<p>Three important variables determine how Ceph stripes data:</p>
+<ul class="simple">
+<li><p><strong>Object Size:</strong> Objects in the Ceph Storage Cluster have a maximum
+configurable size (e.g., 2MB, 4MB, etc.). The object size should be large
+enough to accommodate many stripe units, and should be a multiple of
+the stripe unit.</p></li>
+<li><p><strong>Stripe Width:</strong> Stripes have a configurable unit size (e.g., 64kb).
+The Ceph Client divides the data it will write to objects into equally
+sized stripe units, except for the last stripe unit. A stripe width,
+should be a fraction of the Object Size so that an object may contain
+many stripe units.</p></li>
+<li><p><strong>Stripe Count:</strong> The Ceph Client writes a sequence of stripe units
+over a series of objects determined by the stripe count. The series
+of objects is called an object set. After the Ceph Client writes to
+the last object in the object set, it returns to the first object in
+the object set.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Test the performance of your striping configuration before
+putting your cluster into production. You CANNOT change these striping
+parameters after you stripe the data and write it to objects.</p>
+</div>
+<p>Once the Ceph Client has striped data to stripe units and mapped the stripe
+units to objects, Ceph’s CRUSH algorithm maps the objects to placement groups,
+and the placement groups to Ceph OSD Daemons before the objects are stored as
+files on a storage drive.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since a client writes to a single pool, all data striped into objects
+get mapped to placement groups in the same pool. So they use the same CRUSH
+map and the same access controls.</p>
+</div>
+</section>
+</section>
+<section id="ceph-clients">
+<span id="architecture-ceph-clients"></span><span id="index-16"></span><h2>Ceph Clients<a class="headerlink" href="#ceph-clients" title="Link to this heading"></a></h2>
+<p>Ceph Clients include a number of service interfaces. These include:</p>
+<ul class="simple">
+<li><p><strong>Block Devices:</strong> The <a class="reference internal" href="glossary.html#term-Ceph-Block-Device"><span class="xref std std-term">Ceph Block Device</span></a> (a.k.a., RBD) service
+provides resizable, thin-provisioned block devices that can be snapshotted
+and cloned. Ceph stripes a block device across the cluster for high
+performance. Ceph supports both kernel objects (KO) and a QEMU hypervisor
+that uses <code class="docutils literal notranslate"><span class="pre">librbd</span></code> directly--avoiding the kernel object overhead for
+virtualized systems.</p></li>
+<li><p><strong>Object Storage:</strong> The <a class="reference internal" href="glossary.html#term-Ceph-Object-Storage"><span class="xref std std-term">Ceph Object Storage</span></a> (a.k.a., RGW) service
+provides RESTful APIs with interfaces that are compatible with Amazon S3
+and OpenStack Swift.</p></li>
+<li><p><strong>Filesystem</strong>: The <a class="reference internal" href="glossary.html#term-Ceph-File-System"><span class="xref std std-term">Ceph File System</span></a> (CephFS) service provides
+a POSIX compliant filesystem usable with <code class="docutils literal notranslate"><span class="pre">mount</span></code> or as
+a filesystem in user space (FUSE).</p></li>
+</ul>
+<p>Ceph can run additional instances of OSDs, MDSs, and monitors for scalability
+and high availability. The following diagram depicts the high-level
+architecture.</p>
+<img alt="_images/2116a1dc558f0f061c8613df5f9c6b01c8a4ea1e8ddb4df63b39467af8066846.png" class="align-center" src="_images/2116a1dc558f0f061c8613df5f9c6b01c8a4ea1e8ddb4df63b39467af8066846.png" />
+<section id="ceph-object-storage">
+<span id="index-17"></span><h3>Ceph Object Storage<a class="headerlink" href="#ceph-object-storage" title="Link to this heading"></a></h3>
+<p>The Ceph Object Storage daemon, <code class="docutils literal notranslate"><span class="pre">radosgw</span></code>, is a FastCGI service that provides
+a <a class="reference external" href="https://en.wikipedia.org/wiki/RESTful">RESTful</a> HTTP API to store objects and metadata. It layers on top of the Ceph
+Storage Cluster with its own data formats, and maintains its own user database,
+authentication, and access control. The RADOS Gateway uses a unified namespace,
+which means you can use either the OpenStack Swift-compatible API or the Amazon
+S3-compatible API. For example, you can write data using the S3-compatible API
+with one application and then read data using the Swift-compatible API with
+another application.</p>
+<aside class="topic">
+<p class="topic-title">S3/Swift Objects and Store Cluster Objects Compared</p>
+<p>Ceph’s Object Storage uses the term <em>object</em> to describe the data it stores.
+S3 and Swift objects are not the same as the objects that Ceph writes to the
+Ceph Storage Cluster. Ceph Object Storage objects are mapped to Ceph Storage
+Cluster objects. The S3 and Swift objects do not necessarily
+correspond in a 1:1 manner with an object stored in the storage cluster. It
+is possible for an S3 or Swift object to map to multiple Ceph objects.</p>
+</aside>
+<p>See <a class="reference internal" href="radosgw/index.html#object-gateway"><span class="std std-ref">Ceph Object Gateway</span></a> for details.</p>
+</section>
+<section id="ceph-block-device">
+<span id="index-18"></span><h3>Ceph Block Device<a class="headerlink" href="#ceph-block-device" title="Link to this heading"></a></h3>
+<p>A Ceph Block Device stripes a block device image over multiple objects in the
+Ceph Storage Cluster, where each object gets mapped to a placement group and
+distributed, and the placement groups are spread across separate <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code>
+daemons throughout the cluster.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Striping allows RBD block devices to perform better than a single
+server could!</p>
+</div>
+<p>Thin-provisioned snapshottable Ceph Block Devices are an attractive option for
+virtualization and cloud computing. In virtual machine scenarios, people
+typically deploy a Ceph Block Device with the <code class="docutils literal notranslate"><span class="pre">rbd</span></code> network storage driver in
+QEMU/KVM, where the host machine uses <code class="docutils literal notranslate"><span class="pre">librbd</span></code> to provide a block device
+service to the guest. Many cloud computing stacks use <code class="docutils literal notranslate"><span class="pre">libvirt</span></code> to integrate
+with hypervisors. You can use thin-provisioned Ceph Block Devices with QEMU and
+<code class="docutils literal notranslate"><span class="pre">libvirt</span></code> to support OpenStack, OpenNebula and CloudStack
+among other solutions.</p>
+<p>While we do not provide <code class="docutils literal notranslate"><span class="pre">librbd</span></code> support with other hypervisors at this time,
+you may also use Ceph Block Device kernel objects to provide a block device to a
+client. Other virtualization technologies such as Xen can access the Ceph Block
+Device kernel object(s). This is done with the  command-line tool <code class="docutils literal notranslate"><span class="pre">rbd</span></code>.</p>
+</section>
+<section id="ceph-file-system">
+<span id="arch-cephfs"></span><span id="index-19"></span><h3>Ceph File System<a class="headerlink" href="#ceph-file-system" title="Link to this heading"></a></h3>
+<p>The Ceph File System (CephFS) provides a POSIX-compliant filesystem as a
+service that is layered on top of the object-based Ceph Storage Cluster.
+CephFS files get mapped to objects that Ceph stores in the Ceph Storage
+Cluster. Ceph Clients mount a CephFS filesystem as a kernel object or as
+a Filesystem in User Space (FUSE).</p>
+<img alt="_images/9868bc29e92a02bf4555c57dbb193966bce1cccbaff2895d504c8d5c862515e3.png" class="align-center" src="_images/9868bc29e92a02bf4555c57dbb193966bce1cccbaff2895d504c8d5c862515e3.png" />
+<p>The Ceph File System service includes the Ceph Metadata Server (MDS) deployed
+with the Ceph Storage cluster. The purpose of the MDS is to store all the
+filesystem metadata (directories, file ownership, access modes, etc) in
+high-availability Ceph Metadata Servers where the metadata resides in memory.
+The reason for the MDS (a daemon called <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code>) is that simple filesystem
+operations like listing a directory or changing a directory (<code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cd</span></code>)
+would tax the Ceph OSD Daemons unnecessarily. So separating the metadata from
+the data means that the Ceph File System can provide high performance services
+without taxing the Ceph Storage Cluster.</p>
+<p>CephFS separates the metadata from the data, storing the metadata in the MDS,
+and storing the file data in one or more objects in the Ceph Storage Cluster.
+The Ceph filesystem aims for POSIX compatibility. <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code> can run as a
+single process, or it can be distributed out to multiple physical machines,
+either for high availability or for scalability.</p>
+<ul class="simple">
+<li><p><strong>High Availability</strong>: The extra <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code> instances can be <cite>standby</cite>,
+ready to take over the duties of any failed <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code> that was
+<cite>active</cite>. This is easy because all the data, including the journal, is
+stored on RADOS. The transition is triggered automatically by <code class="docutils literal notranslate"><span class="pre">ceph-mon</span></code>.</p></li>
+<li><p><strong>Scalability</strong>: Multiple <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code> instances can be <cite>active</cite>, and they
+will split the directory tree into subtrees (and shards of a single
+busy directory), effectively balancing the load amongst all <cite>active</cite>
+servers.</p></li>
+</ul>
+<p>Combinations of <cite>standby</cite> and <cite>active</cite> etc are possible, for example
+running 3 <cite>active</cite> <code class="docutils literal notranslate"><span class="pre">ceph-mds</span></code> instances for scaling, and one <cite>standby</cite>
+instance for high availability.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api/mon_command_api.html" class="btn btn-neutral float-left" title="cephadm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dev/developer_guide/index.html" class="btn btn-neutral float-right" title="Contributing to Ceph: A Guide for Developers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

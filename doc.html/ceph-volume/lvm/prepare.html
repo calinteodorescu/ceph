@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prepare &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="create" href="create.html" />
+    <link rel="prev" title="Encryption" href="encryption.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">ceph-volume</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#migrating">Migrating</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#new-deployments">New deployments</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#existing-osds">Existing OSDs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../intro.html">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#replacing-ceph-disk">Replacing <code class="docutils literal notranslate"><span class="pre">ceph-disk</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#gpt-partitions-are-simple">GPT partitions are simple?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#modularity">Modularity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#ceph-volume-lvm"><code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">lvm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../intro.html#lvm-performance-penalty">LVM performance penalty</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../inventory.html"><code class="docutils literal notranslate"><span class="pre">inventory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../drive-group.html"><code class="docutils literal notranslate"><span class="pre">drive-group</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html"><code class="docutils literal notranslate"><span class="pre">lvm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="activate.html"><code class="docutils literal notranslate"><span class="pre">activate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html"><code class="docutils literal notranslate"><span class="pre">batch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#reporting">Reporting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#sizing">Sizing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="batch.html#idempotency-and-disk-replacements">Idempotency and disk replacements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="encryption.html">Encryption</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">prepare</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="create.html"><code class="docutils literal notranslate"><span class="pre">create</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="scan.html">scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="list.html"><code class="docutils literal notranslate"><span class="pre">list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="zap.html"><code class="docutils literal notranslate"><span class="pre">zap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="migrate.html"><code class="docutils literal notranslate"><span class="pre">migrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="newdb.html"><code class="docutils literal notranslate"><span class="pre">new-db</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="newwal.html"><code class="docutils literal notranslate"><span class="pre">new-wal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simple/index.html"><code class="docutils literal notranslate"><span class="pre">simple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simple/activate.html"><code class="docutils literal notranslate"><span class="pre">activate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simple/scan.html"><code class="docutils literal notranslate"><span class="pre">scan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simple/systemd.html">systemd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../zfs/index.html"><code class="docutils literal notranslate"><span class="pre">zfs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../zfs/inventory.html"><code class="docutils literal notranslate"><span class="pre">inventory</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">ceph-volume</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">prepare</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/ceph-volume/lvm/prepare.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="prepare">
+<span id="ceph-volume-lvm-prepare"></span><h1><code class="docutils literal notranslate"><span class="pre">prepare</span></code><a class="headerlink" href="#prepare" title="Link to this heading"></a></h1>
+<p>Before you run <code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">lvm</span> <span class="pre">prepare</span></code>, we recommend that you provision a
+logical volume. Then you can run <code class="docutils literal notranslate"><span class="pre">prepare</span></code> on that logical volume.</p>
+<p><code class="docutils literal notranslate"><span class="pre">prepare</span></code> adds metadata to logical volumes but does not alter them in any
+other way.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is part of a two-step process to deploy an OSD. If you prefer
+to deploy an OSD by using only one command, see <a class="reference internal" href="create.html#ceph-volume-lvm-create"><span class="std std-ref">create</span></a>.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">prepare</span></code> uses <a class="reference internal" href="../../glossary.html#term-LVM-tags"><span class="xref std std-term">LVM tags</span></a> to assign several pieces of metadata to a
+logical volume. Volumes tagged in this way are easier to identify and easier to
+use with Ceph. <a class="reference internal" href="../../glossary.html#term-LVM-tags"><span class="xref std std-term">LVM tags</span></a> identify logical volumes by the role that they
+play in the Ceph cluster (for example: BlueStore data or BlueStore WAL+DB).</p>
+<p><a class="reference internal" href="../../glossary.html#term-BlueStore"><span class="xref std std-term">BlueStore</span></a> is the default backend. Ceph permits changing
+the backend, which can be done by using the following flags and arguments:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ceph-volume-lvm-prepare-bluestore"><span class="std std-ref">--bluestore</span></a></p></li>
+</ul>
+<section id="bluestore">
+<span id="ceph-volume-lvm-prepare-bluestore"></span><h2><code class="docutils literal notranslate"><span class="pre">bluestore</span></code><a class="headerlink" href="#bluestore" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../../glossary.html#term-BlueStore"><span class="xref std std-term">Bluestore</span></a> is the default backend for new OSDs.  Bluestore
+supports the following configurations:</p>
+<ul class="simple">
+<li><p>a block device, a block.wal device, and a block.db device</p></li>
+<li><p>a block device and a block.wal device</p></li>
+<li><p>a block device and a block.db device</p></li>
+<li><p>a single block device</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">bluestore</span></code> subcommand accepts physical block devices, partitions on physical
+block devices, or logical volumes as arguments for the various device
+parameters. If a physical block device is provided, a logical volume will be
+created. If the provided volume group’s name begins with <cite>ceph</cite>, it will be
+created if it does not yet exist and it will be clobbered and reused if it
+already exists. This allows for a simpler approach to using LVM but at the
+cost of flexibility: no option or configuration can be used to change how the
+logical volume is created.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">block</span></code> is specified with the <code class="docutils literal notranslate"><span class="pre">--data</span></code> flag, and in its simplest use
+case it looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>vg/lv</span>
+</pre></div></div><p>A raw device can be specified in the same way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>/path/to/device</span>
+</pre></div></div><p>For enabling <a class="reference internal" href="encryption.html#ceph-volume-lvm-encryption"><span class="std std-ref">encryption</span></a>, the <code class="docutils literal notranslate"><span class="pre">--dmcrypt</span></code> flag is required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--dmcrypt<span class="w"> </span>--data<span class="w"> </span>vg/lv</span>
+</pre></div></div><p>Starting with Ceph Squid, you can opt for TPM2 token enrollment for the created LUKS2 devices with the <code class="docutils literal notranslate"><span class="pre">--with-tpm</span></code> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--dmcrypt<span class="w"> </span>--with-tpm<span class="w"> </span>--data<span class="w"> </span>vg/lv</span>
+</pre></div></div><p>If a <code class="docutils literal notranslate"><span class="pre">block.db</span></code> device or a <code class="docutils literal notranslate"><span class="pre">block.wal</span></code> device is needed, it can be
+specified with <code class="docutils literal notranslate"><span class="pre">--block.db</span></code> or <code class="docutils literal notranslate"><span class="pre">--block.wal</span></code>. These can be physical
+devices, partitions, or logical volumes. <code class="docutils literal notranslate"><span class="pre">block.db</span></code> and <code class="docutils literal notranslate"><span class="pre">block.wal</span></code> are
+optional for bluestore.</p>
+<p>For both <code class="docutils literal notranslate"><span class="pre">block.db</span></code> and <code class="docutils literal notranslate"><span class="pre">block.wal</span></code>, partitions can be used as-is, and
+therefore are not made into logical volumes.</p>
+<p>While creating the OSD directory, the process uses a <code class="docutils literal notranslate"><span class="pre">tmpfs</span></code> mount to hold
+the files needed for the OSD. These files are created by <code class="docutils literal notranslate"><span class="pre">ceph-osd</span> <span class="pre">--mkfs</span></code>
+and are ephemeral.</p>
+<p>A symlink is created for the <code class="docutils literal notranslate"><span class="pre">block</span></code> device, and is optional for <code class="docutils literal notranslate"><span class="pre">block.db</span></code>
+and <code class="docutils literal notranslate"><span class="pre">block.wal</span></code>. For a cluster with a default name and an OSD ID of 0, the
+directory looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ls<span class="w"> </span>-l<span class="w"> </span>/var/lib/ceph/osd/ceph-0</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lrwxrwxrwx</span><span class="o">.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">93</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">block</span> <span class="o">-&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">be2b6fbd</span><span class="o">-</span><span class="n">bcf2</span><span class="o">-</span><span class="mi">4</span><span class="n">c51</span><span class="o">-</span><span class="n">b35d</span><span class="o">-</span><span class="n">a35a162a02f0</span><span class="o">/</span><span class="n">osd</span><span class="o">-</span><span class="n">block</span><span class="o">-</span><span class="mi">25</span><span class="n">cf0a05</span><span class="o">-</span><span class="mi">2</span><span class="n">bc6</span><span class="o">-</span><span class="mi">44</span><span class="n">ef</span><span class="o">-</span><span class="mi">9137</span><span class="o">-</span><span class="mi">79</span><span class="n">d65bd7ad62</span>
+<span class="n">lrwxrwxrwx</span><span class="o">.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">93</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">block</span><span class="o">.</span><span class="n">db</span> <span class="o">-&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span>
+<span class="n">lrwxrwxrwx</span><span class="o">.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">93</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">block</span><span class="o">.</span><span class="n">wal</span> <span class="o">-&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">osd</span><span class="o">-</span><span class="n">wal</span><span class="o">-</span><span class="mi">0</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-------.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">37</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">ceph_fsid</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-------.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">37</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">fsid</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-------.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">55</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">keyring</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-------.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span>  <span class="mi">6</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">ready</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-------.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span> <span class="mi">10</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="nb">type</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-------.</span> <span class="mi">1</span> <span class="n">ceph</span> <span class="n">ceph</span>  <span class="mi">2</span> <span class="n">Oct</span> <span class="mi">20</span> <span class="mi">13</span><span class="p">:</span><span class="mi">05</span> <span class="n">whoami</span>
+</pre></div>
+</div>
+<p>In the above case, a device was used for <code class="docutils literal notranslate"><span class="pre">block</span></code>, so <code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code> created
+a volume group and a logical volume using the following conventions:</p>
+<ul class="simple">
+<li><p>volume group name: <code class="docutils literal notranslate"><span class="pre">ceph-{cluster</span> <span class="pre">fsid}</span></code> (or if the volume group already
+exists: <code class="docutils literal notranslate"><span class="pre">ceph-{random</span> <span class="pre">uuid}</span></code>)</p></li>
+<li><p>logical volume name: <code class="docutils literal notranslate"><span class="pre">osd-block-{osd_fsid}</span></code></p></li>
+</ul>
+</section>
+<section id="filestore">
+<span id="ceph-volume-lvm-prepare-filestore"></span><h2><code class="docutils literal notranslate"><span class="pre">filestore</span></code><a class="headerlink" href="#filestore" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Filestore has been deprecated in the Reef release and is no longer supported.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Filestore&lt;filestore&gt;</span></code> is the OSD backend that prepares logical volumes for a
+<cite>filestore</cite>-backed object-store OSD.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Filestore&lt;filestore&gt;</span></code> uses a logical volume to store OSD data and it uses
+physical devices, partitions, or logical volumes to store the journal.  If a
+physical device is used to create a filestore backend, a logical volume will be
+created on that physical device. If the provided volume group’s name begins
+with <cite>ceph</cite>, it will be created if it does not yet exist and it will be
+clobbered and reused if it already exists. No special preparation is needed for
+these volumes, but be sure to meet the minimum size requirements for OSD data and
+for the journal.</p>
+<p>Use the following command to create a basic filestore OSD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--filestore<span class="w"> </span>--data<span class="w"> </span>&lt;data<span class="w"> </span>block<span class="w"> </span>device&gt;</span>
+</pre></div></div><p>Use this command to deploy filestore with an external journal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--filestore<span class="w"> </span>--data<span class="w"> </span>&lt;data<span class="w"> </span>block<span class="w"> </span>device&gt;<span class="w"> </span>--journal<span class="w"> </span>&lt;journal<span class="w"> </span>block<span class="w"> </span>device&gt;</span>
+</pre></div></div><p>Use this command to enable <a class="reference internal" href="encryption.html#ceph-volume-lvm-encryption"><span class="std std-ref">encryption</span></a>, and note that the <code class="docutils literal notranslate"><span class="pre">--dmcrypt</span></code> flag is required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--filestore<span class="w"> </span>--dmcrypt<span class="w"> </span>--data<span class="w"> </span>&lt;data<span class="w"> </span>block<span class="w"> </span>device&gt;<span class="w"> </span>--journal<span class="w"> </span>&lt;journal<span class="w"> </span>block<span class="w"> </span>device&gt;</span>
+</pre></div></div><p>The data block device and the journal can each take one of three forms:</p>
+<ul class="simple">
+<li><p>a physical block device</p></li>
+<li><p>a partition on a physical block device</p></li>
+<li><p>a logical volume</p></li>
+</ul>
+<p>If you use a logical volume to deploy filestore, the value that you pass in the
+command <em>must</em> be of the format <code class="docutils literal notranslate"><span class="pre">volume_group/logical_volume_name</span></code>. Since logical
+volume names are not enforced for uniqueness, using this format is an important
+safeguard against accidentally choosing the wrong volume (and clobbering its data).</p>
+<p>If you use a partition to deploy filestore, the partition <em>must</em> contain a
+<code class="docutils literal notranslate"><span class="pre">PARTUUID</span></code> that can be discovered by <code class="docutils literal notranslate"><span class="pre">blkid</span></code>. This ensures that the
+partition can be identified correctly regardless of the device’s name (or path).</p>
+<p>For example, to use a logical volume for OSD data and a partition
+(<code class="docutils literal notranslate"><span class="pre">/dev/sdc1</span></code>) for the journal, run a command of this form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--filestore<span class="w"> </span>--data<span class="w"> </span>volume_group/logical_volume_name<span class="w"> </span>--journal<span class="w"> </span>/dev/sdc1</span>
+</pre></div></div><p>Or, to use a bare device for data and a logical volume for the journal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--filestore<span class="w"> </span>--data<span class="w"> </span>/dev/sdc<span class="w"> </span>--journal<span class="w"> </span>volume_group/journal_lv</span>
+</pre></div></div><p>A generated UUID is used when asking the cluster for a new OSD. These two
+pieces of information (the OSD ID and the OSD UUID) are necessary for
+identifying a given OSD and will later be used throughout the
+<a class="reference internal" href="activate.html#ceph-volume-lvm-activate"><span class="std std-ref">activation</span></a> process.</p>
+<p>The OSD data directory is created using the following convention:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">osd</span><span class="o">/&lt;</span><span class="n">cluster</span> <span class="n">name</span><span class="o">&gt;-&lt;</span><span class="n">osd</span> <span class="nb">id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>To link the journal volume to the mounted data volume, use this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ln<span class="w"> </span>-s<span class="w"> </span>/path/to/journal<span class="w"> </span>/var/lib/ceph/osd/&lt;cluster_name&gt;-&lt;osd-id&gt;/journal</span>
+</pre></div></div><p>To fetch the monmap by using the bootstrap key from the OSD, use this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">/usr/bin/ceph<span class="w"> </span>--cluster<span class="w"> </span>ceph<span class="w"> </span>--name<span class="w"> </span>client.bootstrap-osd<span class="w"> </span>--keyring<span class="w"> </span><span class="se">\</span>
+/var/lib/ceph/bootstrap-osd/ceph.keyring<span class="w"> </span>mon<span class="w"> </span>getmap<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+/var/lib/ceph/osd/&lt;cluster<span class="w"> </span>name&gt;-&lt;osd<span class="w"> </span>id&gt;/activate.monmap</span>
+</pre></div></div><p>To populate the OSD directory (which has already been mounted), use this <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-osd<span class="w"> </span>--cluster<span class="w"> </span>ceph<span class="w"> </span>--mkfs<span class="w"> </span>--mkkey<span class="w"> </span>-i<span class="w"> </span>&lt;osd<span class="w"> </span>id&gt;<span class="w"> </span>--monmap<span class="w"> </span><span class="se">\</span>
+/var/lib/ceph/osd/&lt;cluster<span class="w"> </span>name&gt;-&lt;osd<span class="w"> </span>id&gt;/activate.monmap<span class="w"> </span>--osd-data<span class="w"> </span><span class="se">\</span>
+/var/lib/ceph/osd/&lt;cluster<span class="w"> </span>name&gt;-&lt;osd<span class="w"> </span>id&gt;<span class="w"> </span>--osd-journal<span class="w"> </span><span class="se">\</span>
+/var/lib/ceph/osd/&lt;cluster<span class="w"> </span>name&gt;-&lt;osd<span class="w"> </span>id&gt;/journal<span class="w"> </span>--osd-uuid<span class="w"> </span>&lt;osd<span class="w"> </span>uuid&gt;<span class="w"> </span><span class="se">\</span>
+--keyring<span class="w"> </span>/var/lib/ceph/osd/&lt;cluster<span class="w"> </span>name&gt;-&lt;osd<span class="w"> </span>id&gt;/keyring<span class="w"> </span>--setuser<span class="w"> </span>ceph<span class="w"> </span><span class="se">\</span>
+--setgroup<span class="w"> </span>ceph</span>
+</pre></div></div><p>All of the information from the previous steps is used in the above command.</p>
+</section>
+<section id="partitioning">
+<span id="ceph-volume-lvm-partitions"></span><h2>Partitioning<a class="headerlink" href="#partitioning" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ceph-volume</span> <span class="pre">lvm</span></code> does not currently create partitions from a whole device.
+If using device partitions the only requirement is that they contain the
+<code class="docutils literal notranslate"><span class="pre">PARTUUID</span></code> and that it is discoverable by <code class="docutils literal notranslate"><span class="pre">blkid</span></code>. Both <code class="docutils literal notranslate"><span class="pre">fdisk</span></code> and
+<code class="docutils literal notranslate"><span class="pre">parted</span></code> will create that automatically for a new partition.</p>
+<p>For example, using a new, unformatted drive (<code class="docutils literal notranslate"><span class="pre">/dev/sdd</span></code> in this case) we can
+use <code class="docutils literal notranslate"><span class="pre">parted</span></code> to create a new partition. First we list the device
+information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">parted<span class="w"> </span>--script<span class="w"> </span>/dev/sdd<span class="w"> </span>print</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span><span class="p">:</span> <span class="n">VBOX</span> <span class="n">HARDDISK</span> <span class="p">(</span><span class="n">scsi</span><span class="p">)</span>
+<span class="n">Disk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdd</span><span class="p">:</span> <span class="mf">11.5</span><span class="n">GB</span>
+<span class="n">Sector</span> <span class="n">size</span> <span class="p">(</span><span class="n">logical</span><span class="o">/</span><span class="n">physical</span><span class="p">):</span> <span class="mi">512</span><span class="n">B</span><span class="o">/</span><span class="mi">512</span><span class="n">B</span>
+<span class="n">Disk</span> <span class="n">Flags</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>This device is not even labeled yet, so we can use <code class="docutils literal notranslate"><span class="pre">parted</span></code> to create
+a <code class="docutils literal notranslate"><span class="pre">gpt</span></code> label before we create a partition, and verify again with <code class="docutils literal notranslate"><span class="pre">parted</span>
+<span class="pre">print</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">parted<span class="w"> </span>--script<span class="w"> </span>/dev/sdd<span class="w"> </span>mklabel<span class="w"> </span>gpt</span>
+<span class="prompt1">parted<span class="w"> </span>--script<span class="w"> </span>/dev/sdd<span class="w"> </span>print</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span><span class="p">:</span> <span class="n">VBOX</span> <span class="n">HARDDISK</span> <span class="p">(</span><span class="n">scsi</span><span class="p">)</span>
+<span class="n">Disk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdd</span><span class="p">:</span> <span class="mf">11.5</span><span class="n">GB</span>
+<span class="n">Sector</span> <span class="n">size</span> <span class="p">(</span><span class="n">logical</span><span class="o">/</span><span class="n">physical</span><span class="p">):</span> <span class="mi">512</span><span class="n">B</span><span class="o">/</span><span class="mi">512</span><span class="n">B</span>
+<span class="n">Partition</span> <span class="n">Table</span><span class="p">:</span> <span class="n">gpt</span>
+<span class="n">Disk</span> <span class="n">Flags</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Now lets create a single partition, and verify later if <code class="docutils literal notranslate"><span class="pre">blkid</span></code> can find
+a <code class="docutils literal notranslate"><span class="pre">PARTUUID</span></code> that is needed by <code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">parted<span class="w"> </span>--script<span class="w"> </span>/dev/sdd<span class="w"> </span>mkpart<span class="w"> </span>primary<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">100</span>%</span>
+<span class="prompt1">blkid<span class="w"> </span>/dev/sdd1</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdd1</span><span class="p">:</span> <span class="n">PARTLABEL</span><span class="o">=</span><span class="s2">&quot;primary&quot;</span> <span class="n">PARTUUID</span><span class="o">=</span><span class="s2">&quot;16399d72-1e1f-467d-96ee-6fe371a7d0d4&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="existing-osds">
+<span id="ceph-volume-lvm-existing-osds"></span><h2>Existing OSDs<a class="headerlink" href="#existing-osds" title="Link to this heading"></a></h2>
+<p>For existing clusters that want to use this new system and have OSDs that are
+already running there are a few things to take into account:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>this process will forcefully format the data device, destroying
+existing data, if any.</p>
+</div>
+<ul>
+<li><p>OSD paths should follow this convention:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ceph</span><span class="o">/</span><span class="n">osd</span><span class="o">/&lt;</span><span class="n">cluster</span> <span class="n">name</span><span class="o">&gt;-&lt;</span><span class="n">osd</span> <span class="nb">id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Preferably, no other mechanisms to mount the volume should exist, and should
+be removed (like fstab mount points)</p></li>
+</ul>
+<p>The one time process for an existing OSD, with an ID of 0 and using
+a <code class="docutils literal notranslate"><span class="pre">&quot;ceph&quot;</span></code> cluster name would look like (the following command will <strong>destroy
+any data</strong> in the OSD):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--filestore<span class="w"> </span>--osd-id<span class="w"> </span><span class="m">0</span><span class="w"> </span>--osd-fsid<span class="w"> </span>E3D291C1-E7BF-4984-9794-B60D9FA139CB</span>
+</pre></div></div><p>The command line tool will not contact the monitor to generate an OSD ID and
+will format the LVM device in addition to storing the metadata on it so that it
+can be started later (for detailed metadata description see
+<a class="reference internal" href="../../dev/ceph-volume/lvm.html#ceph-volume-lvm-tags"><span class="std std-ref">Metadata</span></a>).</p>
+</section>
+<section id="crush-device-class">
+<h2>Crush device class<a class="headerlink" href="#crush-device-class" title="Link to this heading"></a></h2>
+<p>To set the crush device class for the OSD, use the <code class="docutils literal notranslate"><span class="pre">--crush-device-class</span></code> flag.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--bluestore<span class="w"> </span>--data<span class="w"> </span>vg/lv<span class="w"> </span>--crush-device-class<span class="w"> </span>foo</span>
+</pre></div></div></section>
+<section id="multipath-support">
+<span id="ceph-volume-lvm-multipath"></span><h2><code class="docutils literal notranslate"><span class="pre">multipath</span></code> support<a class="headerlink" href="#multipath-support" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">multipath</span></code> devices are supported if <code class="docutils literal notranslate"><span class="pre">lvm</span></code> is configured properly.</p>
+<p><strong>Leave it to LVM</strong></p>
+<p>Most Linux distributions should ship their LVM2 package with
+<code class="docutils literal notranslate"><span class="pre">multipath_component_detection</span> <span class="pre">=</span> <span class="pre">1</span></code> in the default configuration. With this
+setting <code class="docutils literal notranslate"><span class="pre">LVM</span></code> ignores any device that is a multipath component and
+<code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code> will accordingly not touch these devices.</p>
+<p><strong>Using filters</strong></p>
+<p>Should this setting be unavailable, a correct <code class="docutils literal notranslate"><span class="pre">filter</span></code> expression must be
+provided in <code class="docutils literal notranslate"><span class="pre">lvm.conf</span></code>. <code class="docutils literal notranslate"><span class="pre">ceph-volume</span></code> must not be able to use both the
+multipath device and its multipath components.</p>
+</section>
+<section id="storing-metadata">
+<h2>Storing metadata<a class="headerlink" href="#storing-metadata" title="Link to this heading"></a></h2>
+<p>The following tags will get applied as part of the preparation process
+regardless of the type of volume (journal or data) or OSD objectstore:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cluster_fsid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encrypted</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">osd_fsid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">osd_id</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">crush_device_class</span></code></p></li>
+</ul>
+<p>For <a class="reference internal" href="../../glossary.html#term-BlueStore"><span class="xref std std-term">bluestore</span></a> these tags will be added:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">block_device</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block_uuid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db_device</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db_uuid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wal_device</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wal_uuid</span></code></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the complete lvm tag conventions see <a class="reference internal" href="../../dev/ceph-volume/lvm.html#ceph-volume-lvm-tag-api"><span class="std std-ref">Tag API</span></a></p>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>To recap the <code class="docutils literal notranslate"><span class="pre">prepare</span></code> process for <a class="reference internal" href="../../glossary.html#term-BlueStore"><span class="xref std std-term">bluestore</span></a>:</p>
+<ol class="arabic simple">
+<li><p>Accepts raw physical devices, partitions on physical devices or logical volumes as arguments.</p></li>
+<li><p>Creates logical volumes on any raw physical devices.</p></li>
+<li><p>Generate a UUID for the OSD</p></li>
+<li><p>Ask the monitor get an OSD ID reusing the generated UUID</p></li>
+<li><p>OSD data directory is created on a tmpfs mount.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block</span></code>, <code class="docutils literal notranslate"><span class="pre">block.wal</span></code>, and <code class="docutils literal notranslate"><span class="pre">block.db</span></code> are symlinked if defined.</p></li>
+<li><p>monmap is fetched for activation</p></li>
+<li><p>Data directory is populated by <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code></p></li>
+<li><p>Logical Volumes are assigned all the Ceph metadata using lvm tags</p></li>
+</ol>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="encryption.html" class="btn btn-neutral float-left" title="Encryption" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="create.html" class="btn btn-neutral float-right" title="create" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

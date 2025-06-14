@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration Management System &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="config-key layout" href="config-key.html" />
+    <link rel="prev" title="A Detailed Description of the Cephx Authentication Protocol" href="cephx_protocol.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html">Tracing Ceph With LTTng</a></li>
+<li class="toctree-l3"><a class="reference internal" href="blkin.html#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Configuration Management System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-configuration-file">The Configuration File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metavariables">Metavariables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reading-configuration-values">Reading configuration values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#changing-configuration-values">Changing configuration values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#defining-config-options">Defining config options</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">Configuration Management System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="configuration-management-system">
+<h1>Configuration Management System<a class="headerlink" href="#configuration-management-system" title="Link to this heading"></a></h1>
+<p>The configuration management system exists to provide every daemon with the
+proper configuration information. The configuration can be viewed as a set of
+key-value pairs.</p>
+<p>How can the configuration be set? Well, there are several sources:</p>
+<blockquote>
+<div><ul>
+<li><p>the ceph configuration file, usually named ceph.conf</p></li>
+<li><p>command line arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">debug</span><span class="o">-</span><span class="n">ms</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">--</span><span class="n">debug</span><span class="o">-</span><span class="n">monc</span><span class="o">=</span><span class="mi">10</span>
+</pre></div>
+</div>
+<p>etc.</p>
+</li>
+<li><p>arguments injected at runtime using <code class="docutils literal notranslate"><span class="pre">injectargs</span></code> or <code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">set</span></code></p></li>
+</ul>
+</div></blockquote>
+<section id="the-configuration-file">
+<h2>The Configuration File<a class="headerlink" href="#the-configuration-file" title="Link to this heading"></a></h2>
+<p>Most configuration settings originate in the Ceph configuration file.</p>
+<p>How do we find the configuration file? Well, in order, we check:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>the default locations</p></li>
+<li><p>the environment variable <code class="docutils literal notranslate"><span class="pre">CEPH_CONF</span></code></p></li>
+<li><p>the command line argument <code class="docutils literal notranslate"><span class="pre">-c</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>Each stanza of the configuration file describes the key-value pairs that will be in
+effect for a particular subset of the daemons. The “global” stanza applies to
+everything. The “mon”, “osd”, and “mds” stanzas specify settings to take effect
+for all monitors, all OSDs, and all mds servers, respectively.  A stanza of the
+form <code class="docutils literal notranslate"><span class="pre">mon.$name</span></code>, <code class="docutils literal notranslate"><span class="pre">osd.$name</span></code>, or <code class="docutils literal notranslate"><span class="pre">mds.$name</span></code> gives settings for the monitor, OSD, or
+MDS of that name, respectively. Configuration values that appear later in the
+file win over earlier ones.</p>
+<p>A sample configuration file can be found in src/sample.ceph.conf.</p>
+</section>
+<section id="metavariables">
+<h2>Metavariables<a class="headerlink" href="#metavariables" title="Link to this heading"></a></h2>
+<p>The configuration system allows any configuration value to be
+substituted into another value using the <code class="docutils literal notranslate"><span class="pre">$varname</span></code> syntax, similar
+to how bash shell expansion works.</p>
+<p>A few additional special metavariables are also defined:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>$host: expands to the current hostname</p></li>
+<li><p>$type: expands to one of “mds”, “osd”, “mon”, or “client”</p></li>
+<li><p>$id: expands to the daemon identifier. For <code class="docutils literal notranslate"><span class="pre">osd.0</span></code>, this would be <code class="docutils literal notranslate"><span class="pre">0</span></code>; for <code class="docutils literal notranslate"><span class="pre">mds.a</span></code>, it would be <code class="docutils literal notranslate"><span class="pre">a</span></code>; for <code class="docutils literal notranslate"><span class="pre">client.admin</span></code>, it would be <code class="docutils literal notranslate"><span class="pre">admin</span></code>.</p></li>
+<li><p>$num: same as $id</p></li>
+<li><p>$name: expands to $type.$id</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="reading-configuration-values">
+<h2>Reading configuration values<a class="headerlink" href="#reading-configuration-values" title="Link to this heading"></a></h2>
+<p>There are two ways for Ceph code to get configuration values. One way is to
+read it directly from a variable named <code class="docutils literal notranslate"><span class="pre">g_conf</span></code>, or equivalently,
+<code class="docutils literal notranslate"><span class="pre">g_ceph_ctx-&gt;_conf</span></code>. The other is to register an observer that will be called
+every time the relevant configuration values change. This observer will be
+called soon after the initial configuration is read, and every time after that
+when one of the relevant values changes. Each observer tracks a set of keys
+and is invoked only when one of the relevant keys changes.</p>
+<p>The interface to implement is found in <code class="docutils literal notranslate"><span class="pre">common/config_obs.h</span></code>.</p>
+<p>The observer method should be preferred in new code because</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It is more flexible, allowing the code to do whatever reinitialization needs
+to be done to implement the new configuration value.</p></li>
+<li><p>It is the only way to create a std::string configuration variable that can
+be changed by injectargs.</p></li>
+<li><p>Even for int-valued configuration options, changing the values in one thread
+while another thread is reading them can lead to subtle and
+impossible-to-diagnose bugs.</p></li>
+</ul>
+</div></blockquote>
+<p>For these reasons, reading directly from <code class="docutils literal notranslate"><span class="pre">g_conf</span></code> should be considered deprecated
+and not done in new code.  Do not ever alter <code class="docutils literal notranslate"><span class="pre">g_conf</span></code>.</p>
+</section>
+<section id="changing-configuration-values">
+<h2>Changing configuration values<a class="headerlink" href="#changing-configuration-values" title="Link to this heading"></a></h2>
+<p>Configuration values can be changed by calling <code class="docutils literal notranslate"><span class="pre">g_conf()-&gt;set_val</span></code>. After changing
+the configuration, you should call <code class="docutils literal notranslate"><span class="pre">g_conf()-&gt;apply_changes</span></code> to re-run all the
+affected configuration observers. For convenience, you can call
+<code class="docutils literal notranslate"><span class="pre">g_conf()-&gt;set_val_or_die</span></code> to make a configuration change which you think should
+never fail.</p>
+<p><code class="docutils literal notranslate"><span class="pre">injectargs</span></code>, <code class="docutils literal notranslate"><span class="pre">parse_argv</span></code>, and <code class="docutils literal notranslate"><span class="pre">parse_env</span></code> are three other functions which modify
+the configuration. Just like with set_val, you should call apply_changes after
+calling these functions to make sure your changes get applied.</p>
+</section>
+<section id="defining-config-options">
+<h2>Defining config options<a class="headerlink" href="#defining-config-options" title="Link to this heading"></a></h2>
+<p>Config options are defined in <code class="docutils literal notranslate"><span class="pre">common/options/*.yaml.in</span></code>. The options are categorized
+by their consumers. If an option is only used by ceph-osd, it should go to
+<code class="docutils literal notranslate"><span class="pre">osd.yaml.in</span></code>. All the <code class="docutils literal notranslate"><span class="pre">.yaml.in</span></code> files are translated into <code class="docutils literal notranslate"><span class="pre">.cc</span></code> and <code class="docutils literal notranslate"><span class="pre">.h</span></code> files
+at build time by <code class="docutils literal notranslate"><span class="pre">y2c.py</span></code>.</p>
+<p>Each option is represented using a YAML mapping (dictionary). A typical option looks like</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public_addr</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">addr</span>
+<span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">basic</span>
+<span class="w">  </span><span class="nt">desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">public-facing address to bind to</span>
+<span class="w">  </span><span class="nt">long_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The IP address for the public (front-side) network.</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">Set for each daemon.</span>
+<span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mon</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mds</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osd</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgr</span>
+<span class="w">  </span><span class="nt">flags</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">startup</span>
+<span class="w">  </span><span class="nt">with_legacy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>In which, following keys are allowed:</p>
+<section id="level">
+<h3>level<a class="headerlink" href="#level" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">level</span></code> property of an option is an indicator for the probability the
+option is adjusted by an operator or a developer:</p>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">basic</span></span></dt>
+<dd><p>for basic config options that a normal operator is likely to adjust.</p>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">advanced</span></span></dt>
+<dd><p>for options that an operator <em>can</em> adjust, but should not touch unless they
+understand what they are doing. Adjusting advanced options poorly can lead to
+problems (performance or even data loss) if done incorrectly.</p>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">dev</span></span></dt>
+<dd><p>for options in place for use by developers only, either for testing purposes,
+or to describe constants that no user should adjust but we prefer not to compile
+into the code.</p>
+</dd></dl>
+
+</section>
+<section id="desc-long-desc-and-fmt-desc">
+<h3><code class="docutils literal notranslate"><span class="pre">desc</span></code>, <code class="docutils literal notranslate"><span class="pre">long_desc</span></code> and <code class="docutils literal notranslate"><span class="pre">fmt_desc</span></code><a class="headerlink" href="#desc-long-desc-and-fmt-desc" title="Link to this heading"></a></h3>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">desc</span></span></dt>
+<dd><p>Short description of the option. Sentence fragment. e.g.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Default checksum algorithm to use</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">long_desc</span></span></dt>
+<dd><p>The long description is complete sentences, perhaps even multiple
+paragraphs, and may include other detailed information or notes. e.g.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">long_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crc32c, xxhash32, and xxhash64 are available.  The _16 and _8 variants use</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">only a subset of the bits for more compact (but less reliable) checksumming.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">fmt_desc</span></span></dt>
+<dd><p>The description formatted using reStructuredText. This property is
+only used by the <code class="docutils literal notranslate"><span class="pre">confval</span></code> directive to render an option in the
+document. e.g.:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fmt_desc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The interval for &quot;deep&quot; scrubbing (fully reading all data). The</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">``osd_scrub_load_threshold`` does not affect this setting.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="default-values">
+<h3>Default values<a class="headerlink" href="#default-values" title="Link to this heading"></a></h3>
+<p>There is a default value for every config option. In some cases, there may
+also be a <em>daemon default</em> that only applies to code that declares itself
+as a daemon (in this case, the regular default only applies to non-daemons). Like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crc32c</span>
+</pre></div>
+</div>
+<p>Some literal postfixes are allowed when options with type of <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">size</span></code>
+and <code class="docutils literal notranslate"><span class="pre">secs</span></code>, like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mon_scrub_interval</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secs</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1_day</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osd_journal_size</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">size</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5_K</span>
+</pre></div>
+</div>
+<p>For better readability, it is encouraged to use these literal postfixes when
+adding or updating the default value for an option.</p>
+</section>
+<section id="service">
+<h3>Service<a class="headerlink" href="#service" title="Link to this heading"></a></h3>
+<p>Service is a component name, like “common”, “osd”, “rgw”, “mds”, etc. It may
+be a list of components, like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mon</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mds</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osd</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mgr</span>
+</pre></div>
+</div>
+<p>For example, the rocksdb options affect both the osd and mon. If an option is put
+into a service specific <code class="docutils literal notranslate"><span class="pre">.yaml.in</span></code> file, the corresponding service is added to
+its <code class="docutils literal notranslate"><span class="pre">services</span></code> property automatically. For instance, <code class="docutils literal notranslate"><span class="pre">osd_scrub_begin_hour</span></code>
+option is located in <code class="docutils literal notranslate"><span class="pre">osd.yaml.in</span></code>, even its <code class="docutils literal notranslate"><span class="pre">services</span></code> is not specified
+explicitly in this file, this property still contains <code class="docutils literal notranslate"><span class="pre">osd</span></code>.</p>
+</section>
+<section id="tags">
+<h3>Tags<a class="headerlink" href="#tags" title="Link to this heading"></a></h3>
+<p>Tags identify options across services that relate in some way. For example:</p>
+<dl class="simple">
+<dt>network</dt><dd><p>options affecting network configuration</p>
+</dd>
+<dt>mkfs</dt><dd><p>options that only matter at mkfs time</p>
+</dd>
+</dl>
+<p>Like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tags</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network</span>
+</pre></div>
+</div>
+</section>
+<section id="enums">
+<h3>Enums<a class="headerlink" href="#enums" title="Link to this heading"></a></h3>
+<p>For options with a defined set of allowed values:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enum_values</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">none</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crc32c</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crc32c_16</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crc32c_8</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxhash32</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxhash64</span>
+</pre></div>
+</div>
+</section>
+<section id="flags">
+<h3>Flags<a class="headerlink" href="#flags" title="Link to this heading"></a></h3>
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">runtime</span></span></dt>
+<dd><p>the value can be updated at runtime</p>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">no_mon_update</span></span></dt>
+<dd><p>Daemons/clients do not pull this value from the monitor config database.  We
+disallow setting this option via <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">config</span> <span class="pre">set</span> <span class="pre">...</span></code>.  This option should
+be configured via <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> or via the command line.</p>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">startup</span></span></dt>
+<dd><p>option takes effect only during daemon startup</p>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">cluster_create</span></span></dt>
+<dd><p>option only affects cluster creation</p>
+</dd></dl>
+
+<dl class="describe">
+<dt class="sig sig-object">
+<span class="sig-name descname"><span class="pre">create</span></span></dt>
+<dd><p>option only affects daemon creation</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cephx_protocol.html" class="btn btn-neutral float-left" title="A Detailed Description of the Cephx Authentication Protocol" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config-key.html" class="btn btn-neutral float-right" title="config-key layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

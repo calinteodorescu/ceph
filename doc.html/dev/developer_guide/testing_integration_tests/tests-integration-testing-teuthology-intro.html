@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing - Integration Tests - Introduction &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Integration Tests using Teuthology Workflow" href="tests-integration-testing-teuthology-workflow.html" />
+    <link rel="prev" title="Teuthology User Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../../index.html">
+            
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../architecture.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../essentials.html">Essentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../merging.html">What is Merged and When</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../issue-tracker.html">Issue tracker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../basic-workflow.html">Basic workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests-unit-tests.html">Tests: Unit Tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Tests: Integration Tests (Teuthology)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#teuthology-consumes-packages">Teuthology consumes packages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-nightlies">The Nightlies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-priority">Testing Priority</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#suites-inventory">Suites Inventory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#teuthology-describe">teuthology-describe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-run-integration-tests">How to run integration tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-integration-tests-are-defined">How integration tests are defined</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reading-a-standalone-test">Reading a standalone test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-descriptions">Test descriptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-tests-are-built-from-directories">How tests are built from directories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#position-independent-linking">Position Independent Linking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filtering-tests-by-their-description">Filtering tests by their description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reducing-the-number-of-tests">Reducing the number of tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests-integration-testing-teuthology-workflow.html">Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests-integration-testing-teuthology-debugging-tips.html">Debugging Tips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests-integration-testing-teuthology-kernel.html">Kernel Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests-sentry-developers-guide.html">Sentry Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../running-tests-locally.html">Tests: Running Tests (Locally)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests-windows.html">Tests: Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash-devel.html">Ceph Dashboard Developer Documentation (formerly HACKING.rst)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jaegertracing.html">Tracing Developer Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cephadm/index.html">Cephadm Developer Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging-gdb.html">Debugging with GDB</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Contributing to Ceph: A Guide for Developers</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Teuthology User Guide</a></li>
+      <li class="breadcrumb-item active">Testing - Integration Tests - Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/dev/developer_guide/testing_integration_tests/tests-integration-testing-teuthology-intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="testing-integration-tests-introduction">
+<span id="tests-integration-testing-teuthology-intro"></span><h1>Testing - Integration Tests - Introduction<a class="headerlink" href="#testing-integration-tests-introduction" title="Link to this heading"></a></h1>
+<p>Ceph has two types of tests: <a class="reference internal" href="../tests-unit-tests.html#make-check"><span class="std std-ref">make check</span></a> tests and
+integration tests. When a test requires multiple machines, root access, or lasts
+for a long time (for example, to simulate a realistic Ceph workload), it is
+deemed to be an integration test. Integration tests are organized into “suites”,
+which are defined in the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a> and run with the
+<code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command is part of the <a class="reference external" href="https://github.com/ceph/teuthology">teuthology framework</a>.
+In the sections that follow we attempt to provide a detailed introduction
+to that framework from the perspective of a beginning Ceph developer.</p>
+<section id="teuthology-consumes-packages">
+<h2>Teuthology consumes packages<a class="headerlink" href="#teuthology-consumes-packages" title="Link to this heading"></a></h2>
+<p>It may take some time to understand the significance of this fact, but it
+is <cite>very</cite> significant. It means that automated tests can be conducted on
+multiple platforms using the same packages (RPM, DEB) that can be
+installed on any machine running those platforms.</p>
+<p>Teuthology has a <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/distros/supported">list of platforms that it supports</a> (as of
+September 2020 the list consisted of “RHEL/CentOS 8” and “Ubuntu 18.04”). It
+expects to be provided pre-built Ceph packages for these platforms.  Teuthology
+deploys these platforms on machines (bare-metal or cloud-provisioned), installs
+the packages on them, and deploys Ceph clusters on them - all as called for by
+the test.</p>
+</section>
+<section id="the-nightlies">
+<h2>The Nightlies<a class="headerlink" href="#the-nightlies" title="Link to this heading"></a></h2>
+<p>A number of integration tests are run on a regular basis in the <a class="reference external" href="https://wiki.sepia.ceph.com/doku.php">Sepia
+lab</a> against the official Ceph repositories (on the <code class="docutils literal notranslate"><span class="pre">master</span></code> development
+branch and the stable branches). Traditionally, these tests are called “the
+nightlies” because the Ceph core developers used to live and work in
+the same time zone and from their perspective the tests were run overnight.</p>
+<p>The results of nightly test runs are published at <a class="reference external" href="http://pulpito.ceph.com/">http://pulpito.ceph.com/</a>
+under the user <code class="docutils literal notranslate"><span class="pre">teuthology</span></code>. The developer nick appears in URL of the the
+test results and in the first column of the Pulpito dashboard.  The results are
+also reported on the <a class="reference external" href="https://ceph.com/irc/">ceph-qa mailing list</a>.</p>
+</section>
+<section id="testing-priority">
+<h2>Testing Priority<a class="headerlink" href="#testing-priority" title="Link to this heading"></a></h2>
+<p>In brief: in the <code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command option <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">&lt;N&gt;</span></code>, set the value
+of <code class="docutils literal notranslate"><span class="pre">&lt;N&gt;</span></code> to a number less than 500. An explanation of why follows.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command includes an option <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">&lt;N&gt;</span></code>. This option specifies the priority of the jobs submitted to the queue. The lower the value of <code class="docutils literal notranslate"><span class="pre">N</span></code>, the higher the priority.</p>
+<p>The default value of <code class="docutils literal notranslate"><span class="pre">N</span></code> is <code class="docutils literal notranslate"><span class="pre">1000</span></code>. Most nightly tests automatically
+scheduled by <code class="docutils literal notranslate"><span class="pre">teuthology&#64;teuthology.front.sepia.ceph.com</span></code> are run with <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">&gt;=</span>
+<span class="pre">500</span></code>. Some critical nightly tests are given higher priority, such as smoke
+tests or QA runs for an imminent major releases.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Often the volume of testing done during the nightly tests is so great
+that the full number of nightly tests do not get run during the time allotted
+for their run.</p>
+</div>
+<p>Set the value of <code class="docutils literal notranslate"><span class="pre">N</span></code> lower than <code class="docutils literal notranslate"><span class="pre">500</span></code> or your tests will not have priority
+over the nightly tests. This means that they might never run.</p>
+<p>Select your job’s priority (the value of <code class="docutils literal notranslate"><span class="pre">N</span></code>) in accordance with the following guidelines:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Priority</p></th>
+<th class="head"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>N &lt; 10</strong></p></td>
+<td><p>Use this if the sky is falling and some group of tests must be run ASAP.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>10 &lt;= N &lt; 50</strong></p></td>
+<td><p>Use this if your tests are urgent and blocking other important
+development.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>50 &lt;= N &lt; 75</strong></p></td>
+<td><p>Use this if you are testing a particular feature/fix and running fewer
+than about 25 jobs. This range is also used for urgent release testing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>75 &lt;= N &lt; 100</strong></p></td>
+<td><p>Tech Leads regularly schedule integration tests with this priority to
+verify pull requests against master.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>100 &lt;= N &lt; 150</strong></p></td>
+<td><p>This priority is used for QE validation of point releases.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>150 &lt;= N &lt; 200</strong></p></td>
+<td><p>Use this priority for 100 jobs or fewer that test a particular feature
+or fix.  Results are available in about 24 hours.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>200 &lt;= N &lt; 500</strong></p></td>
+<td><p>Use this priority for large test runs.  Results are available in about a
+week.</p></td>
+</tr>
+</tbody>
+</table>
+<p>To see how many jobs the <code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command will trigger, use the
+<code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> flag. If you are happy with the number of jobs returned by the
+dry run, issue the <code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command again without <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> and
+with <code class="docutils literal notranslate"><span class="pre">-p</span></code> and an appropriate number as an argument.</p>
+<p>To skip the priority check, use <code class="docutils literal notranslate"><span class="pre">--force-priority</span></code>. Be considerate of the needs of other developers to run tests, and use <code class="docutils literal notranslate"><span class="pre">--force-priority</span></code> only in emergencies.</p>
+</section>
+<section id="suites-inventory">
+<h2>Suites Inventory<a class="headerlink" href="#suites-inventory" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">suites</span></code> directory of the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a> contains all the
+integration tests for all the Ceph components.</p>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text"><strong>Suites</strong></span><a class="headerlink" href="#id3" title="Link to this table"></a></caption>
+<tbody>
+<tr class="row-odd"><td><p><strong>Component</strong></p></td>
+<td><p><strong>Function</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/ceph-deploy">ceph-deploy</a></p></td>
+<td><p>install a Ceph cluster with <code class="docutils literal notranslate"><span class="pre">ceph-deploy</span></code> (<a class="reference external" href="../../../../man/8/ceph-deploy">ceph-deploy man page</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/dummy">dummy</a></p></td>
+<td><p>get a machine, do nothing and return success (commonly used to verify
+that the integration testing infrastructure works as expected)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/fs">fs</a></p></td>
+<td><p>test CephFS mounted using kernel and FUSE clients, also with multiple MDSs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/krbd">krbd</a></p></td>
+<td><p>test the RBD kernel module</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/powercycle">powercycle</a></p></td>
+<td><p>verify the Ceph cluster behaves when machines are powered off and on
+again</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rados">rados</a></p></td>
+<td><p>run Ceph clusters including OSDs and MONs, under various conditions of
+stress</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rbd">rbd</a></p></td>
+<td><p>run RBD tests using actual Ceph clusters, with and without qemu</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rgw">rgw</a></p></td>
+<td><p>run RGW tests using actual Ceph clusters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/smoke">smoke</a></p></td>
+<td><p>run tests that exercise the Ceph API with an actual Ceph cluster</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/teuthology">teuthology</a></p></td>
+<td><p>verify that teuthology can run integration tests, with and without OpenStack</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/upgrade">upgrade</a></p></td>
+<td><p>for various versions of Ceph, verify that upgrades can happen without disrupting an ongoing workload (<a class="reference internal" href="#id1">Upgrade Testing</a>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="teuthology-describe">
+<h2>teuthology-describe<a class="headerlink" href="#teuthology-describe" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">teuthology-describe</span></code> was added to the <a class="reference external" href="https://github.com/ceph/teuthology">teuthology framework</a> to facilitate
+documentation and better understanding of integration tests.</p>
+<p>Tests can be documented by embedding <code class="docutils literal notranslate"><span class="pre">meta:</span></code> annotations in the yaml files
+used to define the tests. The results can be seen in the <a class="reference external" href="https://gist.github.com/jdurgin/09711d5923b583f60afc">teuthology-describe
+usecases</a></p>
+<p>Since this is a new feature, many yaml files have yet to be annotated.
+Developers are encouraged to improve the coverage and the quality of the
+documentation.</p>
+</section>
+<section id="how-to-run-integration-tests">
+<h2>How to run integration tests<a class="headerlink" href="#how-to-run-integration-tests" title="Link to this heading"></a></h2>
+<p>Typically, the <a class="reference external" href="https://wiki.sepia.ceph.com/doku.php">Sepia lab</a> is used to run integration tests. But as a new Ceph
+developer, you will probably not have access to the <a class="reference external" href="https://wiki.sepia.ceph.com/doku.php">Sepia lab</a>.  You might
+however be able to run some integration tests in an environment separate from
+the <a class="reference external" href="https://wiki.sepia.ceph.com/doku.php">Sepia lab</a> . Ask members from the relevant team how to do this.</p>
+<p>One way to run your own integration tests is to set up a teuthology cluster on
+bare metal. Setting up a teuthology cluster on bare metal is a complex task.
+Here are <a class="reference external" href="https://docs.ceph.com/projects/teuthology/en/latest/LAB_SETUP.html">some notes</a> to get
+you started if you decide that you are interested in undertaking the complex
+task of setting up a teuthology cluster on bare metal.</p>
+<p>Running integration tests on your code contributions and publishing the results
+allows reviewers to verify that changes to the code base do not cause
+regressions, and allows reviewers to analyze test failures when they occur.</p>
+<p>Every teuthology cluster, whether bare-metal or cloud-provisioned, has a
+so-called “teuthology machine” from which tests suites are triggered using the
+<code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code> command.</p>
+<p>A detailed and up-to-date description of each <a class="reference external" href="https://docs.ceph.com/projects/teuthology/en/latest/commands/teuthology-suite.html">teuthology-suite</a> option is
+available by running the following command on the teuthology machine:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--help</span>
+</pre></div></div></section>
+<section id="how-integration-tests-are-defined">
+<h2>How integration tests are defined<a class="headerlink" href="#how-integration-tests-are-defined" title="Link to this heading"></a></h2>
+<p>Integration tests are defined by yaml files found in the <code class="docutils literal notranslate"><span class="pre">suites</span></code>
+subdirectory of the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a> and implemented by python
+code found in the <code class="docutils literal notranslate"><span class="pre">tasks</span></code> subdirectory. Some tests (“standalone tests”)
+are defined in a single yaml file, while other tests are defined by a
+directory tree containing yaml files that are combined, at runtime, into a
+larger yaml file.</p>
+</section>
+<section id="reading-a-standalone-test">
+<span id="reading-standalone-test"></span><h2>Reading a standalone test<a class="headerlink" href="#reading-a-standalone-test" title="Link to this heading"></a></h2>
+<p>Let us first examine a standalone test, or “singleton”.</p>
+<p>Here is a commented example using the integration test
+<a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/suites/rados/singleton/all/admin-socket.yaml">rados/singleton/all/admin-socket.yaml</a></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">roles</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mon.a</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osd.0</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osd.1</span>
+<span class="nt">tasks</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">install</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ceph</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">admin_socket</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">osd.0</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">version</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">git_version</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">help</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">config show</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">config set filestore_dump_file /tmp/foo</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">perf dump</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">perf schema</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">roles</span></code> array determines the composition of the cluster (how
+many MONs, OSDs, etc.) on which this test is designed to run, as well
+as how these roles will be distributed over the machines in the
+testing cluster. In this case, there is only one element in the
+top-level array: therefore, only one machine is allocated to the
+test. The nested array declares that this machine shall run a MON with
+id <code class="docutils literal notranslate"><span class="pre">a</span></code> (that is the <code class="docutils literal notranslate"><span class="pre">mon.a</span></code> in the list of roles) and two OSDs
+(<code class="docutils literal notranslate"><span class="pre">osd.0</span></code> and <code class="docutils literal notranslate"><span class="pre">osd.1</span></code>).</p>
+<p>The body of the test is in the <code class="docutils literal notranslate"><span class="pre">tasks</span></code> array: each element is
+evaluated in order, causing the corresponding python file found in the
+<code class="docutils literal notranslate"><span class="pre">tasks</span></code> subdirectory of the <a class="reference external" href="https://github.com/ceph/teuthology">teuthology repository</a> or
+<a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a> to be run. “Running” in this case means calling
+the <code class="docutils literal notranslate"><span class="pre">task()</span></code> function defined in that file.</p>
+<p>In this case, the <a class="reference external" href="https://github.com/ceph/teuthology/blob/master/teuthology/task/install/__init__.py">install</a>
+task comes first. It installs the Ceph packages on each machine (as
+defined by the <code class="docutils literal notranslate"><span class="pre">roles</span></code> array). A full description of the <code class="docutils literal notranslate"><span class="pre">install</span></code>
+task is <a class="reference external" href="https://github.com/ceph/teuthology/blob/master/teuthology/task/install/__init__.py">found in the python file</a>
+(search for “def task”).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ceph</span></code> task, which is documented <a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/tasks/ceph.py">here</a> (again,
+search for “def task”), starts OSDs and MONs (and possibly MDSs as well)
+as required by the <code class="docutils literal notranslate"><span class="pre">roles</span></code> array. In this example, it will start one MON
+(<code class="docutils literal notranslate"><span class="pre">mon.a</span></code>) and two OSDs (<code class="docutils literal notranslate"><span class="pre">osd.0</span></code> and <code class="docutils literal notranslate"><span class="pre">osd.1</span></code>), all on the same
+machine. Control moves to the next task when the Ceph cluster reaches
+<code class="docutils literal notranslate"><span class="pre">HEALTH_OK</span></code> state.</p>
+<p>The next task is <code class="docutils literal notranslate"><span class="pre">admin_socket</span></code> (<a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/tasks/admin_socket.py">source code</a>).
+The parameter of the <code class="docutils literal notranslate"><span class="pre">admin_socket</span></code> task (and any other task) is a
+structure which is interpreted as documented in the task. In this example
+the parameter is a set of commands to be sent to the admin socket of
+<code class="docutils literal notranslate"><span class="pre">osd.0</span></code>. The task verifies that each of them returns on success (i.e.
+exit code zero).</p>
+<p>This test can be run with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span>--suite<span class="w"> </span>rados/singleton/all/admin-socket.yaml<span class="w"> </span>fs/ext4.yaml</span>
+</pre></div></div></section>
+<section id="test-descriptions">
+<h2>Test descriptions<a class="headerlink" href="#test-descriptions" title="Link to this heading"></a></h2>
+<p>Each test has a “test description”, which is similar to a directory path,
+but not the same. In the case of a standalone test, like the one in
+<a class="reference internal" href="#reading-a-standalone-test">Reading a standalone test</a>, the test description is identical to the
+relative path (starting from the <code class="docutils literal notranslate"><span class="pre">suites/</span></code> directory of the
+<a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a>) of the yaml file defining the test.</p>
+<p>Much more commonly, tests are defined not by a single yaml file, but by a
+<cite>directory tree of yaml files</cite>. At runtime, the tree is walked and all yaml
+files (facets) are combined into larger yaml “programs” that define the
+tests. A full listing of the yaml defining the test is included at the
+beginning of every test log.</p>
+<p>In these cases, the description of each test consists of the
+subdirectory under <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites">suites/</a> containing the
+yaml facets, followed by an expression in curly braces (<code class="docutils literal notranslate"><span class="pre">{}</span></code>) consisting of
+a list of yaml facets in order of concatenation. For instance the
+test description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span><span class="o">-</span><span class="n">deploy</span><span class="o">/</span><span class="n">basic</span><span class="o">/</span><span class="p">{</span><span class="n">distros</span><span class="o">/</span><span class="n">centos_7</span><span class="mf">.0</span><span class="o">.</span><span class="n">yaml</span> <span class="n">tasks</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">deploy</span><span class="o">.</span><span class="n">yaml</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>signifies the concatenation of two files:</p>
+<ul class="simple">
+<li><p>ceph-deploy/basic/distros/centos_7.0.yaml</p></li>
+<li><p>ceph-deploy/basic/tasks/ceph-deploy.yaml</p></li>
+</ul>
+</section>
+<section id="how-tests-are-built-from-directories">
+<h2>How tests are built from directories<a class="headerlink" href="#how-tests-are-built-from-directories" title="Link to this heading"></a></h2>
+<p>As noted in the previous section, most tests are not defined in a single
+yaml file, but rather as a <cite>combination</cite> of files collected from a
+directory tree within the <code class="docutils literal notranslate"><span class="pre">suites/</span></code> subdirectory of the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a>.</p>
+<p>The set of all tests defined by a given subdirectory of <code class="docutils literal notranslate"><span class="pre">suites/</span></code> is
+called an “integration test suite”, or a “teuthology suite”.</p>
+<p>Combination of YAML facets is controlled by special files (<code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">$</span></code>)
+that are placed within the directory tree and can be thought of as
+operators.  The <code class="docutils literal notranslate"><span class="pre">%</span></code> file is the “convolution” operator, <code class="docutils literal notranslate"><span class="pre">+</span></code> signifies
+concatenation and <code class="docutils literal notranslate"><span class="pre">$</span></code> is the “random selection” operator.</p>
+<section id="convolution-operator">
+<h3>Convolution operator - <code class="docutils literal notranslate"><span class="pre">%</span></code><a class="headerlink" href="#convolution-operator" title="Link to this heading"></a></h3>
+<p>The convolution operator, implemented as a (typically empty) file called <code class="docutils literal notranslate"><span class="pre">%</span></code>,
+tells teuthology to construct a test matrix from YAML facets found in
+subdirectories below the directory containing the operator.</p>
+<p>For example, the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/ceph-deploy/">ceph-deploy suite</a> is
+defined by the <code class="docutils literal notranslate"><span class="pre">suites/ceph-deploy/</span></code> tree, which consists of the files and
+subdirectories in the following structure</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>qa/suites/ceph-deploy
+├── %
+├── distros
+│   ├── centos_latest.yaml
+│   └── ubuntu_latest.yaml
+└── tasks
+    ├── ceph-admin-commands.yaml
+    └── rbd_import_export.yaml
+</pre></div>
+</div>
+<p>This is interpreted as a 2x1 matrix consisting of two tests:</p>
+<ol class="arabic simple">
+<li><p>ceph-deploy/basic/{distros/centos_7.0.yaml tasks/ceph-deploy.yaml}</p></li>
+<li><p>ceph-deploy/basic/{distros/ubuntu_16.04.yaml tasks/ceph-deploy.yaml}</p></li>
+</ol>
+<p>i.e. the concatenation of centos_7.0.yaml and ceph-deploy.yaml and
+the concatenation of ubuntu_16.04.yaml and ceph-deploy.yaml, respectively.
+In human terms, this means that the task found in <code class="docutils literal notranslate"><span class="pre">ceph-deploy.yaml</span></code> is
+intended to run on both CentOS 7.0 and Ubuntu 16.04.</p>
+<p>Without the file percent, the <code class="docutils literal notranslate"><span class="pre">ceph-deploy</span></code> tree would be interpreted as
+three standalone tests:</p>
+<ul class="simple">
+<li><p>ceph-deploy/basic/distros/centos_7.0.yaml</p></li>
+<li><p>ceph-deploy/basic/distros/ubuntu_16.04.yaml</p></li>
+<li><p>ceph-deploy/basic/tasks/ceph-deploy.yaml</p></li>
+</ul>
+<p>(which would of course be wrong in this case).</p>
+<p>Referring to the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a>, you will notice that the
+<code class="docutils literal notranslate"><span class="pre">centos_7.0.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">ubuntu_16.04.yaml</span></code> files in the
+<code class="docutils literal notranslate"><span class="pre">suites/ceph-deploy/basic/distros/</span></code> directory are implemented as symlinks.
+By using symlinks instead of copying, a single file can appear in multiple
+suites. This eases the maintenance of the test framework as a whole.</p>
+<p>All the tests generated from the <code class="docutils literal notranslate"><span class="pre">suites/ceph-deploy/</span></code> directory tree
+(also known as the “ceph-deploy suite”) can be run with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span>--suite<span class="w"> </span>ceph-deploy</span>
+</pre></div></div><p>An individual test from the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/ceph-deploy/">ceph-deploy suite</a> can be run by adding the
+<code class="docutils literal notranslate"><span class="pre">--filter</span></code> option</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--suite<span class="w"> </span>ceph-deploy/basic<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--filter<span class="w"> </span><span class="s1">&#39;ceph-deploy/basic/{distros/ubuntu_16.04.yaml tasks/ceph-deploy.yaml}&#39;</span></span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To run a standalone test like the one in <a class="reference internal" href="#reading-a-standalone-test">Reading a standalone
+test</a>, <code class="docutils literal notranslate"><span class="pre">--suite</span></code> alone is sufficient. If you want to run a single
+test from a suite that is defined as a directory tree, <code class="docutils literal notranslate"><span class="pre">--suite</span></code> must
+be combined with <code class="docutils literal notranslate"><span class="pre">--filter</span></code>. This is because the <code class="docutils literal notranslate"><span class="pre">--suite</span></code> option
+understands POSIX relative paths only.</p>
+</div>
+</section>
+<section id="nested-subsets">
+<h3>Nested Subsets<a class="headerlink" href="#nested-subsets" title="Link to this heading"></a></h3>
+<p>Suites can get quite large with the combinatorial explosion of yaml
+configurations. At the time of writing, the <code class="docutils literal notranslate"><span class="pre">rados`</span></code> suite is more than
+100,000 jobs. For this reason, scheduling often uses the <code class="docutils literal notranslate"><span class="pre">--subset</span></code> option to
+only run a subset of the jobs (see also: <a class="reference internal" href="#subset"><span class="std std-ref">Reducing the number of tests</span></a>). However, this applies
+only at the top-level of the suite being run (e.g. <code class="docutils literal notranslate"><span class="pre">fs</span></code>). That may
+incidentally inflate the ratio of jobs for some larger sub-suites (like
+<code class="docutils literal notranslate"><span class="pre">fs:workload</span></code>) vs.  smaller but critical suites (like <code class="docutils literal notranslate"><span class="pre">fs:volumes</span></code>).</p>
+<p>It is therefore attractive to automatically subset some sub-suites which are
+never run fully. This is done by providing an integer divisor for the <code class="docutils literal notranslate"><span class="pre">%</span></code>
+convolution operator file instead of leaving it empty. That divisor
+automatically subsets the resulting matrix. For example, if the convolution
+file <code class="docutils literal notranslate"><span class="pre">%</span></code> contains <code class="docutils literal notranslate"><span class="pre">2</span></code>, the matrix will be divided into two using the same
+logic as the <code class="docutils literal notranslate"><span class="pre">--subset</span></code> mechanism.</p>
+<p>Note the numerator is not specified as with the <code class="docutils literal notranslate"><span class="pre">--subset</span></code> option as there is
+no meaningful way to express this when there could be several layers of
+nesting.  Instead, a random subset is selected (1 of 2 in our example). The
+choice is based off the random seed (<code class="docutils literal notranslate"><span class="pre">--seed</span></code>) used for the scheduling.
+Remember that seed is saved in the results so that a <code class="docutils literal notranslate"><span class="pre">--rerun</span></code> of failed
+tests will still preserve the correct numerator (subset of subsets).</p>
+<p>You can disable nested subsets using the <code class="docutils literal notranslate"><span class="pre">--no-nested-subset</span></code> argument to
+<code class="docutils literal notranslate"><span class="pre">teuthology-suite</span></code>.</p>
+</section>
+<section id="concatenation-operator">
+<h3>Concatenation operator - <code class="docutils literal notranslate"><span class="pre">+</span></code><a class="headerlink" href="#concatenation-operator" title="Link to this heading"></a></h3>
+<p>For even greater flexibility in sharing yaml files between suites, the
+special file plus (<code class="docutils literal notranslate"><span class="pre">+</span></code>) can be used to concatenate files within a
+directory. For instance, consider the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rbd/thrash">suites/rbd/thrash</a>
+tree</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>qa/suites/rbd/thrash
+├── %
+├── clusters
+│   ├── +
+│   ├── fixed-2.yaml
+│   └── openstack.yaml
+└── workloads
+    ├── rbd_api_tests_copy_on_read.yaml
+    ├── rbd_api_tests.yaml
+    └── rbd_fsx_rate_limit.yaml
+</pre></div>
+</div>
+<p>This creates two tests:</p>
+<ul class="simple">
+<li><p>rbd/thrash/{clusters/fixed-2.yaml clusters/openstack.yaml workloads/rbd_api_tests_copy_on_read.yaml}</p></li>
+<li><p>rbd/thrash/{clusters/fixed-2.yaml clusters/openstack.yaml workloads/rbd_api_tests.yaml}</p></li>
+</ul>
+<p>Because the <code class="docutils literal notranslate"><span class="pre">clusters/</span></code> subdirectory contains the special file plus
+(<code class="docutils literal notranslate"><span class="pre">+</span></code>), all the other files in that subdirectory (<code class="docutils literal notranslate"><span class="pre">fixed-2.yaml</span></code> and
+<code class="docutils literal notranslate"><span class="pre">openstack.yaml</span></code> in this case) are concatenated together
+and treated as a single file. Without the special file plus, they would
+have been convolved with the files from the workloads directory to create
+a 2x2 matrix:</p>
+<ul class="simple">
+<li><p>rbd/thrash/{clusters/openstack.yaml workloads/rbd_api_tests_copy_on_read.yaml}</p></li>
+<li><p>rbd/thrash/{clusters/openstack.yaml workloads/rbd_api_tests.yaml}</p></li>
+<li><p>rbd/thrash/{clusters/fixed-2.yaml workloads/rbd_api_tests_copy_on_read.yaml}</p></li>
+<li><p>rbd/thrash/{clusters/fixed-2.yaml workloads/rbd_api_tests.yaml}</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">clusters/fixed-2.yaml</span></code> file is shared among many suites to
+define the following <code class="docutils literal notranslate"><span class="pre">roles</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">roles</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">mon.a</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">mon.c</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">osd.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">osd.1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">osd.2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">client.0</span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">mon.b</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">osd.3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">osd.4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">osd.5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">client.1</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">rbd/thrash</span></code> suite as defined above, consisting of two tests,
+can be run with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span>--suite<span class="w"> </span>rbd/thrash</span>
+</pre></div></div><p>A single test from the rbd/thrash suite can be run by adding the
+<code class="docutils literal notranslate"><span class="pre">--filter</span></code> option</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--suite<span class="w"> </span>rbd/thrash<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--filter<span class="w"> </span><span class="s1">&#39;rbd/thrash/{clusters/fixed-2.yaml clusters/openstack.yaml workloads/rbd_api_tests_copy_on_read.yaml}&#39;</span></span>
+</pre></div></div></section>
+<section id="upgrade-testing">
+<span id="id1"></span><h3>Upgrade Testing<a class="headerlink" href="#upgrade-testing" title="Link to this heading"></a></h3>
+<p>Using the upgrade suite we are able to verify that upgrades from earlier releases can complete
+successfully without disrupting any ongoing workload.
+Each Release branch upgrade directory includes 2-x upgrade testing.
+Meaning, we are able to test the upgrade from 2 preceding releases to the current one.
+The upgrade sequence is done in <a class="reference external" href="https://github.com/ceph/teuthology/blob/main/teuthology/task/parallel.py">parallel</a>
+with other given workloads.</p>
+<p>For instance, the upgrade test directory from the Quincy release branch is as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>.
+├── octopus-x
+└── pacific-x
+</pre></div>
+</div>
+<p>It is possible to test upgrades from Octopus (2-x) or from Pacific (1-x) to Quincy (x).
+A simple upgrade test consists the following order:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>├── 0-start.yaml
+├── 1-tasks.yaml
+├── upgrade-sequence.yaml
+└── workload
+</pre></div>
+</div>
+<p>After starting the cluster with the older release we begin running the given <code class="docutils literal notranslate"><span class="pre">workload</span></code>
+and the <code class="docutils literal notranslate"><span class="pre">upgrade-sequnce</span></code> in parallel.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">print</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;****</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">parallel&quot;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">parallel</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">workload</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">upgrade-sequence</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">print</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;****</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">end</span><span class="nv"> </span><span class="s">parallel&quot;</span>
+</pre></div>
+</div>
+<p>While the <code class="docutils literal notranslate"><span class="pre">workload</span></code> directory consists regular yaml files just as in any other suite,
+the <code class="docutils literal notranslate"><span class="pre">upgrade-sequnce</span></code> is resposible for running the upgrade and awaitng its completion:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">print</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;****</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">upgrade,</span><span class="nv"> </span><span class="s">wait&quot;</span>
+<span class="nn">...</span>
+<span class="w">  </span><span class="nt">mon.a</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceph orch upgrade start --image quay.ceph.io/ceph-ci/ceph:$sha1</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">while ceph orch upgrade status | jq &#39;.in_progress&#39; | grep true ; do ceph orch ps ; ceph versions ; sleep 30 ; done\</span>
+<span class="nn">...</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">print</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;****</span><span class="nv"> </span><span class="s">done</span><span class="nv"> </span><span class="s">end</span><span class="nv"> </span><span class="s">upgrade,</span><span class="nv"> </span><span class="s">wait...&quot;</span>
+</pre></div>
+</div>
+<p>It is also possible to upgrade in stages while running workloads in between those:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>├── %
+├── 0-cluster
+├── 1-ceph-install
+├── 2-partial-upgrade
+├── 3-thrash
+├── 4-workload
+├── 5-finish-upgrade.yaml
+├── 6-quincy.yaml
+└── 8-final-workload
+</pre></div>
+</div>
+<p>After starting a cluster we upgrade only 2/3 of the cluster (<code class="docutils literal notranslate"><span class="pre">2-partial-upgrade</span></code>).
+The next stage is running thrash tests and given workload tests. Later on, continuing to upgrade the
+rest of the cluster (<code class="docutils literal notranslate"><span class="pre">5-finish-upgrade.yaml</span></code>).
+The last stage is requiring the updated release (<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">require-osd-release</span> <span class="pre">quincy</span></code>,
+<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">set-require-min-compat-client</span> <span class="pre">quincy</span></code>) and running the <code class="docutils literal notranslate"><span class="pre">final-workload</span></code>.</p>
+</section>
+<section id="random-selection-operator">
+<h3>Random Selection Operator - <code class="docutils literal notranslate"><span class="pre">$</span></code><a class="headerlink" href="#random-selection-operator" title="Link to this heading"></a></h3>
+<p>The presence of a file named <code class="docutils literal notranslate"><span class="pre">$</span></code> provides a hint to teuthology to randomly
+include one of the YAML fragments in the test. Such a scenario is typically
+seen when we need to choose one of the flavors of the features/options to be
+tested randomly.</p>
+</section>
+</section>
+<section id="position-independent-linking">
+<h2>Position Independent Linking<a class="headerlink" href="#position-independent-linking" title="Link to this heading"></a></h2>
+<p>Under the <code class="docutils literal notranslate"><span class="pre">qa/suites</span></code> directory are <code class="docutils literal notranslate"><span class="pre">.qa</span></code> symbolic links in every
+directory. Each link is recursive by always linking to <code class="docutils literal notranslate"><span class="pre">../.qa/</span></code>. The final
+terminating link is in the <code class="docutils literal notranslate"><span class="pre">qa/</span></code> directory itself as <code class="docutils literal notranslate"><span class="pre">qa/.qa</span> <span class="pre">-&gt;</span> <span class="pre">.</span></code>. This
+layout of symbolic links allows a suite to be easily copied or moved without
+breaking a number of symbolic links. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qa</span><span class="o">/</span><span class="n">suites</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">upgrade</span><span class="o">/</span><span class="n">nofs</span><span class="o">/</span><span class="n">centos_latest</span><span class="o">.</span><span class="n">yaml</span> <span class="o">-&gt;</span> <span class="o">.</span><span class="n">qa</span><span class="o">/</span><span class="n">distros</span><span class="o">/</span><span class="n">supported</span><span class="o">/</span><span class="n">centos_latest</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>If we copy the <code class="docutils literal notranslate"><span class="pre">nofs</span></code> suite somewhere else, add a parent directory above
+<code class="docutils literal notranslate"><span class="pre">nofs</span></code>, or move the <code class="docutils literal notranslate"><span class="pre">centos_latest.yaml</span></code> fragment into a sub-directory, the
+link will not break. Compare to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qa</span><span class="o">/</span><span class="n">suites</span><span class="o">/</span><span class="n">fs</span><span class="o">/</span><span class="n">upgrade</span><span class="o">/</span><span class="n">nofs</span><span class="o">/</span><span class="n">centos_latest</span><span class="o">.</span><span class="n">yaml</span> <span class="o">-&gt;</span> <span class="o">../../../../</span><span class="n">distros</span><span class="o">/</span><span class="n">supported</span><span class="o">/</span><span class="n">centos_latest</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>If the link is moved, it is very likely it will break because the number of
+parent directories to reach the <code class="docutils literal notranslate"><span class="pre">distros</span></code> directory may change.</p>
+<p>When adding new directories or suites, it is recommended to also remember
+adding <code class="docutils literal notranslate"><span class="pre">.qa</span></code> symbolic links. A trivial find command may do this for you:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">find<span class="w"> </span>qa/suites/<span class="w"> </span>-type<span class="w"> </span>d<span class="w"> </span>-execdir<span class="w"> </span>ln<span class="w"> </span>-sfT<span class="w"> </span>../.qa/<span class="w"> </span><span class="o">{}</span>/.qa<span class="w"> </span><span class="se">\;</span></span>
+</pre></div></div></section>
+<section id="filtering-tests-by-their-description">
+<h2>Filtering tests by their description<a class="headerlink" href="#filtering-tests-by-their-description" title="Link to this heading"></a></h2>
+<p>When a few jobs fail and need to be run again, the <code class="docutils literal notranslate"><span class="pre">--filter</span></code> option
+can be used to select tests with a matching description. For instance, if the
+<code class="docutils literal notranslate"><span class="pre">rados</span></code> suite fails the <a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/suites/rados/singleton/all/peer.yaml">all/peer.yaml</a> test, the following will only
+run the tests that contain this file</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span>--suite<span class="w"> </span>rados<span class="w"> </span>--filter<span class="w"> </span>all/peer.yaml</span>
+</pre></div></div><p>The <code class="docutils literal notranslate"><span class="pre">--filter-out</span></code> option does the opposite (it matches tests that do <cite>not</cite>
+contain a given string), and can be combined with the <code class="docutils literal notranslate"><span class="pre">--filter</span></code> option.</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">--filter</span></code> and <code class="docutils literal notranslate"><span class="pre">--filter-out</span></code> take a comma-separated list of strings
+(which means the comma character is implicitly forbidden in filenames found in
+the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa">ceph/qa sub-directory</a>). For instance</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span>--suite<span class="w"> </span>rados<span class="w"> </span>--filter<span class="w"> </span>all/peer.yaml,all/rest-api.yaml</span>
+</pre></div></div><p>will run tests that contain either
+<a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/suites/rados/singleton/all/peer.yaml">all/peer.yaml</a>
+or
+<a class="reference external" href="https://github.com/ceph/ceph/blob/master/qa/suites/rados/singleton/all/rest-api.yaml">all/rest-api.yaml</a></p>
+<p>Each string is looked up anywhere in the test description and has to
+be an exact match: they are not regular expressions.</p>
+</section>
+<section id="reducing-the-number-of-tests">
+<span id="subset"></span><h2>Reducing the number of tests<a class="headerlink" href="#reducing-the-number-of-tests" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rados</span></code> suite generates tens or even hundreds of thousands of tests out
+of a few hundred files. This happens because teuthology constructs test
+matrices from subdirectories wherever it encounters a file named <code class="docutils literal notranslate"><span class="pre">%</span></code>. For
+instance, all tests in the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rados/basic">rados/basic suite</a> run with
+different messenger types: <code class="docutils literal notranslate"><span class="pre">simple</span></code>, <code class="docutils literal notranslate"><span class="pre">async</span></code> and <code class="docutils literal notranslate"><span class="pre">random</span></code>, because they
+are combined (via the special file <code class="docutils literal notranslate"><span class="pre">%</span></code>) with the <a class="reference external" href="https://github.com/ceph/ceph/tree/master/qa/suites/rados/basic/msgr">msgr directory</a></p>
+<p>All integration tests are required to be run before a Ceph release is
+published. When merely verifying whether a contribution can be merged without
+risking a trivial regression, it is enough to run a subset. The <code class="docutils literal notranslate"><span class="pre">--subset</span></code>
+option can be used to reduce the number of tests that are triggered. For
+instance</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">teuthology-suite<span class="w"> </span>--machine-type<span class="w"> </span>smithi<span class="w"> </span>--suite<span class="w"> </span>rados<span class="w"> </span>--subset<span class="w"> </span><span class="m">0</span>/4000</span>
+</pre></div></div><p>will run as few tests as possible. The tradeoff in this case is that
+not all combinations of test variations will together,
+but no matter how small a ratio is provided in the <code class="docutils literal notranslate"><span class="pre">--subset</span></code>,
+teuthology will still ensure that all files in the suite are in at
+least one test. Understanding the actual logic that drives this
+requires reading the teuthology source code.</p>
+<p>Note: some suites are now using a <strong>nested subset</strong> feature that automatically
+applies a subset to a carefully chosen set of YAML configurations. You may
+disable this behavior (for some custom filtering, perhaps) using the
+<code class="docutils literal notranslate"><span class="pre">--no-nested-subset</span></code> option.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--limit</span></code> option only runs the first <code class="docutils literal notranslate"><span class="pre">N</span></code> tests in the suite:
+this is rarely useful, however, because there is no way to control which
+test will be first.</p>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Teuthology User Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests-integration-testing-teuthology-workflow.html" class="btn btn-neutral float-right" title="Integration Tests using Teuthology Workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

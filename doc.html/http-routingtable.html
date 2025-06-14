@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP Routing Table &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+        <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+        <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+        <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+ 
+
+    <script>
+      DOCUMENTATION_OPTIONS.COLLAPSE_INDEX = true;
+    </script>
+
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">HTTP Routing Table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+   <h1>HTTP Routing Table</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-/api"><strong>/api</strong></a>
+   </div>
+
+   <table class="indextable modindextable">
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-/api"><td></td><td>
+       <strong>/api</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-image"><code class="xref">GET /api/block/image</code></a></td><td>
+       <em>Display Rbd Images</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-image-clone_format_version"><code class="xref">GET /api/block/image/clone_format_version</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-image-default_features"><code class="xref">GET /api/block/image/default_features</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-image-trash"><code class="xref">GET /api/block/image/trash</code></a></td><td>
+       <em>Get RBD Trash Details by pool name</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-image-image_spec"><code class="xref">GET /api/block/image/{image_spec}</code></a></td><td>
+       <em>Get Rbd Image Info</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-mirroring-pool-pool_name"><code class="xref">GET /api/block/mirroring/pool/{pool_name}</code></a></td><td>
+       <em>Display Rbd Mirroring Summary</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-mirroring-pool-pool_name-peer"><code class="xref">GET /api/block/mirroring/pool/{pool_name}/peer</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-mirroring-pool-pool_name-peer-peer_uuid"><code class="xref">GET /api/block/mirroring/pool/{pool_name}/peer/{peer_uuid}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-mirroring-site_name"><code class="xref">GET /api/block/mirroring/site_name</code></a></td><td>
+       <em>Display Rbd Mirroring sitename</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-mirroring-summary"><code class="xref">GET /api/block/mirroring/summary</code></a></td><td>
+       <em>Display Rbd Mirroring Summary</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-block-pool-pool_name-namespace"><code class="xref">GET /api/block/pool/{pool_name}/namespace</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs"><code class="xref">GET /api/cephfs</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-snapshot-schedule-fs"><code class="xref">GET /api/cephfs/snapshot/schedule/{fs}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-group-vol_name"><code class="xref">GET /api/cephfs/subvolume/group/{vol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-group-vol_name-info"><code class="xref">GET /api/cephfs/subvolume/group/{vol_name}/info</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-snapshot-vol_name-subvol_name"><code class="xref">GET /api/cephfs/subvolume/snapshot/{vol_name}/{subvol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-snapshot-vol_name-subvol_name-info"><code class="xref">GET /api/cephfs/subvolume/snapshot/{vol_name}/{subvol_name}/info</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-vol_name"><code class="xref">GET /api/cephfs/subvolume/{vol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-vol_name-exists"><code class="xref">GET /api/cephfs/subvolume/{vol_name}/exists</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-subvolume-vol_name-info"><code class="xref">GET /api/cephfs/subvolume/{vol_name}/info</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id"><code class="xref">GET /api/cephfs/{fs_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id-clients"><code class="xref">GET /api/cephfs/{fs_id}/clients</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id-get_root_directory"><code class="xref">GET /api/cephfs/{fs_id}/get_root_directory</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id-ls_dir"><code class="xref">GET /api/cephfs/{fs_id}/ls_dir</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id-mds_counters"><code class="xref">GET /api/cephfs/{fs_id}/mds_counters</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id-quota"><code class="xref">GET /api/cephfs/{fs_id}/quota</code></a></td><td>
+       <em>Get Cephfs Quotas of the specified path</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cephfs-fs_id-statfs"><code class="xref">GET /api/cephfs/{fs_id}/statfs</code></a></td><td>
+       <em>Get Cephfs statfs of the specified path</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster"><code class="xref">GET /api/cluster</code></a></td><td>
+       <em>Get the cluster status</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster-upgrade"><code class="xref">GET /api/cluster/upgrade</code></a></td><td>
+       <em>Get the available versions to upgrade</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster-upgrade-status"><code class="xref">GET /api/cluster/upgrade/status</code></a></td><td>
+       <em>Get the cluster upgrade status</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster-user"><code class="xref">GET /api/cluster/user</code></a></td><td>
+       <em>Get list of ceph users</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster_conf"><code class="xref">GET /api/cluster_conf</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster_conf-filter"><code class="xref">GET /api/cluster_conf/filter</code></a></td><td>
+       <em>Get Cluster Configuration by name</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-cluster_conf-name"><code class="xref">GET /api/cluster_conf/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-crush_rule"><code class="xref">GET /api/crush_rule</code></a></td><td>
+       <em>List Crush Rule Configuration</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-crush_rule-name"><code class="xref">GET /api/crush_rule/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-daemon"><code class="xref">GET /api/daemon</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-erasure_code_profile"><code class="xref">GET /api/erasure_code_profile</code></a></td><td>
+       <em>List Erasure Code Profile Information</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-erasure_code_profile-name"><code class="xref">GET /api/erasure_code_profile/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-feature_toggles"><code class="xref">GET /api/feature_toggles</code></a></td><td>
+       <em>Get List Of Features</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-feedback"><code class="xref">GET /api/feedback</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-feedback-api_key"><code class="xref">GET /api/feedback/api_key</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-grafana-url"><code class="xref">GET /api/grafana/url</code></a></td><td>
+       <em>List Grafana URL Instance</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-grafana-validation-params"><code class="xref">GET /api/grafana/validation/{params}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-hardware-summary"><code class="xref">GET /api/hardware/summary</code></a></td><td>
+       <em>Retrieve a summary of the hardware health status</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-health-full"><code class="xref">GET /api/health/full</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-health-get_cluster_capacity"><code class="xref">GET /api/health/get_cluster_capacity</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-health-get_cluster_fsid"><code class="xref">GET /api/health/get_cluster_fsid</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-health-get_telemetry_status"><code class="xref">GET /api/health/get_telemetry_status</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-health-minimal"><code class="xref">GET /api/health/minimal</code></a></td><td>
+       <em>Get Cluster&#39;s minimal health report</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-host"><code class="xref">GET /api/host</code></a></td><td>
+       <em>List Host Specifications</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-host-hostname"><code class="xref">GET /api/host/{hostname}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-host-hostname-daemons"><code class="xref">GET /api/host/{hostname}/daemons</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-host-hostname-devices"><code class="xref">GET /api/host/{hostname}/devices</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-host-hostname-inventory"><code class="xref">GET /api/host/{hostname}/inventory</code></a></td><td>
+       <em>Get inventory of a host</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-host-hostname-smart"><code class="xref">GET /api/host/{hostname}/smart</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-iscsi-discoveryauth"><code class="xref">GET /api/iscsi/discoveryauth</code></a></td><td>
+       <em>Get Iscsi discoveryauth Details</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-iscsi-target"><code class="xref">GET /api/iscsi/target</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-iscsi-target-target_iqn"><code class="xref">GET /api/iscsi/target/{target_iqn}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-logs-all"><code class="xref">GET /api/logs/all</code></a></td><td>
+       <em>Display Logs Configuration</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-mgr-module"><code class="xref">GET /api/mgr/module</code></a></td><td>
+       <em>List Mgr modules</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-mgr-module-module_name"><code class="xref">GET /api/mgr/module/{module_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-mgr-module-module_name-options"><code class="xref">GET /api/mgr/module/{module_name}/options</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-monitor"><code class="xref">GET /api/monitor</code></a></td><td>
+       <em>Get Monitor Details</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-multi-cluster-check_token_status"><code class="xref">GET /api/multi-cluster/check_token_status</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-multi-cluster-get_config"><code class="xref">GET /api/multi-cluster/get_config</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-multi-cluster-get_prometheus_api_url"><code class="xref">GET /api/multi-cluster/get_prometheus_api_url</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-multi-cluster-security_config"><code class="xref">GET /api/multi-cluster/security_config</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nfs-ganesha-cluster"><code class="xref">GET /api/nfs-ganesha/cluster</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nfs-ganesha-export"><code class="xref">GET /api/nfs-ganesha/export</code></a></td><td>
+       <em>List all or cluster specific NFS-Ganesha exports </em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nfs-ganesha-export-cluster_id-export_id"><code class="xref">GET /api/nfs-ganesha/export/{cluster_id}/{export_id}</code></a></td><td>
+       <em>Get an NFS-Ganesha export</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-gateway"><code class="xref">GET /api/nvmeof/gateway</code></a></td><td>
+       <em>Get information about the NVMeoF gateway</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-gateway-group"><code class="xref">GET /api/nvmeof/gateway/group</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-gateway-log_level"><code class="xref">GET /api/nvmeof/gateway/log_level</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-gateway-version"><code class="xref">GET /api/nvmeof/gateway/version</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-spdk-log_level"><code class="xref">GET /api/nvmeof/spdk/log_level</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem"><code class="xref">GET /api/nvmeof/subsystem</code></a></td><td>
+       <em>List all NVMeoF subsystems</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn"><code class="xref">GET /api/nvmeof/subsystem/{nqn}</code></a></td><td>
+       <em>Get information from a specific NVMeoF subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn-connection"><code class="xref">GET /api/nvmeof/subsystem/{nqn}/connection</code></a></td><td>
+       <em>List all NVMeoF Subsystem Connections</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn-host"><code class="xref">GET /api/nvmeof/subsystem/{nqn}/host</code></a></td><td>
+       <em>List all allowed hosts for an NVMeoF subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn-listener"><code class="xref">GET /api/nvmeof/subsystem/{nqn}/listener</code></a></td><td>
+       <em>List all NVMeoF listeners</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn-namespace"><code class="xref">GET /api/nvmeof/subsystem/{nqn}/namespace</code></a></td><td>
+       <em>List all NVMeoF namespaces in a subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn-namespace-nsid"><code class="xref">GET /api/nvmeof/subsystem/{nqn}/namespace/{nsid}</code></a></td><td>
+       <em>Get info from specified NVMeoF namespace</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-nvmeof-subsystem-nqn-namespace-nsid-io_stats"><code class="xref">GET /api/nvmeof/subsystem/{nqn}/namespace/{nsid}/io_stats</code></a></td><td>
+       <em>Get IO stats from specified NVMeoF namespace</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd"><code class="xref">GET /api/osd</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-flags"><code class="xref">GET /api/osd/flags</code></a></td><td>
+       <em>Display OSD Flags</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-flags-individual"><code class="xref">GET /api/osd/flags/individual</code></a></td><td>
+       <em>Displays individual OSD flags</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-safe_to_delete"><code class="xref">GET /api/osd/safe_to_delete</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-safe_to_destroy"><code class="xref">GET /api/osd/safe_to_destroy</code></a></td><td>
+       <em>Check If OSD is Safe to Destroy</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-settings"><code class="xref">GET /api/osd/settings</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-svc_id"><code class="xref">GET /api/osd/{svc_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-svc_id-devices"><code class="xref">GET /api/osd/{svc_id}/devices</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-svc_id-histogram"><code class="xref">GET /api/osd/{svc_id}/histogram</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-osd-svc_id-smart"><code class="xref">GET /api/osd/{svc_id}/smart</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters"><code class="xref">GET /api/perf_counters</code></a></td><td>
+       <em>Display Perf Counters</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-mds-service_id"><code class="xref">GET /api/perf_counters/mds/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-mgr-service_id"><code class="xref">GET /api/perf_counters/mgr/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-mon-service_id"><code class="xref">GET /api/perf_counters/mon/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-osd-service_id"><code class="xref">GET /api/perf_counters/osd/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-rbd-mirror-service_id"><code class="xref">GET /api/perf_counters/rbd-mirror/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-rgw-service_id"><code class="xref">GET /api/perf_counters/rgw/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-perf_counters-tcmu-runner-service_id"><code class="xref">GET /api/perf_counters/tcmu-runner/{service_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-pool"><code class="xref">GET /api/pool</code></a></td><td>
+       <em>Display Pool List</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-pool-pool_name"><code class="xref">GET /api/pool/{pool_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-pool-pool_name-configuration"><code class="xref">GET /api/pool/{pool_name}/configuration</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus"><code class="xref">GET /api/prometheus</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus-alertgroup"><code class="xref">GET /api/prometheus/alertgroup</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus-data"><code class="xref">GET /api/prometheus/data</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus-notifications"><code class="xref">GET /api/prometheus/notifications</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus-prometheus_query_data"><code class="xref">GET /api/prometheus/prometheus_query_data</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus-rules"><code class="xref">GET /api/prometheus/rules</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-prometheus-silences"><code class="xref">GET /api/prometheus/silences</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-accounts"><code class="xref">GET /api/rgw/accounts</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-accounts-account_id"><code class="xref">GET /api/rgw/accounts/{account_id}</code></a></td><td>
+       <em>Get RGW Account by id</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket"><code class="xref">GET /api/rgw/bucket</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket-getEncryption"><code class="xref">GET /api/rgw/bucket/getEncryption</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket-getEncryptionConfig"><code class="xref">GET /api/rgw/bucket/getEncryptionConfig</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket-lifecycle"><code class="xref">GET /api/rgw/bucket/lifecycle</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket-ratelimit"><code class="xref">GET /api/rgw/bucket/ratelimit</code></a></td><td>
+       <em>Get the bucket global rate limit</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket-bucket"><code class="xref">GET /api/rgw/bucket/{bucket}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-bucket-uid-ratelimit"><code class="xref">GET /api/rgw/bucket/{uid}/ratelimit</code></a></td><td>
+       <em>Get the bucket rate limit</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-daemon"><code class="xref">GET /api/rgw/daemon</code></a></td><td>
+       <em>Display RGW Daemons</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-daemon-svc_id"><code class="xref">GET /api/rgw/daemon/{svc_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-multisite-sync-policy"><code class="xref">GET /api/rgw/multisite/sync-policy</code></a></td><td>
+       <em>Get the sync policy</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-multisite-sync-policy-group-group_id"><code class="xref">GET /api/rgw/multisite/sync-policy-group/{group_id}</code></a></td><td>
+       <em>Get the sync policy group</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-multisite-sync_status"><code class="xref">GET /api/rgw/multisite/sync_status</code></a></td><td>
+       <em>Get the sync status</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-realm"><code class="xref">GET /api/rgw/realm</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-realm-get_all_realms_info"><code class="xref">GET /api/rgw/realm/get_all_realms_info</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-realm-get_realm_tokens"><code class="xref">GET /api/rgw/realm/get_realm_tokens</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-realm-realm_name"><code class="xref">GET /api/rgw/realm/{realm_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-roles"><code class="xref">GET /api/rgw/roles</code></a></td><td>
+       <em>List RGW roles</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-site"><code class="xref">GET /api/rgw/site</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-topic"><code class="xref">GET /api/rgw/topic</code></a></td><td>
+       <em>Get RGW Topic List</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-topic-name"><code class="xref">GET /api/rgw/topic/{name}</code></a></td><td>
+       <em>Get RGW Topic</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-user"><code class="xref">GET /api/rgw/user</code></a></td><td>
+       <em>Display RGW Users</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-user-get_emails"><code class="xref">GET /api/rgw/user/get_emails</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-user-ratelimit"><code class="xref">GET /api/rgw/user/ratelimit</code></a></td><td>
+       <em>Get the user global rate limit</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-user-uid"><code class="xref">GET /api/rgw/user/{uid}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-user-uid-quota"><code class="xref">GET /api/rgw/user/{uid}/quota</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-user-uid-ratelimit"><code class="xref">GET /api/rgw/user/{uid}/ratelimit</code></a></td><td>
+       <em>Get the user rate limit</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zone"><code class="xref">GET /api/rgw/zone</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zone-get_all_zones_info"><code class="xref">GET /api/rgw/zone/get_all_zones_info</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zone-get_pool_names"><code class="xref">GET /api/rgw/zone/get_pool_names</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zone-get_user_list"><code class="xref">GET /api/rgw/zone/get_user_list</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zone-zone_name"><code class="xref">GET /api/rgw/zone/{zone_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zonegroup"><code class="xref">GET /api/rgw/zonegroup</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zonegroup-get_all_zonegroups_info"><code class="xref">GET /api/rgw/zonegroup/get_all_zonegroups_info</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zonegroup-get_placement_target_by_placement_id-placement_id"><code class="xref">GET /api/rgw/zonegroup/get_placement_target_by_placement_id/{placement_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-rgw-zonegroup-zonegroup_name"><code class="xref">GET /api/rgw/zonegroup/{zonegroup_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-role"><code class="xref">GET /api/role</code></a></td><td>
+       <em>Display Role list</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-role-name"><code class="xref">GET /api/role/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-service"><code class="xref">GET /api/service</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-service-known_types"><code class="xref">GET /api/service/known_types</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-service-service_name"><code class="xref">GET /api/service/{service_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-service-service_name-daemons"><code class="xref">GET /api/service/{service_name}/daemons</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-settings"><code class="xref">GET /api/settings</code></a></td><td>
+       <em>Display Settings Information</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-settings-name"><code class="xref">GET /api/settings/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-cluster"><code class="xref">GET /api/smb/cluster</code></a></td><td>
+       <em>List smb clusters</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-cluster-cluster_id"><code class="xref">GET /api/smb/cluster/{cluster_id}</code></a></td><td>
+       <em>Get an smb cluster</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-joinauth"><code class="xref">GET /api/smb/joinauth</code></a></td><td>
+       <em>List smb join authorization resources</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-joinauth-auth_id"><code class="xref">GET /api/smb/joinauth/{auth_id}</code></a></td><td>
+       <em>Get smb join authorization resource</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-share"><code class="xref">GET /api/smb/share</code></a></td><td>
+       <em>List smb shares</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-share-cluster_id-share_id"><code class="xref">GET /api/smb/share/{cluster_id}/{share_id}</code></a></td><td>
+       <em>Get an smb share</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-usersgroups"><code class="xref">GET /api/smb/usersgroups</code></a></td><td>
+       <em>List smb user resources</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-smb-usersgroups-users_groups_id"><code class="xref">GET /api/smb/usersgroups/{users_groups_id}</code></a></td><td>
+       <em>Get smb usersgroups authorization resource</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-summary"><code class="xref">GET /api/summary</code></a></td><td>
+       <em>Display Summary</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-task"><code class="xref">GET /api/task</code></a></td><td>
+       <em>Display Tasks</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-telemetry-report"><code class="xref">GET /api/telemetry/report</code></a></td><td>
+       <em>Get Detailed Telemetry report</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-user"><code class="xref">GET /api/user</code></a></td><td>
+       <em>Get List Of Users</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#get--api-user-username"><code class="xref">GET /api/user/{username}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-auth"><code class="xref">POST /api/auth</code></a></td><td>
+       <em>Dashboard Authentication</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-auth-check"><code class="xref">POST /api/auth/check</code></a></td><td>
+       <em>Check token Authentication</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-auth-logout"><code class="xref">POST /api/auth/logout</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image"><code class="xref">POST /api/block/image</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-trash-purge"><code class="xref">POST /api/block/image/trash/purge</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-trash-image_id_spec-restore"><code class="xref">POST /api/block/image/trash/{image_id_spec}/restore</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-image_spec-copy"><code class="xref">POST /api/block/image/{image_spec}/copy</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-image_spec-flatten"><code class="xref">POST /api/block/image/{image_spec}/flatten</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-image_spec-move_trash"><code class="xref">POST /api/block/image/{image_spec}/move_trash</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-image_spec-snap"><code class="xref">POST /api/block/image/{image_spec}/snap</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-image_spec-snap-snapshot_name-clone"><code class="xref">POST /api/block/image/{image_spec}/snap/{snapshot_name}/clone</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-image-image_spec-snap-snapshot_name-rollback"><code class="xref">POST /api/block/image/{image_spec}/snap/{snapshot_name}/rollback</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-mirroring-pool-pool_name-bootstrap-peer"><code class="xref">POST /api/block/mirroring/pool/{pool_name}/bootstrap/peer</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-mirroring-pool-pool_name-bootstrap-token"><code class="xref">POST /api/block/mirroring/pool/{pool_name}/bootstrap/token</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-mirroring-pool-pool_name-peer"><code class="xref">POST /api/block/mirroring/pool/{pool_name}/peer</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-block-pool-pool_name-namespace"><code class="xref">POST /api/block/pool/{pool_name}/namespace</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs"><code class="xref">POST /api/cephfs</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-snapshot-schedule"><code class="xref">POST /api/cephfs/snapshot/schedule</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-snapshot-schedule-fs-path-activate"><code class="xref">POST /api/cephfs/snapshot/schedule/{fs}/{path}/activate</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-snapshot-schedule-fs-path-deactivate"><code class="xref">POST /api/cephfs/snapshot/schedule/{fs}/{path}/deactivate</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-subvolume"><code class="xref">POST /api/cephfs/subvolume</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-subvolume-group"><code class="xref">POST /api/cephfs/subvolume/group</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-subvolume-snapshot"><code class="xref">POST /api/cephfs/subvolume/snapshot</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-subvolume-snapshot-clone"><code class="xref">POST /api/cephfs/subvolume/snapshot/clone</code></a></td><td>
+       <em>Create a clone of a subvolume snapshot</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-fs_id-snapshot"><code class="xref">POST /api/cephfs/{fs_id}/snapshot</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-fs_id-tree"><code class="xref">POST /api/cephfs/{fs_id}/tree</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cephfs-fs_id-write_to_file"><code class="xref">POST /api/cephfs/{fs_id}/write_to_file</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cluster-upgrade-start"><code class="xref">POST /api/cluster/upgrade/start</code></a></td><td>
+       <em>Start the cluster upgrade</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cluster-user"><code class="xref">POST /api/cluster/user</code></a></td><td>
+       <em>Create Ceph User</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cluster-user-export"><code class="xref">POST /api/cluster/user/export</code></a></td><td>
+       <em>Export Ceph Users</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-cluster_conf"><code class="xref">POST /api/cluster_conf</code></a></td><td>
+       <em>Create/Update Cluster Configuration</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-crush_rule"><code class="xref">POST /api/crush_rule</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-erasure_code_profile"><code class="xref">POST /api/erasure_code_profile</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-feedback"><code class="xref">POST /api/feedback</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-feedback-api_key"><code class="xref">POST /api/feedback/api_key</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-grafana-dashboards"><code class="xref">POST /api/grafana/dashboards</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-host"><code class="xref">POST /api/host</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-host-hostname-identify_device"><code class="xref">POST /api/host/{hostname}/identify_device</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-iscsi-target"><code class="xref">POST /api/iscsi/target</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-mgr-module-module_name-disable"><code class="xref">POST /api/mgr/module/{module_name}/disable</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-mgr-module-module_name-enable"><code class="xref">POST /api/mgr/module/{module_name}/enable</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-multi-cluster-auth"><code class="xref">POST /api/multi-cluster/auth</code></a></td><td>
+       <em>Authenticate to a remote cluster</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-nfs-ganesha-export"><code class="xref">POST /api/nfs-ganesha/export</code></a></td><td>
+       <em>Creates a new NFS-Ganesha export</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-nvmeof-subsystem"><code class="xref">POST /api/nvmeof/subsystem</code></a></td><td>
+       <em>Create a new NVMeoF subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-nvmeof-subsystem-nqn-host"><code class="xref">POST /api/nvmeof/subsystem/{nqn}/host</code></a></td><td>
+       <em>Allow hosts to access an NVMeoF subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-nvmeof-subsystem-nqn-listener"><code class="xref">POST /api/nvmeof/subsystem/{nqn}/listener</code></a></td><td>
+       <em>Create a new NVMeoF listener</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-nvmeof-subsystem-nqn-namespace"><code class="xref">POST /api/nvmeof/subsystem/{nqn}/namespace</code></a></td><td>
+       <em>Create a new NVMeoF namespace</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-osd"><code class="xref">POST /api/osd</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-osd-svc_id-destroy"><code class="xref">POST /api/osd/{svc_id}/destroy</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-osd-svc_id-purge"><code class="xref">POST /api/osd/{svc_id}/purge</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-osd-svc_id-reweight"><code class="xref">POST /api/osd/{svc_id}/reweight</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-osd-svc_id-scrub"><code class="xref">POST /api/osd/{svc_id}/scrub</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-pool"><code class="xref">POST /api/pool</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-prometheus-silence"><code class="xref">POST /api/prometheus/silence</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-accounts"><code class="xref">POST /api/rgw/accounts</code></a></td><td>
+       <em>Update RGW account info</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-bucket"><code class="xref">POST /api/rgw/bucket</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-multisite-sync-policy-group"><code class="xref">POST /api/rgw/multisite/sync-policy-group</code></a></td><td>
+       <em>Create the sync policy group</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-realm"><code class="xref">POST /api/rgw/realm</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-realm-import_realm_token"><code class="xref">POST /api/rgw/realm/import_realm_token</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-roles"><code class="xref">POST /api/rgw/roles</code></a></td><td>
+       <em>Create RGW role</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-topic"><code class="xref">POST /api/rgw/topic</code></a></td><td>
+       <em>Create a new RGW Topic</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-user"><code class="xref">POST /api/rgw/user</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-user-uid-capability"><code class="xref">POST /api/rgw/user/{uid}/capability</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-user-uid-key"><code class="xref">POST /api/rgw/user/{uid}/key</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-user-uid-subuser"><code class="xref">POST /api/rgw/user/{uid}/subuser</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-zone"><code class="xref">POST /api/rgw/zone</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-zonegroup"><code class="xref">POST /api/rgw/zonegroup</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-rgw-zonegroup-storage-class"><code class="xref">POST /api/rgw/zonegroup/storage-class</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-role"><code class="xref">POST /api/role</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-role-name-clone"><code class="xref">POST /api/role/{name}/clone</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-service"><code class="xref">POST /api/service</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-smb-cluster"><code class="xref">POST /api/smb/cluster</code></a></td><td>
+       <em>Create smb cluster</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-smb-joinauth"><code class="xref">POST /api/smb/joinauth</code></a></td><td>
+       <em>Create smb join auth</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-smb-share"><code class="xref">POST /api/smb/share</code></a></td><td>
+       <em>Create smb share</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-smb-usersgroups"><code class="xref">POST /api/smb/usersgroups</code></a></td><td>
+       <em>Create smb usersgroups</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-user"><code class="xref">POST /api/user</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-user-validate_password"><code class="xref">POST /api/user/validate_password</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#post--api-user-username-change_password"><code class="xref">POST /api/user/{username}/change_password</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-block-image-image_spec"><code class="xref">PUT /api/block/image/{image_spec}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-block-image-image_spec-snap-snapshot_name"><code class="xref">PUT /api/block/image/{image_spec}/snap/{snapshot_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-block-mirroring-pool-pool_name"><code class="xref">PUT /api/block/mirroring/pool/{pool_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-block-mirroring-pool-pool_name-peer-peer_uuid"><code class="xref">PUT /api/block/mirroring/pool/{pool_name}/peer/{peer_uuid}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-block-mirroring-site_name"><code class="xref">PUT /api/block/mirroring/site_name</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-auth"><code class="xref">PUT /api/cephfs/auth</code></a></td><td>
+       <em>Set Ceph authentication capabilities for the specified user ID in the given path</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-rename"><code class="xref">PUT /api/cephfs/rename</code></a></td><td>
+       <em>Rename CephFS Volume</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-snapshot-schedule-fs-path"><code class="xref">PUT /api/cephfs/snapshot/schedule/{fs}/{path}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-subvolume-group-vol_name"><code class="xref">PUT /api/cephfs/subvolume/group/{vol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-subvolume-vol_name"><code class="xref">PUT /api/cephfs/subvolume/{vol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-fs_id-quota"><code class="xref">PUT /api/cephfs/{fs_id}/quota</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cephfs-fs_id-rename-path"><code class="xref">PUT /api/cephfs/{fs_id}/rename-path</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cluster"><code class="xref">PUT /api/cluster</code></a></td><td>
+       <em>Update the cluster status</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cluster-upgrade-pause"><code class="xref">PUT /api/cluster/upgrade/pause</code></a></td><td>
+       <em>Pause the cluster upgrade</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cluster-upgrade-resume"><code class="xref">PUT /api/cluster/upgrade/resume</code></a></td><td>
+       <em>Resume the cluster upgrade</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cluster-upgrade-stop"><code class="xref">PUT /api/cluster/upgrade/stop</code></a></td><td>
+       <em>Stop the cluster upgrade</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cluster-user"><code class="xref">PUT /api/cluster/user</code></a></td><td>
+       <em>Edit Ceph User Capabilities</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-cluster_conf"><code class="xref">PUT /api/cluster_conf</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-daemon-daemon_name"><code class="xref">PUT /api/daemon/{daemon_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-host-hostname"><code class="xref">PUT /api/host/{hostname}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-iscsi-discoveryauth"><code class="xref">PUT /api/iscsi/discoveryauth</code></a></td><td>
+       <em>Set Iscsi discoveryauth</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-iscsi-target-target_iqn"><code class="xref">PUT /api/iscsi/target/{target_iqn}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-mgr-module-module_name"><code class="xref">PUT /api/mgr/module/{module_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-multi-cluster-edit_cluster"><code class="xref">PUT /api/multi-cluster/edit_cluster</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-multi-cluster-reconnect_cluster"><code class="xref">PUT /api/multi-cluster/reconnect_cluster</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-multi-cluster-set_config"><code class="xref">PUT /api/multi-cluster/set_config</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-nfs-ganesha-export-cluster_id-export_id"><code class="xref">PUT /api/nfs-ganesha/export/{cluster_id}/{export_id}</code></a></td><td>
+       <em>Updates an NFS-Ganesha export</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-nvmeof-gateway-log_level"><code class="xref">PUT /api/nvmeof/gateway/log_level</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-nvmeof-spdk-log_level"><code class="xref">PUT /api/nvmeof/spdk/log_level</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-nvmeof-spdk-log_level-disable"><code class="xref">PUT /api/nvmeof/spdk/log_level/disable</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-osd-flags"><code class="xref">PUT /api/osd/flags</code></a></td><td>
+       <em>Sets OSD flags for the entire cluster.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-osd-flags-individual"><code class="xref">PUT /api/osd/flags/individual</code></a></td><td>
+       <em>Sets OSD flags for a subset of individual OSDs.</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-osd-svc_id"><code class="xref">PUT /api/osd/{svc_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-osd-svc_id-mark"><code class="xref">PUT /api/osd/{svc_id}/mark</code></a></td><td>
+       <em>Mark OSD flags (out, in, down, lost, ...)</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-pool-pool_name"><code class="xref">PUT /api/pool/{pool_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-accounts-account_id"><code class="xref">PUT /api/rgw/accounts/{account_id}</code></a></td><td>
+       <em>Update RGW account info</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-accounts-account_id-quota"><code class="xref">PUT /api/rgw/accounts/{account_id}/quota</code></a></td><td>
+       <em>Set RGW Account/Bucket quota</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-accounts-account_id-quota-status"><code class="xref">PUT /api/rgw/accounts/{account_id}/quota/status</code></a></td><td>
+       <em>Enable/Disable RGW Account/Bucket quota</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-bucket-lifecycle"><code class="xref">PUT /api/rgw/bucket/lifecycle</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-bucket-setEncryptionConfig"><code class="xref">PUT /api/rgw/bucket/setEncryptionConfig</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-bucket-bucket"><code class="xref">PUT /api/rgw/bucket/{bucket}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-bucket-uid-ratelimit"><code class="xref">PUT /api/rgw/bucket/{uid}/ratelimit</code></a></td><td>
+       <em>Update the bucket rate limit</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-daemon-set_multisite_config"><code class="xref">PUT /api/rgw/daemon/set_multisite_config</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-multisite-sync-flow"><code class="xref">PUT /api/rgw/multisite/sync-flow</code></a></td><td>
+       <em>Create or update the sync flow</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-multisite-sync-pipe"><code class="xref">PUT /api/rgw/multisite/sync-pipe</code></a></td><td>
+       <em>Create or update the sync pipe</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-multisite-sync-policy-group"><code class="xref">PUT /api/rgw/multisite/sync-policy-group</code></a></td><td>
+       <em>Update the sync policy group</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-realm-realm_name"><code class="xref">PUT /api/rgw/realm/{realm_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-roles"><code class="xref">PUT /api/rgw/roles</code></a></td><td>
+       <em>Edit RGW role</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-user-uid"><code class="xref">PUT /api/rgw/user/{uid}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-user-uid-quota"><code class="xref">PUT /api/rgw/user/{uid}/quota</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-user-uid-ratelimit"><code class="xref">PUT /api/rgw/user/{uid}/ratelimit</code></a></td><td>
+       <em>Update the user rate limit</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-zone-create_system_user"><code class="xref">PUT /api/rgw/zone/create_system_user</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-zone-zone_name"><code class="xref">PUT /api/rgw/zone/{zone_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-zonegroup-storage-class"><code class="xref">PUT /api/rgw/zonegroup/storage-class</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-rgw-zonegroup-zonegroup_name"><code class="xref">PUT /api/rgw/zonegroup/{zonegroup_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-role-name"><code class="xref">PUT /api/role/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-service-service_name"><code class="xref">PUT /api/service/{service_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-settings"><code class="xref">PUT /api/settings</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-settings-name"><code class="xref">PUT /api/settings/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-telemetry"><code class="xref">PUT /api/telemetry</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#put--api-user-username"><code class="xref">PUT /api/user/{username}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-block-image-trash-image_id_spec"><code class="xref">DELETE /api/block/image/trash/{image_id_spec}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-block-image-image_spec"><code class="xref">DELETE /api/block/image/{image_spec}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-block-image-image_spec-snap-snapshot_name"><code class="xref">DELETE /api/block/image/{image_spec}/snap/{snapshot_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-block-mirroring-pool-pool_name-peer-peer_uuid"><code class="xref">DELETE /api/block/mirroring/pool/{pool_name}/peer/{peer_uuid}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-block-pool-pool_name-namespace-namespace"><code class="xref">DELETE /api/block/pool/{pool_name}/namespace/{namespace}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-remove-name"><code class="xref">DELETE /api/cephfs/remove/{name}</code></a></td><td>
+       <em>Remove CephFS Volume</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-snapshot-schedule-fs-path-delete_snapshot"><code class="xref">DELETE /api/cephfs/snapshot/schedule/{fs}/{path}/delete_snapshot</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-subvolume-group-vol_name"><code class="xref">DELETE /api/cephfs/subvolume/group/{vol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-subvolume-snapshot-vol_name-subvol_name"><code class="xref">DELETE /api/cephfs/subvolume/snapshot/{vol_name}/{subvol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-subvolume-vol_name"><code class="xref">DELETE /api/cephfs/subvolume/{vol_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-fs_id-client-client_id"><code class="xref">DELETE /api/cephfs/{fs_id}/client/{client_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-fs_id-snapshot"><code class="xref">DELETE /api/cephfs/{fs_id}/snapshot</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-fs_id-tree"><code class="xref">DELETE /api/cephfs/{fs_id}/tree</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cephfs-fs_id-unlink"><code class="xref">DELETE /api/cephfs/{fs_id}/unlink</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cluster-user-user_entity"><code class="xref">DELETE /api/cluster/user/{user_entity}</code></a></td><td>
+       <em>Delete Ceph User</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-cluster_conf-name"><code class="xref">DELETE /api/cluster_conf/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-crush_rule-name"><code class="xref">DELETE /api/crush_rule/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-erasure_code_profile-name"><code class="xref">DELETE /api/erasure_code_profile/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-feedback-api_key"><code class="xref">DELETE /api/feedback/api_key</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-host-hostname"><code class="xref">DELETE /api/host/{hostname}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-iscsi-target-target_iqn"><code class="xref">DELETE /api/iscsi/target/{target_iqn}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-multi-cluster-delete_cluster-cluster_name-cluster_user"><code class="xref">DELETE /api/multi-cluster/delete_cluster/{cluster_name}/{cluster_user}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-nfs-ganesha-export-cluster_id-export_id"><code class="xref">DELETE /api/nfs-ganesha/export/{cluster_id}/{export_id}</code></a></td><td>
+       <em>Deletes an NFS-Ganesha export</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-nvmeof-subsystem-nqn"><code class="xref">DELETE /api/nvmeof/subsystem/{nqn}</code></a></td><td>
+       <em>Delete an existing NVMeoF subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-nvmeof-subsystem-nqn-host-host_nqn"><code class="xref">DELETE /api/nvmeof/subsystem/{nqn}/host/{host_nqn}</code></a></td><td>
+       <em>Disallow hosts from accessing an NVMeoF subsystem</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-nvmeof-subsystem-nqn-listener-host_name-traddr"><code class="xref">DELETE /api/nvmeof/subsystem/{nqn}/listener/{host_name}/{traddr}</code></a></td><td>
+       <em>Delete an existing NVMeoF listener</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-nvmeof-subsystem-nqn-namespace-nsid"><code class="xref">DELETE /api/nvmeof/subsystem/{nqn}/namespace/{nsid}</code></a></td><td>
+       <em>Delete an existing NVMeoF namespace</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-osd-svc_id"><code class="xref">DELETE /api/osd/{svc_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-pool-pool_name"><code class="xref">DELETE /api/pool/{pool_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-prometheus-silence-s_id"><code class="xref">DELETE /api/prometheus/silence/{s_id}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-accounts-account_id"><code class="xref">DELETE /api/rgw/accounts/{account_id}</code></a></td><td>
+       <em>Delete RGW Account</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-bucket-deleteEncryption"><code class="xref">DELETE /api/rgw/bucket/deleteEncryption</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-bucket-bucket"><code class="xref">DELETE /api/rgw/bucket/{bucket}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-multisite-sync-flow-flow_id-flow_type-group_id"><code class="xref">DELETE /api/rgw/multisite/sync-flow/{flow_id}/{flow_type}/{group_id}</code></a></td><td>
+       <em>Remove the sync flow</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-multisite-sync-pipe-group_id-pipe_id"><code class="xref">DELETE /api/rgw/multisite/sync-pipe/{group_id}/{pipe_id}</code></a></td><td>
+       <em>Remove the sync pipe</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-multisite-sync-policy-group-group_id"><code class="xref">DELETE /api/rgw/multisite/sync-policy-group/{group_id}</code></a></td><td>
+       <em>Remove the sync policy group</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-realm-realm_name"><code class="xref">DELETE /api/rgw/realm/{realm_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-roles-role_name"><code class="xref">DELETE /api/rgw/roles/{role_name}</code></a></td><td>
+       <em>Delete RGW role</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-topic-name"><code class="xref">DELETE /api/rgw/topic/{name}</code></a></td><td>
+       <em>Delete RGW Topic</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-user-uid"><code class="xref">DELETE /api/rgw/user/{uid}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-user-uid-capability"><code class="xref">DELETE /api/rgw/user/{uid}/capability</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-user-uid-key"><code class="xref">DELETE /api/rgw/user/{uid}/key</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-user-uid-subuser-subuser"><code class="xref">DELETE /api/rgw/user/{uid}/subuser/{subuser}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-zone-zone_name"><code class="xref">DELETE /api/rgw/zone/{zone_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-zonegroup-storage-class-placement_id-storage_class"><code class="xref">DELETE /api/rgw/zonegroup/storage-class/{placement_id}/{storage_class}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-rgw-zonegroup-zonegroup_name"><code class="xref">DELETE /api/rgw/zonegroup/{zonegroup_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-role-name"><code class="xref">DELETE /api/role/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-service-service_name"><code class="xref">DELETE /api/service/{service_name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-settings-name"><code class="xref">DELETE /api/settings/{name}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-smb-cluster-cluster_id"><code class="xref">DELETE /api/smb/cluster/{cluster_id}</code></a></td><td>
+       <em>Remove an smb cluster</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-smb-joinauth-auth_id"><code class="xref">DELETE /api/smb/joinauth/{auth_id}</code></a></td><td>
+       <em>Delete smb join auth</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-smb-share-cluster_id-share_id"><code class="xref">DELETE /api/smb/share/{cluster_id}/{share_id}</code></a></td><td>
+       <em>Remove an smb share</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-smb-usersgroups-users_groups_id"><code class="xref">DELETE /api/smb/usersgroups/{users_groups_id}</code></a></td><td>
+       <em>Delete smb join auth</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#delete--api-user-username"><code class="xref">DELETE /api/user/{username}</code></a></td><td>
+       <em>null</em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="mgr/ceph_api/index.html#patch--api-nvmeof-subsystem-nqn-namespace-nsid"><code class="xref">PATCH /api/nvmeof/subsystem/{nqn}/namespace/{nsid}</code></a></td><td>
+       <em>Update an existing NVMeoF namespace</em></td></tr>
+   </table>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MDS Cache Configuration &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MDS Config Reference" href="mds-config-ref.html" />
+    <link rel="prev" title="Terminology" href="standby.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph File System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#getting-started-with-cephfs">Getting Started with CephFS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#administration">Administration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="createfs.html"> Create a CephFS file system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="administration.html"> Administrative commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multifs.html"> Creating Multiple File Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="add-remove-mds.html"> Provision/Add/Remove MDS(s)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#referring-to-mds-daemons">Referring to MDS daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#managing-failover">Managing failover</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-standby-replay">Configuring standby-replay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standby.html#configuring-mds-file-system-affinity">Configuring MDS file system affinity</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"> MDS Cache Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mds-cache-size">MDS Cache Size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mds-cache-trimming">MDS Cache Trimming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mds-recall">MDS Recall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mds-cap-acquisition-throttle">MDS Cap Acquisition Throttle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#session-liveness">Session Liveness</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#capability-limit">Capability Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dealing-with-clients-failing-to-respond-to-cache-pressure-messages">Dealing with “clients failing to respond to cache pressure” messages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mds-config-ref.html"> MDS Configuration Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../man/8/ceph-mds.html"> Manual: ceph-mds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nfs.html"> Export over NFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="app-best-practices.html"> Application best practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs-volumes.html"> FS volume and subvolumes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quota.html"> CephFS Quotas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-messages.html"> Health messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html">Upgrading the MDS Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#upgrading-pre-firefly-file-systems-past-jewel">Upgrading pre-Firefly file systems past Jewel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-top.html"> CephFS Top Utility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snap-schedule.html"> Scheduled Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html"> CephFS Snapshot Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="purge-queue.html"> Purge Queue</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#mounting-cephfs">Mounting CephFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#cephfs-concepts">CephFS Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#troubleshooting-and-disaster-recovery">Troubleshooting and Disaster Recovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-guides">Developer Guides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#additional-details">Additional Details</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph File System</a></li>
+      <li class="breadcrumb-item active">MDS Cache Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/cephfs/cache-configuration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="mds-cache-configuration">
+<h1>MDS Cache Configuration<a class="headerlink" href="#mds-cache-configuration" title="Link to this heading"></a></h1>
+<p>The Metadata Server coordinates a distributed cache among all MDS and CephFS
+clients. The cache serves to improve metadata access latency and allow clients
+to safely (coherently) mutate metadata state (e.g. via <cite>chmod</cite>). The MDS issues
+<strong>capabilities</strong> and <strong>directory entry leases</strong> to indicate what state clients
+may cache and what manipulations clients may perform (e.g. writing to a file).</p>
+<p>The MDS and clients both try to enforce a cache size. The mechanism for
+specifying the MDS cache size is described below. Note that the MDS cache size
+is not a hard limit. The MDS always allows clients to lookup new metadata
+which is loaded into the cache. This is an essential policy as it avoids
+deadlock in client requests (some requests may rely on held capabilities before
+capabilities are released).</p>
+<p>When the MDS cache is too large, the MDS will <strong>recall</strong> client state so cache
+items become unpinned and eligible to be dropped. The MDS can only drop cache
+state when no clients refer to the metadata to be dropped. Also described below
+is how to configure the MDS recall settings for your workload’s needs. This is
+necessary if the internal throttles on the MDS recall can not keep up with the
+client workload.</p>
+<section id="mds-cache-size">
+<h2>MDS Cache Size<a class="headerlink" href="#mds-cache-size" title="Link to this heading"></a></h2>
+<p>You can limit the size of the Metadata Server (MDS) cache by a byte count. This
+is done through the <cite>mds_cache_memory_limit</cite> configuration:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_cache_memory_limit">
+<span class="sig-name descname"><span class="pre">mds_cache_memory_limit</span></span><a class="headerlink" href="#confval-mds_cache_memory_limit" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This sets a target maximum memory usage of the MDS cache and is the
+primary tunable to limit the MDS memory usage. The MDS will try to
+stay under a reservation of this limit (by default 95%; 1 -
+mds_cache_reservation) by trimming unused metadata in its cache and
+recalling cached items in the client caches. It is possible for the
+MDS to exceed this limit due to slow recall from clients. The
+mds_health_cache_threshold (150%) sets a cache full threshold for when
+the MDS signals a cluster health warning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">4Gi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>In addition, you can specify a cache reservation by using the
+<cite>mds_cache_reservation</cite> parameter for MDS operations:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_cache_reservation">
+<span class="sig-name descname"><span class="pre">mds_cache_reservation</span></span><a class="headerlink" href="#confval-mds_cache_reservation" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The cache reservation (memory or inodes) for the MDS cache to
+maintain. Once the MDS begins dipping into its reservation, it will
+recall client state until its cache size shrinks to restore the
+reservation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>The cache reservation is
+limited as a percentage of the memory and is set to 5% by default. The intent
+of this parameter is to have the MDS maintain an extra reserve of memory for
+its cache for new metadata operations to use. As a consequence, the MDS should
+in general operate below its memory limit because it will recall old state from
+clients in order to drop unused metadata in its cache.</p>
+<p>If the MDS cannot keep its cache under the target size, the MDS will send a
+health alert to the Monitors indicating the cache is too large. This is
+controlled by the <cite>mds_health_cache_threshold</cite> configuration which is by
+default 150% of the maximum cache size:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_health_cache_threshold">
+<span class="sig-name descname"><span class="pre">mds_health_cache_threshold</span></span><a class="headerlink" href="#confval-mds_health_cache_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>threshold for cache size to generate health warning</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>Because the cache limit is not a hard limit, potential bugs in the CephFS
+client, MDS, or misbehaving applications might cause the MDS to exceed its
+cache size. The health warnings are intended to help the operator detect this
+situation and make necessary adjustments or investigate buggy clients.</p>
+</section>
+<section id="mds-cache-trimming">
+<h2>MDS Cache Trimming<a class="headerlink" href="#mds-cache-trimming" title="Link to this heading"></a></h2>
+<p>There are two configurations for throttling the rate of cache trimming in the MDS:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_cache_trim_threshold">
+<span class="sig-name descname"><span class="pre">mds_cache_trim_threshold</span></span><a class="headerlink" href="#confval-mds_cache_trim_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>threshold for number of dentries that can be trimmed</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">256Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_cache_trim_decay_rate">
+<span class="sig-name descname"><span class="pre">mds_cache_trim_decay_rate</span></span><a class="headerlink" href="#confval-mds_cache_trim_decay_rate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>decay rate for trimming MDS cache throttle</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>The intent of the throttle is to prevent the MDS from spending too much time
+trimming its cache. This may limit its ability to handle client requests or
+perform other upkeep.</p>
+<p>The trim configurations control an internal <strong>decay counter</strong>. Anytime metadata
+is trimmed from the cache, the counter is incremented.  The threshold sets the
+maximum size of the counter while the decay rate indicates the exponential half
+life for the counter. If the MDS is continually removing items from its cache,
+it will reach a steady state of <code class="docutils literal notranslate"><span class="pre">-ln(0.5)/rate*threshold</span></code> items removed per
+second.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Increasing the value of the configuration setting
+<code class="docutils literal notranslate"><span class="pre">mds_cache_trim_decay_rate</span></code> leads to the MDS spending less time
+trimming the cache. To increase the cache trimming rate, set a lower
+value.</p>
+</div>
+<p>The defaults are conservative and may need to be changed for production MDS with
+large cache sizes.</p>
+</section>
+<section id="mds-recall">
+<h2>MDS Recall<a class="headerlink" href="#mds-recall" title="Link to this heading"></a></h2>
+<p>MDS limits its recall of client state (capabilities/leases) to prevent creating
+too much work for itself handling release messages from clients. This is controlled
+via the following configurations:</p>
+<p>The maximum number of capabilities to recall from a single client in a given recall
+event:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_recall_max_caps">
+<span class="sig-name descname"><span class="pre">mds_recall_max_caps</span></span><a class="headerlink" href="#confval-mds_recall_max_caps" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>maximum number of caps to recall from client session in single recall</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30000B</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>The threshold and decay rate for the decay counter on a session:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_recall_max_decay_threshold">
+<span class="sig-name descname"><span class="pre">mds_recall_max_decay_threshold</span></span><a class="headerlink" href="#confval-mds_recall_max_decay_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>decay threshold for throttle on recalled caps on a session</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_recall_max_decay_rate">
+<span class="sig-name descname"><span class="pre">mds_recall_max_decay_rate</span></span><a class="headerlink" href="#confval-mds_recall_max_decay_rate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>decay rate for throttle on recalled caps on a session</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>The session decay counter controls the rate of recall for an individual
+session. The behavior of the counter works the same as for cache trimming
+above. Each capability that is recalled increments the counter.</p>
+<p>There is also a global decay counter that throttles for all session recall:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_recall_global_max_decay_threshold">
+<span class="sig-name descname"><span class="pre">mds_recall_global_max_decay_threshold</span></span><a class="headerlink" href="#confval-mds_recall_global_max_decay_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>decay threshold for throttle on recalled caps globally</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">128Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>its decay rate is the same as <code class="docutils literal notranslate"><span class="pre">mds_recall_max_decay_rate</span></code>. Any recalled
+capability for any session also increments this counter.</p>
+<p>If clients are slow to release state, the warning “failing to respond to cache
+pressure” or <code class="docutils literal notranslate"><span class="pre">MDS_HEALTH_CLIENT_RECALL</span></code> will be reported. Each session’s rate
+of release is monitored by another decay counter configured by:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_recall_warning_threshold">
+<span class="sig-name descname"><span class="pre">mds_recall_warning_threshold</span></span><a class="headerlink" href="#confval-mds_recall_warning_threshold" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>decay threshold for warning on slow session cap recall</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">256Ki</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_recall_warning_decay_rate">
+<span class="sig-name descname"><span class="pre">mds_recall_warning_decay_rate</span></span><a class="headerlink" href="#confval-mds_recall_warning_decay_rate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>decay rate for warning on slow session cap recall</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">60.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>Each time a capability is released, the counter is incremented.  If clients do
+not release capabilities quickly enough and there is cache pressure, the
+counter will indicate if the client is slow to release state.</p>
+<p>Some workloads and client behaviors may require faster recall of client state
+to keep up with capability acquisition. It is recommended to increase the above
+counters as needed to resolve any slow recall warnings in the cluster health
+state.</p>
+</section>
+<section id="mds-cap-acquisition-throttle">
+<h2>MDS Cap Acquisition Throttle<a class="headerlink" href="#mds-cap-acquisition-throttle" title="Link to this heading"></a></h2>
+<p>A trivial “find” command on a large directory hierarchy will cause the client
+to receive caps significantly faster than it will release. The MDS will try
+to have the client reduce its caps below the <code class="docutils literal notranslate"><span class="pre">mds_max_caps_per_client</span></code> limit
+but the recall throttles prevent it from catching up to the pace of acquisition.
+So the readdir is throttled to control cap acquisition via the following
+configurations:</p>
+<p>The threshold and decay rate for the readdir cap acquisition decay counter:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_session_cap_acquisition_throttle">
+<span class="sig-name descname"><span class="pre">mds_session_cap_acquisition_throttle</span></span><a class="headerlink" href="#confval-mds_session_cap_acquisition_throttle" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>threshold at which the cap acquisition decay counter throttles</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">100000</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_session_cap_acquisition_decay_rate">
+<span class="sig-name descname"><span class="pre">mds_session_cap_acquisition_decay_rate</span></span><a class="headerlink" href="#confval-mds_session_cap_acquisition_decay_rate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>The half-life for the session cap acquisition counter of caps acquired
+by readdir. This is used for throttling readdir requests from clients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">30.0</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>The cap acquisition decay counter controls the rate of cap acquisition via
+readdir. The behavior of the decay counter is the same as for cache trimming or
+caps recall. Each readdir call increments the counter by the number of files in
+the result.</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_session_max_caps_throttle_ratio">
+<span class="sig-name descname"><span class="pre">mds_session_max_caps_throttle_ratio</span></span><a class="headerlink" href="#confval-mds_session_max_caps_throttle_ratio" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>ratio of mds_max_caps_per_client that client must exceed before
+readdir may be throttled by cap acquisition throttle</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1.1</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_cap_acquisition_throttle_retry_request_timeout">
+<span class="sig-name descname"><span class="pre">mds_cap_acquisition_throttle_retry_request_timeout</span></span><a class="headerlink" href="#confval-mds_cap_acquisition_throttle_retry_request_timeout" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>timeout in seconds after which a client request is retried due to cap
+acquisition throttling</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">0.5</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>If the number of caps acquired by the client per session is greater than the
+<code class="docutils literal notranslate"><span class="pre">mds_session_max_caps_throttle_ratio</span></code> and cap acquisition decay counter is
+greater than <code class="docutils literal notranslate"><span class="pre">mds_session_cap_acquisition_throttle</span></code>, the readdir is throttled.
+The readdir request is retried after <code class="docutils literal notranslate"><span class="pre">mds_cap_acquisition_throttle_retry_request_timeout</span></code>
+seconds.</p>
+</section>
+<section id="session-liveness">
+<h2>Session Liveness<a class="headerlink" href="#session-liveness" title="Link to this heading"></a></h2>
+<p>The MDS also keeps track of whether sessions are quiescent. If a client session
+is not utilizing its capabilities or is otherwise quiet, the MDS will begin
+recalling state from the session even if it’s not under cache pressure. This
+helps the MDS avoid future work when the cluster workload is hot and cache
+pressure is forcing the MDS to recall state. The expectation is that a client
+not utilizing its capabilities is unlikely to use those capabilities anytime
+in the near future.</p>
+<p>Determining whether a given session is quiescent is controlled by the following
+configuration variables:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_session_cache_liveness_magnitude">
+<span class="sig-name descname"><span class="pre">mds_session_cache_liveness_magnitude</span></span><a class="headerlink" href="#confval-mds_session_cache_liveness_magnitude" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This is the order of magnitude difference (in base 2) of the internal
+liveness decay counter and the number of capabilities the session
+holds. When this difference occurs, the MDS treats the session as
+quiescent and begins recalling capabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">size</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">10B</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mds_session_cache_liveness_decay_rate"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mds_session_cache_liveness_decay_rate</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_session_cache_liveness_decay_rate">
+<span class="sig-name descname"><span class="pre">mds_session_cache_liveness_decay_rate</span></span><a class="headerlink" href="#confval-mds_session_cache_liveness_decay_rate" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>This determines how long a session needs to be quiescent before the
+MDS begins preemptively recalling capabilities. The default of 5
+minutes will cause 10 halvings of the decay counter after 1 hour, or
+1/1024. The default magnitude of 10 (1^10 or 1024) is chosen so that
+the MDS considers a previously chatty session (approximately) to be
+quiescent after 1 hour.</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">minutes</span></code></p>
+</dd>
+<dt class="field-odd">see also<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#confval-mds_session_cache_liveness_magnitude"><code class="xref std std-confval docutils literal notranslate"><span class="pre">mds_session_cache_liveness_magnitude</span></code></a></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>The configuration <code class="docutils literal notranslate"><span class="pre">mds_session_cache_liveness_decay_rate</span></code> indicates the
+half-life for the decay counter tracking the use of capabilities by the client.
+Each time a client manipulates or acquires a capability, the MDS will increment
+the counter. This is a rough but effective way to monitor the utilization of the
+client cache.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mds_session_cache_liveness_magnitude</span></code> is a base-2 magnitude difference
+of the liveness decay counter and the number of capabilities outstanding for
+the session. So if the client has <code class="docutils literal notranslate"><span class="pre">1*2^20</span></code> (1M) capabilities outstanding and
+only uses <strong>less</strong> than <code class="docutils literal notranslate"><span class="pre">1*2^(20-mds_session_cache_liveness_magnitude)</span></code> (1K
+using defaults), the MDS will consider the client to be quiescent and begin
+recall.</p>
+</section>
+<section id="capability-limit">
+<h2>Capability Limit<a class="headerlink" href="#capability-limit" title="Link to this heading"></a></h2>
+<p>The MDS also tries to prevent a single client from acquiring too many
+capabilities. This helps prevent recovery from taking a long time in some
+situations.  It is not generally necessary for a client to have such a large
+cache. The limit is configured via:</p>
+<dl class="std confval">
+<dt class="sig sig-object std" id="confval-mds_max_caps_per_client">
+<span class="sig-name descname"><span class="pre">mds_max_caps_per_client</span></span><a class="headerlink" href="#confval-mds_max_caps_per_client" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>maximum number of capabilities a client may hold</p>
+<dl class="field-list simple">
+<dt class="field-odd">type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">uint</span></code></p>
+</dd>
+<dt class="field-even">default<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">1Mi</span></code></p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<p>It is not recommended to set this value above 5M but it may be helpful with
+some workloads.</p>
+</section>
+<section id="dealing-with-clients-failing-to-respond-to-cache-pressure-messages">
+<h2>Dealing with “clients failing to respond to cache pressure” messages<a class="headerlink" href="#dealing-with-clients-failing-to-respond-to-cache-pressure-messages" title="Link to this heading"></a></h2>
+<p>Every second (or every interval set by the <code class="docutils literal notranslate"><span class="pre">mds_cache_trim_interval</span></code>
+configuration paramater), the MDS runs the “cache trim” procedure. One of the
+steps of this procedure is “recall client state”. During this step, the MDS
+checks every client (session) to determine whether it needs to recall caps.
+If any of the following are true, then the MDS needs to recall caps:</p>
+<ol class="arabic simple">
+<li><p>the cache is full (the <code class="docutils literal notranslate"><span class="pre">mds_cache_memory_limit</span></code> has been exceeded) and
+needs some inodes to be released</p></li>
+<li><p>the client exceeds <code class="docutils literal notranslate"><span class="pre">mds_max_caps_per_client</span></code> (1M by default)</p></li>
+<li><p>the client is inactive</p></li>
+</ol>
+<p>To determine whether a client (a session) is inactive, the session’s
+<code class="docutils literal notranslate"><span class="pre">cache_liveness</span></code> parameters is checked and compared with the value:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">num_caps</span> <span class="o">&gt;&gt;</span> <span class="n">mds_session_cache_liveness_magnitude</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">mds_session_cache_liveness_magnitude</span></code> is a config param (<code class="docutils literal notranslate"><span class="pre">10</span></code> by
+default). If <code class="docutils literal notranslate"><span class="pre">cache_liveness</span></code> is smaller than this calculated value, the
+session is considered inactive and the MDS sends a “recall caps” request for
+all cached caps (the actual recall value is <code class="docutils literal notranslate"><span class="pre">num_caps</span> <span class="pre">-</span>
+<span class="pre">mds_min_caps_per_client(100)</span></code>).</p>
+<p>Under certain circumstances, many “recall caps” requests can be sent so quickly
+that the health warning is generated: “clients failing to respond to cache
+pressure”. If the client does not release the caps fast enough, the MDS repeats
+the “recall caps” request one second later.  This means that the MDS will send
+“recall caps” again and again. The “total” counter of “recall caps” for the
+session will grow and grow, and will eventually exceed the “mon warning limit”.</p>
+<p>A throttling mechanism, controlled by the <code class="docutils literal notranslate"><span class="pre">mds_recall_max_decay_threshold</span></code>
+parameter (126K by default), is available for reducing the rate of “recall
+caps” counter growth, but sometimes it is not enough to slow the “recall caps”
+counter’s growth rate. If altering the <code class="docutils literal notranslate"><span class="pre">mds_recall_max_decay_threshold</span></code> value
+does not sufficiently reduce the rate of the “recall caps” counter’s growth,
+decrease <code class="docutils literal notranslate"><span class="pre">mds_recall_max_caps</span></code> incrementally until the “clients failing to
+respond to cache pressure” messages no longer appear in the logs.</p>
+<section id="example-scenario">
+<h3>Example Scenario<a class="headerlink" href="#example-scenario" title="Link to this heading"></a></h3>
+<p>Here is an example. A client is having 20k caps cached. At some moment the
+server decides the client is inactive (because the session’s <code class="docutils literal notranslate"><span class="pre">cache_liveness</span></code>
+value is low). It starts to ask the client to release caps down to
+<code class="docutils literal notranslate"><span class="pre">mds_min_caps_per_client</span></code> value (100 by default). Every second, it
+sends recall_caps asking to release <code class="docutils literal notranslate"><span class="pre">caps_num</span> <span class="pre">-</span> <span class="pre">mds_min_caps_per_client</span></code> caps
+(but not more than <code class="docutils literal notranslate"><span class="pre">mds_recall_max_caps</span></code>, which is 30k by default). A client
+is starting to release, but is releasing with a rate of (for example) only 100
+caps per second.</p>
+<p>So in the first second of time, the mds sends recall_caps = 20k - 100 the
+second second recall_caps = (20k - 100) - 100 the third second recall_caps =
+(20k - 200) - 100 and so on. And every time it sends recall_caps it updates the
+session’s recall_caps value, which is calculated  how many recall_caps sent in
+the last minute. I.e. the counter is growing quickly, eventually exceeding
+mds_recall_warning_threshold, which is 128K by default, and ceph starts to
+report “failing to respond to cache pressure” warning in the status.  Now,
+after we set mds_recall_max_caps to 3K, in this situation the mds server sends
+only 3K recall_caps per second, and the maximum value the session’s recall_caps
+value may have (if the mds is sending 3K every second for at least one minute)
+is 60 * 3K = 180K. This means that it is still possible to achieve
+<code class="docutils literal notranslate"><span class="pre">mds_recall_warning_threshold</span></code> but only if a client does not “respond” for a
+long time, and as your experiments show it is not the case.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="standby.html" class="btn btn-neutral float-left" title="Terminology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mds-config-ref.html" class="btn btn-neutral float-right" title="MDS Config Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full RGW Object Dedup: &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Full RGW Object Dedup:</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/s3_objects_dedup.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="full-rgw-object-dedup">
+<h1>Full RGW Object Dedup:<a class="headerlink" href="#full-rgw-object-dedup" title="Link to this heading"></a></h1>
+<p>Add a radosgw-admin command to collect and report deduplication stats</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This utility doesn’t perform dedup and doesn’t make any
+change to the existing system and will only collect
+statistics and report them.</p>
+</div>
+<hr class="docutils" />
+<section id="admin-commands">
+<h2>Admin commands:<a class="headerlink" href="#admin-commands" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">dedup</span> <span class="pre">stats</span></code>:</dt><dd><p>Collects &amp; displays last dedup statistics</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">dedup</span> <span class="pre">pause</span></code>:</dt><dd><p>Pauses active dedup session (dedup resources are not released)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">dedup</span> <span class="pre">resume</span></code>:</dt><dd><p>Resumes a paused dedup session</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">dedup</span> <span class="pre">abort</span></code>:</dt><dd><p>Aborts active dedup session and release all resources used by it</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">dedup</span> <span class="pre">estimate</span></code></dt><dd><p>Starts a new dedup estimate session (aborting first existing session if exists)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="skipped-objects">
+<h2>Skipped Objects:<a class="headerlink" href="#skipped-objects" title="Link to this heading"></a></h2>
+<p>Dedup Estimates skips the following objects:</p>
+<ul class="simple">
+<li><p>Objects smaller than 4MB (unless they are multipart)</p></li>
+<li><p>Objects with different placement rules</p></li>
+<li><p>Objects with different pools</p></li>
+<li><p>Objects with different same storage-classes</p></li>
+</ul>
+<p>The Dedup process itself (which will be released later) will also skip
+<strong>compressed</strong> and <strong>user-encrypted</strong> objects, but the estimate
+process will accept them (since we don’t have access to that
+information during the estimate process)</p>
+</section>
+<hr class="docutils" />
+<section id="estimate-processing">
+<h2>Estimate Processing:<a class="headerlink" href="#estimate-processing" title="Link to this heading"></a></h2>
+<p>The Dedup Estimate process collects all the needed information directly from
+the bucket-indices reading one full bucket-index object with 1000’s of
+entries at a time.</p>
+<p>The Bucket-Indices objects are sharded between the participating
+members so every bucket-index object is read exactly one time.
+The sharding allow processing to scale almost linearly spliting the
+load evenly between the participating members.</p>
+<p>The Dedup Estimate process does not access the objects themselves
+(data/metadata) which means its processing time won’t be affected by
+the underlined media storing the objects (SSD/HDD) since the bucket-indices are
+virtually always stored on a fast medium (SSD with heavy memory
+caching)</p>
+</section>
+<hr class="docutils" />
+<section id="memory-usage">
+<h2>Memory Usage:<a class="headerlink" href="#memory-usage" title="Link to this heading"></a></h2>
+<blockquote>
+<div><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>RGW Obj Count</p></th>
+<th class="head" colspan="2"><p>Memory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="line-block">
+<div class="line">____1M</div>
+<div class="line">____4M</div>
+<div class="line">___16M</div>
+<div class="line">___64M</div>
+<div class="line">__256M</div>
+<div class="line">_1024M( 1G)</div>
+<div class="line">_4096M( 4G)</div>
+<div class="line">16384M(16G)</div>
+</div>
+</td>
+<td colspan="2"><div class="line-block">
+<div class="line">___8MB</div>
+<div class="line">__16MB</div>
+<div class="line">__32MB</div>
+<div class="line">__64MB</div>
+<div class="line">_128MB</div>
+<div class="line">_256MB</div>
+<div class="line">_512MB</div>
+<div class="line">1024MB</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Storage Devices &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Configuring Ceph" href="ceph-conf.html" />
+    <link rel="prev" title="Configuration" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Storage devices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#osd-back-ends">OSD Back Ends</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-conf.html">Configuring Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html">Common Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#networks">Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#temporary-directory">Temporary Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#monitors">Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#authentication">Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#osds">OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#heartbeats">Heartbeats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#logs-debugging">Logs / Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#example-ceph-conf">Example ceph.conf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="common.html#naming-clusters-deprecated">Naming Clusters (deprecated)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-config-ref.html">Network Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">Messenger v2 protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth-config-ref.html">Auth Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-config-ref.html">Monitor Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-lookup-dns.html">Looking up Monitors through DNS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osd-interaction.html">Heartbeat Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-config-ref.html">OSD Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mclock-config-ref.html">DmClock Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-config-ref.html">BlueStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="filestore-config-ref.html">FileStore Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="journal-ref.html">Journal Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pool-pg-config-ref.html">Pool, PG &amp; CRUSH Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="general-config-ref.html">General Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/index.html">Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">Storage Devices</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/configuration/storage-devices.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="storage-devices">
+<h1>Storage Devices<a class="headerlink" href="#storage-devices" title="Link to this heading"></a></h1>
+<p>There are several Ceph daemons in a storage cluster:</p>
+<ul class="simple" id="rados-configuration-storage-devices-ceph-osd">
+<li><p><strong>Ceph OSDs</strong> (Object Storage Daemons) store most of the data
+in Ceph. Usually each OSD is backed by a single storage device.
+This can be a traditional hard disk (HDD) or a solid state disk
+(SSD). OSDs can also be backed by a combination of devices: for
+example, a HDD for most data and an SSD (or partition of an
+SSD) for some metadata. The number of OSDs in a cluster is
+usually a function of the amount of data to be stored, the size
+of each storage device, and the level and type of redundancy
+specified (replication or erasure coding).</p></li>
+<li><p><strong>Ceph Monitor</strong> daemons manage critical cluster state. This
+includes cluster membership and authentication information.
+Small clusters require only a few gigabytes of storage to hold
+the monitor database. In large clusters, however, the monitor
+database can reach sizes of tens of gigabytes to hundreds of
+gigabytes.</p></li>
+<li><p><strong>Ceph Manager</strong> daemons run alongside monitor daemons, providing
+additional monitoring and providing interfaces to external
+monitoring and management systems.</p></li>
+</ul>
+<section id="osd-back-ends">
+<span id="rados-config-storage-devices-osd-backends"></span><h2>OSD Back Ends<a class="headerlink" href="#osd-back-ends" title="Link to this heading"></a></h2>
+<p>There are two ways that OSDs manage the data they store.  As of the Luminous
+12.2.z release, the default (and recommended) back end is <em>BlueStore</em>.  Prior
+to the Luminous release, the default (and only) back end was <em>Filestore</em>.</p>
+<section id="bluestore">
+<span id="rados-config-storage-devices-bluestore"></span><h3>BlueStore<a class="headerlink" href="#bluestore" title="Link to this heading"></a></h3>
+<p>BlueStore is a special-purpose storage back end designed specifically for
+managing data on disk for Ceph OSD workloads.  BlueStore’s design is based on
+a decade of experience of supporting and managing Filestore OSDs.</p>
+<p>Key BlueStore features include:</p>
+<ul class="simple">
+<li><p>Direct management of storage devices. BlueStore consumes raw block devices or
+partitions. This avoids intervening layers of abstraction (such as local file
+systems like XFS) that can limit performance or add complexity.</p></li>
+<li><p>Metadata management with RocksDB. RocksDB’s key/value database is embedded
+in order to manage internal metadata, including the mapping of object
+names to block locations on disk.</p></li>
+<li><p>Full data and metadata checksumming. By default, all data and
+metadata written to BlueStore is protected by one or more
+checksums. No data or metadata is read from disk or returned
+to the user without being verified.</p></li>
+<li><p>Inline compression.  Data can be optionally compressed before being written
+to disk.</p></li>
+<li><p>Multi-device metadata tiering. BlueStore allows its internal
+journal (write-ahead log) to be written to a separate, high-speed
+device (like an SSD, NVMe, or NVDIMM) for increased performance.  If
+a significant amount of faster storage is available, internal
+metadata can be stored on the faster device.</p></li>
+<li><p>Efficient copy-on-write. RBD and CephFS snapshots rely on a
+copy-on-write <em>clone</em> mechanism that is implemented efficiently in
+BlueStore. This results in efficient I/O both for regular snapshots
+and for erasure-coded pools (which rely on cloning to implement
+efficient two-phase commits).</p></li>
+</ul>
+<p>For more information, see <a class="reference internal" href="bluestore-config-ref.html"><span class="doc">BlueStore Configuration Reference</span></a> and <a class="reference internal" href="../operations/bluestore-migration.html"><span class="doc">BlueStore Migration</span></a>.</p>
+</section>
+<section id="filestore">
+<h3>FileStore<a class="headerlink" href="#filestore" title="Link to this heading"></a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Filestore has been deprecated in the Reef release and is no longer supported.</p>
+</div>
+<p>FileStore is the legacy approach to storing objects in Ceph. It
+relies on a standard file system (normally XFS) in combination with a
+key/value database (traditionally LevelDB, now RocksDB) for some
+metadata.</p>
+<p>FileStore is well-tested and widely used in production. However, it
+suffers from many performance deficiencies due to its overall design
+and its reliance on a traditional file system for object data storage.</p>
+<p>Although FileStore is capable of functioning on most POSIX-compatible
+file systems (including btrfs and ext4), we recommend that only the
+XFS file system be used with Ceph. Both btrfs and ext4 have known bugs and
+deficiencies and their use may lead to data loss. By default, all Ceph
+provisioning tools use XFS.</p>
+<p>For more information, see <a class="reference internal" href="filestore-config-ref.html"><span class="doc">Filestore Config Reference</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ceph-conf.html" class="btn btn-neutral float-right" title="Configuring Ceph" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

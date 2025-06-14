@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracing Ceph With LTTng &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BlueStore Internals" href="bluestore.html" />
+    <link rel="prev" title="Balancing in Ceph" href="balancer-design.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="internals.html">Ceph Internals</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="internals.html#starting-a-development-mode-ceph-cluster">Starting a Development-mode Ceph Cluster</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="balancer-design.html">Balancing in Ceph</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Tracing Ceph With LTTng</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-ceph-with-lttng">Configuring Ceph with LTTng</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-trace">Testing Trace</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tracing-ceph-with-blkin">Tracing Ceph With Blkin</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-ceph-with-blkin">Configuring Ceph with Blkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-blkin">Testing Blkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-zipkin">Install  Zipkin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-ceph-s-blkin-traces-in-zipkin-web">Show Ceph’s Blkin Traces in Zipkin-web</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore.html">BlueStore Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph_krb_auth.html">A Detailed Documentation on How to Set up Ceph Kerberos Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-mirroring.html">CephFS Mirroring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-reclaim.html">CephFS Reclaim Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephfs-snapshots.html">CephFS Snapshots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx.html">Cephx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cephx_protocol.html">A Detailed Description of the Cephx Authentication Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Configuration Management System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config-key.html">config-key layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="context.html">CephContext</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuous-integration.html">Continuous Integration Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="corpus.html">Corpus structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cpu-profiler.html">Installing Oprofile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-msr.html">CRUSH MSR (Multi-step Retry)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cxx.html">C++17 and libstdc++ ABI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deduplication.html">Deduplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="delayed-delete.html">CephFS delayed deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html">Deploying a development cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev_cluster_deployment.html#deploying-multiple-development-clusters-on-the-same-machine">Deploying multiple development clusters on the same machine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="development-workflow.html">Development workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="documenting.html">Documenting Ceph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dpdk.html">Ceph messenger DPDKStack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoding.html">Serialization (encode/decode)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-coded-pool.html">Erasure Coded pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file-striping.html">File striping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="freebsd.html">FreeBSD Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generatedocs.html">Building Ceph Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-reports.html">Health Reports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iana.html">IANA Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html">Testing changes to the Linux Kernel CephFS driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-one-build-the-kernel">Step One: build the kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-two-create-a-vm">Step Two: create a VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kclient.html#step-three-networking-the-vm">Step Three: Networking the VM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kubernetes.html">Hacking on Ceph in Kubernetes with Rook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libcephfs_proxy.html">Design of the libcephfs proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="libs.html">Library architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logging.html">Use of the cluster log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logs.html">Debug logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="macos.html">build on MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html">What is a mempool?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mempool_accounting.html#some-common-mempools-that-we-can-track">Some common mempools that we can track</a></li>
+<li class="toctree-l3"><a class="reference internal" href="messenger.html">Messenger notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-bootstrap.html">Monitor bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-elections.html">Monitor Elections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-on-disk-formats.html">ON-DISK FORMAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mon-osdmap-prune.html">FULL OSDMAP VERSION PRUNING</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msgr2.html">msgr2 protocol (msgr2.0 and msgr2.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-encoding.html">Network Encoding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="network-protocol.html">Network Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="object-store.html">Object Store Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd-class-path.html">OSD class path issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="peering.html">Peering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf.html">Using perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_counters.html">Perf counters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perf_histograms.html">Perf histograms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-group.html">PG (Placement Group) notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quick_guide.html">Developer Guide (Quick)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rados-client-protocol.html">RADOS client protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-diff.html">RBD Incremental Backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-export.html">RBD Export &amp; Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbd-layering.html">RBD Layering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-checklists.html">Release checklists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-process.html">Ceph Release Process</a></li>
+<li class="toctree-l3"><a class="reference internal" href="seastore.html">SeaStore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sepia.html">Sepia community test lab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="session_authentication.html">Session Authentication for the Cephx Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="versions.html">Public OSD Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vstart-ganesha.html">NFS CephFS-RGW Developer Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="wireshark.html">Wireshark Dissector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoned-storage.html">Zoned Storage Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="osd_internals/index.html">OSD developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mds_internals/index.html">MDS developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="radosgw/index.html">RADOS Gateway developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ceph-volume/index.html">ceph-volume developer documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crimson/index.html">Crimson developer documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="internals.html">Ceph Internals</a></li>
+      <li class="breadcrumb-item active">Tracing Ceph With LTTng</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/dev/blkin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="tracing-ceph-with-lttng">
+<h1>Tracing Ceph With LTTng<a class="headerlink" href="#tracing-ceph-with-lttng" title="Link to this heading"></a></h1>
+<section id="configuring-ceph-with-lttng">
+<h2>Configuring Ceph with LTTng<a class="headerlink" href="#configuring-ceph-with-lttng" title="Link to this heading"></a></h2>
+<p>Use -DWITH_LTTNG option (default: ON):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">do_cmake</span> <span class="o">-</span><span class="n">DWITH_LTTNG</span><span class="o">=</span><span class="n">ON</span>
+</pre></div>
+</div>
+<p>Config option for tracing must be set to true in ceph.conf.
+Following options are currently available:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bluestore_tracing</span>
+<span class="n">event_tracing</span> <span class="p">(</span><span class="o">-</span><span class="n">DWITH_EVENTTRACE</span><span class="p">)</span>
+<span class="n">osd_function_tracing</span> <span class="p">(</span><span class="o">-</span><span class="n">DWITH_OSD_INSTRUMENT_FUNCTIONS</span><span class="p">)</span>
+<span class="n">osd_objectstore_tracing</span> <span class="p">(</span><span class="n">actually</span> <span class="n">filestore</span> <span class="n">tracing</span><span class="p">)</span>
+<span class="n">rbd_tracing</span>
+<span class="n">osd_tracing</span>
+<span class="n">rados_tracing</span>
+<span class="n">rgw_op_tracing</span>
+<span class="n">rgw_rados_tracing</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-trace">
+<h2>Testing Trace<a class="headerlink" href="#testing-trace" title="Link to this heading"></a></h2>
+<p>Start LTTng daemon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span><span class="o">-</span><span class="n">sessiond</span> <span class="o">--</span><span class="n">daemonize</span>
+</pre></div>
+</div>
+<p>Run vstart cluster with enabling trace options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">l</span> <span class="o">-</span><span class="n">e</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;osd_tracing = true&quot;</span>
+</pre></div>
+</div>
+<p>List available tracepoints:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span> <span class="nb">list</span> <span class="o">--</span><span class="n">userspace</span>
+</pre></div>
+</div>
+<p>You will get something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">UST</span> <span class="n">events</span><span class="p">:</span>
+<span class="o">-------------</span>
+<span class="n">PID</span><span class="p">:</span> <span class="mi">100859</span> <span class="o">-</span> <span class="n">Name</span><span class="p">:</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">ceph</span><span class="o">-</span><span class="n">osd</span>
+    <span class="n">pg</span><span class="p">:</span><span class="n">queue_op</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG_LINE</span> <span class="p">(</span><span class="mi">13</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+    <span class="n">osd</span><span class="p">:</span><span class="n">do_osd_op_post</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG_LINE</span> <span class="p">(</span><span class="mi">13</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+    <span class="n">osd</span><span class="p">:</span><span class="n">do_osd_op_pre_unknown</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG_LINE</span> <span class="p">(</span><span class="mi">13</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+    <span class="n">osd</span><span class="p">:</span><span class="n">do_osd_op_pre_copy_from</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG_LINE</span> <span class="p">(</span><span class="mi">13</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+    <span class="n">osd</span><span class="p">:</span><span class="n">do_osd_op_pre_copy_get</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG_LINE</span> <span class="p">(</span><span class="mi">13</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Create tracing session, enable tracepoints and start trace:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span> <span class="n">create</span> <span class="n">trace</span><span class="o">-</span><span class="n">test</span>
+<span class="n">lttng</span> <span class="n">enable</span><span class="o">-</span><span class="n">event</span> <span class="o">--</span><span class="n">userspace</span> <span class="n">osd</span><span class="p">:</span><span class="o">*</span>
+<span class="n">lttng</span> <span class="n">start</span>
+</pre></div>
+</div>
+<p>Perform some Ceph operation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rados</span> <span class="n">bench</span> <span class="o">-</span><span class="n">p</span> <span class="n">ec</span> <span class="mi">5</span> <span class="n">write</span>
+</pre></div>
+</div>
+<p>Stop tracing and view result:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span> <span class="n">stop</span>
+<span class="n">lttng</span> <span class="n">view</span>
+</pre></div>
+</div>
+<p>Destroy tracing session:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span> <span class="n">destroy</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tracing-ceph-with-blkin">
+<h1>Tracing Ceph With Blkin<a class="headerlink" href="#tracing-ceph-with-blkin" title="Link to this heading"></a></h1>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version This: </span>feature was deprecated in the Squid release and will
+be removed in a later release.</p>
+</div>
+<p>Ceph can use Blkin, a library created by Marios Kogias and others,
+which enables tracking a specific request from the time it enters
+the system at higher levels till it is finally served by RADOS.</p>
+<p>In general, Blkin implements the <a class="reference external" href="http://static.googleusercontent.com/media/research.google.com/el//pubs/archive/36356.pdf">Dapper</a> tracing semantics
+in order to show the causal relationships between the different
+processing phases that an IO request may trigger. The goal is an
+end-to-end visualisation of the request’s route in the system,
+accompanied by information concerning latencies in each processing
+phase. Thanks to LTTng this can happen with a minimal overhead and
+in realtime. The LTTng traces can then be visualized with Twitter’s
+<a class="reference external" href="https://zipkin.io/">Zipkin</a>.</p>
+<section id="configuring-ceph-with-blkin">
+<h2>Configuring Ceph with Blkin<a class="headerlink" href="#configuring-ceph-with-blkin" title="Link to this heading"></a></h2>
+<p>Use -DWITH_BLKIN option (which requires -DWITH_LTTNG):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">do_cmake</span> <span class="o">-</span><span class="n">DWITH_LTTNG</span><span class="o">=</span><span class="n">ON</span> <span class="o">-</span><span class="n">DWITH_BLKIN</span><span class="o">=</span><span class="n">ON</span>
+</pre></div>
+</div>
+<p>Config option for blkin must be set to true in ceph.conf.
+Following options are currently available:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rbd_blkin_trace_all</span>
+<span class="n">osd_blkin_trace_all</span>
+<span class="n">osdc_blkin_trace_all</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-blkin">
+<h2>Testing Blkin<a class="headerlink" href="#testing-blkin" title="Link to this heading"></a></h2>
+<p>It’s easy to test Ceph’s Blkin tracing. Let’s assume you don’t have
+Ceph already running, and you compiled Ceph with Blkin support but
+you didn’t install it. Then launch Ceph with the <code class="docutils literal notranslate"><span class="pre">vstart.sh</span></code> script
+in Ceph’s src directory so you can see the possible tracepoints.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OSD</span><span class="o">=</span><span class="mi">3</span> <span class="n">MON</span><span class="o">=</span><span class="mi">3</span> <span class="n">RGW</span><span class="o">=</span><span class="mi">1</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;rbd_blkin_trace_all&quot;</span>
+<span class="n">lttng</span> <span class="nb">list</span> <span class="o">--</span><span class="n">userspace</span>
+</pre></div>
+</div>
+<p>You’ll see something like the following::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">UST</span> <span class="n">events</span><span class="p">:</span>
+<span class="o">-------------</span>
+<span class="n">PID</span><span class="p">:</span> <span class="mi">8987</span> <span class="o">-</span> <span class="n">Name</span><span class="p">:</span> <span class="o">./</span><span class="n">ceph</span><span class="o">-</span><span class="n">osd</span>
+      <span class="n">zipkin</span><span class="p">:</span><span class="n">timestamp</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_WARNING</span> <span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+      <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_integer</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_WARNING</span> <span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+      <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_string</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_WARNING</span> <span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+      <span class="n">lttng_ust_tracelog</span><span class="p">:</span><span class="n">TRACE_DEBUG</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG</span> <span class="p">(</span><span class="mi">14</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+
+<span class="n">PID</span><span class="p">:</span> <span class="mi">8407</span> <span class="o">-</span> <span class="n">Name</span><span class="p">:</span> <span class="o">./</span><span class="n">ceph</span><span class="o">-</span><span class="n">mon</span>
+      <span class="n">zipkin</span><span class="p">:</span><span class="n">timestamp</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_WARNING</span> <span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+      <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_integer</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_WARNING</span> <span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+      <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_string</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_WARNING</span> <span class="p">(</span><span class="mi">4</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+      <span class="n">lttng_ust_tracelog</span><span class="p">:</span><span class="n">TRACE_DEBUG</span> <span class="p">(</span><span class="n">loglevel</span><span class="p">:</span> <span class="n">TRACE_DEBUG</span> <span class="p">(</span><span class="mi">14</span><span class="p">))</span> <span class="p">(</span><span class="nb">type</span><span class="p">:</span> <span class="n">tracepoint</span><span class="p">)</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Next, stop Ceph so that the tracepoints can be enabled.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">stop</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Start up an LTTng session and enable the tracepoints.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span> <span class="n">create</span> <span class="n">blkin</span><span class="o">-</span><span class="n">test</span>
+<span class="n">lttng</span> <span class="n">enable</span><span class="o">-</span><span class="n">event</span> <span class="o">--</span><span class="n">userspace</span> <span class="n">zipkin</span><span class="p">:</span><span class="n">timestamp</span>
+<span class="n">lttng</span> <span class="n">enable</span><span class="o">-</span><span class="n">event</span> <span class="o">--</span><span class="n">userspace</span> <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_integer</span>
+<span class="n">lttng</span> <span class="n">enable</span><span class="o">-</span><span class="n">event</span> <span class="o">--</span><span class="n">userspace</span> <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_string</span>
+<span class="n">lttng</span> <span class="n">start</span>
+</pre></div>
+</div>
+<p>Then start up Ceph again.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OSD</span><span class="o">=</span><span class="mi">3</span> <span class="n">MON</span><span class="o">=</span><span class="mi">3</span> <span class="n">RGW</span><span class="o">=</span><span class="mi">1</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;rbd_blkin_trace_all&quot;</span>
+</pre></div>
+</div>
+<p>You may want to check that ceph is up.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">status</span>
+</pre></div>
+</div>
+<p>Now put something in using rados, check that it made it, get it back, and remove it.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ceph</span> <span class="n">osd</span> <span class="n">pool</span> <span class="n">create</span> <span class="n">test</span><span class="o">-</span><span class="n">blkin</span>
+<span class="n">rados</span> <span class="n">put</span> <span class="n">test</span><span class="o">-</span><span class="nb">object</span><span class="o">-</span><span class="mi">1</span> <span class="o">../</span><span class="n">src</span><span class="o">/</span><span class="n">vstart</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">pool</span><span class="o">=</span><span class="n">test</span><span class="o">-</span><span class="n">blkin</span>
+<span class="n">rados</span> <span class="o">-</span><span class="n">p</span> <span class="n">test</span><span class="o">-</span><span class="n">blkin</span> <span class="n">ls</span>
+<span class="n">ceph</span> <span class="n">osd</span> <span class="nb">map</span> <span class="n">test</span><span class="o">-</span><span class="n">blkin</span> <span class="n">test</span><span class="o">-</span><span class="nb">object</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">rados</span> <span class="n">get</span> <span class="n">test</span><span class="o">-</span><span class="nb">object</span><span class="o">-</span><span class="mi">1</span> <span class="o">./</span><span class="n">vstart</span><span class="o">-</span><span class="n">copy</span><span class="o">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">pool</span><span class="o">=</span><span class="n">test</span><span class="o">-</span><span class="n">blkin</span>
+<span class="n">md5sum</span> <span class="n">vstart</span><span class="o">*</span>
+<span class="n">rados</span> <span class="n">rm</span> <span class="n">test</span><span class="o">-</span><span class="nb">object</span><span class="o">-</span><span class="mi">1</span> <span class="o">--</span><span class="n">pool</span><span class="o">=</span><span class="n">test</span><span class="o">-</span><span class="n">blkin</span>
+</pre></div>
+</div>
+<p>You could also use the example in <code class="docutils literal notranslate"><span class="pre">examples/librados/</span></code> or <code class="docutils literal notranslate"><span class="pre">rados</span> <span class="pre">bench</span></code>.</p>
+<p>Then stop the LTTng session and see what was collected.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lttng</span> <span class="n">stop</span>
+<span class="n">lttng</span> <span class="n">view</span>
+</pre></div>
+</div>
+<p>You’ll see something like::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">08.884275486</span><span class="p">]</span> <span class="p">(</span><span class="o">+</span><span class="mf">0.000225472</span><span class="p">)</span> <span class="n">ubuntu</span> <span class="n">zipkin</span><span class="p">:</span><span class="n">timestamp</span><span class="p">:</span> <span class="p">{</span> <span class="n">cpu_id</span> <span class="o">=</span> <span class="mi">53</span> <span class="p">},</span> <span class="p">{</span> <span class="n">trace_name</span> <span class="o">=</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="n">service_name</span> <span class="o">=</span> <span class="s2">&quot;Objecter&quot;</span><span class="p">,</span> <span class="n">port_no</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ip</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">trace_id</span> <span class="o">=</span> <span class="mi">5485970765435202833</span><span class="p">,</span> <span class="n">span_id</span> <span class="o">=</span> <span class="mi">5485970765435202833</span><span class="p">,</span> <span class="n">parent_span_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">event</span> <span class="o">=</span> <span class="s2">&quot;osd op reply&quot;</span> <span class="p">}</span>
+<span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">08.884614135</span><span class="p">]</span> <span class="p">(</span><span class="o">+</span><span class="mf">0.000002839</span><span class="p">)</span> <span class="n">ubuntu</span> <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_integer</span><span class="p">:</span> <span class="p">{</span> <span class="n">cpu_id</span> <span class="o">=</span> <span class="mi">10</span> <span class="p">},</span> <span class="p">{</span> <span class="n">trace_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">service_name</span> <span class="o">=</span> <span class="s2">&quot;Messenger&quot;</span><span class="p">,</span> <span class="n">port_no</span> <span class="o">=</span> <span class="mi">6805</span><span class="p">,</span> <span class="n">ip</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">trace_id</span> <span class="o">=</span> <span class="mi">7381732770245808782</span><span class="p">,</span> <span class="n">span_id</span> <span class="o">=</span> <span class="mi">7387710183742669839</span><span class="p">,</span> <span class="n">parent_span_id</span> <span class="o">=</span> <span class="mi">1205040135881905799</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;tid&quot;</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mf">08.884616431</span><span class="p">]</span> <span class="p">(</span><span class="o">+</span><span class="mf">0.000002296</span><span class="p">)</span> <span class="n">ubuntu</span> <span class="n">zipkin</span><span class="p">:</span><span class="n">keyval_string</span><span class="p">:</span> <span class="p">{</span> <span class="n">cpu_id</span> <span class="o">=</span> <span class="mi">10</span> <span class="p">},</span> <span class="p">{</span> <span class="n">trace_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">service_name</span> <span class="o">=</span> <span class="s2">&quot;Messenger&quot;</span><span class="p">,</span> <span class="n">port_no</span> <span class="o">=</span> <span class="mi">6805</span><span class="p">,</span> <span class="n">ip</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">trace_id</span> <span class="o">=</span> <span class="mi">7381732770245808782</span><span class="p">,</span> <span class="n">span_id</span> <span class="o">=</span> <span class="mi">7387710183742669839</span><span class="p">,</span> <span class="n">parent_span_id</span> <span class="o">=</span> <span class="mi">1205040135881905799</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;entity type&quot;</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;client&quot;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="install-zipkin">
+<h2>Install  Zipkin<a class="headerlink" href="#install-zipkin" title="Link to this heading"></a></h2>
+<p>One of the points of using Blkin is so that you can look at the traces
+using Zipkin. Users should run Zipkin as a tracepoints collector and
+also a web service. The executable jar runs a collector on port 9410 and
+the web interface on port 9411</p>
+<p>Download Zipkin Package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">openzipkin</span><span class="o">/</span><span class="n">zipkin</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">zipkin</span>
+<span class="n">wget</span> <span class="o">-</span><span class="n">O</span> <span class="n">zipkin</span><span class="o">.</span><span class="n">jar</span> <span class="s1">&#39;https://search.maven.org/remote_content?g=io.zipkin.java&amp;a=zipkin-server&amp;v=LATEST&amp;c=exec&#39;</span>
+<span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">zipkin</span><span class="o">.</span><span class="n">jar</span>
+</pre></div>
+</div>
+<p>Or, launch docker image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">p</span> <span class="mi">9411</span><span class="p">:</span><span class="mi">9411</span> <span class="n">openzipkin</span><span class="o">/</span><span class="n">Zipkin</span>
+</pre></div>
+</div>
+</section>
+<section id="show-ceph-s-blkin-traces-in-zipkin-web">
+<h2>Show Ceph’s Blkin Traces in Zipkin-web<a class="headerlink" href="#show-ceph-s-blkin-traces-in-zipkin-web" title="Link to this heading"></a></h2>
+<p>Download babeltrace-zipkin project. This project takes the traces
+generated with blkin and sends them to a Zipkin collector using scribe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">vears91</span><span class="o">/</span><span class="n">babeltrace</span><span class="o">-</span><span class="n">zipkin</span>
+<span class="n">cd</span> <span class="n">babeltrace</span><span class="o">-</span><span class="n">zipkin</span>
+</pre></div>
+</div>
+<p>Send lttng data to Zipkin:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>python3 babeltrace_zipkin.py ${lttng-traces-dir}/${blkin-test}/ust/uid/0/64-bit/ -p ${zipkin-collector-port(9410 by default)} -s ${zipkin-collector-ip}
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">babeltrace_zipkin</span><span class="o">.</span><span class="n">py</span> <span class="o">~/</span><span class="n">lttng</span><span class="o">-</span><span class="n">traces</span><span class="o">-</span><span class="nb">dir</span><span class="o">/</span><span class="n">blkin</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="mi">20150225</span><span class="o">-</span><span class="mi">160222</span><span class="o">/</span><span class="n">ust</span><span class="o">/</span><span class="n">uid</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="mi">64</span><span class="o">-</span><span class="n">bit</span><span class="o">/</span> <span class="o">-</span><span class="n">p</span> <span class="mi">9410</span> <span class="o">-</span><span class="n">s</span> <span class="mf">127.0.0.1</span>
+</pre></div>
+</div>
+<p>Check Ceph traces on webpage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Browse http://${zipkin-collector-ip}:9411
+Click &quot;Find traces&quot;
+</pre></div>
+</div>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="balancer-design.html" class="btn btn-neutral float-left" title="Balancing in Ceph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bluestore.html" class="btn btn-neutral float-right" title="BlueStore Internals" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adding/Removing OSDs &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Adding/Removing Monitors" href="add-or-rm-mons.html" />
+    <link rel="prev" title="Configuring Monitor Election Strategies" href="change-mon-elections.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Ceph Storage Cluster</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Operations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="operating.html">Operating a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="health-checks.html">Health checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring.html">Monitoring a Cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="monitoring-osd-pg.html">Monitoring OSDs and PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user-management.html">User Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pgcalc/index.html">PG Calc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-placement.html">Data Placement Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pools.html">Pools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="erasure-code.html">Erasure code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tiering.html">Cache Tiering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement-groups.html">Placement Groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-states.html">Placement Group States</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pg-concepts.html">Placement Group Concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upmap.html">Using pg-upmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="read-balancer.html">Operating the Read (Primary) Balancer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="balancer.html">Balancer Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map.html">CRUSH Maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crush-map-edits.html">Manually editing the CRUSH Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stretch-mode.html">Stretch Clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="change-mon-elections.html">Configuring Monitor Election Strategies</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Adding/Removing OSDs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-osds">Adding OSDs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#removing-osds-manual">Removing OSDs (Manual)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="add-or-rm-mons.html">Adding/Removing Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">Device Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bluestore-migration.html">BlueStore Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="control.html">Command Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/community.html">The Ceph Community</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-mon.html">Troubleshooting Monitors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-osd.html">Troubleshooting OSDs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/troubleshooting-pg.html">Troubleshooting PGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/log-and-debug.html">Logging and Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/cpu-profiling.html">CPU Profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../troubleshooting/memory-profiling.html">Memory Profiling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../man/index.html">Man Pages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting/index.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Ceph Storage Cluster</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Cluster Operations</a></li>
+      <li class="breadcrumb-item active">Adding/Removing OSDs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rados/operations/add-or-rm-osds.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="adding-removing-osds">
+<h1>Adding/Removing OSDs<a class="headerlink" href="#adding-removing-osds" title="Link to this heading"></a></h1>
+<p>When a cluster is up and running, it is possible to add or remove OSDs.</p>
+<section id="adding-osds">
+<h2>Adding OSDs<a class="headerlink" href="#adding-osds" title="Link to this heading"></a></h2>
+<p>OSDs can be added to a cluster in order to expand the cluster’s capacity and
+resilience. Typically, an OSD is a Ceph <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon running on one
+storage drive within a host machine. But if your host machine has multiple
+storage drives, you may map one <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon for each drive on the
+machine.</p>
+<p>It’s a good idea to check the capacity of your cluster so that you know when it
+approaches its capacity limits. If your cluster has reached its <code class="docutils literal notranslate"><span class="pre">near</span> <span class="pre">full</span></code>
+ratio, then you should add OSDs to expand your cluster’s capacity.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not let your cluster reach its <code class="docutils literal notranslate"><span class="pre">full</span> <span class="pre">ratio</span></code> before adding an
+OSD. OSD failures that occur after the cluster reaches its <code class="docutils literal notranslate"><span class="pre">near</span> <span class="pre">full</span>
+<span class="pre">ratio</span></code> might cause the cluster to exceed its <code class="docutils literal notranslate"><span class="pre">full</span> <span class="pre">ratio</span></code>.</p>
+</div>
+<section id="deploying-your-hardware">
+<h3>Deploying your Hardware<a class="headerlink" href="#deploying-your-hardware" title="Link to this heading"></a></h3>
+<p>If you are also adding a new host when adding a new OSD, see <a class="reference external" href="../../../start/hardware-recommendations">Hardware
+Recommendations</a> for details on minimum recommendations for OSD hardware. To
+add an OSD host to your cluster, begin by making sure that an appropriate
+version of Linux has been installed on the host machine and that all initial
+preparations for your storage drives have been carried out. For details, see
+<a class="reference external" href="../../configuration/filesystem-recommendations">Filesystem Recommendations</a>.</p>
+<p>Next, add your OSD host to a rack in your cluster, connect the host to the
+network, and ensure that the host has network connectivity. For details, see
+<a class="reference external" href="../../configuration/network-config-ref">Network Configuration Reference</a>.</p>
+</section>
+<section id="installing-the-required-software">
+<h3>Installing the Required Software<a class="headerlink" href="#installing-the-required-software" title="Link to this heading"></a></h3>
+<p>If your cluster has been manually deployed, you will need to install Ceph
+software packages manually. For details, see <a class="reference external" href="../../../install">Installing Ceph (Manual)</a>.
+Configure SSH for the appropriate user to have both passwordless authentication
+and root permissions.</p>
+</section>
+<section id="adding-an-osd-manual">
+<h3>Adding an OSD (Manual)<a class="headerlink" href="#adding-an-osd-manual" title="Link to this heading"></a></h3>
+<p>The following procedure sets up a <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon, configures this OSD to
+use one drive, and configures the cluster to distribute data to the OSD. If
+your host machine has multiple drives, you may add an OSD for each drive on the
+host by repeating this procedure.</p>
+<p>As the following procedure will demonstrate, adding an OSD involves creating a
+metadata directory for it, configuring a data storage drive, adding the OSD to
+the cluster, and then adding it to the CRUSH map.</p>
+<p>When you add the OSD to the CRUSH map, you will need to consider the weight you
+assign to the new OSD. Since storage drive capacities increase over time, newer
+OSD hosts are likely to have larger hard drives than the older hosts in the
+cluster have and therefore might have greater weight as well.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Ceph works best with uniform hardware across pools. It is possible to
+add drives of dissimilar size and then adjust their weights accordingly.
+However, for best performance, consider a CRUSH hierarchy that has drives of
+the same type and size. It is better to add larger drives uniformly to
+existing hosts. This can be done incrementally, replacing smaller drives
+each time the new drives are added.</p>
+</div>
+<ol class="arabic">
+<li><p>Create the new OSD by running a command of the following form. If you opt
+not to specify a UUID in this command, the UUID will be set automatically
+when the OSD starts up. The OSD number, which is needed for subsequent
+steps, is found in the command’s output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>create<span class="w"> </span><span class="o">[{</span>uuid<span class="o">}</span><span class="w"> </span><span class="o">[{</span>id<span class="o">}]]</span></span>
+</pre></div></div><p>If the optional parameter {id} is specified it will be used as the OSD ID.
+However, if the ID number is already in use, the command will fail.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Explicitly specifying the <code class="docutils literal notranslate"><span class="pre">{id}</span></code> parameter is not
+recommended. IDs are allocated as an array, and any skipping of entries
+consumes extra memory. This memory consumption can become significant if
+there are large gaps or if clusters are large. By leaving the <code class="docutils literal notranslate"><span class="pre">{id}</span></code>
+parameter unspecified, we ensure that Ceph uses the smallest ID number
+available and that these problems are avoided.</p>
+</div>
+</li>
+<li><p>Create the default directory for your new OSD by running commands of the
+following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>new-osd-host<span class="o">}</span></span>
+<span class="prompt2">sudo<span class="w"> </span>mkdir<span class="w"> </span>/var/lib/ceph/osd/ceph-<span class="o">{</span>osd-number<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>If the OSD will be created on a drive other than the OS drive, prepare it
+for use with Ceph. Run commands of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>new-osd-host<span class="o">}</span></span>
+<span class="prompt2">sudo<span class="w"> </span>mkfs<span class="w"> </span>-t<span class="w"> </span><span class="o">{</span>fstype<span class="o">}</span><span class="w"> </span>/dev/<span class="o">{</span>drive<span class="o">}</span></span>
+<span class="prompt2">sudo<span class="w"> </span>mount<span class="w"> </span>-o<span class="w"> </span>user_xattr<span class="w"> </span>/dev/<span class="o">{</span>hdd<span class="o">}</span><span class="w"> </span>/var/lib/ceph/osd/ceph-<span class="o">{</span>osd-number<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Initialize the OSD data directory by running commands of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>new-osd-host<span class="o">}</span></span>
+<span class="prompt2">ceph-osd<span class="w"> </span>-i<span class="w"> </span><span class="o">{</span>osd-num<span class="o">}</span><span class="w"> </span>--mkfs<span class="w"> </span>--mkkey</span>
+</pre></div></div><p>Make sure that the directory is empty before running <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code>.</p>
+</li>
+<li><p>Register the OSD authentication key by running a command of the following
+form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>add<span class="w"> </span>osd.<span class="o">{</span>osd-num<span class="o">}</span><span class="w"> </span>osd<span class="w"> </span><span class="s1">&#39;allow *&#39;</span><span class="w"> </span>mon<span class="w"> </span><span class="s1">&#39;allow rwx&#39;</span><span class="w"> </span>-i<span class="w"> </span>/var/lib/ceph/osd/ceph-<span class="o">{</span>osd-num<span class="o">}</span>/keyring</span>
+</pre></div></div><p>This presentation of the command has <code class="docutils literal notranslate"><span class="pre">ceph-{osd-num}</span></code> in the listed path
+because many clusters have the name <code class="docutils literal notranslate"><span class="pre">ceph</span></code>. However, if your cluster name
+is not <code class="docutils literal notranslate"><span class="pre">ceph</span></code>, then the string <code class="docutils literal notranslate"><span class="pre">ceph</span></code> in <code class="docutils literal notranslate"><span class="pre">ceph-{osd-num}</span></code> needs to be
+replaced with your cluster name. For example, if your cluster name is
+<code class="docutils literal notranslate"><span class="pre">cluster1</span></code>, then the path in the command should be
+<code class="docutils literal notranslate"><span class="pre">/var/lib/ceph/osd/cluster1-{osd-num}/keyring</span></code>.</p>
+</li>
+<li><p>Add the OSD to the CRUSH map by running the following command. This allows
+the OSD to begin receiving data. The <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">crush</span> <span class="pre">add</span></code> command can add
+OSDs to the CRUSH hierarchy wherever you want. If you specify one or more
+buckets, the command places the OSD in the most specific of those buckets,
+and it moves that bucket underneath any other buckets that you have
+specified. <strong>Important:</strong> If you specify only the root bucket, the command
+will attach the OSD directly to the root, but CRUSH rules expect OSDs to be
+inside of hosts. If the OSDs are not inside hosts, the OSDS will likely not
+receive any data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>crush<span class="w"> </span>add<span class="w"> </span><span class="o">{</span>id-or-name<span class="o">}</span><span class="w"> </span><span class="o">{</span>weight<span class="o">}</span><span class="w">  </span><span class="o">[{</span>bucket-type<span class="o">}={</span>bucket-name<span class="o">}</span><span class="w"> </span>...<span class="o">]</span></span>
+</pre></div></div><p>Note that there is another way to add a new OSD to the CRUSH map: decompile
+the CRUSH map, add the OSD to the device list, add the host as a bucket (if
+it is not already in the CRUSH map), add the device as an item in the host,
+assign the device a weight, recompile the CRUSH map, and set the CRUSH map.
+For details, see <a class="reference external" href="../crush-map#addosd">Add/Move an OSD</a>. This is rarely necessary with recent
+releases (this sentence was written the month that Reef was released).</p>
+</li>
+</ol>
+</section>
+<section id="replacing-an-osd">
+<span id="rados-replacing-an-osd"></span><h3>Replacing an OSD<a class="headerlink" href="#replacing-an-osd" title="Link to this heading"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the procedure in this section does not work for you, try the
+instructions in the <code class="docutils literal notranslate"><span class="pre">cephadm</span></code> documentation:
+<a class="reference internal" href="../../cephadm/services/osd.html#cephadm-replacing-an-osd"><span class="std std-ref">Replacing an OSD</span></a>.</p>
+</div>
+<p>Sometimes OSDs need to be replaced: for example, when a disk fails, or when an
+administrator wants to reprovision OSDs with a new back end (perhaps when
+switching from Filestore to BlueStore). Replacing an OSD differs from <a class="reference internal" href="#removing-the-osd">Removing
+the OSD</a> in that the replaced OSD’s ID and CRUSH map entry must be kept intact
+after the OSD is destroyed for replacement.</p>
+<ol class="arabic">
+<li><p>Make sure that it is safe to destroy the OSD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2"><span class="k">while</span><span class="w"> </span>!<span class="w"> </span>ceph<span class="w"> </span>osd<span class="w"> </span>safe-to-destroy<span class="w"> </span>osd.<span class="o">{</span>id<span class="o">}</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">done</span></span>
+</pre></div></div></li>
+<li><p>Destroy the OSD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>destroy<span class="w"> </span><span class="o">{</span>id<span class="o">}</span><span class="w"> </span>--yes-i-really-mean-it</span>
+</pre></div></div></li>
+<li><p><em>Optional</em>: If the disk that you plan to use is not a new disk and has been
+used before for other purposes, zap the disk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>zap<span class="w"> </span>/dev/sdX</span>
+</pre></div></div></li>
+<li><p>Prepare the disk for replacement by using the ID of the OSD that was
+destroyed in previous steps:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>prepare<span class="w"> </span>--osd-id<span class="w"> </span><span class="o">{</span>id<span class="o">}</span><span class="w"> </span>--data<span class="w"> </span>/dev/sdX</span>
+</pre></div></div></li>
+<li><p>Finally, activate the OSD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>activate<span class="w"> </span><span class="o">{</span>id<span class="o">}</span><span class="w"> </span><span class="o">{</span>fsid<span class="o">}</span></span>
+</pre></div></div></li>
+</ol>
+<p>Alternatively, instead of carrying out the final two steps (preparing the disk
+and activating the OSD), you can re-create the OSD by running a single command
+of the following form:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph-volume<span class="w"> </span>lvm<span class="w"> </span>create<span class="w"> </span>--osd-id<span class="w"> </span><span class="o">{</span>id<span class="o">}</span><span class="w"> </span>--data<span class="w"> </span>/dev/sdX</span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="starting-the-osd">
+<h3>Starting the OSD<a class="headerlink" href="#starting-the-osd" title="Link to this heading"></a></h3>
+<p>After an OSD is added to Ceph, the OSD is in the cluster. However, until it is
+started, the OSD is considered <code class="docutils literal notranslate"><span class="pre">down</span></code> and <code class="docutils literal notranslate"><span class="pre">in</span></code>. The OSD is not running and
+will be unable to receive data. To start an OSD, either run <code class="docutils literal notranslate"><span class="pre">service</span> <span class="pre">ceph</span></code>
+from your admin host or run a command of the following form to start the OSD
+from its host machine:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>ceph-osd@<span class="o">{</span>osd-num<span class="o">}</span></span>
+</pre></div></div></div></blockquote>
+<p>After the OSD is started, it is considered <code class="docutils literal notranslate"><span class="pre">up</span></code> and <code class="docutils literal notranslate"><span class="pre">in</span></code>.</p>
+</section>
+<section id="observing-the-data-migration">
+<h3>Observing the Data Migration<a class="headerlink" href="#observing-the-data-migration" title="Link to this heading"></a></h3>
+<p>After the new OSD has been added to the CRUSH map, Ceph begins rebalancing the
+cluster by migrating placement groups (PGs) to the new OSD. To observe this
+process by using the <a class="reference external" href="../monitoring">ceph</a> tool, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>-w</span>
+</pre></div></div></div></blockquote>
+<p>Or:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">watch<span class="w"> </span>ceph<span class="w"> </span>status</span>
+</pre></div></div></div></blockquote>
+<p>The PG states will first change from <code class="docutils literal notranslate"><span class="pre">active+clean</span></code> to <code class="docutils literal notranslate"><span class="pre">active,</span> <span class="pre">some</span>
+<span class="pre">degraded</span> <span class="pre">objects</span></code> and then return to <code class="docutils literal notranslate"><span class="pre">active+clean</span></code> when migration
+completes. When you are finished observing, press Ctrl-C to exit.</p>
+</section>
+</section>
+<section id="removing-osds-manual">
+<h2>Removing OSDs (Manual)<a class="headerlink" href="#removing-osds-manual" title="Link to this heading"></a></h2>
+<p>It is possible to remove an OSD manually while the cluster is running: you
+might want to do this in order to reduce the size of the cluster or when
+replacing hardware. Typically, an OSD is a Ceph <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code> daemon running on
+one storage drive within a host machine. Alternatively, if your host machine
+has multiple storage drives, you might need to remove multiple <code class="docutils literal notranslate"><span class="pre">ceph-osd</span></code>
+daemons: one daemon for each drive on the machine.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before you begin the process of removing an OSD, make sure that
+your cluster is not near its <code class="docutils literal notranslate"><span class="pre">full</span> <span class="pre">ratio</span></code>. Otherwise the act of removing
+OSDs might cause the cluster to reach or exceed its <code class="docutils literal notranslate"><span class="pre">full</span> <span class="pre">ratio</span></code>.</p>
+</div>
+<section id="taking-the-osd-out-of-the-cluster">
+<h3>Taking the OSD <code class="docutils literal notranslate"><span class="pre">out</span></code> of the Cluster<a class="headerlink" href="#taking-the-osd-out-of-the-cluster" title="Link to this heading"></a></h3>
+<p>OSDs are typically <code class="docutils literal notranslate"><span class="pre">up</span></code> and <code class="docutils literal notranslate"><span class="pre">in</span></code> before they are removed from the cluster.
+Before the OSD can be removed from the cluster, the OSD must be taken <code class="docutils literal notranslate"><span class="pre">out</span></code>
+of the cluster so that Ceph can begin rebalancing and copying its data to other
+OSDs. To take an OSD <code class="docutils literal notranslate"><span class="pre">out</span></code> of the cluster, run a command of the following
+form:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>out<span class="w"> </span><span class="o">{</span>osd-num<span class="o">}</span></span>
+</pre></div></div></div></blockquote>
+</section>
+<section id="id1">
+<h3>Observing the Data Migration<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>After the OSD has been taken <code class="docutils literal notranslate"><span class="pre">out</span></code> of the cluster, Ceph begins rebalancing
+the cluster by migrating placement groups out of the OSD that was removed. To
+observe this process by using the <a class="reference external" href="../monitoring">ceph</a> tool, run the following command:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>-w</span>
+</pre></div></div></div></blockquote>
+<p>The PG states will change from <code class="docutils literal notranslate"><span class="pre">active+clean</span></code> to <code class="docutils literal notranslate"><span class="pre">active,</span> <span class="pre">some</span> <span class="pre">degraded</span>
+<span class="pre">objects</span></code> and will then return to <code class="docutils literal notranslate"><span class="pre">active+clean</span></code> when migration completes.
+When you are finished observing, press Ctrl-C to exit.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Under certain conditions, the action of taking <code class="docutils literal notranslate"><span class="pre">out</span></code> an OSD
+might lead CRUSH to encounter a corner case in which some PGs remain stuck
+in the <code class="docutils literal notranslate"><span class="pre">active+remapped</span></code> state. This problem sometimes occurs in small
+clusters with few hosts (for example, in a small testing cluster). To
+address this problem, mark the OSD <code class="docutils literal notranslate"><span class="pre">in</span></code> by running a command of the
+following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span>osd-num<span class="o">}</span></span>
+</pre></div></div><p>After the OSD has come back to its initial state, do not mark the OSD
+<code class="docutils literal notranslate"><span class="pre">out</span></code> again. Instead, set the OSD’s weight to <code class="docutils literal notranslate"><span class="pre">0</span></code> by running a command
+of the following form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>crush<span class="w"> </span>reweight<span class="w"> </span>osd.<span class="o">{</span>osd-num<span class="o">}</span><span class="w"> </span><span class="m">0</span></span>
+</pre></div></div><p>After the OSD has been reweighted, observe the data migration and confirm
+that it has completed successfully. The difference between marking an OSD
+<code class="docutils literal notranslate"><span class="pre">out</span></code> and reweighting the OSD to <code class="docutils literal notranslate"><span class="pre">0</span></code> has to do with the bucket that
+contains the OSD. When an OSD is marked <code class="docutils literal notranslate"><span class="pre">out</span></code>, the weight of the bucket is
+not changed. But when an OSD is reweighted to <code class="docutils literal notranslate"><span class="pre">0</span></code>, the weight of the
+bucket is updated (namely, the weight of the OSD is subtracted from the
+overall weight of the bucket). When operating small clusters, it can
+sometimes be preferable to use the above reweight command.</p>
+</div>
+</section>
+<section id="stopping-the-osd">
+<h3>Stopping the OSD<a class="headerlink" href="#stopping-the-osd" title="Link to this heading"></a></h3>
+<p>After you take an OSD <code class="docutils literal notranslate"><span class="pre">out</span></code> of the cluster, the OSD might still be running.
+In such a case, the OSD is <code class="docutils literal notranslate"><span class="pre">up</span></code> and <code class="docutils literal notranslate"><span class="pre">out</span></code>. Before it is removed from the
+cluster, the OSD must be stopped by running commands of the following form:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>osd-host<span class="o">}</span></span>
+<span class="prompt2">sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>ceph-osd@<span class="o">{</span>osd-num<span class="o">}</span></span>
+</pre></div></div></div></blockquote>
+<p>After the OSD has been stopped, it is <code class="docutils literal notranslate"><span class="pre">down</span></code>.</p>
+</section>
+<section id="removing-the-osd">
+<h3>Removing the OSD<a class="headerlink" href="#removing-the-osd" title="Link to this heading"></a></h3>
+<p>The following procedure removes an OSD from the cluster map, removes the OSD’s
+authentication key, removes the OSD from the OSD map, and removes the OSD from
+the <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file. If your host has multiple drives, it might be necessary
+to remove an OSD from each drive by repeating this procedure.</p>
+<ol class="arabic">
+<li><p>Begin by having the cluster forget the OSD. This step removes the OSD from
+the CRUSH map, removes the OSD’s authentication key, and removes the OSD
+from the OSD map. (The <a class="reference internal" href="../../man/8/ceph.html#ceph-admin-osd"><span class="std std-ref">purge subcommand</span></a> was
+introduced in Luminous. For older releases, see <a class="reference internal" href="#ceph-osd-purge-procedure-pre-luminous"><span class="std std-ref">the procedure linked
+here</span></a>.):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>purge<span class="w"> </span><span class="o">{</span>id<span class="o">}</span><span class="w"> </span>--yes-i-really-mean-it</span>
+</pre></div></div></li>
+<li><p>Navigate to the host where the master copy of the cluster’s
+<code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file is kept:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ssh<span class="w"> </span><span class="o">{</span>admin-host<span class="o">}</span></span>
+<span class="prompt2"><span class="nb">cd</span><span class="w"> </span>/etc/ceph</span>
+<span class="prompt2">vim<span class="w"> </span>ceph.conf</span>
+</pre></div></div></li>
+<li><p>Remove the OSD entry from your <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file (if such an entry
+exists):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">osd</span><span class="mf">.1</span><span class="p">]</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="p">{</span><span class="n">hostname</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Copy the updated <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> file from the location on the host where the
+master copy of the cluster’s <code class="docutils literal notranslate"><span class="pre">ceph.conf</span></code> is kept to the <code class="docutils literal notranslate"><span class="pre">/etc/ceph</span></code>
+directory of the other hosts in your cluster.</p></li>
+</ol>
+<p id="ceph-osd-purge-procedure-pre-luminous">If your Ceph cluster is older than Luminous, you will be unable to use the
+<code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">osd</span> <span class="pre">purge</span></code> command. Instead, carry out the following procedure:</p>
+<ol class="arabic">
+<li><p>Remove the OSD from the CRUSH map so that it no longer receives data (for
+more details, see <a class="reference external" href="../crush-map#removeosd">Remove an OSD</a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>crush<span class="w"> </span>remove<span class="w"> </span><span class="o">{</span>name<span class="o">}</span></span>
+</pre></div></div><p>Instead of removing the OSD from the CRUSH map, you might opt for one of two
+alternatives: (1) decompile the CRUSH map, remove the OSD from the device
+list, and remove the device from the host bucket; (2) remove the host bucket
+from the CRUSH map (provided that it is in the CRUSH map and that you intend
+to remove the host), recompile the map, and set it:</p>
+</li>
+<li><p>Remove the OSD authentication key:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>auth<span class="w"> </span>del<span class="w"> </span>osd.<span class="o">{</span>osd-num<span class="o">}</span></span>
+</pre></div></div></li>
+<li><p>Remove the OSD:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>rm<span class="w"> </span><span class="o">{</span>osd-num<span class="o">}</span></span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">ceph<span class="w"> </span>osd<span class="w"> </span>rm<span class="w"> </span><span class="m">1</span></span>
+</pre></div></div></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="change-mon-elections.html" class="btn btn-neutral float-left" title="Configuring Monitor Election Strategies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="add-or-rm-mons.html" class="btn btn-neutral float-right" title="Adding/Removing Monitors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

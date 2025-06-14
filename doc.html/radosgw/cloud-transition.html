@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Transition &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cloud Restore" href="cloud-restore.html" />
+    <link rel="prev" title="D3N RGW Data Cache" href="d3n_datacache.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Object Gateway</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="frontends.html">HTTP Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite.html">Multisite Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zone-features.html">Zone Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="placement.html">Pool Placement and Storage Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multisite-sync-policy.html">Multisite Sync Policy Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pools.html">Configuring Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-ref.html">Config Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="account.html">User Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html">S3 API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">IAM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rgw-cache.html">Data Caching and CDN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="swift.html">Swift API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adminops.html">Admin Ops API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html">Python Binding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">Export over NFS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keystone.html">OpenStack Keystone Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="barbican.html">OpenStack Barbican Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vault.html">HashiCorp Vault Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kmip.html">KMIP Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opa.html">Open Policy Agent Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html">Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compression.html">Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ldap-auth.html">LDAP Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="encryption.html">Server-Side Encryption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucketpolicy.html">Bucket Policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dynamicresharding.html">Dynamic Bucket Index Resharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mfa.html">Multi-factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sync-modules.html">Sync Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Bucket Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout.html">Data Layout in RADOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STS.html">STS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="STSLite.html">STS Lite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keycloak.html">Keycloak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session-tags.html">Session Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="role.html">Role</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orphans.html">Orphan List and Associated Tooling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oidc.html">OpenID Connect Provider</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw.html">Manpage radosgw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../man/8/radosgw-admin.html">Manpage radosgw-admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat-accel.html">QAT Acceleration for Encryption and Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3select.html">S3-select</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lua-scripting.html">Lua Scripting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="d3n_datacache.html">D3N Data Cache</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cloud Transition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cloud-storage-class-tier-type">Cloud Storage Class Tier Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cloud-storage-class-tier-configuration">Cloud Storage Class Tier Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cloud-transition-specific-configurables">Cloud Transition Specific Configurables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#s3-specific-configurables">S3 Specific Configurables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-configure">How to Configure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#object-modification-and-limitations">Object Modification and Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#versioned-objects">Versioned Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#restoring-objects">Restoring Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#future-work">Future Work</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cloud-restore.html">Cloud Restore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uadk-accel.html">UADK Acceleration for Compression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bucket_logging.html">Bucket Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/index.html">Ceph Manager Daemon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgr/dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Object Gateway</a></li>
+      <li class="breadcrumb-item active">Cloud Transition</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/radosgw/cloud-transition.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="cloud-transition">
+<h1>Cloud Transition<a class="headerlink" href="#cloud-transition" title="Link to this heading"></a></h1>
+<p>This feature enables transitioning S3 objects to a remote cloud service as part
+of <a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/object-lifecycle-mgmt.html">object lifecycle</a>
+via <a class="reference internal" href="placement.html#storage-classes"><span class="std std-ref">Storage Classes</span></a>. The transition is unidirectional: data cannot be
+transitioned back from the remote zone. The goal of this feature is to enable
+data transition to multiple cloud providers. The currently supported cloud
+providers are those that are compatible with AWS (S3).</p>
+<p>A special storage class of tier type <code class="docutils literal notranslate"><span class="pre">cloud-s3</span></code> or <code class="docutils literal notranslate"><span class="pre">cloud-s3-glacier</span></code>
+is used to configure the remote cloud S3 object store service to which
+data is transitioned. These are defined in terms of zonegroup placement
+targets and, unlike regular storage classes, do not need a data pool.</p>
+<p>User credentials for the remote cloud object store service must be
+configured. Note that source ACLs will not be preserved. It is possible
+to map permissions of specific source users to specific destination users.</p>
+<section id="cloud-storage-class-tier-type">
+<h2>Cloud Storage Class Tier Type<a class="headerlink" href="#cloud-storage-class-tier-type" title="Link to this heading"></a></h2>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">tier-type</span></code> (string)</p>
+<p>The type of remote cloud service that will be used to transition objects.
+The below tier types are supported:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cloud-s3</span></code> : Regular S3 compatible object store service.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cloud-s3-glacier</span></code> : S3 Glacier or Tape storage services.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="cloud-storage-class-tier-configuration">
+<span id="radosgw-cloud-tier-configuration"></span><h2>Cloud Storage Class Tier Configuration<a class="headerlink" href="#cloud-storage-class-tier-configuration" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;access_key&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">access</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;secret&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">secret</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">endpoint</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">region</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;host_style&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">path</span> <span class="o">|</span> <span class="n">virtual</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;acls&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span> <span class="o">|</span> <span class="n">email</span> <span class="o">|</span> <span class="n">uri</span><span class="o">&gt;</span><span class="p">,</span>
+              <span class="s2">&quot;source_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">source_id</span><span class="o">&gt;</span><span class="p">,</span>
+              <span class="s2">&quot;dest_id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">dest_id</span><span class="o">&gt;</span> <span class="p">}</span> <span class="o">...</span> <span class="p">],</span>
+  <span class="s2">&quot;target_path&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">target_path</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;target_storage_class&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">target</span><span class="o">-</span><span class="n">storage</span><span class="o">-</span><span class="n">class</span><span class="o">&gt;</span><span class="p">,</span>
+  <span class="s2">&quot;multipart_sync_threshold&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">object_size</span><span class="p">},</span>
+  <span class="s2">&quot;multipart_min_part_size&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">part_size</span><span class="p">},</span>
+  <span class="s2">&quot;retain_head_object&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">true</span> <span class="o">|</span> <span class="n">false</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="cloud-transition-specific-configurables">
+<h3>Cloud Transition Specific Configurables<a class="headerlink" href="#cloud-transition-specific-configurables" title="Link to this heading"></a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">access_key</span></code> (string)</p>
+<p>The remote cloud S3 access key.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">secret</span></code> (string)</p>
+<p>The secret key for the remote cloud S3 service.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">endpoint</span></code> (string)</p>
+<p>URL of remote cloud S3 service.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">region</span></code> (string)</p>
+<p>The remote cloud S3 service region name.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">host_style</span></code> (path | virtual)</p>
+<p>Type of host style to be used when accessing the remote cloud S3 service (default: <code class="docutils literal notranslate"><span class="pre">path</span></code>).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acls</span></code> (array)</p>
+<p>Contains a list of <code class="docutils literal notranslate"><span class="pre">acl_mappings</span></code>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acl_mapping</span></code> (container)</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">acl_mapping</span></code> structure contains <code class="docutils literal notranslate"><span class="pre">type</span></code>, <code class="docutils literal notranslate"><span class="pre">source_id</span></code>, and <code class="docutils literal notranslate"><span class="pre">dest_id</span></code>. These
+define the ACL mutation to be done on each object. An ACL mutation makes it possible to
+convert a source userid to a destination userid.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> (id | email | uri)</p>
+<p>ACL type: <code class="docutils literal notranslate"><span class="pre">id</span></code> defines userid, <code class="docutils literal notranslate"><span class="pre">email</span></code> defines user by email,
+and <code class="docutils literal notranslate"><span class="pre">uri</span></code> defines user by <code class="docutils literal notranslate"><span class="pre">uri</span></code> (group).</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source_id</span></code> (string)</p>
+<p>ID of user in the source zone.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dest_id</span></code> (string)</p>
+<p>ID of user on the destination.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_path</span></code> (string)</p>
+<p>A string that defines how the target path is constructed. The target path
+specifies a prefix to which the source bucket-name/object-name is appended.
+If not specified the <code class="docutils literal notranslate"><span class="pre">target_path</span></code> created is <code class="docutils literal notranslate"><span class="pre">rgwx-${zonegroup}-${storage-class}-cloud-bucket</span></code>.</p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">target_path</span> <span class="pre">=</span> <span class="pre">rgwx-archive-${zonegroup}/</span></code></p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target_storage_class</span></code> (string)</p>
+<p>A string that defines the target storage class to which the object transitions.
+If not specified, the object is transitioned to the <code class="docutils literal notranslate"><span class="pre">STANDARD</span></code> storage class.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">retain_head_object</span></code> (true | false)</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the metadata of the object transitioned to the cloud service is retained.
+If <code class="docutils literal notranslate"><span class="pre">false</span></code> (default), the object is deleted after the transition.
+This option is ignored for current-versioned objects. For more details,
+refer to the “Versioned Objects” section below.</p>
+</li>
+</ul>
+</section>
+<section id="s3-specific-configurables">
+<h3>S3 Specific Configurables<a class="headerlink" href="#s3-specific-configurables" title="Link to this heading"></a></h3>
+<p>Currently, cloud transition will work only with backends that are compatible with
+AWS S3 protocol. There are a few configurables that can be used to tweak behavior
+when accessing cloud services:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;multipart_sync_threshold&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">object_size</span><span class="p">},</span>
+  <span class="s2">&quot;multipart_min_part_size&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">part_size</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">multipart_sync_threshold</span></code> (integer)</p>
+<p>Objects this size or larger will be transitioned to the cloud using multipart upload.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">multipart_min_part_size</span></code> (integer)</p>
+<p>Minimum part size to use when transitioning objects using multipart upload.</p>
+</li>
+</ul>
+</section>
+<section id="how-to-configure">
+<h3>How to Configure<a class="headerlink" href="#how-to-configure" title="Link to this heading"></a></h3>
+<p>See <a class="reference internal" href="placement.html#adding-a-storage-class"><span class="std std-ref">Adding a Storage Class</span></a> for how to configure storage-class for a zonegroup. The cloud transition requires a creation of a special storage class with tier type defined as <code class="docutils literal notranslate"><span class="pre">cloud-s3</span></code> or <code class="docutils literal notranslate"><span class="pre">cloud-s3-glacier</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you have not performed previous <a class="reference internal" href="multisite.html#multisite"><span class="std std-ref">Multisite Configuration</span></a>,
+a <code class="docutils literal notranslate"><span class="pre">default</span></code> zone and zonegroup are created for you, and changes
+to the zone/zonegroup will not take effect until the Ceph Object
+Gateways (RGW daemons) are restarted. If you have created a realm for multisite,
+the zone/zonegroup changes will take effect once the changes are
+committed with <code class="docutils literal notranslate"><span class="pre">radosgw-admin</span> <span class="pre">period</span> <span class="pre">update</span> <span class="pre">--commit</span></code>.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>add<span class="w"> </span>--rgw-zonegroup<span class="o">={</span>zone-group-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                        </span>--placement-id<span class="o">={</span>placement-id<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                        </span>--storage-class<span class="o">={</span>storage-class-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                        </span>--tier-type<span class="o">=</span>cloud-s3</span>
+</pre></div></div><p>For example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>add<span class="w"> </span>--rgw-zonegroup<span class="o">=</span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">                                        </span>--placement-id<span class="o">=</span>default-placement<span class="w"> </span><span class="se">\</span>
+<span class="w">                                        </span>--storage-class<span class="o">=</span>CLOUDTIER<span class="w"> </span>--tier-type<span class="o">=</span>cloud-s3</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;default-placement&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;default-placement&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;storage_classes&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;CLOUDTIER&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;STANDARD&quot;</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;tier_targets&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;CLOUDTIER&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;tier_type&quot;</span><span class="p">:</span> <span class="s2">&quot;cloud-s3&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;storage_class&quot;</span><span class="p">:</span> <span class="s2">&quot;CLOUDTIER&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;retain_head_object&quot;</span><span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;s3&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;endpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;access_key&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;host_style&quot;</span><span class="p">:</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;target_storage_class&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;target_path&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;acl_mappings&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                            <span class="s2">&quot;multipart_sync_threshold&quot;</span><span class="p">:</span> <span class="mi">33554432</span><span class="p">,</span>
+                            <span class="s2">&quot;multipart_min_part_size&quot;</span><span class="p">:</span> <span class="mi">33554432</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Once a storage class
+of <code class="docutils literal notranslate"><span class="pre">--tier-type=cloud-s3</span></code> or <code class="docutils literal notranslate"><span class="pre">--tier-type=cloud-s3-glacier</span></code>
+is created it cannot be later modified to any other storage class type.</p>
+</div>
+<p>The tier configuration can be then performed using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>modify<span class="w"> </span>--rgw-zonegroup<span class="o">={</span>zone-group-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--placement-id<span class="o">={</span>placement-id<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--storage-class<span class="o">={</span>storage-class-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--tier-config<span class="o">={</span>key<span class="o">}={</span>val<span class="o">}[</span>,<span class="o">{</span>key<span class="o">}={</span>val<span class="o">}]</span></span>
+</pre></div></div><p>The <code class="docutils literal notranslate"><span class="pre">key</span></code> in the configuration specifies the config variable to be updated, and
+the <code class="docutils literal notranslate"><span class="pre">val</span></code> specifies its new value.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>modify<span class="w"> </span>--rgw-zonegroup<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--placement-id<span class="w"> </span>default-placement<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--storage-class<span class="w"> </span>CLOUDTIER<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--tier-config<span class="o">=</span><span class="nv">endpoint</span><span class="o">=</span>http://XX.XX.XX.XX:YY,<span class="se">\</span>
+<span class="w">                                           </span><span class="nv">access_key</span><span class="o">=</span>&lt;access_key&gt;,secret<span class="o">=</span>&lt;secret&gt;,<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span><span class="nv">multipart_sync_threshold</span><span class="o">=</span><span class="m">44432</span>,<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span><span class="nv">multipart_min_part_size</span><span class="o">=</span><span class="m">44432</span>,<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span><span class="nv">retain_head_object</span><span class="o">=</span><span class="nb">true</span></span>
+</pre></div></div><p>Nested tier configuration values can be accessed using periods. This notation
+works similarly to how nested fields are accessed in JSON with tools like <code class="docutils literal notranslate"><span class="pre">jq</span></code>.
+Note that the use of period separators <code class="docutils literal notranslate"><span class="pre">(.)</span></code> is specific to key access within <code class="docutils literal notranslate"><span class="pre">--tier-config</span></code>,
+and should not be confused with Ceph RGW patterns for realm/zonegroup/zone.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>modify<span class="w"> </span>--rgw-zonegroup<span class="o">={</span>zone-group-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--placement-id<span class="o">={</span>placement-id<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--storage-class<span class="o">={</span>storage-class-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--tier-config<span class="o">=</span>acls.source_id<span class="o">=</span><span class="si">${</span><span class="nv">source</span><span class="p">-id</span><span class="si">}</span>,<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>acls.dest_id<span class="o">=</span><span class="si">${</span><span class="nv">dest</span><span class="p">-id</span><span class="si">}</span></span>
+</pre></div></div><p>Configuration array entries can be accessed by specifying the specific entry to
+be referenced enclosed in square brackets, and adding a new array entry can be
+performed with an empty array <cite>[]</cite>.
+For example, creating a new <code class="docutils literal notranslate"><span class="pre">acl</span></code> array entry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>modify<span class="w"> </span>--rgw-zonegroup<span class="o">={</span>zone-group-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--placement-id<span class="o">={</span>placement-id<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--storage-class<span class="o">={</span>storage-class-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--tier-config<span class="o">=</span>acls<span class="o">[]</span>.source_id<span class="o">=</span><span class="si">${</span><span class="nv">source</span><span class="p">-id</span><span class="si">}</span>,<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>acls<span class="o">[</span><span class="si">${</span><span class="nv">source</span><span class="p">-id</span><span class="si">}</span><span class="o">]</span>.dest_id<span class="o">=</span><span class="si">${</span><span class="nv">dest</span><span class="p">-id</span><span class="si">}</span>,<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>acls<span class="o">[</span><span class="si">${</span><span class="nv">source</span><span class="p">-id</span><span class="si">}</span><span class="o">]</span>.type<span class="o">=</span>email</span>
+</pre></div></div><p>An entry can be removed by supplying <code class="docutils literal notranslate"><span class="pre">--tier-config-rm={key}</span></code>.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>modify<span class="w"> </span>--rgw-zonegroup<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--placement-id<span class="w"> </span>default-placement<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--storage-class<span class="w"> </span>CLOUDTIER<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--tier-config-rm<span class="o">=</span>acls.source_id<span class="o">=</span>testid</span>
+<span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>modify<span class="w"> </span>--rgw-zonegroup<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--placement-id<span class="w"> </span>default-placement<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--storage-class<span class="w"> </span>CLOUDTIER<span class="w"> </span><span class="se">\</span>
+<span class="w">                                           </span>--tier-config-rm<span class="o">=</span>target_path</span>
+</pre></div></div><p>The storage class can be removed using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>rm<span class="w"> </span>--rgw-zonegroup<span class="o">={</span>zone-group-name<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                       </span>--placement-id<span class="o">={</span>placement-id<span class="o">}</span><span class="w"> </span><span class="se">\</span>
+<span class="w">                                       </span>--storage-class<span class="o">={</span>storage-class-name<span class="o">}</span></span>
+</pre></div></div><p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">radosgw-admin<span class="w"> </span>zonegroup<span class="w"> </span>placement<span class="w"> </span>rm<span class="w"> </span>--rgw-zonegroup<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">                                       </span>--placement-id<span class="w"> </span>default-placement<span class="w"> </span><span class="se">\</span>
+<span class="w">                                       </span>--storage-class<span class="w"> </span>CLOUDTIER</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;default-placement&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;default-placement&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;storage_classes&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;STANDARD&quot;</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="object-modification-and-limitations">
+<h2>Object Modification and Limitations<a class="headerlink" href="#object-modification-and-limitations" title="Link to this heading"></a></h2>
+<p>The cloud storage class, once configured, can be used like any other storage
+class when defining bucket lifecycle (LC) rules. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">LifecycleConfiguration</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">Rule</span><span class="o">&gt;</span>
+    <span class="o">....</span>
+    <span class="o">&lt;</span><span class="n">Transition</span><span class="o">&gt;</span>
+      <span class="o">....</span>
+      <span class="o">&lt;</span><span class="n">StorageClass</span><span class="o">&gt;</span><span class="n">CLOUDTIER</span><span class="o">&lt;/</span><span class="n">StorageClass</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">Transition</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">Rule</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">LifecycleConfiguration</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Since the transition is unidirectional, when configuring S3
+lifecycle rules, the cloud storage class should be specified
+last among all the storage classes the object transitions to.
+Subsequent rules (if any) do not apply post-transition to the cloud.</p>
+<p>Due to API limitations, there is no way to preserve the original object
+modification time and ETag, which are stored as metadata attributes
+on the destination objects, as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">-</span><span class="n">amz</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">rgwx</span><span class="o">-</span><span class="n">source</span><span class="p">:</span> <span class="n">rgw</span>
+<span class="n">x</span><span class="o">-</span><span class="n">amz</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">rgwx</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">etag</span><span class="p">:</span> <span class="n">ed076287532e86365e841e92bfc50d8c</span>
+<span class="n">x</span><span class="o">-</span><span class="n">amz</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">rgwx</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">key</span><span class="p">:</span> <span class="n">lc</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">x</span><span class="o">-</span><span class="n">amz</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">rgwx</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">mtime</span><span class="p">:</span> <span class="mf">1608546349.757100363</span>
+<span class="n">x</span><span class="o">-</span><span class="n">amz</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">rgwx</span><span class="o">-</span><span class="n">versioned</span><span class="o">-</span><span class="n">epoch</span><span class="p">:</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>In order to allow cloud services to detect the source and map
+user-defined <code class="docutils literal notranslate"><span class="pre">x-amz-meta-</span></code> attributes, two additional new
+attributes are added to the objects being transitioned:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">x-rgw-cloud</span></code> : <code class="docutils literal notranslate"><span class="pre">true</span></code>/<code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">true</span></code>, by default, if the object is being transitioned from RGW.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x-rgw-cloud-keep-attrs</span></code> : <code class="docutils literal notranslate"><span class="pre">true</span></code> / <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<blockquote>
+<div><p>If set to default <code class="docutils literal notranslate"><span class="pre">true</span></code>, the cloud service should map and store all
+the <code class="docutils literal notranslate"><span class="pre">x-amz-meta-*</span></code> attributes. If it cannot, then the operation should fail.</p>
+<p>If set to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the cloud service can ignore such attributes and
+just store the object data being sent.</p>
+</div></blockquote>
+</li>
+</ul>
+<p>By default, post-transition, the source object gets deleted. But it is possible
+to retain its metadata with updated values (including <code class="docutils literal notranslate"><span class="pre">storage-class</span></code>
+and <code class="docutils literal notranslate"><span class="pre">object-size</span></code>) by setting the config option <code class="docutils literal notranslate"><span class="pre">retain_head_object</span></code>
+to true. However a <code class="docutils literal notranslate"><span class="pre">GET</span></code> operation on such an object will still fail
+with an <code class="docutils literal notranslate"><span class="pre">InvalidObjectState</span></code> error. Any other operations against original
+source objects will be for its metadata entries only keeping transitioned
+objects intact.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">s3cmd<span class="w"> </span>info<span class="w"> </span>s3://bucket/lc.txt</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">bucket</span><span class="o">/</span><span class="n">lc</span><span class="o">.</span><span class="n">txt</span> <span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+   <span class="n">File</span> <span class="n">size</span><span class="p">:</span> <span class="mi">12</span>
+   <span class="n">Last</span> <span class="n">mod</span><span class="p">:</span>  <span class="n">Mon</span><span class="p">,</span> <span class="mi">21</span> <span class="n">Dec</span> <span class="mi">2020</span> <span class="mi">10</span><span class="p">:</span><span class="mi">25</span><span class="p">:</span><span class="mi">56</span> <span class="n">GMT</span>
+   <span class="n">MIME</span> <span class="nb">type</span><span class="p">:</span> <span class="n">text</span><span class="o">/</span><span class="n">plain</span>
+   <span class="n">Storage</span><span class="p">:</span>   <span class="n">CLOUDTIER</span>
+   <span class="n">MD5</span> <span class="nb">sum</span><span class="p">:</span>   <span class="n">ed076287532e86365e841e92bfc50d8c</span>
+   <span class="n">SSE</span><span class="p">:</span>       <span class="n">none</span>
+   <span class="n">Policy</span><span class="p">:</span>    <span class="n">none</span>
+   <span class="n">CORS</span><span class="p">:</span>      <span class="n">none</span>
+   <span class="n">ACL</span><span class="p">:</span>       <span class="n">M</span><span class="o">.</span> <span class="n">Tester</span><span class="p">:</span> <span class="n">FULL_CONTROL</span>
+   <span class="n">x</span><span class="o">-</span><span class="n">amz</span><span class="o">-</span><span class="n">meta</span><span class="o">-</span><span class="n">s3cmd</span><span class="o">-</span><span class="n">attrs</span><span class="p">:</span> <span class="n">atime</span><span class="p">:</span><span class="mi">1608466266</span><span class="o">/</span><span class="n">ctime</span><span class="p">:</span><span class="mi">1597606156</span><span class="o">/</span><span class="n">gid</span><span class="p">:</span><span class="mi">0</span><span class="o">/</span><span class="n">gname</span><span class="p">:</span><span class="n">root</span><span class="o">/</span><span class="n">md5</span><span class="p">:</span><span class="n">ed076287532e86365e841e92bfc50d8c</span><span class="o">/</span><span class="n">mode</span><span class="p">:</span><span class="mi">33188</span><span class="o">/</span><span class="n">mtime</span><span class="p">:</span><span class="mi">1597605793</span><span class="o">/</span><span class="n">uid</span><span class="p">:</span><span class="mi">0</span><span class="o">/</span><span class="n">uname</span><span class="p">:</span><span class="n">root</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt2">s3cmd<span class="w"> </span>get<span class="w"> </span>s3://bucket/lc.txt<span class="w"> </span>lc_restore.txt</span>
+</pre></div></div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">download</span><span class="p">:</span> <span class="s1">&#39;s3://bucket/lc.txt&#39;</span> <span class="o">-&gt;</span> <span class="s1">&#39;lc_restore.txt&#39;</span>  <span class="p">[</span><span class="mi">1</span> <span class="n">of</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ERROR</span><span class="p">:</span> <span class="n">S3</span> <span class="n">error</span><span class="p">:</span> <span class="mi">403</span> <span class="p">(</span><span class="n">InvalidObjectState</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To avoid object name collisions across buckets, the source bucket name is
+prepended to the target object name. If the object is versioned, the object’s
+<code class="docutils literal notranslate"><span class="pre">versionid</span></code> is appended.</p>
+<p>Below is the object name format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">target_path</span><span class="o">&gt;/&lt;</span><span class="n">source_bucket_name</span><span class="o">&gt;/&lt;</span><span class="n">source_object_name</span><span class="o">&gt;</span><span class="p">(</span><span class="o">-&lt;</span><span class="n">source_object_version_id</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="versioned-objects">
+<h3>Versioned Objects<a class="headerlink" href="#versioned-objects" title="Link to this heading"></a></h3>
+<p>For versioned and locked objects, similar semantics as that of LifecycleExpiration are applied as stated below.</p>
+<ul class="simple">
+<li><p>If the object is current, post transitioning to cloud, it is made noncurrent with delete marker created.</p></li>
+<li><p>If the object is noncurrent and is locked, its transition is skipped.</p></li>
+</ul>
+</section>
+</section>
+<section id="restoring-objects">
+<h2>Restoring Objects<a class="headerlink" href="#restoring-objects" title="Link to this heading"></a></h2>
+<p>The objects transitioned to cloud can now be restored. For more information, refer to
+<a class="reference external" href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cloud-restore.html">Restoring Objects from Cloud</a>.</p>
+</section>
+<section id="future-work">
+<h2>Future Work<a class="headerlink" href="#future-work" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Send presigned redirect or read-through the objects transitioned to cloud.</p></li>
+<li><p>Support <code class="docutils literal notranslate"><span class="pre">s3:RestoreObject</span></code> operation on cloud transitioned objects.</p></li>
+<li><p>Support transition to other cloud providers (like Azure).</p></li>
+</ul>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="d3n_datacache.html" class="btn btn-neutral float-left" title="D3N RGW Data Cache" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cloud-restore.html" class="btn btn-neutral float-right" title="Cloud Restore" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

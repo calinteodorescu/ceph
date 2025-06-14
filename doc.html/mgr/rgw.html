@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RGW Module &mdash; Ceph Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=9502d262" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=3ce10a4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MDS Autoscaler Module" href="mds_autoscaler.html" />
+    <link rel="prev" title="Rook" href="rook.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #eee" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../start/index.html">Intro to Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installing Ceph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephadm/index.html">Cephadm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rados/index.html">Ceph Storage Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cephfs/index.html">Ceph File System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rbd/index.html">Ceph Block Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../radosgw/index.html">Ceph Object Gateway</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Ceph Manager Daemon</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="administrator.html">Installation and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Writing modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestrator_modules.html">Writing orchestrator plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard.html">Dashboard module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ceph_api/index.html">Ceph RESTful API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="alerts.html">Alerts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diskprediction.html">DiskPrediction module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="localpool.html">Local pool module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prometheus.html">Prometheus module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="influx.html">Influx module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello.html">Hello module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telegraf.html">Telegraf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry.html">Telemetry module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iostat.html">Iostat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crash.html">Crash module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="insights.html">Insights module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="orchestrator.html">Orchestrator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rook.html">Rook module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RGW module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enabling">Enabling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rgw-realm-operations">RGW Realm Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#realm-credentials-token">Realm Credentials Token</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commands">Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upgrading-root-ca-certificates">Upgrading Root CA Certificates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mds_autoscaler.html">MDS Autoscaler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfs.html">NFS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smb.html">SMB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="progress.html">Progress Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli_api.html">CLI API Commands module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard.html">Ceph Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/index.html">Monitoring overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/developer_guide/index.html">Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/internals.html">Ceph Internals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../governance.html">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foundation.html">Ceph Foundation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ceph-volume/index.html">ceph-volume</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/general.html">Ceph Releases (general)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Ceph Releases (index)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security/index.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hardware-monitoring/index.html">Hardware monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jaegertracing/index.html">Tracing</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #eee" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Ceph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Ceph Manager Daemon</a></li>
+      <li class="breadcrumb-item active">RGW Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/mgr/rgw.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+<div id="dev-warning" class="admonition note">
+  <p class="first admonition-title">Notice</p>
+  <p class="last">This document is for a development version of Ceph.</p>
+</div>
+  <div id="docubetter" align="right" style="padding: 5px; font-weight: bold;">
+    <a href="https://pad.ceph.com/p/Report_Documentation_Bugs">Report a Documentation Bug</a>
+  </div>
+
+  
+  <section id="rgw-module">
+<span id="mgr-rgw-module"></span><h1>RGW Module<a class="headerlink" href="#rgw-module" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">rgw</span></code> module provides a simple interface to deploy RGW <a class="reference internal" href="../radosgw/multisite.html#multisite"><span class="std std-ref">Multi-Site</span></a>.
+It helps with bootstrapping and configuring RGW realm, zonegroup and
+the different related entities.</p>
+<section id="enabling">
+<h2>Enabling<a class="headerlink" href="#enabling" title="Link to this heading"></a></h2>
+<p>To enable the <code class="docutils literal notranslate"><span class="pre">rgw</span></code> module, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>mgr<span class="w"> </span>module<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rgw</span>
+</pre></div></div></section>
+<section id="rgw-realm-operations">
+<h2>RGW Realm Operations<a class="headerlink" href="#rgw-realm-operations" title="Link to this heading"></a></h2>
+<p>Bootstrapping RGW realm creates a new RGW realm entity, a new zonegroup,
+and a new zone. It configures a new system user that can be used for
+multisite sync operations. Under the hood this module instructs the
+orchestrator to create and deploy the corresponding RGW daemons. The module
+supports passing the arguments through the command line or as a spec file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>realm<span class="w"> </span>bootstrap<span class="w"> </span><span class="o">[</span>--realm-name<span class="o">]</span><span class="w"> </span><span class="o">[</span>--zonegroup-name<span class="o">]</span><span class="w"> </span><span class="o">[</span>--zone-name<span class="o">]</span><span class="w"> </span><span class="o">[</span>--port<span class="o">]</span><span class="w"> </span><span class="o">[</span>--placement<span class="o">]</span><span class="w"> </span><span class="o">[</span>--start-radosgw<span class="o">]</span></span>
+</pre></div></div><p>The command supports configuration through a spec file (<code class="docutils literal notranslate"><span class="pre">-i</span></code> option):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>realm<span class="w"> </span>bootstrap<span class="w"> </span>-i<span class="w"> </span>myrgw.yaml</span>
+</pre></div></div><p>Following is an example of RGW multisite spec file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rgw_realm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myrealm</span>
+<span class="nt">rgw_zonegroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myzonegroup</span>
+<span class="nt">rgw_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myzone</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceph-node-1</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceph-node-2</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rgw_frontend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5500</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>RGW multisite spec files follow the same format as cephadm
+orchestrator spec files. Thus the user can specify any supported RGW
+parameters including advanced configuration features such as SSL
+certificates etc.</p>
+</div>
+<p>Users can also specify custom zone endpoints in the spec (or through the command line). In this case, no
+cephadm daemons will be launched. Following is an example RGW spec file with zone endpoints:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rgw_realm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myrealm</span>
+<span class="nt">rgw_zonegroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myzonegroup</span>
+<span class="nt">rgw_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myzone</span>
+<span class="nt">zone_endpoints</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://&lt;rgw_host1&gt;:&lt;rgw_port1&gt;, http://&lt;rgw_host2&gt;:&lt;rgw_port2&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="realm-credentials-token">
+<h2>Realm Credentials Token<a class="headerlink" href="#realm-credentials-token" title="Link to this heading"></a></h2>
+<p>Users can list the available tokens for the created (or already existing) realms.
+The token is a base64 string that encapsulates the realm information and its
+master zone endpoint authentication data. Following is an example of
+the <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">rgw</span> <span class="pre">realm</span> <span class="pre">tokens</span></code> output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>realm<span class="w"> </span>tokens<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq</span>
+</pre></div></div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;realm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myrealm1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ewogICAgInJlYWxtX25hbWUiOiAibXlyZWFs....NHlBTFhoIgp9&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;realm&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myrealm2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ewogICAgInJlYWxtX25hbWUiOiAibXlyZWFs....RUU12ZDB0Igp9&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>User can use the token to pull a realm to create secondary zone on a
+different cluster that syncs with the master zone on the primary cluster
+by using <code class="docutils literal notranslate"><span class="pre">ceph</span> <span class="pre">rgw</span> <span class="pre">zone</span> <span class="pre">create</span></code> command and providing the corresponding token.</p>
+<p>Following is an example of zone spec file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">rgw_zone</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-secondary-zone</span>
+<span class="nt">rgw_realm_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;token&gt;</span>
+<span class="nt">placement</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceph-node-1</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ceph-node-2</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">rgw_frontend_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5500</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>zone<span class="w"> </span>create<span class="w"> </span>-i<span class="w"> </span>zone-spec.yaml</span>
+</pre></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The spec file used by RGW has the same format as the one used by the orchestrator. Thus,
+the user can provide any orchestration supported RGW parameters including advanced
+configuration features such as SSL certificates etc.</p>
+</div>
+</section>
+<section id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>realm<span class="w"> </span>bootstrap<span class="w"> </span>-i<span class="w"> </span>spec.yaml</span>
+</pre></div></div><p>Create a new realm + zonegroup + zone and deploy RGW daemons via the
+orchestrator using the information specified in the YAML file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>realm<span class="w"> </span>tokens</span>
+</pre></div></div><p>List the tokens of all the available realms</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>zone<span class="w"> </span>create<span class="w"> </span>-i<span class="w"> </span>spec.yaml</span>
+</pre></div></div><p>Join an existing realm by creating a new secondary zone (using the realm token)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>rgw<span class="w"> </span>admin<span class="w"> </span><span class="o">[</span>*<span class="o">]</span></span>
+</pre></div></div></section>
+<section id="upgrading-root-ca-certificates">
+<h2>Upgrading Root CA Certificates<a class="headerlink" href="#upgrading-root-ca-certificates" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Make sure that the RGW service is running.</p></li>
+<li><p>Make sure that the RGW service is up.</p></li>
+<li><p>Make sure that the RGW service has been upgraded to the latest release.</p></li>
+<li><p>From the primary cluster on the Manager node, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">ceph<span class="w"> </span>orch<span class="w"> </span>cert-store<span class="w"> </span>get<span class="w"> </span>cert<span class="w"> </span>cephadm_root_ca_cert</span>
+</pre></div></div></li>
+<li><p>On the nodes where the RGW service is running, store the certificate on the
+following path:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">pki</span><span class="o">/</span><span class="n">ca</span><span class="o">-</span><span class="n">trust</span><span class="o">/</span><span class="n">source</span><span class="o">/</span><span class="n">anchors</span><span class="o">/&lt;</span><span class="n">cert_name</span><span class="o">&gt;.</span><span class="n">crt</span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify the certificate by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>&lt;cert_name&gt;.crt<span class="w"> </span>-noout<span class="w"> </span>-text</span>
+</pre></div></div></li>
+<li><p>Perform the above steps on the Manager node and on the RGW nodes of all
+secondary clusters.</p></li>
+<li><p>After the certificates have been validated on all clusters, run the
+following command on all clusters that generate certificates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">update-ca-trust</span>
+</pre></div></div></li>
+<li><p>From the primary cluster, ensure that the <code class="docutils literal notranslate"><span class="pre">curl</span></code> command can be run by the
+user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt10:before {
+  content: "[user@primary-node]$ ";
+}
+</style><span class="prompt10">curl<span class="w"> </span>https://&lt;host_ip&gt;:443</span>
+</pre></div></div></li>
+</ol>
+</section>
+</section>
+
+
+
+<div id="support-the-ceph-foundation" class="admonition note">
+  <p class="first admonition-title">Brought to you by the Ceph Foundation</p>
+  <p class="last">The Ceph Documentation is a community resource funded and hosted by the non-profit <a href="https://ceph.io/en/foundation/">Ceph Foundation</a>. If you would like to support this and our other efforts, please consider <a href="https://ceph.io/en/foundation/join/">joining now</a>.</p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rook.html" class="btn btn-neutral float-left" title="Rook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mds_autoscaler.html" class="btn btn-neutral float-right" title="MDS Autoscaler Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016, Ceph authors and contributors. Licensed under Creative Commons Attribution Share Alike 3.0 (CC-BY-SA-3.0).</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
