@@ -20,10 +20,10 @@
 #endif
 #include <utime.h>
 #include <sys/stat.h>
-#include <sys/time.h>
-#include <sys/types.h>
+#include <linux/sys/time.h>
+#include <linux/sys/types.h>
 #include <sys/statvfs.h>
-#include <sys/socket.h>
+#include <linux/sys/socket.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <fcntl.h>

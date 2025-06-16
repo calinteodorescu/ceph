@@ -22,11 +22,11 @@
 #ifndef	_SYS_TYPES_H
 #define	_SYS_TYPES_H	1
 
-#include <features.h>
+#include <linux/features.h>
 
 __BEGIN_DECLS
 
-#include <bits/types.h>
+#include <linux/bits/types.h>
 
 #ifdef	__USE_MISC
 # ifndef __u_char_defined
@@ -41,7 +41,7 @@ typedef __fsid_t fsid_t;
 # endif
 #endif
 
-typedef __loff_t loff_t;
+// typedef __loff_t loff_t;
 
 #ifndef __ino_t_defined
 # ifndef __USE_FILE_OFFSET64
@@ -213,13 +213,13 @@ typedef int register_t __attribute__ ((__mode__ (__word__)));
 
 #ifdef	__USE_MISC
 /* In BSD <sys/types.h> is expected to define BYTE_ORDER.  */
-# include <endian.h>
+# include <linux/endian.h>
 
 /* It also defines `fd_set' and the FD_* macros for `select'.  */
 # include <sys/select.h>
 
 /* BSD defines these symbols, so we follow.  */
-# include <sys/sysmacros.h>
+# include <linux/sys/sysmacros.h>
 #endif /* Use misc.  */
 
 
@@ -267,7 +267,7 @@ typedef __fsfilcnt64_t fsfilcnt64_t; /* Type to count file system inodes.  */
 
 /* Now add the thread types.  */
 #if defined __USE_POSIX199506 || defined __USE_UNIX98
-# include <bits/pthreadtypes.h>
+# include <linux/bits/pthreadtypes.h>
 #endif
 
 __END_DECLS

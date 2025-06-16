@@ -19,7 +19,7 @@
 #ifndef _SYS_SYSMACROS_H
 #define _SYS_SYSMACROS_H	1
 
-#include <features.h>
+#include <linux/features.h>
 
 __BEGIN_DECLS
 

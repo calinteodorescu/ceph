@@ -17,6 +17,7 @@
 
 #include <linux/features.h>
 #include <linux/bits/time.h>
+#include <linux/bits/alltypes.h >
 
 #include <chrono>
 #include <iosfwd>

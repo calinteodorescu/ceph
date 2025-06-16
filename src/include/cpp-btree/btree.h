@@ -49,13 +49,14 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <experimental/type_traits>
+#include <boost/type_traits.hpp>
 #include <functional>
 #include <iterator>
 #include <limits>
 #include <new>
 #include <type_traits>
 #include <utility>
+#include <detection.hpp>
 
 namespace btree::internal {
 
@@ -66,7 +67,7 @@ using btree_is_key_compare_to =
 template<typename T>
 using compare_to_t = decltype(std::declval<T&>().compare(std::declval<const T&>()));
 template<typename T>
-inline constexpr bool has_compare_to = std::experimental::is_detected_v<compare_to_t, T>;
+inline constexpr bool has_compare_to = boost::parser::detail::is_detected_v<compare_to_t, T>;
 // A helper class to convert a boolean comparison into a three-way "compare-to"
 // comparison that returns a negative value to indicate less-than, zero to
 // indicate equality and a positive value to indicate greater-than. This helper

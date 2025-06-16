@@ -19,6 +19,7 @@
 #include <iterator>
 #include <type_traits>
 #include <utility>
+#include <detection.hpp>
 
 #include "btree.h"
 
@@ -40,7 +41,7 @@ class btree_container {
   template <class K>
   using key_arg =
     std::conditional_t<
-      std::experimental::is_detected_v<is_transparent_t, typename Tree::key_compare>,
+      boost::parser::detail::is_detected_v<is_transparent_t, typename Tree::key_compare>,
       K,
       typename Tree::key_type>;
 
