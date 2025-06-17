@@ -37,7 +37,10 @@
 
 extern int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
 #else
+#ifndef defined_clock_gettime
 extern int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
+#define defined_clock_gettime
+#endif
 #endif
 
 #ifdef _WIN32

@@ -2465,7 +2465,7 @@ public:
 
     OSDSession(CephContext *cct, int o) :
       osd(o), incarnation(0), con(NULL),
-      num_locks(cct->_conf.get_val<decltype(num_locks)>( "objecter_completion_locks_per_session" )),
+      num_locks( 0 /*cct->_conf.get_val<const char*>( "objecter_completion_locks_per_session" )*/),
       completion_locks(new std::mutex[num_locks]) {}
 
     ~OSDSession() override;

@@ -341,8 +341,11 @@ extern int nanosleep (const struct timespec *__requested_time,
 /* Get resolution of clock CLOCK_ID.  */
 extern int clock_getres (clockid_t __clock_id, struct timespec *__res) __THROW;
 
+#ifndef defined_clock_gettime
 /* Get current value of clock CLOCK_ID and store it in TP.  */
 extern int clock_gettime (clockid_t __clock_id, struct timespec *__tp) __THROW;
+#define defined_clock_gettime
+#endif
 
 /* Set clock CLOCK_ID to value TP.  */
 extern int clock_settime (clockid_t __clock_id, const struct timespec *__tp)

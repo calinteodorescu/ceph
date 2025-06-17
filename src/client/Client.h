@@ -303,8 +303,8 @@ public:
   virtual ~Client() override;
 
   static   UserPerm pick_my_perms(CephContext *c) {
-    uid_t uid = reinterpret_cast<uid_t>(c->_conf.get_val<void*>( "client_mount_uid" ));
-    gid_t gid = reinterpret_cast<uid_t>(c->_conf.get_val<void*>( "client_mount_gid" ));
+    uid_t uid = 0; // c->_conf.get_val<uid_t>( "client_mount_uid" );
+    gid_t gid = 0; // c->_conf.get_val<gid_t>( "client_mount_gid" );
     return UserPerm(uid, gid);
   }
   UserPerm pick_my_perms() {
