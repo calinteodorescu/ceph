@@ -302,9 +302,9 @@ public:
   Client(const Client&&) = delete;
   virtual ~Client() override;
 
-  static UserPerm pick_my_perms(CephContext *c) {
-    uid_t uid = c->_conf->client_mount_uid >= 0 ? c->_conf->client_mount_uid : -1;
-    gid_t gid = c->_conf->client_mount_gid >= 0 ? c->_conf->client_mount_gid : -1;
+  static   UserPerm pick_my_perms(CephContext *c) {
+    uid_t uid = c->_conf.get_val<uid_t>( "client_mount_uid" );
+    gid_t gid = c->_conf.get_val<gid_t>( "client_mount_gid" );
     return UserPerm(uid, gid);
   }
   UserPerm pick_my_perms() {

@@ -754,7 +754,8 @@ public:
       return;
     lsubdout(cct, ms, 0) << "ms_deliver_dispatch: unhandled message " << m << " " << *m << " from "
 			 << m->get_source_inst() << dendl;
-    ceph_assert(!cct->_conf->ms_die_on_unhandled_msg);
+    bool v = cct->_conf.get_val<decltype(v)>( "ms_die_on_unhandled_msg" );
+    ceph_assert(!v);
   }
   void ms_deliver_dispatch(Message *m) {
     return ms_deliver_dispatch(ceph::ref_t<Message>(m, false)); /* consume ref */

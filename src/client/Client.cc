@@ -409,9 +409,9 @@ Client::Client(Messenger *m, MonClient *mc, Objecter *objecter_)
 
   _reset_faked_inos();
 
-  user_id = cct->_conf.get_val<bool>( "client_mount_uid" );
-  group_id = cct->_conf.get_val<bool>( "client_mount_gid" );
-  client_permissions = cct->_conf.get_val<bool>("client_permissions");
+  user_id                  = cct->_conf.get_val<uid_t>( "client_mount_uid" );
+  group_id                 = cct->_conf.get_val<group_id>( "client_mount_gid" );
+  client_permissions       = cct->_conf.get_val<bool>("client_permissions");
   fuse_default_permissions = cct->_conf.get_val<bool>(
     "fuse_default_permissions");
 
@@ -424,7 +424,7 @@ Client::Client(Messenger *m, MonClient *mc, Objecter *objecter_)
   caps_release_delay = cct->_conf.get_val<std::chrono::seconds>(
     "client_caps_release_delay");
 
-  if (cct->_conf->client_acl_type == "posix_acl")
+  if (cct->_conf->get_val<std::string>( "client_acl_type" ) == "posix_acl")
     acl_type = POSIX_ACL;
 
   if (auto str = cct->_conf->client_debug_inject_features; !str.empty()) {

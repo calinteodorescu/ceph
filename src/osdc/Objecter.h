@@ -2465,7 +2465,7 @@ public:
 
     OSDSession(CephContext *cct, int o) :
       osd(o), incarnation(0), con(NULL),
-      num_locks(cct->_conf->objecter_completion_locks_per_session),
+      num_locks(cct->_conf.get_val<decltype(num_locks)>( "objecter_completion_locks_per_session" )),
       completion_locks(new std::mutex[num_locks]) {}
 
     ~OSDSession() override;
@@ -2652,12 +2652,14 @@ private:
     op_throttle_ops.put(1);
   }
   void put_nlist_context_budget(NListContext *list_context);
-  Throttle op_throttle_bytes{cct, "objecter_bytes",
-			     static_cast<int64_t>(
-			       cct->_conf->objecter_inflight_op_bytes)};
-  Throttle op_throttle_ops{cct, "objecter_ops",
-			   static_cast<int64_t>(
-			     cct->_conf->objecter_inflight_ops)};
+  Throttle op_throttle_bytes{ cct,
+                              "objecter_bytes",
+			                  static_cast<int64_t>(cct->_conf.get_val<int64_t>( "objecter_inflight_op_bytes" ))
+                            };
+  Throttle op_throttle_ops  { cct,
+                              "objecter_ops",
+			                  static_cast<int64_t>(cct->_conf.get_val<int64_t>( "objecter_inflight_ops" ))
+                            };
  public:
   Objecter(CephContext *cct, Messenger *m, MonClient *mc,
 	   boost::asio::io_context& service);
@@ -4023,8 +4025,7 @@ public:
 
 private:
   epoch_t epoch_barrier = 0;
-  bool retry_writes_after_first_reply =
-    cct->_conf->objecter_retry_writes_after_first_reply;
+  bool retry_writes_after_first_reply = cct->_conf.get_val<decltype(retry_writes_after_first_reply)>( "objecter_retry_writes_after_first_reply" );
 
 public:
   void set_epoch_barrier(epoch_t epoch);
