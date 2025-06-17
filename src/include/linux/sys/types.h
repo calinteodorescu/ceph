@@ -159,7 +159,7 @@ typedef unsigned int uint;
 /* These types are defined by the ISO C99 header <inttypes.h>. */
 # ifndef __int8_t_defined
 #  define __int8_t_defined
-typedef	char int8_t;
+typedef	unsigned char int8_t;
 typedef	short int int16_t;
 typedef	int int32_t;
 #  if __WORDSIZE == 64
@@ -244,9 +244,9 @@ typedef __fsfilcnt_t fsfilcnt_t; /* Type to count file system inodes.  */
 #  define __fsfilcnt_t_defined
 # endif
 #else
-# ifndef __blkcnt_t_defined
+# ifndef __DEFINED_blkcnt_t
 typedef __blkcnt64_t blkcnt_t;	   /* Type to count number of disk blocks.  */
-#  define __blkcnt_t_defined
+#  define __DEFINED_blkcnt_t
 # endif
 # ifndef __fsblkcnt_t_defined
 typedef __fsblkcnt64_t fsblkcnt_t; /* Type to count file system blocks.  */

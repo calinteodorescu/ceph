@@ -239,7 +239,10 @@ typedef unsigned int uint;
 typedef _sigset_t sigset_t;
 
 typedef unsigned int blksize_t;
+#ifndef __blkcnt_t_defined
 typedef unsigned __int64 blkcnt_t;
+#define __blkcnt_t_defined
+#endif
 typedef unsigned short nlink_t;
 
 typedef long long loff_t;
