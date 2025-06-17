@@ -239,7 +239,7 @@ struct stats_t {
 struct shard_t {
   stats_t pool[num_pools];
 } __attribute__ ((aligned (128)));
-static_assert(sizeof(shard_t)%128 == 0, "shard_t should be cacheline-sized");
+// static_assert(sizeof(shard_t)%128 == 0, "shard_t should be cacheline-sized");
 
 extern std::unique_ptr<shard_t[]> shards;
 

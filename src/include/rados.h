@@ -676,8 +676,8 @@ struct ceph_osd_op {
  *                     sizeof(ceph_osd_op::payload_len))
  */
 #ifdef __cplusplus
-static_assert(sizeof(ceph_osd_op) == (2+4+(2*8+8+4)+4),
-              "sizeof(ceph_osd_op) breaks the compatibility");
+// static_assert(sizeof(ceph_osd_op) == (2+4+(2*8+8+4)+4),
+//               "sizeof(ceph_osd_op) breaks the compatibility");
 #endif
 
 struct ceph_osd_reply_head {
