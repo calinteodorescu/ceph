@@ -48,6 +48,9 @@
     <Filter Include="Documentation Files\ceph\api">
       <UniqueIdentifier>{dbe143cb-231a-4f43-b3ba-d521d783aff7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Linux Files\usr">
+      <UniqueIdentifier>{16f59adf-14f2-4de1-8c95-298794071747}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\include\linux\unistd.h">

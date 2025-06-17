@@ -17,6 +17,8 @@
 #include <string.h>
 #include <string>
 
+#include <linux/usr/limits.h>
+
 #include "include/Context.h"
 #include "auth/Crypto.h"
 #include "client/Client.h"
