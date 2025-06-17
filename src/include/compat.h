@@ -238,7 +238,10 @@ typedef unsigned int uint;
 
 typedef _sigset_t sigset_t;
 
+#ifndef __blksize_t_defined
 typedef unsigned int blksize_t;
+#define __blksize_t_defined
+#endif
 #ifndef __blkcnt_t_defined
 typedef unsigned __int64 blkcnt_t;
 #define __blkcnt_t_defined

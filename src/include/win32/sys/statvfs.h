@@ -1,9 +1,18 @@
 #ifndef _SYS_STATVFS_H
 #define _SYS_STATVFS_H  1
 
+#ifndef defined_fsfilcnt64_t
 typedef unsigned __int64 fsfilcnt64_t;
+#define defined_fsfilcnt64_t
+#endif
+#ifndef defined_fsblkcnt64_t
 typedef unsigned __int64 fsblkcnt64_t;
+#define defined_fsblkcnt64_t
+#endif
+#ifndef defined_fsblkcnt_t
 typedef unsigned __int64 fsblkcnt_t;
+#define defined_fsblkcnt_t
+#endif
 
 struct statvfs
 {

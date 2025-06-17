@@ -23,11 +23,11 @@
 #include <linux/sys/time.h>
 #include <linux/sys/types.h>
 #include <sys/statvfs.h>
-#include <linux/sys/socket.h>
+#include <sys/socket.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <fcntl.h>
-#include <dirent.h>
+#include <linux/dirent.h>
 
 #include "ceph_ll_client.h"
 

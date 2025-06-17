@@ -159,11 +159,11 @@ typedef unsigned int uint;
 /* These types are defined by the ISO C99 header <inttypes.h>. */
 # ifndef __int8_t_defined
 #  define __int8_t_defined
-typedef	unsigned char int8_t;
+typedef	signed char int8_t;
 typedef	short int int16_t;
 typedef	int int32_t;
 #  if __WORDSIZE == 64
-typedef long int int64_t;
+typedef long long int64_t;
 #  else
 __extension__ typedef long long int int64_t;
 #  endif
@@ -235,22 +235,22 @@ typedef __blksize_t blksize_t;
 typedef __blkcnt_t blkcnt_t;	 /* Type to count number of disk blocks.  */
 #  define __blkcnt_t_defined
 # endif
-# ifndef __fsblkcnt_t_defined
+# ifndef defined_fsblkcnt_t
 typedef __fsblkcnt_t fsblkcnt_t; /* Type to count file system blocks.  */
-#  define __fsblkcnt_t_defined
+#  define defined_fsblkcnt_t
 # endif
 # ifndef __fsfilcnt_t_defined
 typedef __fsfilcnt_t fsfilcnt_t; /* Type to count file system inodes.  */
 #  define __fsfilcnt_t_defined
 # endif
 #else
-# ifndef __DEFINED_blkcnt_t
+# ifndef __blkcnt_t_defined
 typedef __blkcnt64_t blkcnt_t;	   /* Type to count number of disk blocks.  */
-#  define __DEFINED_blkcnt_t
+#  define __blkcnt_t_defined
 # endif
-# ifndef __fsblkcnt_t_defined
+# ifndef defined_fsblkcnt_t
 typedef __fsblkcnt64_t fsblkcnt_t; /* Type to count file system blocks.  */
-#  define __fsblkcnt_t_defined
+#  define defined_fsblkcnt_t
 # endif
 # ifndef __fsfilcnt_t_defined
 typedef __fsfilcnt64_t fsfilcnt_t; /* Type to count file system inodes.  */
@@ -260,8 +260,14 @@ typedef __fsfilcnt64_t fsfilcnt_t; /* Type to count file system inodes.  */
 
 #ifdef __USE_LARGEFILE64
 typedef __blkcnt64_t blkcnt64_t;     /* Type to count number of disk blocks. */
+#ifndef defined_fsblkcnt64_t
 typedef __fsblkcnt64_t fsblkcnt64_t; /* Type to count file system blocks.  */
+#define defined_fsblkcnt64_t
+#endif
+#ifndef defined_fsfilcnt64_t
 typedef __fsfilcnt64_t fsfilcnt64_t; /* Type to count file system inodes.  */
+#define defined_fsfilcnt64_t
+#endif
 #endif
 
 

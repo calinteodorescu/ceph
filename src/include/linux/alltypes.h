@@ -209,14 +209,14 @@ typedef long blksize_t;
 #define __DEFINED_blksize_t
 #endif
 
-#if defined(__NEED_blkcnt_t) && !defined(__DEFINED_blkcnt_t)
+#if defined(__NEED_blkcnt_t) && !defined(__blkcnt_t_defined)
 typedef _Int64 blkcnt_t;
-#define __DEFINED_blkcnt_t
+#define __blkcnt_t_defined
 #endif
 
-#if defined(__NEED_fsblkcnt_t) && !defined(__DEFINED_fsblkcnt_t)
+#if defined(__NEED_fsblkcnt_t) && !defined(defined_fsblkcnt_t)
 typedef unsigned _Int64 fsblkcnt_t;
-#define __DEFINED_fsblkcnt_t
+#define defined_fsblkcnt_t
 #endif
 
 #if defined(__NEED_fsfilcnt_t) && !defined(__DEFINED_fsfilcnt_t)
