@@ -15,8 +15,11 @@
 #ifndef COMMON_CEPH_TIME_H
 #define COMMON_CEPH_TIME_H
 
+#define __NEED_clockid_t
+
 #include <linux/features.h>
 #include <linux/bits/time.h>
+#include <linux/alltypes.h >
 #include <linux/bits/alltypes.h >
 
 #include <chrono>
@@ -32,9 +35,9 @@
 #define CLOCK_REALTIME_COARSE CLOCK_REALTIME
 #define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
 
-int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
+extern int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
 #else
-int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
+extern int clock_gettime(clockid_t clk_id, struct timespec *tp) __THROW;
 #endif
 
 #ifdef _WIN32

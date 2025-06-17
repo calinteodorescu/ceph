@@ -34,7 +34,7 @@
 #define NSEC_PER_SEC 1000000000ULL
 #endif
 
-int clock_gettime(int clk_id, struct timespec *tp)
+int clock_gettime(int clk_id, struct timespec *tp) __THROW
 {
   if (clk_id == CLOCK_REALTIME) {
     // gettimeofday is much faster than clock_get_time
