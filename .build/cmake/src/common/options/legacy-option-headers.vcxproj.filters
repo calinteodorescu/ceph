@@ -166,46 +166,40 @@
     <None Include="..\..\..\..\..\src\common\options\rgw.yaml.in">
       <Filter>YAML Files\IN</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\ceph-exporter.yaml">
+    <None Include="immutable-object-cache.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\cephfs-mirror.yaml">
+    <None Include="rgw.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\crimson.yaml">
+    <None Include="cephfs-mirror.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\global.yaml">
+    <None Include="crimson.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\immutable-object-cache.yaml">
+    <None Include="global.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\mds.yaml">
+    <None Include="mds.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\mds-client.yaml">
+    <None Include="mds-client.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\mgr.yaml">
+    <None Include="mgr.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\mon.yaml">
+    <None Include="mon.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\osd.yaml">
+    <None Include="osd.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\rbd (2).yaml">
+    <None Include="rbd.yaml">
       <Filter>YAML Files</Filter>
     </None>
-    <None Include="..\..\..\..\..\src\common\options\rbd.yaml">
-      <Filter>YAML Files</Filter>
-    </None>
-    <None Include="..\..\..\..\..\src\common\options\rbd-mirror.yaml">
-      <Filter>YAML Files</Filter>
-    </None>
-    <None Include="..\..\..\..\..\src\common\options\rgw.yaml">
+    <None Include="rbd-mirror.yaml">
       <Filter>YAML Files</Filter>
     </None>
   </ItemGroup>

@@ -1587,35 +1587,23 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\src\common\options\ceph-exporter.yaml" />
     <None Include="..\..\..\..\..\src\common\options\ceph-exporter.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\cephfs-mirror.yaml" />
     <None Include="..\..\..\..\..\src\common\options\cephfs-mirror.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\crimson.yaml" />
     <None Include="..\..\..\..\..\src\common\options\crimson.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\global.yaml" />
     <None Include="..\..\..\..\..\src\common\options\global.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\immutable-object-cache.yaml" />
     <None Include="..\..\..\..\..\src\common\options\immutable-object-cache.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\mds-client.yaml" />
     <None Include="..\..\..\..\..\src\common\options\mds-client.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\mds.yaml" />
     <None Include="..\..\..\..\..\src\common\options\mds.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\mgr.yaml" />
     <None Include="..\..\..\..\..\src\common\options\mgr.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\mon.yaml" />
     <None Include="..\..\..\..\..\src\common\options\mon.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\osd.yaml" />
     <None Include="..\..\..\..\..\src\common\options\osd.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\rbd (2).yaml" />
-    <None Include="..\..\..\..\..\src\common\options\rbd-mirror.yaml" />
     <None Include="..\..\..\..\..\src\common\options\rbd-mirror.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\rbd.yaml" />
     <None Include="..\..\..\..\..\src\common\options\rbd.yaml.in" />
-    <None Include="..\..\..\..\..\src\common\options\rgw.yaml" />
     <None Include="..\..\..\..\..\src\common\options\rgw.yaml.in" />
     <None Include="..\..\..\..\..\src\common\options\validate-options.py" />
     <None Include="..\..\..\..\..\src\common\options\y2c.py" />
+    <None Include="cephfs-mirror.yaml" />
+    <None Include="crimson.yaml" />
     <None Include="D:\Git\ceph\.build\cmake\include\global_legacy_options.h">
     </None>
     <None Include="D:\Git\ceph\.build\cmake\include\cephfs-mirror_legacy_options.h">
@@ -1642,6 +1630,16 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </None>
     <None Include="D:\Git\ceph\.build\cmake\include\rgw_legacy_options.h">
     </None>
+    <None Include="global.yaml" />
+    <None Include="immutable-object-cache.yaml" />
+    <None Include="mds-client.yaml" />
+    <None Include="mds.yaml" />
+    <None Include="mgr.yaml" />
+    <None Include="mon.yaml" />
+    <None Include="osd.yaml" />
+    <None Include="rbd-mirror.yaml" />
+    <None Include="rbd.yaml" />
+    <None Include="rgw.yaml" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\src\common\options\build_options.cc">
