@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Git\ceph\src\common\options\build_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\global_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\crimson_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mgr_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mds_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mds-client_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mon_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\osd_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rbd_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\global.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\global_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\cephfs-mirror.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\cephfs-mirror_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\crimson.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\crimson_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mgr.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mgr_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds-client.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds-client_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mon.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mon_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\osd.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\osd_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd-mirror.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd-mirror_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\immutable-object-cache.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\immutable-object-cache_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\ceph-exporter.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\ceph-exporter_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rgw.yaml.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rgw_options.cc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Git\ceph\src\common\options\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{27467C74-4E3D-3873-9BED-8EE7CF99FBD9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{34CB48D4-2195-3897-9DE1-8D0BA147961D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

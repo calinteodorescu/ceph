@@ -1,0 +1,1792 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F345E326-4477-3764-9710-59ECDD3E7E02}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>common-options-objs</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">common-options-objs.dir\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">common-options-objs.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">common-options-objs</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">common-options-objs.dir\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">common-options-objs.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">common-options-objs</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">common-options-objs.dir\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">common-options-objs.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">common-options-objs</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">common-options-objs.dir\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">common-options-objs.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">common-options-objs</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\global.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating global.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/global.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/global.yaml -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D keyring_paths=/etc/ceph/"$"cluster."$"name.keyring,/etc/ceph/"$"cluster.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin -D ms_bind_retry_count=3 -D ms_bind_retry_delay=5 -D "osd_erasure_code_plugins=jerasure lrc" -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\global.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating global.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/global.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/global.yaml -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D keyring_paths=/etc/ceph/"$"cluster."$"name.keyring,/etc/ceph/"$"cluster.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin -D ms_bind_retry_count=3 -D ms_bind_retry_delay=5 -D "osd_erasure_code_plugins=jerasure lrc" -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\global.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating global.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/global.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/global.yaml -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D keyring_paths=/etc/ceph/"$"cluster."$"name.keyring,/etc/ceph/"$"cluster.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin -D ms_bind_retry_count=3 -D ms_bind_retry_delay=5 -D "osd_erasure_code_plugins=jerasure lrc" -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\global.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating global.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/global.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/global.yaml -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D "CEPH_INSTALL_FULL_PKGLIBDIR=C:/Program Files (x86)/ceph/lib/ceph" -D keyring_paths=/etc/ceph/"$"cluster."$"name.keyring,/etc/ceph/"$"cluster.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin -D ms_bind_retry_count=3 -D ms_bind_retry_delay=5 -D "osd_erasure_code_plugins=jerasure lrc" -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\global.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\global_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating global_options.cc, ../../../include/global_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/global.yaml --output global_options.cc --legacy D:/Git/ceph/.build/cmake/include/global_legacy_options.h --name global
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\global_options.cc;D:\Git\ceph\.build\cmake\include\global_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating global_options.cc, ../../../include/global_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/global.yaml --output global_options.cc --legacy D:/Git/ceph/.build/cmake/include/global_legacy_options.h --name global
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\global_options.cc;D:\Git\ceph\.build\cmake\include\global_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating global_options.cc, ../../../include/global_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/global.yaml --output global_options.cc --legacy D:/Git/ceph/.build/cmake/include/global_legacy_options.h --name global
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\global_options.cc;D:\Git\ceph\.build\cmake\include\global_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating global_options.cc, ../../../include/global_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/global.yaml --output global_options.cc --legacy D:/Git/ceph/.build/cmake/include/global_legacy_options.h --name global
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\global.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\global_options.cc;D:\Git\ceph\.build\cmake\include\global_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\cephfs-mirror.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating cephfs-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/cephfs-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\cephfs-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating cephfs-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/cephfs-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\cephfs-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating cephfs-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/cephfs-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\cephfs-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating cephfs-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/cephfs-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\cephfs-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\cephfs-mirror_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating cephfs-mirror_options.cc, ../../../include/cephfs-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml --output cephfs-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/cephfs-mirror_legacy_options.h --name cephfs-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror_options.cc;D:\Git\ceph\.build\cmake\include\cephfs-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating cephfs-mirror_options.cc, ../../../include/cephfs-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml --output cephfs-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/cephfs-mirror_legacy_options.h --name cephfs-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror_options.cc;D:\Git\ceph\.build\cmake\include\cephfs-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating cephfs-mirror_options.cc, ../../../include/cephfs-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml --output cephfs-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/cephfs-mirror_legacy_options.h --name cephfs-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror_options.cc;D:\Git\ceph\.build\cmake\include\cephfs-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating cephfs-mirror_options.cc, ../../../include/cephfs-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/cephfs-mirror.yaml --output cephfs-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/cephfs-mirror_legacy_options.h --name cephfs-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror_options.cc;D:\Git\ceph\.build\cmake\include\cephfs-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\crimson.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating crimson.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/crimson.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\crimson.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating crimson.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/crimson.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\crimson.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating crimson.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/crimson.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\crimson.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating crimson.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/crimson.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\crimson.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\crimson_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating crimson_options.cc, ../../../include/crimson_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml --output crimson_options.cc --legacy D:/Git/ceph/.build/cmake/include/crimson_legacy_options.h --name crimson
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson_options.cc;D:\Git\ceph\.build\cmake\include\crimson_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating crimson_options.cc, ../../../include/crimson_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml --output crimson_options.cc --legacy D:/Git/ceph/.build/cmake/include/crimson_legacy_options.h --name crimson
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson_options.cc;D:\Git\ceph\.build\cmake\include\crimson_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating crimson_options.cc, ../../../include/crimson_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml --output crimson_options.cc --legacy D:/Git/ceph/.build/cmake/include/crimson_legacy_options.h --name crimson
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson_options.cc;D:\Git\ceph\.build\cmake\include\crimson_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating crimson_options.cc, ../../../include/crimson_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/crimson.yaml --output crimson_options.cc --legacy D:/Git/ceph/.build/cmake/include/crimson_legacy_options.h --name crimson
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\crimson_options.cc;D:\Git\ceph\.build\cmake\include\crimson_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mgr.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mgr.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mgr.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml -D "CEPH_INSTALL_DATADIR=C:/Program Files (x86)/ceph/share/ceph" -D mgr_disabled_modules= -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\mgr.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mgr.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mgr.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml -D "CEPH_INSTALL_DATADIR=C:/Program Files (x86)/ceph/share/ceph" -D mgr_disabled_modules= -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\mgr.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mgr.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mgr.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml -D "CEPH_INSTALL_DATADIR=C:/Program Files (x86)/ceph/share/ceph" -D mgr_disabled_modules= -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\mgr.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mgr.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mgr.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml -D "CEPH_INSTALL_DATADIR=C:/Program Files (x86)/ceph/share/ceph" -D mgr_disabled_modules= -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\mgr.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mgr_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mgr_options.cc, ../../../include/mgr_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml --output mgr_options.cc --legacy D:/Git/ceph/.build/cmake/include/mgr_legacy_options.h --name mgr
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr_options.cc;D:\Git\ceph\.build\cmake\include\mgr_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mgr_options.cc, ../../../include/mgr_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml --output mgr_options.cc --legacy D:/Git/ceph/.build/cmake/include/mgr_legacy_options.h --name mgr
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr_options.cc;D:\Git\ceph\.build\cmake\include\mgr_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mgr_options.cc, ../../../include/mgr_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml --output mgr_options.cc --legacy D:/Git/ceph/.build/cmake/include/mgr_legacy_options.h --name mgr
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr_options.cc;D:\Git\ceph\.build\cmake\include\mgr_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mgr_options.cc, ../../../include/mgr_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mgr.yaml --output mgr_options.cc --legacy D:/Git/ceph/.build/cmake/include/mgr_legacy_options.h --name mgr
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mgr_options.cc;D:\Git\ceph\.build\cmake\include\mgr_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mds.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\mds.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mds.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\mds.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mds.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\mds.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mds.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\mds.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mds_options.cc, ../../../include/mds_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds.yaml --output mds_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds_legacy_options.h --name mds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds_options.cc;D:\Git\ceph\.build\cmake\include\mds_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mds_options.cc, ../../../include/mds_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds.yaml --output mds_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds_legacy_options.h --name mds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds_options.cc;D:\Git\ceph\.build\cmake\include\mds_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mds_options.cc, ../../../include/mds_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds.yaml --output mds_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds_legacy_options.h --name mds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds_options.cc;D:\Git\ceph\.build\cmake\include\mds_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mds_options.cc, ../../../include/mds_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds.yaml --output mds_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds_legacy_options.h --name mds
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds_options.cc;D:\Git\ceph\.build\cmake\include\mds_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds-client.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mds-client.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds-client.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\mds-client.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mds-client.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds-client.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\mds-client.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mds-client.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds-client.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\mds-client.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mds-client.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mds-client.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\mds-client.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mds-client_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mds-client_options.cc, ../../../include/mds-client_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml --output mds-client_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds-client_legacy_options.h --name mds-client
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client_options.cc;D:\Git\ceph\.build\cmake\include\mds-client_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mds-client_options.cc, ../../../include/mds-client_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml --output mds-client_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds-client_legacy_options.h --name mds-client
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client_options.cc;D:\Git\ceph\.build\cmake\include\mds-client_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mds-client_options.cc, ../../../include/mds-client_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml --output mds-client_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds-client_legacy_options.h --name mds-client
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client_options.cc;D:\Git\ceph\.build\cmake\include\mds-client_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mds-client_options.cc, ../../../include/mds-client_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mds-client.yaml --output mds-client_options.cc --legacy D:/Git/ceph/.build/cmake/include/mds-client_legacy_options.h --name mds-client
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mds-client_options.cc;D:\Git\ceph\.build\cmake\include\mds-client_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mon.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mon.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mon.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mon.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\mon.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mon.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mon.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mon.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\mon.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mon.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mon.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mon.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\mon.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mon.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/mon.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/mon.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\mon.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\mon_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating mon_options.cc, ../../../include/mon_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mon.yaml --output mon_options.cc --legacy D:/Git/ceph/.build/cmake/include/mon_legacy_options.h --name mon
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon_options.cc;D:\Git\ceph\.build\cmake\include\mon_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating mon_options.cc, ../../../include/mon_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mon.yaml --output mon_options.cc --legacy D:/Git/ceph/.build/cmake/include/mon_legacy_options.h --name mon
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon_options.cc;D:\Git\ceph\.build\cmake\include\mon_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating mon_options.cc, ../../../include/mon_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mon.yaml --output mon_options.cc --legacy D:/Git/ceph/.build/cmake/include/mon_legacy_options.h --name mon
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon_options.cc;D:\Git\ceph\.build\cmake\include\mon_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating mon_options.cc, ../../../include/mon_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/mon.yaml --output mon_options.cc --legacy D:/Git/ceph/.build/cmake/include/mon_legacy_options.h --name mon
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\mon_options.cc;D:\Git\ceph\.build\cmake\include\mon_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\osd.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating osd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/osd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/osd.yaml -D CMAKE_INSTALL_LIBDIR=lib -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\osd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating osd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/osd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/osd.yaml -D CMAKE_INSTALL_LIBDIR=lib -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\osd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating osd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/osd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/osd.yaml -D CMAKE_INSTALL_LIBDIR=lib -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\osd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating osd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/osd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/osd.yaml -D CMAKE_INSTALL_LIBDIR=lib -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\osd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\osd_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating osd_options.cc, ../../../include/osd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/osd.yaml --output osd_options.cc --legacy D:/Git/ceph/.build/cmake/include/osd_legacy_options.h --name osd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd_options.cc;D:\Git\ceph\.build\cmake\include\osd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating osd_options.cc, ../../../include/osd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/osd.yaml --output osd_options.cc --legacy D:/Git/ceph/.build/cmake/include/osd_legacy_options.h --name osd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd_options.cc;D:\Git\ceph\.build\cmake\include\osd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating osd_options.cc, ../../../include/osd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/osd.yaml --output osd_options.cc --legacy D:/Git/ceph/.build/cmake/include/osd_legacy_options.h --name osd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd_options.cc;D:\Git\ceph\.build\cmake\include\osd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating osd_options.cc, ../../../include/osd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/osd.yaml --output osd_options.cc --legacy D:/Git/ceph/.build/cmake/include/osd_legacy_options.h --name osd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\osd_options.cc;D:\Git\ceph\.build\cmake\include\osd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating rbd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\rbd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating rbd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\rbd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating rbd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\rbd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating rbd.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\rbd.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating rbd_options.cc, ../../../include/rbd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml --output rbd_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd_legacy_options.h --name rbd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd_options.cc;D:\Git\ceph\.build\cmake\include\rbd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating rbd_options.cc, ../../../include/rbd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml --output rbd_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd_legacy_options.h --name rbd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd_options.cc;D:\Git\ceph\.build\cmake\include\rbd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating rbd_options.cc, ../../../include/rbd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml --output rbd_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd_legacy_options.h --name rbd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd_options.cc;D:\Git\ceph\.build\cmake\include\rbd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating rbd_options.cc, ../../../include/rbd_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd.yaml --output rbd_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd_legacy_options.h --name rbd
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd_options.cc;D:\Git\ceph\.build\cmake\include\rbd_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd-mirror.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating rbd-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\rbd-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating rbd-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\rbd-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating rbd-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\rbd-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating rbd-mirror.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rbd-mirror.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\rbd-mirror.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rbd-mirror_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating rbd-mirror_options.cc, ../../../include/rbd-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml --output rbd-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd-mirror_legacy_options.h --name rbd-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror_options.cc;D:\Git\ceph\.build\cmake\include\rbd-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating rbd-mirror_options.cc, ../../../include/rbd-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml --output rbd-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd-mirror_legacy_options.h --name rbd-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror_options.cc;D:\Git\ceph\.build\cmake\include\rbd-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating rbd-mirror_options.cc, ../../../include/rbd-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml --output rbd-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd-mirror_legacy_options.h --name rbd-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror_options.cc;D:\Git\ceph\.build\cmake\include\rbd-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating rbd-mirror_options.cc, ../../../include/rbd-mirror_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rbd-mirror.yaml --output rbd-mirror_options.cc --legacy D:/Git/ceph/.build/cmake/include/rbd-mirror_legacy_options.h --name rbd-mirror
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror_options.cc;D:\Git\ceph\.build\cmake\include\rbd-mirror_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\immutable-object-cache.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating immutable-object-cache.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/immutable-object-cache.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\immutable-object-cache.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating immutable-object-cache.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/immutable-object-cache.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\immutable-object-cache.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating immutable-object-cache.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/immutable-object-cache.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\immutable-object-cache.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating immutable-object-cache.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/immutable-object-cache.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\immutable-object-cache.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\immutable-object-cache_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating immutable-object-cache_options.cc, ../../../include/immutable-object-cache_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml --output immutable-object-cache_options.cc --legacy D:/Git/ceph/.build/cmake/include/immutable-object-cache_legacy_options.h --name immutable-object-cache
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc;D:\Git\ceph\.build\cmake\include\immutable-object-cache_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating immutable-object-cache_options.cc, ../../../include/immutable-object-cache_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml --output immutable-object-cache_options.cc --legacy D:/Git/ceph/.build/cmake/include/immutable-object-cache_legacy_options.h --name immutable-object-cache
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc;D:\Git\ceph\.build\cmake\include\immutable-object-cache_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating immutable-object-cache_options.cc, ../../../include/immutable-object-cache_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml --output immutable-object-cache_options.cc --legacy D:/Git/ceph/.build/cmake/include/immutable-object-cache_legacy_options.h --name immutable-object-cache
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc;D:\Git\ceph\.build\cmake\include\immutable-object-cache_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating immutable-object-cache_options.cc, ../../../include/immutable-object-cache_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/immutable-object-cache.yaml --output immutable-object-cache_options.cc --legacy D:/Git/ceph/.build/cmake/include/immutable-object-cache_legacy_options.h --name immutable-object-cache
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc;D:\Git\ceph\.build\cmake\include\immutable-object-cache_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\ceph-exporter.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ceph-exporter.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/ceph-exporter.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\ceph-exporter.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ceph-exporter.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/ceph-exporter.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\ceph-exporter.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating ceph-exporter.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/ceph-exporter.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\ceph-exporter.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating ceph-exporter.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/ceph-exporter.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\ceph-exporter.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\ceph-exporter_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ceph-exporter_options.cc, ../../../include/ceph-exporter_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml --output ceph-exporter_options.cc --legacy D:/Git/ceph/.build/cmake/include/ceph-exporter_legacy_options.h --name ceph-exporter
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc;D:\Git\ceph\.build\cmake\include\ceph-exporter_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ceph-exporter_options.cc, ../../../include/ceph-exporter_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml --output ceph-exporter_options.cc --legacy D:/Git/ceph/.build/cmake/include/ceph-exporter_legacy_options.h --name ceph-exporter
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc;D:\Git\ceph\.build\cmake\include\ceph-exporter_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating ceph-exporter_options.cc, ../../../include/ceph-exporter_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml --output ceph-exporter_options.cc --legacy D:/Git/ceph/.build/cmake/include/ceph-exporter_legacy_options.h --name ceph-exporter
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc;D:\Git\ceph\.build\cmake\include\ceph-exporter_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating ceph-exporter_options.cc, ../../../include/ceph-exporter_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/ceph-exporter.yaml --output ceph-exporter_options.cc --legacy D:/Git/ceph/.build/cmake/include/ceph-exporter_legacy_options.h --name ceph-exporter
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc;D:\Git\ceph\.build\cmake\include\ceph-exporter_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rgw.yaml.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating rgw.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rgw.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\src\common\options\rgw.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating rgw.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rgw.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\src\common\options\rgw.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating rgw.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rgw.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\src\common\options\rgw.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating rgw.yaml</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -D input_file=D:/Git/ceph/src/common/options/rgw.yaml.in -D output_file=D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml -P configure_file.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\src\common\options\rgw.yaml.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\.build\cmake\CMakeFiles\0cf7650a8d957b83d2f89f3c89ed2b02\rgw_options.cc.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating rgw_options.cc, ../../../include/rgw_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml --output rgw_options.cc --legacy D:/Git/ceph/.build/cmake/include/rgw_legacy_options.h --name rgw
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc;D:\Git\ceph\.build\cmake\include\rgw_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating rgw_options.cc, ../../../include/rgw_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml --output rgw_options.cc --legacy D:/Git/ceph/.build/cmake/include/rgw_legacy_options.h --name rgw
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc;D:\Git\ceph\.build\cmake\include\rgw_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating rgw_options.cc, ../../../include/rgw_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml --output rgw_options.cc --legacy D:/Git/ceph/.build/cmake/include/rgw_legacy_options.h --name rgw
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc;D:\Git\ceph\.build\cmake\include\rgw_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating rgw_options.cc, ../../../include/rgw_legacy_options.h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Git\ceph\src\common\options\y2c.py --input D:/Git/ceph/.build/cmake/src/common/options/rgw.yaml --output rgw_options.cc --legacy D:/Git/ceph/.build/cmake/include/rgw_legacy_options.h --name rgw
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw.yaml;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc;D:\Git\ceph\.build\cmake\include\rgw_legacy_options.h</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\src\common\options\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Git/ceph/src/common/options/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/common/options/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\cmake\modules\AddCephTest.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\common\options\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Git/ceph/src/common/options/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/common/options/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\cmake\modules\AddCephTest.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\common\options\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Git/ceph/src/common/options/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/common/options/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\cmake\modules\AddCephTest.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\common\options\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Git/ceph/src/common/options/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/common/options/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\cmake\modules\AddCephTest.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\common\options\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\Git\ceph\src\common\options\build_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\global_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\cephfs-mirror_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\crimson_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mgr_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mds_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mds-client_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\mon_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\osd_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rbd_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rbd-mirror_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc" />
+    <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\ZERO_CHECK.vcxproj">
+      <Project>{109BC2A2-B4F0-3E41-BAB8-1895CCEC26A8}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+  </ImportGroup>
+</Project>
