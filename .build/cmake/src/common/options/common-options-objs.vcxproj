@@ -79,7 +79,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -122,7 +122,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -165,7 +165,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -208,7 +208,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -1776,14 +1776,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\immutable-object-cache_options.cc" />
     <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\ceph-exporter_options.cc" />
     <ClCompile Include="D:\Git\ceph\.build\cmake\src\common\options\rgw_options.cc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="D:\Git\ceph\.build\cmake\ZERO_CHECK.vcxproj">
-      <Project>{109BC2A2-B4F0-3E41-BAB8-1895CCEC26A8}</Project>
-      <Name>ZERO_CHECK</Name>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
