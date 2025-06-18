@@ -119,3 +119,9 @@ src/pybind/rgw/rgw.egg-info/
 /venv/bin/python
 /venv
 /doc/venv
+/.build/cmake/src/arch/arch.dir/Debug/*.obj
+*.obj
+Debug
+Debug
+crush
+crc32.dir
