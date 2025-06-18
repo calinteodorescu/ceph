@@ -1,0 +1,631 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthClientHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthMethodList.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthRegistry.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthSessionHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\Crypto.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\KeyRing.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\RotatingKeyRing.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxAuthorizeHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxClientHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxProtocol.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxSessionHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthNoneAuthorizeHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\AsyncOpTracker.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\BackTrace.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ConfUtils.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Cycles.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\CDC.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\DecayCounter.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\FastCDC.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Finisher.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\FixedCDC.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Formatter.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Graylog.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\HTMLFormatter.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\HeartbeatMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\LogClient.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\LogEntry.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ostream_temp.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\OutputDataSocket.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\PluginRegistry.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Readahead.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\RefCountedObj.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\SloppyCRCMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Thread.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Throttle.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Timer.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\TracepointProvider.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\TrackedOp.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\WorkQueue.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\admin_socket.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\admin_socket_client.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\assert.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\bit_str.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\bloom_filter.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_argparse.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_context.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_crypto.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_frag.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_fs.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_hash.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_json.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_strings.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_releases.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_time.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\cmdparse.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\code_environment.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\common_init.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\compat.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\config.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\config_values.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\dout.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\entity_name.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\environment.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\errno.cc.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\escape.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\fd.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\fs_types.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\hex.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\histogram.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\hobject.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\hostname.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ipaddr.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\iso_8601.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\mempool.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\mime.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\numa.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\openssl_opts_handler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\page.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters_cache.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters_collection.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters_key.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_histogram.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\pick_address.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\random_string.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\reverse.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\run_cmd.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\scrub_types.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\signal.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\snap_types.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\str_list.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\str_map.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\strtol.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\types.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\url_escape.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\pretty_binary.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\utf8.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\util.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\version.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\tcp_info.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\lockdep.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\mutex_debug.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\condition_variable_debug.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\shared_mutex_debug.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\blkdev.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\dns_resolve.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ifaddrs.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\registry.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\service.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\SubProcess.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\syslog.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\win32\errno.cc.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\wstring.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\build_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\global_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\cephfs-mirror_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\crimson_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mgr_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mds_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mds-client_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mon_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\osd_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\rbd_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\rbd-mirror_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\immutable-object-cache_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\ceph-exporter_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\rgw_options.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\DispatchQueue.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Message.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Messenger.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Connection.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\msg_types.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\compressor_registry.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\AsyncConnection.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\AsyncMessenger.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Protocol.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\ProtocolV1.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\ProtocolV2.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Event.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\EventSelect.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\PosixStack.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Stack.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\crypto_onwire.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\compression_onwire.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\frames_v2.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\net_handler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\EventPoll.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_buffer_obj.dir\$(Configuration)\buffer.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_texttable_obj.dir\$(Configuration)\TextTable.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\compressor\compressor_objs.dir\$(Configuration)\Compressor.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ceph_ver.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\global_context.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\xxhash.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\common\error_code.cc.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\tracer.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Log.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonCap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonClient.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonSub.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\mon\error_code.cc.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MgrClient.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\PGMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ServiceMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ECMsgTypes.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\HitSet.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\OSDMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\OSDMapMapping.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osd_types.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osd\error_code.cc.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\PGPeeringEvent.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\OpRequest.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ClassHandler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osd_op_util.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Striper.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Objecter.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osdc\error_code.cc.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Features.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\IoOperations.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MDSMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MDSAuthCaps.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\FSMap.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\FSMapUser.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\inode_backtrace.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\mdstypes.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\flock.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\cephfs_features.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\armor.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\safe_io.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\module.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\addr_parsing.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\builder.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\mapper.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\crush.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\hash.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushWrapper.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushCompiler.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushTester.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushLocation.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\arch\arch.dir\$(Configuration)\probe.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\arch\arch.dir\$(Configuration)\intel.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\crc32c.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\crc32c_intel_baseline.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\sctp_crc32.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\crc32c_intel_fast.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Object Libraries">
+      <UniqueIdentifier>{F0E8FC1F-5BFA-3C9A-8467-4A2ED1F4C385}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

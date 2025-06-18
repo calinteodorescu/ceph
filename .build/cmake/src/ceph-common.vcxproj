@@ -1,0 +1,685 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{461D3E28-8FA2-3741-AD7A-9E5F41420833}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ceph-common</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\bin\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ceph-common.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ceph-common</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ceph-common.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ceph-common</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\bin\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">ceph-common.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">ceph-common</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\bin\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">ceph-common.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">ceph-common</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024 /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="Debug";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR=\"Debug\";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="Debug";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\lib\Debug\json_spirit.lib;..\lib\Debug\erasure_code.lib;..\lib\Debug\extblkdev.lib;D:\Git\boost\stage\lib\boost_thread-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_program_options-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_date_time-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_iostreams-vc143-mt-x64-1_88.lib;..\lib\Debug\fmtd.lib;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\lib\libcrypto.lib;ws2_32.lib;mswsock.lib;iphlpapi.lib;bcrypt.lib;..\lib\Debug\dlfcn_win32.lib;D:\Git\boost\stage\lib\boost_chrono-vc143-mt-x64-1_88.lib;..\lib\Debug\common_utf8.lib;D:\Git\boost\stage\lib\boost_random-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_system-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_regex-vc143-mt-x64-1_88.lib;opentelemetry-cpp\sdk\src\trace\libopentelemetry_trace.a;opentelemetry-cpp\sdk\src\resource\libopentelemetry_resources.a;opentelemetry-cpp\sdk\src\common\libopentelemetry_common.a;opentelemetry-cpp\exporters\jaeger\libopentelemetry_exporter_jaeger_trace.a;opentelemetry-cpp\ext\src\http\client\curl\libopentelemetry_http_client_curl.a;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\lib\thriftmd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Git/ceph/.build/cmake/lib/Debug/ceph-common.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Git/ceph/.build/cmake/bin/Debug/ceph-common.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024 /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="Release";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR=\"Release\";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="Release";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\lib\Release\json_spirit.lib;..\lib\Release\erasure_code.lib;..\lib\Release\extblkdev.lib;D:\Git\boost\stage\lib\boost_thread-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_program_options-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_date_time-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_iostreams-vc143-mt-x64-1_88.lib;..\lib\Release\fmt.lib;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\lib\libcrypto.lib;ws2_32.lib;mswsock.lib;iphlpapi.lib;bcrypt.lib;..\lib\Release\dlfcn_win32.lib;D:\Git\boost\stage\lib\boost_chrono-vc143-mt-x64-1_88.lib;..\lib\Release\common_utf8.lib;D:\Git\boost\stage\lib\boost_random-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_system-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_regex-vc143-mt-x64-1_88.lib;opentelemetry-cpp\sdk\src\trace\libopentelemetry_trace.a;opentelemetry-cpp\sdk\src\resource\libopentelemetry_resources.a;opentelemetry-cpp\sdk\src\common\libopentelemetry_common.a;opentelemetry-cpp\exporters\jaeger\libopentelemetry_exporter_jaeger_trace.a;opentelemetry-cpp\ext\src\http\client\curl\libopentelemetry_http_client_curl.a;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\lib\thriftmd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Git/ceph/.build/cmake/lib/Release/ceph-common.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Git/ceph/.build/cmake/bin/Release/ceph-common.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024 /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="MinSizeRel";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR=\"MinSizeRel\";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="MinSizeRel";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\lib\MinSizeRel\json_spirit.lib;..\lib\MinSizeRel\erasure_code.lib;..\lib\MinSizeRel\extblkdev.lib;D:\Git\boost\stage\lib\boost_thread-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_program_options-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_date_time-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_iostreams-vc143-mt-x64-1_88.lib;..\lib\MinSizeRel\fmt.lib;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\lib\libcrypto.lib;ws2_32.lib;mswsock.lib;iphlpapi.lib;bcrypt.lib;..\lib\MinSizeRel\dlfcn_win32.lib;D:\Git\boost\stage\lib\boost_chrono-vc143-mt-x64-1_88.lib;..\lib\MinSizeRel\common_utf8.lib;D:\Git\boost\stage\lib\boost_random-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_system-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_regex-vc143-mt-x64-1_88.lib;opentelemetry-cpp\sdk\src\trace\libopentelemetry_trace.a;opentelemetry-cpp\sdk\src\resource\libopentelemetry_resources.a;opentelemetry-cpp\sdk\src\common\libopentelemetry_common.a;opentelemetry-cpp\exporters\jaeger\libopentelemetry_exporter_jaeger_trace.a;opentelemetry-cpp\ext\src\http\client\curl\libopentelemetry_http_client_curl.a;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\lib\thriftmd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Git/ceph/.build/cmake/lib/MinSizeRel/ceph-common.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Git/ceph/.build/cmake/bin/MinSizeRel/ceph-common.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "D:/Git/boost" /external:I "D:/Git/ceph/.build/cmake/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/api/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/exporters/jaeger/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/ext/include" /external:I "D:/Git/ceph/src/jaegertracing/opentelemetry-cpp/sdk/include" /external:I "D:/Git/ceph/src/xxHash" /external:I "D:/Git/ceph/src/fmt/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/openssl_x64-windows/include" /external:I "D:/Git/vcpkg/vcpkg_installed/vcpkg/pkgs/thrift_x64-windows/include" -include winsock_wrapper.h -include win32_errno.h -fno-strict-aliasing -fsigned-char -ftemplate-depth-1024 /utf-8</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="RelWithDebInfo";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR=\"RelWithDebInfo\";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <MASM>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;BOOST_ALLOW_DEPRECATED_HEADERS;CEPH_DEBUG_MUTEX;_GLIBCXX_ASSERTIONS;_WIN32_WINNT=0x0A00;FMT_USE_TZSET=0;HAVE_CONFIG_H;__CEPH__;_REENTRANT;_THREAD_SAFE;__STDC_FORMAT_MACROS;_FILE_OFFSET_BITS=64;BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION;BOOST_ASIO_NO_TS_EXECUTORS;BOOST_THREAD_NO_LIB;BOOST_THREAD_DYN_LINK;BOOST_CHRONO_NO_LIB;BOOST_CHRONO_DYN_LINK;BOOST_SYSTEM_NO_LIB;BOOST_SYSTEM_DYN_LINK;BOOST_RANDOM_NO_LIB;BOOST_RANDOM_DYN_LINK;BOOST_PROGRAM_OPTIONS_NO_LIB;BOOST_PROGRAM_OPTIONS_DYN_LINK;BOOST_DATE_TIME_NO_LIB;BOOST_DATE_TIME_DYN_LINK;BOOST_IOSTREAMS_NO_LIB;BOOST_IOSTREAMS_DYN_LINK;BOOST_REGEX_NO_LIB;BOOST_REGEX_DYN_LINK;CMAKE_INTDIR="RelWithDebInfo";ceph_common_EXPORTS</PreprocessorDefinitions>
+      <IncludePaths>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(IncludePaths)</IncludePaths>
+      <AdditionalOptions>%(AdditionalOptions) -include winsock_wrapper.h -include win32_errno.h -Wall -fno-strict-aliasing -fsigned-char</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </MASM>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Git\ceph\.build\cmake\src\include;D:\Git\ceph\src;D:\Git\ceph\src\include\win32;D:\Git\boost;D:\Git\ceph\.build\cmake\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\api\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\exporters\jaeger\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\ext\include;D:\Git\ceph\src\jaegertracing\opentelemetry-cpp\sdk\include;D:\Git\ceph\src\xxHash;D:\Git\ceph\src\fmt\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\include;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\lib\RelWithDebInfo\json_spirit.lib;..\lib\RelWithDebInfo\erasure_code.lib;..\lib\RelWithDebInfo\extblkdev.lib;D:\Git\boost\stage\lib\boost_thread-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_program_options-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_date_time-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_iostreams-vc143-mt-x64-1_88.lib;..\lib\RelWithDebInfo\fmt.lib;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\openssl_x64-windows\lib\libcrypto.lib;ws2_32.lib;mswsock.lib;iphlpapi.lib;bcrypt.lib;..\lib\RelWithDebInfo\dlfcn_win32.lib;D:\Git\boost\stage\lib\boost_chrono-vc143-mt-x64-1_88.lib;..\lib\RelWithDebInfo\common_utf8.lib;D:\Git\boost\stage\lib\boost_random-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_system-vc143-mt-x64-1_88.lib;D:\Git\boost\stage\lib\boost_regex-vc143-mt-x64-1_88.lib;opentelemetry-cpp\sdk\src\trace\libopentelemetry_trace.a;opentelemetry-cpp\sdk\src\resource\libopentelemetry_resources.a;opentelemetry-cpp\sdk\src\common\libopentelemetry_common.a;opentelemetry-cpp\exporters\jaeger\libopentelemetry_exporter_jaeger_trace.a;opentelemetry-cpp\ext\src\http\client\curl\libopentelemetry_http_client_curl.a;D:\Git\vcpkg\vcpkg_installed\vcpkg\pkgs\thrift_x64-windows\lib\thriftmd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Git/ceph/.build/cmake/lib/RelWithDebInfo/ceph-common.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Git/ceph/.build/cmake/bin/RelWithDebInfo/ceph-common.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Git\ceph\src\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Git/ceph/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Tools\CMake\share\cmake-3.29\Modules\CheckCCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFile.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckTypeSize.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\PatchInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\RepositoryInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\UpdateInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\cfgcmd.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\mkdirs.cmake.in;C:\Tools\CMake\share\cmake-3.29\Modules\FindDoxygen.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindGit.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindLua.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\Internal\CheckCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\TestBigEndian.cmake;D:\Git\ceph\.build\cmake\CMakeDoxyfile.in;D:\Git\ceph\.build\cmake\CMakeDoxygenDefaults.cmake;D:\Git\ceph\.build\cmake\src\CMakeFiles\git-data\grabRef.cmake;D:\Git\ceph\.build\cmake\src\opentelemetry-cpp\tmp\opentelemetry-cpp-mkdirs.cmake;D:\Git\ceph\.build\cmake\src\rocksdb_ext-prefix\tmp\rocksdb_ext-mkdirs.cmake;D:\Git\ceph\.git\HEAD;D:\Git\ceph\.git\refs\heads\Playground;D:\Git\ceph\cmake\modules\BuildOpentelemetry.cmake;D:\Git\ceph\cmake\modules\BuildRocksDB.cmake;D:\Git\ceph\cmake\modules\Findthrift.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake.in;D:\Git\ceph\cmake\modules\SIMDExt.cmake;D:\Git\ceph\src\ceph-coverage.in;D:\Git\ceph\src\ceph-crash.in;D:\Git\ceph\src\ceph-debugpack.in;D:\Git\ceph\src\ceph-post-file.in;D:\Git\ceph\src\ceph.in;D:\Git\ceph\src\ceph_release.h.in.cmake;D:\Git\ceph\src\ceph_ver.h.in.cmake;D:\Git\ceph\src\cephfs.pc.in;D:\Git\ceph\src\include\config-h.in.cmake;D:\Git\ceph\src\init-ceph.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Git\ceph\.build\cmake\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Git/ceph/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Tools\CMake\share\cmake-3.29\Modules\CheckCCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFile.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckTypeSize.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\PatchInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\RepositoryInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\UpdateInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\cfgcmd.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\mkdirs.cmake.in;C:\Tools\CMake\share\cmake-3.29\Modules\FindDoxygen.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindGit.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindLua.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\Internal\CheckCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\TestBigEndian.cmake;D:\Git\ceph\.build\cmake\CMakeDoxyfile.in;D:\Git\ceph\.build\cmake\CMakeDoxygenDefaults.cmake;D:\Git\ceph\.build\cmake\src\CMakeFiles\git-data\grabRef.cmake;D:\Git\ceph\.build\cmake\src\opentelemetry-cpp\tmp\opentelemetry-cpp-mkdirs.cmake;D:\Git\ceph\.build\cmake\src\rocksdb_ext-prefix\tmp\rocksdb_ext-mkdirs.cmake;D:\Git\ceph\.git\HEAD;D:\Git\ceph\.git\refs\heads\Playground;D:\Git\ceph\cmake\modules\BuildOpentelemetry.cmake;D:\Git\ceph\cmake\modules\BuildRocksDB.cmake;D:\Git\ceph\cmake\modules\Findthrift.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake.in;D:\Git\ceph\cmake\modules\SIMDExt.cmake;D:\Git\ceph\src\ceph-coverage.in;D:\Git\ceph\src\ceph-crash.in;D:\Git\ceph\src\ceph-debugpack.in;D:\Git\ceph\src\ceph-post-file.in;D:\Git\ceph\src\ceph.in;D:\Git\ceph\src\ceph_release.h.in.cmake;D:\Git\ceph\src\ceph_ver.h.in.cmake;D:\Git\ceph\src\cephfs.pc.in;D:\Git\ceph\src\include\config-h.in.cmake;D:\Git\ceph\src\init-ceph.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Git\ceph\.build\cmake\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Git/ceph/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Tools\CMake\share\cmake-3.29\Modules\CheckCCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFile.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckTypeSize.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\PatchInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\RepositoryInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\UpdateInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\cfgcmd.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\mkdirs.cmake.in;C:\Tools\CMake\share\cmake-3.29\Modules\FindDoxygen.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindGit.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindLua.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\Internal\CheckCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\TestBigEndian.cmake;D:\Git\ceph\.build\cmake\CMakeDoxyfile.in;D:\Git\ceph\.build\cmake\CMakeDoxygenDefaults.cmake;D:\Git\ceph\.build\cmake\src\CMakeFiles\git-data\grabRef.cmake;D:\Git\ceph\.build\cmake\src\opentelemetry-cpp\tmp\opentelemetry-cpp-mkdirs.cmake;D:\Git\ceph\.build\cmake\src\rocksdb_ext-prefix\tmp\rocksdb_ext-mkdirs.cmake;D:\Git\ceph\.git\HEAD;D:\Git\ceph\.git\refs\heads\Playground;D:\Git\ceph\cmake\modules\BuildOpentelemetry.cmake;D:\Git\ceph\cmake\modules\BuildRocksDB.cmake;D:\Git\ceph\cmake\modules\Findthrift.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake.in;D:\Git\ceph\cmake\modules\SIMDExt.cmake;D:\Git\ceph\src\ceph-coverage.in;D:\Git\ceph\src\ceph-crash.in;D:\Git\ceph\src\ceph-debugpack.in;D:\Git\ceph\src\ceph-post-file.in;D:\Git\ceph\src\ceph.in;D:\Git\ceph\src\ceph_release.h.in.cmake;D:\Git\ceph\src\ceph_ver.h.in.cmake;D:\Git\ceph\src\cephfs.pc.in;D:\Git\ceph\src\include\config-h.in.cmake;D:\Git\ceph\src\init-ceph.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Git\ceph\.build\cmake\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Git/ceph/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+C:\Tools\CMake\bin\cmake.exe -SD:/Git/ceph -BD:/Git/ceph/.build/cmake --check-stamp-file D:/Git/ceph/.build/cmake/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Tools\CMake\share\cmake-3.29\Modules\CheckCCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckCXXSourceCompiles.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFile.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckIncludeFileCXX.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\CheckTypeSize.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\PatchInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\RepositoryInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\UpdateInfo.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\cfgcmd.txt.in;C:\Tools\CMake\share\cmake-3.29\Modules\ExternalProject\mkdirs.cmake.in;C:\Tools\CMake\share\cmake-3.29\Modules\FindDoxygen.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindGit.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindLua.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageHandleStandardArgs.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\FindPackageMessage.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\Internal\CheckCompilerFlag.cmake;C:\Tools\CMake\share\cmake-3.29\Modules\TestBigEndian.cmake;D:\Git\ceph\.build\cmake\CMakeDoxyfile.in;D:\Git\ceph\.build\cmake\CMakeDoxygenDefaults.cmake;D:\Git\ceph\.build\cmake\src\CMakeFiles\git-data\grabRef.cmake;D:\Git\ceph\.build\cmake\src\opentelemetry-cpp\tmp\opentelemetry-cpp-mkdirs.cmake;D:\Git\ceph\.build\cmake\src\rocksdb_ext-prefix\tmp\rocksdb_ext-mkdirs.cmake;D:\Git\ceph\.git\HEAD;D:\Git\ceph\.git\refs\heads\Playground;D:\Git\ceph\cmake\modules\BuildOpentelemetry.cmake;D:\Git\ceph\cmake\modules\BuildRocksDB.cmake;D:\Git\ceph\cmake\modules\Findthrift.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake;D:\Git\ceph\cmake\modules\GetGitRevisionDescription.cmake.in;D:\Git\ceph\cmake\modules\SIMDExt.cmake;D:\Git\ceph\src\ceph-coverage.in;D:\Git\ceph\src\ceph-crash.in;D:\Git\ceph\src\ceph-debugpack.in;D:\Git\ceph\src\ceph-post-file.in;D:\Git\ceph\src\ceph.in;D:\Git\ceph\src\ceph_release.h.in.cmake;D:\Git\ceph\src\ceph_ver.h.in.cmake;D:\Git\ceph\src\cephfs.pc.in;D:\Git\ceph\src\include\config-h.in.cmake;D:\Git\ceph\src\init-ceph.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Git\ceph\.build\cmake\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthClientHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthMethodList.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthRegistry.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthSessionHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\Crypto.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\KeyRing.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\RotatingKeyRing.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxAuthorizeHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxClientHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxProtocol.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\CephxSessionHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.dir\$(Configuration)\AuthNoneAuthorizeHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\AsyncOpTracker.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\BackTrace.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ConfUtils.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Cycles.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\CDC.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\DecayCounter.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\FastCDC.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Finisher.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\FixedCDC.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Formatter.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Graylog.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\HTMLFormatter.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\HeartbeatMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\LogClient.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\LogEntry.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ostream_temp.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\OutputDataSocket.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\PluginRegistry.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Readahead.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\RefCountedObj.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\SloppyCRCMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Thread.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Throttle.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\Timer.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\TracepointProvider.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\TrackedOp.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\WorkQueue.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\admin_socket.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\admin_socket_client.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\assert.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\bit_str.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\bloom_filter.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_argparse.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_context.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_crypto.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_frag.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_fs.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_hash.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_json.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_strings.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_releases.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ceph_time.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\cmdparse.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\code_environment.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\common_init.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\compat.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\config.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\config_values.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\dout.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\entity_name.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\environment.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\errno.cc.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\escape.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\fd.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\fs_types.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\hex.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\histogram.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\hobject.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\hostname.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ipaddr.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\iso_8601.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\mempool.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\mime.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\numa.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\openssl_opts_handler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\page.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters_cache.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters_collection.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_counters_key.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\perf_histogram.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\pick_address.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\random_string.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\reverse.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\run_cmd.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\scrub_types.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\signal.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\snap_types.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\str_list.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\str_map.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\strtol.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\types.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\url_escape.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\pretty_binary.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\utf8.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\util.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\version.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\tcp_info.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\lockdep.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\mutex_debug.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\condition_variable_debug.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\shared_mutex_debug.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\blkdev.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\dns_resolve.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\ifaddrs.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\registry.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\service.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\SubProcess.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\syslog.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\win32\errno.cc.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.dir\$(Configuration)\wstring.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\build_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\global_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\cephfs-mirror_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\crimson_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mgr_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mds_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mds-client_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\mon_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\osd_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\rbd_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\rbd-mirror_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\immutable-object-cache_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\ceph-exporter_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.dir\$(Configuration)\rgw_options.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\DispatchQueue.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Message.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Messenger.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Connection.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\msg_types.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\compressor_registry.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\AsyncConnection.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\AsyncMessenger.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Protocol.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\ProtocolV1.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\ProtocolV2.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Event.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\EventSelect.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\PosixStack.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\Stack.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\crypto_onwire.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\compression_onwire.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\frames_v2.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\net_handler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.dir\$(Configuration)\EventPoll.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_buffer_obj.dir\$(Configuration)\buffer.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_texttable_obj.dir\$(Configuration)\TextTable.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\compressor\compressor_objs.dir\$(Configuration)\Compressor.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ceph_ver.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\global_context.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\xxhash.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\common\error_code.cc.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\tracer.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Log.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonCap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonClient.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MonSub.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\mon\error_code.cc.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MgrClient.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\PGMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ServiceMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ECMsgTypes.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\HitSet.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\OSDMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\OSDMapMapping.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osd_types.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osd\error_code.cc.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\PGPeeringEvent.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\OpRequest.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\ClassHandler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osd_op_util.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Striper.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Objecter.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\osdc\error_code.cc.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\Features.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\IoOperations.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MDSMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\MDSAuthCaps.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\FSMap.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\FSMapUser.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\inode_backtrace.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\mdstypes.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\flock.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common-objs.dir\$(Configuration)\cephfs_features.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\armor.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\safe_io.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\module.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.dir\$(Configuration)\addr_parsing.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\builder.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\mapper.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\crush.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\hash.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushWrapper.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushCompiler.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushTester.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.dir\$(Configuration)\CrushLocation.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\arch\arch.dir\$(Configuration)\probe.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\arch\arch.dir\$(Configuration)\intel.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\crc32c.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\crc32c_intel_baseline.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\sctp_crc32.obj" />
+    <Object Include="D:\Git\ceph\.build\cmake\src\common\crc32.dir\$(Configuration)\crc32c_intel_fast.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\ZERO_CHECK.vcxproj">
+      <Project>{109BC2A2-B4F0-3E41-BAB8-1895CCEC26A8}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\arch\arch.vcxproj">
+      <Project>{BB97EFE6-22E0-31A6-B072-2DE52D6A13FE}</Project>
+      <Name>arch</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\auth\common-auth-objs.vcxproj">
+      <Project>{503105F4-138B-33DA-81A1-52366295E2A1}</Project>
+      <Name>common-auth-objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\common-common-objs.vcxproj">
+      <Project>{A5E8CDF7-2B5B-3194-B602-DFAB44E7C42E}</Project>
+      <Name>common-common-objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\msg\common-msg-objs.vcxproj">
+      <Project>{BA927D96-C165-3DDE-AF44-30313E1C14CA}</Project>
+      <Name>common-msg-objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common-objs.vcxproj">
+      <Project>{151269C2-9656-3028-B1D7-5DAA3F5D86AA}</Project>
+      <Name>common-objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\options\common-options-objs.vcxproj">
+      <Project>{F345E326-4477-3764-9710-59ECDD3E7E02}</Project>
+      <Name>common-options-objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\common_buffer_obj.vcxproj">
+      <Project>{83E71059-C45C-338F-8FDD-CD9D91CD2B36}</Project>
+      <Name>common_buffer_obj</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\common_mountcephfs_objs.vcxproj">
+      <Project>{FD1A4B45-6CC7-390E-AC68-AD322D08884B}</Project>
+      <Name>common_mountcephfs_objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\common_texttable_obj.vcxproj">
+      <Project>{1D1826DE-4677-3970-A77E-D6358C1AABEE}</Project>
+      <Name>common_texttable_obj</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\common_utf8.vcxproj">
+      <Project>{3301F8F0-3F09-362E-8855-1252A89A9430}</Project>
+      <Name>common_utf8</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\compressor\compressor_objs.vcxproj">
+      <Project>{F67A8D39-6ED3-303F-B526-50217C43EFB5}</Project>
+      <Name>compressor_objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\crc32.vcxproj">
+      <Project>{F07E5468-F3B2-336F-9E3C-F5166425041A}</Project>
+      <Name>crc32</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\crush\crush_objs.vcxproj">
+      <Project>{11AC132B-C53F-37C1-A45E-C02B550984F1}</Project>
+      <Name>crush_objs</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\dlfcn_win32.vcxproj">
+      <Project>{AE16ADDA-3798-30C5-B793-32E83D3049D7}</Project>
+      <Name>dlfcn_win32</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\erasure-code\erasure_code.vcxproj">
+      <Project>{A7630EA3-9597-3FC7-8CD3-91FC300EF861}</Project>
+      <Name>erasure_code</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\extblkdev\extblkdev.vcxproj">
+      <Project>{AA581D5A-5BE7-3286-9ECE-3D799EDB4965}</Project>
+      <Name>extblkdev</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\fmt\fmt.vcxproj">
+      <Project>{79C36788-A85F-303F-A41E-7EA61BC6D3CA}</Project>
+      <Name>fmt</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\json_spirit\json_spirit.vcxproj">
+      <Project>{8D01DE62-6995-3F31-AC98-81BE8EBB1CDB}</Project>
+      <Name>json_spirit</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\common\options\legacy-option-headers.vcxproj">
+      <Project>{C8B649B3-960E-347C-BD50-AA361031563F}</Project>
+      <Name>legacy-option-headers</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Git\ceph\.build\cmake\src\opentelemetry-cpp.vcxproj">
+      <Project>{D4359A40-CE3B-3ADD-8AB3-51196C7E9C91}</Project>
+      <Name>opentelemetry-cpp</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets" />
+  </ImportGroup>
+</Project>
